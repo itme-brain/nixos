@@ -7,7 +7,6 @@
     ];
 
 # KERNEL MODULES
-
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "coretemp" ];
@@ -16,7 +15,6 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
 # FSTAB
-
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
       fsType = "ext4";
@@ -34,7 +32,6 @@
 
 
 # CPU
-
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

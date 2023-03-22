@@ -3,10 +3,8 @@
 {
 
   networking = {
-    hostName = "socrates"; # Change your hostname
-
+    hostName = "socrates";
     useDHCP = lib.mkDefault true;
-    
     networkmanager.enable = true;
   };
 
