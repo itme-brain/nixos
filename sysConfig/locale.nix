@@ -3,7 +3,7 @@
 {
 
   time = {
-    timeZone = "America/New_York"; # Change time-zone, run timedatectl list-timezones if you're unsure
+    timeZone = "America/New_York";
   };
   
   services.timesyncd = {

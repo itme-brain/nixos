@@ -1,9 +1,9 @@
 { pkgs, ... }:
 
 {
-  # Nix requires default.nix to build the system properly, do not rename it.
+  # Nix requires default.nix to build the system properly.
   
-  # Add or remove imports based on the modules in your sysConfig directory.
+  # Add or remove imports based on the modules in sysConfig/.
   imports = [
 	./audio.nix
 	./boot.nix

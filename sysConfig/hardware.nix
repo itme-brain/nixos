@@ -6,7 +6,7 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-## KERNEL MODULES
+# KERNEL MODULES
 
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
@@ -33,7 +33,7 @@
     };
 
 
-## CPU
+# CPU
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
