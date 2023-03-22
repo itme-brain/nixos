@@ -22,8 +22,8 @@ Here are useful resources for finding a list of nix packages and options...
 ## Requirements
 
  - nix package manager *OR* NixOS
- - Nix 2.0 (flake and nix-command) enabled
  - Home-Manager
+ - Nix 2.0 (flake and nix-command) enabled
 
 Install nix package manager or NixOS here - https://www.nixos.org/ or through your package manager.
 
