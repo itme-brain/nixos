@@ -21,3 +21,5 @@ if [ -d "$bash_completion_dir" ]; then
     source "$file" 2>/dev/null
   done
 fi
+
+alias LS = 'LSD'

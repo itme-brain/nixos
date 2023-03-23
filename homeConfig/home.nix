@@ -26,6 +26,7 @@
     git
     openssh
     unzip
+    lsd
 
     bash-completion
     pkg-config
