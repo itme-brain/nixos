@@ -22,4 +22,4 @@ if [ -d "$bash_completion_dir" ]; then
   done
 fi
 
-alias LS = 'LSD'
+alias ls = 'lsd'
