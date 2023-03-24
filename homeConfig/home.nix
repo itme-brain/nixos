@@ -53,9 +53,9 @@
     };
 
 # TODO: (bryan - failing to build. why?)
-#  programs.neovim.plugins = [
-#    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-#  ];
+  programs.neovim.plugins = [
+    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+  ];
 
 
 # SESSION VARIABLES
