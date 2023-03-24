@@ -50,13 +50,10 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
-    };
-
-# TODO: (bryan - failing to build. why?)
-  programs.neovim.plugins = [
-    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-  ];
-
+    plugins = with pkgs; [
+      vimPlugins.nvim-treesitter.withAllGrammars
+    ]
+  };
 
 # SESSION VARIABLES
   home.sessionVariables = {
