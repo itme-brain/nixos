@@ -52,7 +52,7 @@
     vimAlias = true;
     plugins = with pkgs; [
       vimPlugins.nvim-treesitter.withAllGrammars
-    ]
+    ];
   };
 
 # SESSION VARIABLES
