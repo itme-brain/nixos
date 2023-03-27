@@ -6,8 +6,17 @@ return packer.startup(function(use)
   -- Install packer.nvim
   use 'wbthomason/packer.nvim'
 
+-- Github Theme
+  use ({ 'projekt0n/github-nvim-theme', tag = 'v0.0.7',
+    config = function()
+      require('github-theme').setup({
+        theme_style = "dark_default",
+        function_style = "italic",
+      })
+    end
+  })
 
-  -- Install indent-blankline.nvimuse
+  -- Indent-blankline
   use {"lukas-reineke/indent-blankline.nvim",
     config = function()
       require("indent_blankline").setup {
@@ -16,22 +25,25 @@ return packer.startup(function(use)
   }
 
   -- Neo-Tree
-  use {
-    "nvim-neo-tree/neo-tree.nvim",
-      branch = "v2.x",
-      requires = { 
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", 
-	      "MunifTanjim/nui.nvim",
-      }
+  use {"nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    requires = { 
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", 
+	    "MunifTanjim/nui.nvim",
+    }
   }
   
-  -- Lualine (bottom line)
-  use {
-  'nvim-lualine/lualine.nvim',
+  -- Lualine
+  use {'nvim-lualine/lualine.nvim',
+  after = 'github-nvim-theme',
   requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     config = function()
-      require('lualine').setup {}  
+      require('lualine').setup {
+        options = {
+          theme = 'auto'
+        }
+      }  
     end
   }
 
@@ -59,7 +71,6 @@ return packer.startup(function(use)
       'markdown' 
     } 
   }
-
 
 end)
 
