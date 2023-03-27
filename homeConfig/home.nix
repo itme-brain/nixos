@@ -60,8 +60,8 @@
   services = {
     syncthing = {
       enable = true;
-      user = "${USER}";
-      dataDir = "/home/${USER}/Sync";
+      user = "bryan";
+      dataDir = "/home/bryan/Sync";
     };
   };
 
