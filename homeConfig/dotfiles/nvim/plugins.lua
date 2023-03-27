@@ -11,10 +11,6 @@ return packer.startup(function(use)
     config = function()
       require('github-theme').setup({
         theme_style = "dark_default",
-        function_style = "italic",
-        keyword_style = "italic",
-        comment_style = "italic",
-        variable_style = "italic",
       })
     end
   })
