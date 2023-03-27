@@ -32,7 +32,6 @@
     bash-completion
     pkg-config
 
-    syncthing
     keepassxc
     neofetch    
 
@@ -51,11 +50,20 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+
     plugins = with pkgs; [
       vimPlugins.nvim-treesitter.withAllGrammars
     ];
   };
 
+# SYNCTHING
+  services = {
+    syncthing = {
+      enable = true;
+      user = ${USER};
+      dataDir = "/home/${USER}/Sync";
+    }
+  }
 # SESSION VARIABLES
   home.sessionVariables = {
     EDITOR = "nvim";
