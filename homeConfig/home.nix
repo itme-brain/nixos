@@ -60,7 +60,6 @@
   services = {
     syncthing = {
       enable = true;
-      user = "bryan";
     };
   };
 
