@@ -24,3 +24,10 @@ dofile(vim.fn.stdpath('config') .. '/plugins.lua')
   vim.opt.expandtab = true
   vim.opt.tabstop = 2
 
+-- Treesitter Enable
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+}
+

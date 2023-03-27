@@ -6,7 +6,7 @@ return packer.startup(function(use)
   -- Install packer.nvim
   use 'wbthomason/packer.nvim'
 
--- Github Theme
+  -- Github Theme
   use ({ 'projekt0n/github-nvim-theme', tag = 'v0.0.7',
     config = function()
       require('github-theme').setup({
