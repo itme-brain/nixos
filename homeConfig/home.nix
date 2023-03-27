@@ -61,7 +61,6 @@
     syncthing = {
       enable = true;
       user = "bryan";
-      dataDir = "/home/bryan/Sync";
     };
   };
 
