@@ -60,7 +60,7 @@
   services = {
     syncthing = {
       enable = true;
-      user = ${USER};
+      user = "${USER}";
       dataDir = "/home/${USER}/Sync";
     }
   }
