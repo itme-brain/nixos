@@ -62,8 +62,9 @@
       enable = true;
       user = "${USER}";
       dataDir = "/home/${USER}/Sync";
-    }
-  }
+    };
+  };
+
 # SESSION VARIABLES
   home.sessionVariables = {
     EDITOR = "nvim";
