@@ -27,7 +27,7 @@
     openssh
     unzip
     lsd
-    ipscan
+    fping
 
     bash-completion
     pkg-config
