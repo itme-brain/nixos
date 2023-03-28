@@ -15,28 +15,28 @@
       
       pkgs = import nixpkgs {
         inherit system;
-	config = {
-	  allowUnfree = true;
-	};
-       };
+	      config = {
+	        allowUnfree = true;
+      	};
+      };
 
 in    
-    {
-      nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
-        inherit system;
-	modules = [
-	  ./sysConfig
-	];
-      };
-
-    
-      homeConfigurations.bryan = home-manager.lib.homeManagerConfiguration {
-	inherit pkgs;
-        modules = [
-	  ./homeConfig/home.nix
-	];
-      };
+  {
+    nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
+      inherit system;
+	    modules = [
+	      ./sysConfig
+	    ];
     };
+
+   
+    homeConfigurations.bryan = home-manager.lib.homeManagerConfiguration {
+	    inherit pkgs;
+      modules = [
+	      ./homeConfig/home.nix
+	    ];
+    };
+  };
 }
 
 
