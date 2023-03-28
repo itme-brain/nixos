@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+  nix.gc.keep = "5 generations";
+
   boot = {
     loader = {
       grub = {
