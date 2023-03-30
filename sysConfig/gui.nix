@@ -10,13 +10,14 @@
     rofi-wayland
     grim
     slurp
-    mako
     wl-clipboard
 
     xdg-desktop-portal
     xdg-desktop-portal-wlr
 
     fontconfig
+
+    xwayland
   ];
 
 # CONSOLE
