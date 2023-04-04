@@ -28,6 +28,7 @@
     unzip
     lsd
     fping
+    calc
 
     bash-completion
     pkg-config
