@@ -85,6 +85,6 @@ size: 14
 cursor:
   color: '#ffffff' 
   style:
-    shape: Underline
+    shape: Block
     blinking: Always
     blink-interval: 750
