@@ -36,16 +36,21 @@ return packer.startup(function(use)
   -- Lualine
   use {'nvim-lualine/lualine.nvim',
   after = 'github-nvim-theme',
-  requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-    config = function()
-      require('lualine').setup {
-        options = {
-          theme = 'auto'
-        }
-      }  
-    end
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      config = function()
+        require('lualine').setup {
+          options = {
+            theme = 'auto'
+          }
+        }  
+      end
   }
 
+  -- Git Blame Line
+  use {
+  'tveskag/nvim-blame-line',
+    requires = {'nvim-lua/plenary.nvim'},
+  }
 
   -- Git Integration
   use { 'TimUntersberger/neogit', 
