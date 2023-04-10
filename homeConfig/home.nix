@@ -47,11 +47,11 @@
 # PROGRAM CONFIGS
 
 # NEOVIM
-  home.sessionVariables.EDITOR = "nvim";
   programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
+    defaultEditor = true;
 
     plugins = with pkgs; [
       vimPlugins.nvim-treesitter.withAllGrammars
