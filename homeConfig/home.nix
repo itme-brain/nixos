@@ -38,7 +38,6 @@
 
     qogir-icon-theme
 
-    nodejs 
     lua
     python
   ];
