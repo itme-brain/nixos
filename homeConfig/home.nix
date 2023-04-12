@@ -39,7 +39,7 @@
     qogir-icon-theme
 
     lua
-    python
+    python3
   ];
 
 
