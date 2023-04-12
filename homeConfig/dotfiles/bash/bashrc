@@ -9,7 +9,7 @@ is_ssh_session() {
 
 # PS1 Config
 if [ -n "${IN_NIX_SHELL:+x}" ]; then
-  PS1="\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]devShell > \[\033[00m\]"
+  PS1="\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]nix shell > \[\033[00m\]"
 else
   if ! is_ssh_session; then
     PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]> \[\033[00m\]"
