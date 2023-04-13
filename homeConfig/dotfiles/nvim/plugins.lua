@@ -32,7 +32,11 @@ return packer.startup(function(use)
 	    "MunifTanjim/nui.nvim",
     }
   }
-  
+ 
+  -- Vim Snippets
+  use 'garbas/vim-snipmate'
+  use 'honza/vim-snippets'
+
   -- Lualine
   use {'nvim-lualine/lualine.nvim',
   after = 'github-nvim-theme',

@@ -8,12 +8,12 @@
 
 
 -- Load packer.nvim
-local packer_install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-  if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
-    vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. packer_install_path)
-    vim.cmd 'packadd packer.nvim'
-end
-dofile(vim.fn.stdpath('config') .. '/plugins.lua')
+  local packer_install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+    if  vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
+        vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. packer_install_path)
+        vim.cmd 'packadd packer.nvim'
+  end
+  dofile(vim.fn.stdpath('config') .. '/plugins.lua')
 
 -- Keep Cursor
   vim.o.guicursor = ''
@@ -25,8 +25,11 @@ dofile(vim.fn.stdpath('config') .. '/plugins.lua')
   vim.opt.tabstop = 2
 
 -- Treesitter Enable
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-  },
-}
+  require'nvim-treesitter.configs'.setup {
+    highlight = {
+      enable = true,
+    },
+  }
+
+-- Init Snippets
+  vim.g.snipMate = { snippet_version = 1 }
