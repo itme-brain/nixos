@@ -33,9 +33,6 @@ return packer.startup(function(use)
     }
   }
  
-  -- Vim Snippets
-  use 'garbas/vim-snipmate'
-  use 'honza/vim-snippets'
 
   -- Lualine
   use {'nvim-lualine/lualine.nvim',
