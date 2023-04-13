@@ -17,7 +17,8 @@
     alacritty
     ranger
     imv
-
+    
+    rsync
     wget
     curl
     btop
