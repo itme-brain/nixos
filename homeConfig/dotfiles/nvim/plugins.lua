@@ -33,6 +33,15 @@ return packer.startup(function(use)
     }
   }
  
+  -- Vim Snippets
+  use {
+    'garbas/vim-snipmate',
+    requires = {
+      'MarcWeber/vim-addon-mw-utils',
+      'tomtom/tlib_vim',
+    }
+  }
+  use 'honza/vim-snippets'
 
   -- Lualine
   use {'nvim-lualine/lualine.nvim',
