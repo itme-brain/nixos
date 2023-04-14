@@ -38,9 +38,6 @@
     neofetch    
 
     qogir-icon-theme
-
-    lua
-    python3
   ];
 
 
