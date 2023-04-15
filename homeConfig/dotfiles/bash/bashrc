@@ -27,6 +27,6 @@ if [ -d "$bash_completion_dir" ]; then
 fi
 
 # Set EDITOR to nvim
-export EDITOR=/nix/store/z67k4yagrajl6gwm50wafcblgkw8pa23-home-manager-path/bin/nvim
+export EDITOR=nvim
 
 alias ls='lsd'
