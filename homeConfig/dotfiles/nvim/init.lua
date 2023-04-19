@@ -33,3 +33,23 @@
       enable = true,
     },
   }
+
+-- Load LSP's
+  local nvim_lsp = require('lspconfig')
+
+  local function on_attach(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    require('lsp_signature').on_attach()
+  end
+
+  local servers = {
+    tsserver = { cmd = { "tsserver", "--stdio" } },
+    pyright = { cmd = { "pyright-langserver", "--stdio" } },
+  }
+
+  for lsp, config in pairs(servers) do
+    nvim_lsp[lsp].setup {
+      cmd = config.cmd,
+      on_attach = on_attach,
+    }
+  end
