@@ -38,10 +38,11 @@
   local nvim_lsp = require('lspconfig')
 
   local function on_attach(client, bufnr)
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
     require('lsp_signature').on_attach()
   end
 
+-- Add / Remove LSP's HERE
   local servers = {
     tsserver = { cmd = { "tsserver", "--stdio" } },
     pyright = { cmd = { "pyright-langserver", "--stdio" } },
