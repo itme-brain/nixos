@@ -90,5 +90,18 @@ return packer.startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
   
-  use 'hrsh7th/nvim-compe'
+  use {'hrsh7th/nvim-compe',
+    config = function()
+      require('compe').setup({
+        enabled = true,
+        source = {
+          path = true,
+          buffer = true,
+          nvim_lsp = true,
+          nvim_lua = true,
+          treesitter = true,
+        },
+      })
+    end,
+  }
 end)
