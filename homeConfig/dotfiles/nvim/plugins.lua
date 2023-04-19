@@ -26,13 +26,13 @@ return packer.startup(function(use)
   -- Neo-Tree
   use {"nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
-    requires = { 
+    requires = {
       "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", 
+      "nvim-tree/nvim-web-devicons",
 	    "MunifTanjim/nui.nvim",
     }
   }
- 
+
   -- Vim Snippets
   use {
     'garbas/vim-snipmate',
@@ -52,7 +52,7 @@ return packer.startup(function(use)
           options = {
             theme = 'auto'
           }
-        }  
+        }
       end
   }
 
@@ -63,33 +63,32 @@ return packer.startup(function(use)
   }
 
   -- Git Integration
-  use { 'TimUntersberger/neogit', 
+  use { 'TimUntersberger/neogit',
     requires = 'nvim-lua/plenary.nvim'
   }
 
   -- Autobracket
-  use {'windwp/nvim-autopairs', 
-    config = function() 
-      require('nvim-autopairs').setup() 
+  use {'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup()
     end
   }
 
-  
   -- Color Preview
-  use { 'ap/vim-css-color', 
-    ft = { 
-      'css', 
-      'sass', 
-      'scss', 
-      'rasi', 
-      'markdown' 
-    } 
+  use { 'ap/vim-css-color',
+    ft = {
+      'css',
+      'sass',
+      'scss',
+      'rasi',
+      'markdown'
+    }
   }
 
   -- LSP Config
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
-  
+
   use {'hrsh7th/nvim-compe',
     config = function()
       require('compe').setup({

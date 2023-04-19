@@ -1,3 +1,5 @@
+vim = vim or {}
+
 -- Line Numbering
   vim.o.relativenumber = true
   vim.o.number = true
@@ -56,3 +58,6 @@
       on_attach = on_attach,
     }
   end
+
+  vim.cmd('highlight! link LspDiagnosticsVirtualTextError LspDiagnosticsVirtualTextErrorTransparent')
+  vim.cmd('highlight! LspDiagnosticsVirtualTextErrorTransparent guibg=none gui=none blend=50')
