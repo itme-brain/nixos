@@ -15,21 +15,6 @@
   end
   dofile(vim.fn.stdpath('config') .. '/plugins.lua')
 
--- LSP and LSPInstall setup
-  local nvim_lsp = require('lspconfig')
-  local lspinstall = require('lspinstall')
-
-  lspinstall.setup()
-
-  for _, lsp in ipairs(lspinstall.installed_servers()) do
-      nvim_lsp[lsp].setup {
-          on_attach = function(client, bufnr)
-              client.resolved_capabilities.document_formatting = false
-              require('lsp_signature').on_attach()
-          end,
-      }
-  end
-
 -- Keep Cursor
   vim.o.guicursor = ''
 
