@@ -67,5 +67,6 @@
     }
   end
 
+  -- TODO: This is supposed to change the opacity for the LSP in-line error messages but it is not.
   vim.cmd('highlight! link LspDiagnosticsVirtualTextError LspDiagnosticsVirtualTextErrorTransparent')
   vim.cmd('highlight! LspDiagnosticsVirtualTextErrorTransparent guibg=none gui=none blend=50')
