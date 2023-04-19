@@ -38,6 +38,10 @@
     neofetch    
 
     qogir-icon-theme
+
+    # LSPs
+    typescript
+    pyright
   ];
 
 
