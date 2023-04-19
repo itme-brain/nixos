@@ -39,9 +39,12 @@
 
     qogir-icon-theme
 
-    # LSPs
+  #LSPs
+    rnix-lsp
+    sumneko-lua-language-server
     typescript
     pyright
+
   ];
 
 
