@@ -1,4 +1,5 @@
-vim = vim or {}
+-- Define vim
+  vim = vim or {}
 
 -- Line Numbering
   vim.o.relativenumber = true
