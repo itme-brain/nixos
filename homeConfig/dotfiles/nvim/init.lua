@@ -46,7 +46,7 @@
   local servers = {
     tsserver = { cmd = { "tsserver", "--stdio" } },
     pyright = { cmd = { "pyright-langserver", "--stdio" } },
-    sumneko_lua = { cmd = { "lua-language-server" } },
+    lua_ls = { cmd = { "lua-language-server" } },
     rnix = { cmd = { "rnix-lsp" } },
   }
 
