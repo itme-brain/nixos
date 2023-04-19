@@ -51,6 +51,12 @@
     pyright = { cmd = { "pyright-langserver", "--stdio" } },
     lua_ls = { cmd = { "lua-language-server" } },
     rnix = { cmd = { "rnix-lsp" } },
+
+    vscode_html = { cmd = { "vscode-html-language-server", "--stdio" } },
+    vscode_css = { cmd = { "vscode-css-language-server", "--stdio" } },
+    vscode_markdown = { cmd = { "vscode-markdown-language-server", "--stdio" } },
+    vscode_json = { cmd = { "vscode-json-language-server", "--stdio" } },
+    vscode_eslint = { cmd = { "vscode-eslint-language-server", "--stdio" } },
   }
 
   for lsp, config in pairs(servers) do
