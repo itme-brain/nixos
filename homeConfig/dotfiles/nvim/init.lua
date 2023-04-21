@@ -38,34 +38,23 @@
   }
 
 -- Load LSP's
-  local nvim_lsp = require('lspconfig')
-
   local function on_attach(client, bufnr)
     client.server_capabilities.document_formatting = false
     require('lsp_signature').on_attach()
   end
 
--- Add / Remove LSP's HERE
-  local servers = {
-    tsserver = { cmd = { "tsserver", "--stdio" } },
-    pyright = { cmd = { "pyright-langserver", "--stdio" } },
-    lua_ls = { cmd = { "lua-language-server" } },
-    rnix = { cmd = { "rnix-lsp" } },
-
---[[ TODO: Fix these by adding a server_configurations.md   
-    vscode_html = { cmd = { "vscode-html-language-server", "--stdio" } },
-    vscode_css = { cmd = { "vscode-css-language-server", "--stdio" } },
-    vscode_markdown = { cmd = { "vscode-markdown-language-server", "--stdio" } },
-    vscode_json = { cmd = { "vscode-json-language-server", "--stdio" } },
-    vscode_eslint = { cmd = { "vscode-eslint-language-server", "--stdio" } }, ]]--
+  require('lazy-lsp').setup {
+    default_config = {
+      on_attach = on_attach,
+    },
+    configs = {
+      tsserver = { cmd = { "tsserver", "--stdio" } },
+      pyright = { cmd = { "pyright-langserver", "--stdio" } },
+      lua_ls = { cmd = { "lua-language-server" } },
+      rnix = { cmd = { "rnix-lsp" } },
+    },
   }
 
-  for lsp, config in pairs(servers) do
-    nvim_lsp[lsp].setup {
-      cmd = config.cmd,
-      on_attach = on_attach,
-    }
-  end
 
   -- TODO: This is supposed to change the opacity for the LSP in-line error messages but it is not.
   vim.cmd('highlight! link LspDiagnosticsVirtualTextError LspDiagnosticsVirtualTextErrorTransparent')

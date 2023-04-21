@@ -94,6 +94,9 @@ return packer.startup(function(use)
   -- LSP Config
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
+  use { 'dundalek/lazy-lsp.nvim',
+    requires = { 'neovim/nvim-lspconfig' }
+  }
 
   use {'hrsh7th/nvim-compe',
     config = function()
