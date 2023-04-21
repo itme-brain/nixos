@@ -53,10 +53,12 @@
     },
 
     configs = {
-      tsserver = { cmd = { "tsserver", "--stdio" } },
-      pyright = { cmd = { "pyright-langserver", "--stdio" } },
-      lua_ls = { cmd = { "lua-language-server" } },
-      rnix = { cmd = { "rnix-lsp" } },
+--      tsserver = { cmd = { "tsserver", "--stdio" } },
+--      pyright = { cmd = { "pyright-langserver", "--stdio" } },
+      lua_ls = { 
+        settings = { Lua = { diagnostics = { globals = { "vim" }}}},
+        cmd = { "lua-language-server" } },
+--      rnix = { cmd = { "rnix-lsp" } },
     },
   }
 
