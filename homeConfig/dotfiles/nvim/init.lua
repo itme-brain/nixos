@@ -44,9 +44,14 @@
   end
 
   require('lazy-lsp').setup {
+    excluded_servers = {
+      "sqls", "ccls", "zk",
+    },
+
     default_config = {
       on_attach = on_attach,
     },
+
     configs = {
       tsserver = { cmd = { "tsserver", "--stdio" } },
       pyright = { cmd = { "pyright-langserver", "--stdio" } },
