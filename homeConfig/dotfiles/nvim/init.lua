@@ -39,8 +39,10 @@
 
 -- Load LSP's
   local nvim_lsp = require('lspconfig')
+  local navic = require('navic')
 
   local function on_attach(client, bufnr)
+    navic.on_attach(client)
     client.server_capabilities.document_formatting = false
     require('lsp_signature').on_attach()
   end

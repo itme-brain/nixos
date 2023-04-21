@@ -85,6 +85,12 @@ return packer.startup(function(use)
     }
   }
 
+  -- nvim breadcrumbs
+  use {
+      "SmiteshP/nvim-navic",
+      requires = "neovim/nvim-lspconfig"
+  }
+
   -- LSP Config
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
