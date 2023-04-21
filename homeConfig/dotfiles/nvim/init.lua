@@ -1,6 +1,3 @@
--- Define vim
-  vim = vim or {}
-
 -- Line Numbering
   vim.o.relativenumber = true
   vim.o.number = true
@@ -53,15 +50,11 @@
     },
 
     configs = {
---      tsserver = { cmd = { "tsserver", "--stdio" } },
---      pyright = { cmd = { "pyright-langserver", "--stdio" } },
       lua_ls = { 
         settings = { Lua = { diagnostics = { globals = { "vim" }}}},
-        cmd = { "lua-language-server" } },
---      rnix = { cmd = { "rnix-lsp" } },
+      },
     },
   }
-
 
   -- TODO: This is supposed to change the opacity for the LSP in-line error messages but it is not.
   vim.cmd('highlight! link LspDiagnosticsVirtualTextError LspDiagnosticsVirtualTextErrorTransparent')
