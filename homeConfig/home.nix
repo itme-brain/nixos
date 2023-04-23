@@ -33,7 +33,6 @@
 
     bash-completion
     pkg-config
-    sparrow
 
     keepassxc
     neofetch    
