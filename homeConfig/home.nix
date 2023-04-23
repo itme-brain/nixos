@@ -33,7 +33,9 @@
 
     bash-completion
     pkg-config
+    
     trezor-suite
+    trezor-udev-rules
 
     keepassxc
     neofetch    
