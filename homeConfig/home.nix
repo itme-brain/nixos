@@ -35,6 +35,7 @@
     pkg-config
     
     trezor-suite
+    trezord
     trezor-udev-rules
 
     keepassxc
