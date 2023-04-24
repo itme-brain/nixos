@@ -33,6 +33,7 @@
 
     bash-completion
     pkg-config
+    docker
     
     trezor-suite
     trezord
