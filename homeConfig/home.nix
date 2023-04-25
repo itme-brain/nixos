@@ -11,6 +11,8 @@
 
   home.packages = with pkgs; [
     firefox
+    tor-browser-bundle-bin
+
     spotify
     discord
 
