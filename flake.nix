@@ -29,7 +29,7 @@
           ];
         };
        
-        homeConfigurations.bryan = home-manager.lib.mkHomeConfiguration {
+        homeConfigurations.bryan = home-manager.lib.homeManagerConfigurations {
           inherit pkgs;
           modules = [
             ./homeConfig/home.nix
