@@ -45,13 +45,6 @@
     neofetch    
 
     qogir-icon-theme
-    
-  #LSPs
-    nodePackages_latest.vscode-langservers-extracted
-    rnix-lsp
-    sumneko-lua-language-server
-    typescript
-    pyright
   ];
 
 # PROGRAM CONFIGS
