@@ -12,7 +12,6 @@
   home.packages = with pkgs; [
     firefox
     tor-browser-bundle-bin
-    tor
 
     spotify
     discord
@@ -20,7 +19,8 @@
     alacritty
     ranger
     imv
-    
+    gimp
+
     rsync
     wget
     curl
@@ -39,8 +39,6 @@
     docker
     
     trezor-suite
-    trezord
-    trezor-udev-rules
 
     keepassxc
     neofetch    
@@ -61,7 +59,7 @@
     ];
   };
 
-# SYNCTHING
+# Services
   services = {
     syncthing = {
       enable = true;
