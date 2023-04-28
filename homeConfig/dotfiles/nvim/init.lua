@@ -26,7 +26,6 @@
   end
   dofile(vim.fn.stdpath('config') .. '/plugins.lua')
 
-
 -- Treesitter Enable
   require'nvim-treesitter.configs'.setup {
     highlight = {
@@ -38,6 +37,10 @@
   local function on_attach(client, bufnr)
     client.server_capabilities.document_formatting = false
     require('lsp_signature').on_attach()
+    local function set_completeopt()
+      vim.api.nvim_buf_set_option(bufnr, 'completeopt', 'menuone,noselect')
+    end
+    set_completeopt()
   end
 
   require('lazy-lsp').setup {
