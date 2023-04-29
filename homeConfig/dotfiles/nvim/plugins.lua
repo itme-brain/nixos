@@ -90,6 +90,7 @@ return packer.startup(function(use)
   use { 'dundalek/lazy-lsp.nvim',
     requires = { 'neovim/nvim-lspconfig' }
   }
+  require'lspconfig'.tailwindcss.setup{}
 
   use {'hrsh7th/nvim-compe',
     config = function()
@@ -105,4 +106,5 @@ return packer.startup(function(use)
       })
     end,
   }
+
 end)

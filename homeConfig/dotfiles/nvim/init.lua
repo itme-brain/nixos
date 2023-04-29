@@ -49,7 +49,7 @@ end
 
 require('lazy-lsp').setup {
   excluded_servers = {
-    "sqls", "ccls", "zk",
+    "sqls", "ccls", "zk", "tsserver",
   },
 
   default_config = {
