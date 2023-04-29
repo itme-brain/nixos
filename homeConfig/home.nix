@@ -11,7 +11,9 @@
 
   home.packages = with pkgs; [
     firefox
-    tor-browser-bundle-bin
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
 
     spotify
     discord
