@@ -15,6 +15,10 @@
   vim.opt.expandtab = true
   vim.opt.tabstop = 2
 
+-- Folding
+  vim.o.foldmethod = "indent"
+  vim.o.foldlevelstart = 99
+
 -- Init Snippets
   vim.g.snipMate = { snippet_version = 1 }
 
