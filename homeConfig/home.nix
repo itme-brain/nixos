@@ -23,6 +23,8 @@
     imv
     gimp
 
+    android-studio
+
     rsync
     wget
     curl
