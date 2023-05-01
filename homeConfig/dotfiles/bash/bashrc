@@ -42,7 +42,7 @@ fi
 # Alias List
   alias ls='lsd'
 
-  # penpot {run|stop|update} alias function
+  # penpot {run|stop|update|help} alias function
   penpot() {
     case "$1" in
       run)
@@ -62,8 +62,11 @@ fi
         sudo docker compose -f ~/Documents/tools/penpot/docker-compose.yaml pull
         echo "Updated penpot!"
         ;;
+      help)
+        xdg-open "https://help.penpot.app/"
+        ;;
       *)
-        echo "Usage: penpot {run|stop|update}"
+        echo "Usage: penpot {run|stop|update|help}"
         ;;
     esac
   }
