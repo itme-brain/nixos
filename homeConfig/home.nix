@@ -38,10 +38,8 @@
     fping
     calc
 
-    nodejs
-    nodePackages."@tailwindcss/language-server"
-
     bash-completion
+    nodePackages."@tailwindcss/language-server"
     pkg-config
     docker
     
