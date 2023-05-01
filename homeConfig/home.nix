@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     firefox
     (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
+      useHardenedMalloc = false; # Nix specific bug in tor browser requires disabling useHardenedMalloc
     })
 
     spotify
@@ -25,6 +25,7 @@
 
     android-studio
 
+    syncthing
     rsync
     wget
     curl
@@ -64,13 +65,7 @@
     ];
   };
 
-# Services
-  services = {
-    syncthing = {
-      enable = true;
-    };
-  };
-
+# SERVICES
 
 # GPG SSH AGENT 
   home.sessionVariables = {
