@@ -41,3 +41,18 @@ fi
 
 # Alias List
 alias ls='lsd'
+
+# penpot alias function
+penpot() {
+  case "$1" in
+    run)
+      sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml up -d
+      ;;
+    stop)
+      sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml down
+      ;;
+    *)
+      echo "Usage: penpot {run|stop}"
+      ;;
+  esac
+}
