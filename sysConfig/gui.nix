@@ -17,6 +17,7 @@
     xdg-utils
 
     fontconfig
+    emote
 
     xwayland
   ];
