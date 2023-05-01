@@ -14,6 +14,7 @@
 
     xdg-desktop-portal
     xdg-desktop-portal-wlr
+    xdg-utils
 
     fontconfig
 
