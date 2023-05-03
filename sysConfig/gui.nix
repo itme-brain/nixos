@@ -21,6 +21,10 @@
 
     xwayland
   ];
+  
+  services.trezord = {
+    enable = true;
+  };
 
 # CONSOLE
 

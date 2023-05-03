@@ -47,6 +47,7 @@
     trezor-suite
     trezorctl
     bisq-desktop
+    electrum
 
     keepassxc
     neofetch    
