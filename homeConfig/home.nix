@@ -45,6 +45,8 @@
     docker
     
     trezor-suite
+    trezorctl
+    bisq-desktop
 
     keepassxc
     neofetch    
