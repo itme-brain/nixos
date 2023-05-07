@@ -22,8 +22,17 @@
     xwayland
   ];
   
-  services.trezord = {
-    enable = true;
+  services = {
+    trezord = {
+      enable = true;
+    };
+
+    cron = {
+      enable = true;
+      systemCronJobs = [
+        "0 0 * * *  bryan  /home/bryan/Documents/scripts/lnbackup_script.sh"
+      ];
+    };
   };
 
 # CONSOLE

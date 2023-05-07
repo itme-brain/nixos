@@ -11,6 +11,7 @@
 
   home.packages = with pkgs; [
     firefox
+    google-chrome
     (tor-browser-bundle-bin.override {
       useHardenedMalloc = false; # Nix specific bug in tor browser requires disabling useHardenedMalloc
     })
@@ -38,6 +39,7 @@
     lsd
     fping
     calc
+    qrencode
 
     bash-completion
     nodePackages."@tailwindcss/language-server"
@@ -51,6 +53,7 @@
 
     keepassxc
     neofetch    
+    evince
 
     qogir-icon-theme
   ];

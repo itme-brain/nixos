@@ -5,14 +5,14 @@
   
   # Add or remove imports based on the modules in sysConfig/.
   imports = [
-	./audio.nix
-	./boot.nix
-	./gui.nix
-	./hardware.nix
-	./locale.nix
-	./network.nix
-	./users.nix
-	./virt.nix
+    ./audio.nix
+    ./boot.nix
+    ./gui.nix
+    ./hardware.nix
+    ./locale.nix
+    ./network.nix
+    ./users.nix
+    ./virt.nix
   ];
 
   # Enable nix commands and flakes

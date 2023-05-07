@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-
   time = {
     timeZone = "America/New_York";
   };
