@@ -40,7 +40,8 @@
     fping
     calc
     qrencode
-
+    mdbook
+    
     bash-completion
     nodePackages."@tailwindcss/language-server"
     pkg-config
@@ -54,6 +55,7 @@
     keepassxc
     neofetch    
     evince
+    wireguard-tools
 
     qogir-icon-theme
   ];
