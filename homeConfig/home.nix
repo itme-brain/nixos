@@ -57,7 +57,6 @@
     evince
     wireguard-tools
 
-    qogir-icon-theme
   ];
 
 # PROGRAM CONFIGS

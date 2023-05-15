@@ -17,6 +17,7 @@
     xdg-utils
 
     fontconfig
+    qogir-icon-theme
     emote
 
     xwayland
