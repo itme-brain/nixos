@@ -34,6 +34,7 @@
     pciutils
     tree
     git
+    git-review
     openssh
     unzip
     lsd
