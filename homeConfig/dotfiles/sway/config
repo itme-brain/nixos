@@ -80,6 +80,10 @@ input type:pointer {
 
     # Launch emoji keyboard
     bindsym $mod+Shift+d exec emote
+
+    # Launch ranger file explorer
+    bindsym $mod+Shift+f exec ranger
+
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
