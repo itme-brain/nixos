@@ -49,14 +49,12 @@
     
     trezor-suite
     trezorctl
-    bisq-desktop
     electrum
 
     keepassxc
     neofetch    
     evince
     wireguard-tools
-
   ];
 
 # PROGRAM CONFIGS
