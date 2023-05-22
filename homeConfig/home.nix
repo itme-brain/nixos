@@ -47,6 +47,7 @@
     nodePackages."@tailwindcss/language-server"
     pkg-config
     docker
+    python3
     
     trezor-suite
     trezorctl
