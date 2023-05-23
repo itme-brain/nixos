@@ -48,7 +48,7 @@ fi
 ##
 
 # penpot {run|stop|update|help} alias function
-penpot() {
+function penpot() {
   case "$1" in
     run)
       sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml up -d >/dev/null 2>&1
@@ -69,6 +69,7 @@ penpot() {
       ;;
     help)
       xdg-open "https://help.penpot.app/"
+      echo "Opened penpot help page in your browser."
       ;;
     *)
       echo "Usage: penpot {run|stop|update|help}"
