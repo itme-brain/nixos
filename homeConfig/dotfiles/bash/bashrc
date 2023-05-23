@@ -1,5 +1,5 @@
 ##
-##  My Bash Configs
+#   My Bash Configs
 ##
 
 # Set EDITOR to nvim
@@ -42,6 +42,11 @@ fi
 # Alias List
   alias ls='lsd'
 
+
+##
+#     Custom Functions
+##
+
 # penpot {run|stop|update|help} alias function
 penpot() {
   case "$1" in
@@ -71,7 +76,7 @@ penpot() {
   esac
 }
 
-# Developer Environment Functions
+# Developer Environment Function
 function dev() {
   echo "Select an environment:"
   echo "1. Web"
@@ -83,19 +88,13 @@ function dev() {
 
   case $choice in
     1)
-      pushd ~/Documents/developerEnvs/webDev > /dev/null
-      nix develop
-      popd > /dev/null
+      (cd ~/Documents/developerEnvs/webDev && nix develop)
       ;;
     2)
-      pushd ~/Documents/developerEnvs/elixirDev > /dev/null
-      nix develop
-      popd > /dev/null
+      (cd ~/Documents/developerEnvs/elixirDev && nix develop)
       ;;
     3)
-      pushd ~/Documents/developerEnvs/haskellDev > /dev/null
-      nix develop
-      popd > /dev/null
+      (cd ~/Documents/developerEnvs/haskellDev && nix develop)
       ;;
     # Add more cases here...
     *)
