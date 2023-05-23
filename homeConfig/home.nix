@@ -48,7 +48,7 @@
     pkg-config
     docker
     python3
-    
+
     trezor-suite
     trezorctl
     electrum
