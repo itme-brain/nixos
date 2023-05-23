@@ -42,31 +42,64 @@ fi
 # Alias List
   alias ls='lsd'
 
-  # penpot {run|stop|update|help} alias function
-  penpot() {
-    case "$1" in
-      run)
-        sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml up -d >/dev/null 2>&1
-        nohup bash -c '(sleep 10 && if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                          xdg-open "http://localhost:9001"
-                        elif [[ "$OSTYPE" == "darwin"* ]]; then
-                          open "http://localhost:9001"
-                        fi)' >/dev/null 2>&1 &
-        echo "Started penpot on http://localhost:9001"
-        ;;
-      stop)
-        echo "Stopping penpot"
-        sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml down >/dev/null 2>&1
-        ;;
-      update)
-        sudo docker compose -f ~/Documents/tools/penpot/docker-compose.yaml pull
-        echo "Updated penpot!"
-        ;;
-      help)
-        xdg-open "https://help.penpot.app/"
-        ;;
-      *)
-        echo "Usage: penpot {run|stop|update|help}"
-        ;;
-    esac
-  }
+# penpot {run|stop|update|help} alias function
+penpot() {
+  case "$1" in
+    run)
+      sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml up -d >/dev/null 2>&1
+      nohup bash -c '(sleep 10 && if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+                        xdg-open "http://localhost:9001"
+                      elif [[ "$OSTYPE" == "darwin"* ]]; then
+                        open "http://localhost:9001"
+                      fi)' >/dev/null 2>&1 &
+      echo "Started penpot on http://localhost:9001"
+      ;;
+    stop)
+      echo "Stopping penpot"
+      sudo docker compose -p penpot -f ~/Documents/tools/penpot/docker-compose.yaml down >/dev/null 2>&1
+      ;;
+    update)
+      sudo docker compose -f ~/Documents/tools/penpot/docker-compose.yaml pull
+      echo "Updated penpot!"
+      ;;
+    help)
+      xdg-open "https://help.penpot.app/"
+      ;;
+    *)
+      echo "Usage: penpot {run|stop|update|help}"
+      ;;
+  esac
+}
+
+# Developer Environment Functions
+function dev() {
+  echo "Select an environment:"
+  echo "1. Web"
+  echo "2. Elixir"
+  echo "3. Haskell"
+  # Add more options here...
+
+  read -p "Enter the number of your choice: " choice
+
+  case $choice in
+    1)
+      pushd ~/Documents/developerEnvs/webDev > /dev/null
+      nix develop
+      popd > /dev/null
+      ;;
+    2)
+      pushd ~/Documents/developerEnvs/elixirDev > /dev/null
+      nix develop
+      popd > /dev/null
+      ;;
+    3)
+      pushd ~/Documents/developerEnvs/haskellDev > /dev/null
+      nix develop
+      popd > /dev/null
+      ;;
+    # Add more cases here...
+    *)
+      echo "Invalid choice"
+      ;;
+  esac
+}
