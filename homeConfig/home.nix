@@ -48,6 +48,7 @@
     pkg-config
     docker
     python3
+    nix-init
 
     trezor-suite
     trezorctl
