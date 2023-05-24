@@ -39,9 +39,10 @@ if [ -d "$bash_completion_dir" ]; then
 fi
 
 # Alias List
-  alias ls='lsd'
   alias vi='nvim'
   alias vim='nvim'
+  alias v='nvim'
+  alias ls='lsd'
 
 
 ##

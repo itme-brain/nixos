@@ -22,6 +22,12 @@ vim.o.foldlevelstart = 99
 -- Init Snippets
 vim.g.snipMate = { snippet_version = 1 }
 
+-- Remaps
+vim.api.nvim_set_keymap('n', '<PageUp>', '<PageUp>zz', {noremap = true})
+vim.api.nvim_set_keymap('n', '<PageDown>', '<PageDown>zz', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-U>', '<C-U>zz', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-D>', '<C-D>zz', {noremap = true})
+
 -- Load packer.nvim
 local packer_install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if  vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
