@@ -88,7 +88,10 @@ return packer.startup(function(use)
   -- LSP Config
   use 'neovim/nvim-lspconfig'
   use { 'dundalek/lazy-lsp.nvim',
-    requires = { 'neovim/nvim-lspconfig' }
+    requires = { 
+      'neovim/nvim-lspconfig',
+      'ray-x/lsp_signature.nvim'
+    }
   }
   require'lspconfig'.tailwindcss.setup{}
 
