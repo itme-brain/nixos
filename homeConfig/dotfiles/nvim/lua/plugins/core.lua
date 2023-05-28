@@ -12,5 +12,31 @@ return {
 
       vim.cmd('colorscheme github_dark_high_contrast')
     end,
-  }
+  },
+
+  {
+    "neovim/nvim-lspconfig",
+    ---@class PluginLspOpts
+    opts = {
+      ---@type lspconfig.options
+      servers = {
+        html = {},
+        cssls = {},
+        jsonls = {},
+        marksman = {},
+        tsserver = {},
+        tailwindcss = {},
+        volar = {},
+
+        lua_ls = {},
+        
+        nil_ls = {},
+        pyright = {},
+        
+      --hls = {},
+        rust_analyzer = {},
+        diagnosticls = {},
+      },
+    },
+  },
 }

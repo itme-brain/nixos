@@ -72,6 +72,7 @@
     haskell-language-server
     haskellPackages.hoogle
     cabal2nix
+    stack
 
     cargo
     python3
