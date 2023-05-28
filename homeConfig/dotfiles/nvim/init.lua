@@ -44,24 +44,22 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- Load LSP's
-local function on_attach(client, bufnr)
-  client.server_capabilities.document_formatting = true
-  require('lsp_signature').on_attach()
-  local function set_completeopt()
-    vim.api.nvim_buf_set_option(bufnr, 'completeopt', 'menuone,noselect')
-  end
-  set_completeopt()
-end
-
 require('lazy-lsp').setup {
   excluded_servers = {
     "sqls", "ccls", "zk", "tsserver", "nil_ls",
   },
 
   default_config = {
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+      client.server_capabilities.document_formatting = false
+      require('lsp_signature').on_attach()
+      local function set_completeopt()
+        vim.api.nvim_buf_set_option(bufnr, 'completeopt', 'menuone,noselect')
+      end
+      set_completeopt()
+    end,
   },
-
+  
   configs = {
     lua_ls = { 
       settings = { Lua = { diagnostics = { globals = { "vim" }}}},
