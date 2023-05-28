@@ -50,6 +50,10 @@
     python3
     nix-init
 
+    ghc
+    cabal-install
+    cabal2nix
+
     trezor-suite
     trezorctl
     electrum
