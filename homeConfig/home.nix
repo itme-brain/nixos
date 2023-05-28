@@ -51,6 +51,7 @@
     lazygit
     ripgrep
     fd
+    luajit
 
     trezor-suite
     trezorctl
