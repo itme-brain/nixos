@@ -66,8 +66,11 @@
     nodejs
     gcc
 
+# Haskell
     ghc
     cabal-install
+    haskell-language-server
+    haskellPackages.hoogle
     cabal2nix
 
     cargo
