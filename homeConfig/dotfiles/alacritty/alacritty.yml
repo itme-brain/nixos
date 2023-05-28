@@ -5,7 +5,6 @@ scrolling:
 window:
   opacity: 0.95
 
-
 # github Alacritty Colors
 colors:
   # Default colors
@@ -38,34 +37,6 @@ colors:
   indexed_colors:
     - { index: 16, color: '0xd18616' }
     - { index: 17, color: '0xffa198' }
-
-  #colors:
-  #  primary:
-  #    background: '0x0A0E14'
-  #    foreground: '0xFFFFFF'
-  #
-  #    text: '0x2e3440'
-  #    cursor: '0xe5e9f0'
-  #
-  #  normal:
-  #    black:   '0x01060E'
-  #    red:     '0xEA6C73'
-  #    green:   '0x91B362'
-  #    yellow:  '0xEBCB8B'
-  #    blue:    '0x81A1C1'
-  #    magenta: '0xB48EAD'
-  #    cyan:    '0x88C0D0'
-  #    white:   '0xF5F5F5'
-  #
-  #  bright:
-  #    black:   '0x686868'
-  #    red:     '0xF07178'
-  #    green:   '0xC2D94C'
-  #    yellow:  '0xEBCB8B'
-  #    blue:    '0x81A1C1'
-  #    magenta: '0xB48EAD'
-  #    cyan:    '0x8FBCBB'
-  #    white:   '0xFFFFF2' 
 
 font:
   normal:

@@ -25,6 +25,7 @@
     gimp
 
     android-studio
+    gh
 
     syncthing
     rsync
@@ -44,18 +45,12 @@
     mdbook
     
     bash-completion
-    nodePackages."@tailwindcss/language-server"
     pkg-config
     docker
-    python3
     nix-init
     lazygit
     ripgrep
     fd
-
-    ghc
-    cabal-install
-    cabal2nix
 
     trezor-suite
     trezorctl
@@ -65,6 +60,18 @@
     neofetch    
     evince
     wireguard-tools
+    
+# Language Stuff
+    nodejs
+    gcc
+
+    ghc
+    cabal-install
+    cabal2nix
+
+    cargo
+    python3
+    python311Packages.pip
   ];
 
 # PROGRAM CONFIGS
@@ -99,7 +106,7 @@
 
     ".config/alacritty".source = ./dotfiles/alacritty;
     ".config/nvim/init.lua".source = ./dotfiles/nvim/init.lua;
-    ".config/nvim/plugins.lua".source = ./dotfiles/nvim/plugins.lua;
+    ".config/nvim/lua".source = ./dotfiles/nvim/lua;
 
     ".config/git/config".source = ./dotfiles/gitconfig;
     ".config/fontconfig/fonts.conf".source = ./dotfiles/fontconfig/fonts.conf;
