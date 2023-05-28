@@ -49,6 +49,9 @@
     docker
     python3
     nix-init
+    lazygit
+    ripgrep
+    fd
 
     ghc
     cabal-install
