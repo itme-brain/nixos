@@ -4,7 +4,7 @@
 local lsp = require('lsp-zero').preset({})
 
 lsp.on_attach(function(client, bufnr)
-  lsp.default_keymaps({buffer = bufnr})
+  lsp.default_keymaps({ buffer = bufnr })
 end)
 
 -- When you don't have mason.nvim installed
@@ -21,7 +21,9 @@ lsp.setup_servers({
   'jsonls',
   'diagnosticls',
   'lua_ls',
-  'marksman'
+  'marksman',
+  'purescriptls',
+  'tailwindcss'
 })
 
 -- (Optional) Configure lua language server for neovim
@@ -29,7 +31,7 @@ require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
 lsp.setup()
 
-local cmp = require'cmp'
+local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -44,7 +46,11 @@ cmp.setup {
   -- other configurations...
 }
 
-local luasnip = require'luasnip'
+vim.cmd [[
+  au BufRead,BufNewFile *.purs set filetype=purescript
+]]
+
+local luasnip = require 'luasnip'
 
 cmp.setup {
   -- other configurations...
@@ -69,3 +75,4 @@ cmp.setup {
     end, { 'i', 's' }),
   },
 }
+
