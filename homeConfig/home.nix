@@ -66,10 +66,8 @@
     nodejs
     gcc
 
-# Haskell
     ghc
     cabal-install
-    haskell-language-server
     haskellPackages.hoogle
     cabal2nix
 
@@ -77,15 +75,17 @@
     python311Packages.pip
 
 # LSPs
-  nodePackages.vscode-langservers-extracted
-  nodePackages.prettier
-  nodePackages.typescript-language-server
-  nodePackages.diagnostic-languageserver
-  nodePackages.volar
-  nodePackages.pyright
-  haskell-language-server
-  nil
-  sumneko-lua-language-server
+    nodePackages.vscode-langservers-extracted
+    nodePackages.prettier
+    nodePackages.typescript-language-server
+    nodePackages.diagnostic-languageserver
+    nodePackages.volar
+    nodePackages.pyright
+    haskell-language-server
+    nil
+    marksman
+    sumneko-lua-language-server
+
   ];
 
 # PROGRAM CONFIGS
