@@ -73,10 +73,6 @@
 
     python3
     python311Packages.pip
-    
-    purescript
-    spago
-    nodePackages.parcel
 
 # LSPs
     nodePackages.vscode-langservers-extracted
