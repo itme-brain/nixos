@@ -62,15 +62,8 @@
     evince
     wireguard-tools
     
-# Language Stuff
     nodejs
     gcc
-
-    ghc
-    cabal-install
-    haskellPackages.hoogle
-    cabal2nix
-
     python3
     python311Packages.pip
     
