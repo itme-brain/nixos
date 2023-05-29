@@ -33,6 +33,7 @@ return {
 
 
 { 'raichoo/purescript-vim' },
-{ 'vmchale/dhall-vim'},
+{ 'vmchale/dhall-vim' },
+{ 'elixir-lang/vim-elixir', }
 
 }

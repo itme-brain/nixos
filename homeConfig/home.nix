@@ -73,6 +73,7 @@
 
     python3
     python311Packages.pip
+    
 
 # LSPs
     nodePackages.vscode-langservers-extracted
