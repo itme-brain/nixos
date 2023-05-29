@@ -23,7 +23,8 @@ lsp.setup_servers({
   'lua_ls',
   'marksman',
   'purescriptls',
-  'tailwindcss'
+  'tailwindcss',
+  'bashls'
 })
 
 -- (Optional) Configure lua language server for neovim

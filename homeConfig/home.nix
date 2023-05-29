@@ -58,7 +58,7 @@
     electrum
 
     keepassxc
-    neofetch    
+    neofetch
     evince
     wireguard-tools
     
