@@ -74,7 +74,6 @@
     nodePackages.prettier
     nodePackages.typescript-language-server
     nodePackages.diagnostic-languageserver
-    nodePackages.volar
     nodePackages.pyright
     nodePackages.purescript-language-server
     nodePackages."@tailwindcss/language-server"

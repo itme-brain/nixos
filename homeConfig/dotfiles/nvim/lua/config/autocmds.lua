@@ -15,7 +15,6 @@ lsp.setup_servers({
   'hls',
   'pyright',
   'nil_ls',
-  'volar',
   'cssls',
   'html',
   'jsonls',
