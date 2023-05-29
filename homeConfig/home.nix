@@ -77,6 +77,17 @@
     cargo
     python3
     python311Packages.pip
+
+# LSPs
+  nodePackages.vscode-langservers-extracted
+  nodePackages.prettier
+  nodePackages.typescript-language-server
+  nodePackages.diagnostic-languageserver
+  nodePackages.volar
+  nodePackages.pyright
+  haskell-language-server
+  nil
+  sumneko-lua-language-server
   ];
 
 # PROGRAM CONFIGS

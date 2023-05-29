@@ -14,29 +14,46 @@ return {
     end,
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        html = {},
-        cssls = {},
-        jsonls = {},
-        marksman = {},
-        tsserver = {},
-        tailwindcss = {},
-        volar = {},
+  {'williamboman/mason.nvim', enabled = false },
+  
+{
+  'VonHeikemen/lsp-zero.nvim',
+  branch = 'v2.x',
+  dependencies = {
+    -- LSP Support
+    {'neovim/nvim-lspconfig'},             -- Required
+    {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
-        lua_ls = {},
-        
-        nil_ls = {},
-        pyright = {},
-        
-      --hls = {},
-        rust_analyzer = {},
-        diagnosticls = {},
-      },
-    },
-  },
+    -- Autocompletion
+    {'hrsh7th/nvim-cmp'},     -- Required
+    {'hrsh7th/cmp-nvim-lsp'}, -- Required
+    {'L3MON4D3/LuaSnip'},     -- Required
+  }
+}
+
+--  {
+--    "neovim/nvim-lspconfig",
+--    ---@class PluginLspOpts
+--    opts = {
+--      ---@type lspconfig.options
+--      servers = {
+--        html = {},
+--        cssls = {},
+--        jsonls = {},
+--        marksman = {},
+--        tsserver = {},
+--        tailwindcss = {},
+--        volar = {},
+--
+--        lua_ls = {},
+--        
+--        nil_ls = {},
+--        pyright = {},
+--        
+--      --hls = {},
+--        rust_analyzer = {},
+--        diagnosticls = {},
+--      },
+--    },
+--  },
 }
