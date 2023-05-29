@@ -73,6 +73,9 @@
 
     python3
     python311Packages.pip
+    
+    purescript
+    spago
 
 # LSPs
     nodePackages.vscode-langservers-extracted
@@ -81,6 +84,8 @@
     nodePackages.diagnostic-languageserver
     nodePackages.volar
     nodePackages.pyright
+    nodePackages.purescript-language-server
+    nodePackages."@tailwindcss/language-server"
     haskell-language-server
     nil
     marksman
