@@ -92,15 +92,12 @@ function dev() {
   case $choice in
     1)
       (cd ~/Documents/developerEnvs/webDev && nix develop)
-      echo "Don't forget to cd into your projects directory. Have a great day!"
       ;;
     2)
       (cd ~/Documents/developerEnvs/elixirDev && nix develop)
-      echo "Don't forget to cd into your projects directory. Have a great day!"
       ;;
     3)
       (cd ~/Documents/developerEnvs/haskellDev && nix develop)
-      echo "Don't forget to cd into your projects directory. Have a great day!"
       ;;
     # Add more cases here...
     *)
