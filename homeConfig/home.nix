@@ -64,6 +64,7 @@
     
     nodejs
     gcc
+    ghc
     python3
     python311Packages.pip
     
@@ -77,6 +78,7 @@
     nodePackages.pyright
     nodePackages.purescript-language-server
     nodePackages."@tailwindcss/language-server"
+    nodePackages.bash-language-server
     haskell-language-server
     nil
     marksman
