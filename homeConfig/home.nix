@@ -64,7 +64,12 @@
     
     nodejs
     gcc
+
     ghc
+    cabal-install
+    cabal2nix
+    haskellPackages.hoogle
+    
     python3
     python311Packages.pip
     
