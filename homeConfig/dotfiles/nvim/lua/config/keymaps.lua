@@ -4,3 +4,5 @@
 
 vim.api.nvim_set_keymap('n', '<C-U>', '<C-U>zz', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-D>', '<C-D>zz', {noremap = true})
+vim.api.nvim_set_keymap('i', '<Tab>', '<Plug>luasnip-expand-or-jump', {})
+vim.api.nvim_set_keymap('s', '<Tab>', '<Plug>luasnip-expand-or-jump', {})
