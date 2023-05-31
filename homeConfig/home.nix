@@ -68,8 +68,6 @@
     ghc
     cabal-install
     cabal2nix
-    stack
-    haskellPackages.hoogle
     
     python3
 
