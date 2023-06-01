@@ -67,6 +67,7 @@
 
     haskell.compiler.ghc92
     cabal-install
+    haskellPackages.hoogle
     cabal2nix
     
     python3
