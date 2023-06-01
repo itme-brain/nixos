@@ -65,7 +65,7 @@
     nodejs
     gcc
 
-    ghc
+    haskell.compiler.ghc92
     cabal-install
     cabal2nix
     
