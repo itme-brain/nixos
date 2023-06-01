@@ -82,3 +82,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     virtual_text = false,
   }
 )
+
+require("notify").setup({
+  background_colour = "#000000",
+})
