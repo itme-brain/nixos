@@ -31,9 +31,9 @@ return {
   }
 },
 
-
-{ 'raichoo/purescript-vim' },
-{ 'vmchale/dhall-vim' },
-{ 'elixir-lang/vim-elixir', }
+  { 'raichoo/purescript-vim' },
+  { 'vmchale/dhall-vim' },
+  { 'elixir-lang/vim-elixir' },
+  { 'xiyaowong/transparent.nvim'},
 
 }
