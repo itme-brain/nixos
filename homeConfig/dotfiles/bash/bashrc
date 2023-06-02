@@ -172,3 +172,5 @@ function dev() {
       ;;
   esac
 }
+
+eval "$(direnv hook bash)"
