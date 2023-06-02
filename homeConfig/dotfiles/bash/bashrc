@@ -38,7 +38,7 @@ function set_ps1_prompt() {
     # Check if flake.nix file exists
     if [ -f "$(git rev-parse --show-toplevel)/flake.nix" ]; then
         # If it exists, set the flake icon and color it blue
-        flake_icon="\[\033[01;34m\]\[\033[00m\]"
+        flake_icon="\[\033[01;34m\] \[\033[00m\]"
     fi
 
     # Get the root directory of the git repository
@@ -57,10 +57,10 @@ function set_ps1_prompt() {
   fi
 
   if [ -n "${IN_NIX_SHELL:+x}" ]; then
-    PS1="$cur_dir\n$flake_icon \[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
+    PS1="$cur_dir\n$flake_icon\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
   else
     if ! is_ssh_session; then
-      PS1="\n$cur_dir\n$flake_icon \[\033[01;32m\]>$git_branch\[\033[00m\]"
+      PS1="\n$cur_dir\n$flake_icon\[\033[01;32m\]>$git_branch\[\033[00m\]"
     else
       PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]\u@\h:\[\033[00m\] "
     fi
