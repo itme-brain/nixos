@@ -15,7 +15,6 @@ is_ssh_session() {
   fi
 }
 
-#TODO: Change ps1 to project root in nix shells
 # PS1 Config
 function set_ps1_prompt() {
   local git_branch=""
