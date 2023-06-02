@@ -17,7 +17,6 @@ is_ssh_session() {
 
 #TODO: Change ps1 to project root in nix shells
 # PS1 Config
-# PS1 Config
 function set_ps1_prompt() {
   local git_branch=""
   local flake_icon=""
@@ -39,7 +38,7 @@ function set_ps1_prompt() {
     # Check if flake.nix file exists
     if [ -f "$(git rev-parse --show-toplevel)/flake.nix" ]; then
         # If it exists, set the flake icon and color it blue
-        flake_icon=" \[\033[01;34m\]\[\033[00m\]"
+        flake_icon="\[\033[01;34m\]\[\033[00m\]"
     fi
 
     # Get the current directory relative to the Git root
