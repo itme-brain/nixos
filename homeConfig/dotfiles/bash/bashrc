@@ -87,6 +87,17 @@ fi
 #     Custom Functions
 ##
 
+# CD to Git root
+function cdg() {
+  local root
+  root=$(git rev-parse --show-toplevel 2> /dev/null)
+  if [[ -n $root ]]; then
+    cd $root
+  else
+    echo "Not a git repo"
+  fi
+}
+
 # penpot {run|stop|update|help} alias function
 function penpot() {
   case "$1" in
