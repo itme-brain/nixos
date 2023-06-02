@@ -221,7 +221,7 @@ bindsym $mod+r mode "resize"
 
 bar {
   position top
-  status_command while :; do echo "$(date +'%I:%M:%S %p'), $(date +'%m-%d-%Y')"; sleep 1; done
+  status_command while :; do echo "$(date +'%I:%M:%S %p') | $(date +'%m-%d-%Y')"; sleep 1; done
   font Noto Sans 10
   colors {
     background #0A0E14
