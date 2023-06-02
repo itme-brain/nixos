@@ -9,6 +9,7 @@
   environment.systemPackages = with pkgs; [  
     rofi-wayland
     grim
+    jq
     slurp
     wl-clipboard
 
