@@ -86,6 +86,7 @@
     nil
     marksman
     sumneko-lua-language-server
+    stylua
 
   ];
 
