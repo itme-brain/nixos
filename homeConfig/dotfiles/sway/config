@@ -221,6 +221,7 @@ bindsym $mod+r mode "resize"
 
 bar {
   position top
+  status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
   font Noto Sans 10
   colors {
     background #0A0E14
