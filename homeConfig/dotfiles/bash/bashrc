@@ -41,12 +41,15 @@ function set_ps1_prompt() {
         flake_icon="\[\033[01;34m\]\[\033[00m\]"
     fi
 
+    # Get the root directory of the git repository
+    git_root="$(basename "$(git rev-parse --show-toplevel)")"
+
     # Get the current directory relative to the Git root
     cur_dir=$(realpath --relative-to=$(git rev-parse --show-toplevel) .)
     if [ "$cur_dir" == "." ]; then
-      cur_dir="\[\033[01;34m\]~\[\033[00m\]"
+      cur_dir="\[\033[01;34m\] $git_root\[\033[00m\]"
     else
-      cur_dir="\[\033[01;34m\]~/$cur_dir\[\033[00m\]"
+      cur_dir="\[\033[01;34m\] $git_root/$cur_dir\[\033[00m\]"
     fi
   else
     # If not in a Git repository, just show the normal path
