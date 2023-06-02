@@ -21,6 +21,7 @@
 
     alacritty
     ranger
+    highlight
     imv
     gimp
 
