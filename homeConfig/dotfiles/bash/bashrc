@@ -34,7 +34,7 @@ function set_ps1_prompt() {
     fi
 
     # Wrap the branch name and : in braces and color it red
-    git_branch=" \[\033[01;31m\]{$git_branch}:\[\033[00m\]"
+    git_branch=" \[\033[01;31m\]$git_branch󰘬:\[\033[00m\]"
 
     # Check if flake.nix file exists
     if [ -f "$(git rev-parse --show-toplevel)/flake.nix" ]; then
@@ -55,10 +55,10 @@ function set_ps1_prompt() {
   fi
 
   if [ -n "${IN_NIX_SHELL:+x}" ]; then
-    PS1="$cur_dir\n$flake_icon \[\033[01;32m\]nixShell >$git_branch \[\033[00m\]"
+    PS1="$cur_dir\n$flake_icon \[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
   else
     if ! is_ssh_session; then
-      PS1="\n$cur_dir\n$flake_icon \[\033[01;32m\]> $git_branch\[\033[00m\]"
+      PS1="\n$cur_dir\n$flake_icon \[\033[01;32m\]>$git_branch\[\033[00m\]"
     else
       PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]\u@\h:\[\033[00m\] "
     fi
