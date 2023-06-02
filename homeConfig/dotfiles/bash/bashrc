@@ -30,18 +30,25 @@ function set_ps1_prompt() {
     fi
     # Wrap the branch name in braces and color it red
     git_branch=" \[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+
+    if [ -f "$(git rev-parse --show-toplevel)/flake.nix" ]; then
+        # If it exists, set the flake icon and color it blue
+        flake_icon=" \[\033[01;34m\]\[\033[00m\]"
+    fi
   fi
 
   if [ -n "${IN_NIX_SHELL:+x}" ]; then
-    PS1="\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
+    PS1="\[\033[01;34m\]\w\[\033[00m\]\n$flake_icon\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
   else
     if ! is_ssh_session; then
-      PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]>$git_branch\[\033[00m\]"
+      PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n$flake_icon \[\033[01;32m\]>$git_branch\[\033[00m\]"
     else
       PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]\u@\h:\[\033[00m\] "
     fi
   fi
+  unset flake_icon
 }
+
 PROMPT_COMMAND="set_ps1_prompt; $PROMPT_COMMAND"
 
 # Locate and source the bash-completion scripts
