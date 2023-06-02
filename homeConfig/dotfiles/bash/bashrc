@@ -18,11 +18,25 @@ is_ssh_session() {
 #TODO: Change ps1 to project root in nix shells
 # PS1 Config
 function set_ps1_prompt() {
+  local git_branch=""
+  # Check if we're inside a git repository
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    # If we are, get the current branch name
+    git_branch="$(git symbolic-ref --short HEAD 2>/dev/null)"
+
+    # If the command failed, we're in a detached HEAD state, so get the short SHA
+    if [ $? -ne 0 ]; then
+      git_branch="$(git rev-parse --short HEAD 2>/dev/null)"
+    fi
+    # Wrap the branch name in braces and color it red
+    git_branch=" \[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+  fi
+
   if [ -n "${IN_NIX_SHELL:+x}" ]; then
-    PS1="\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]nixShell > \[\033[00m\]"
+    PS1="\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
   else
     if ! is_ssh_session; then
-      PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]> \[\033[00m\]"
+      PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]>$git_branch\[\033[00m\]"
     else
       PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]\u@\h:\[\033[00m\] "
     fi
