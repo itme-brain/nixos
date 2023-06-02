@@ -87,15 +87,33 @@ fi
 #     Custom Functions
 ##
 
-# CD to Git root
+# cd to git root
 function cdg() {
-  local root
-  root=$(git rev-parse --show-toplevel 2> /dev/null)
-  if [[ -n $root ]]; then
-    cd $root
-  else
-    echo "Not a git repo"
+  # Check for --help flag
+  if [[ $1 == "--help" ]]; then
+    echo "A simple utility for navigating to the root of a git repo"
+    return 0
   fi
+
+  # Check for invalid command
+  if [[ -n "$1" ]]; then
+    echo "Invalid command: $1. Try 'cdg --help'."
+    return 1
+  fi
+
+  # Find the root of the git repository
+  local root_dir
+  root_dir=$(git rev-parse --show-toplevel 2>/dev/null)
+  local git_status=$?
+
+  # Check for git rev-parse failure
+  if [ $git_status -ne 0 ]; then
+    echo "Error: Not a git repo."
+    return 1
+  fi
+
+  # If we're inside a git repo, cd to the root
+  cd "$root_dir"
 }
 
 # penpot {run|stop|update|help} alias function
