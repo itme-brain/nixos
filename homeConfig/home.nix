@@ -66,7 +66,7 @@
     nodejs
     gcc
 
-    haskell.compiler.ghc92
+    ghc
     cabal-install
     haskellPackages.hoogle
     cabal2nix
@@ -91,6 +91,12 @@
   ];
 
 # PROGRAM CONFIGS
+
+# DIRENV
+  programs.direnv = { 
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
 # NEOVIM
   programs.neovim = {
