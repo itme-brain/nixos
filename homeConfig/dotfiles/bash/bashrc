@@ -176,15 +176,16 @@ function ldv() {
 
     case $choice in
       1)
+        cp ~/Documents/projects/lazydev/flakes/web/flake.nix .
         wget -q https://raw.githubusercontent.com/itme-brain/lazydev/main/flakes/web/flake.nix
         echo "use flake" >> .envrc && direnv allow
         ;;
       2)
-        wget -q https://raw.githubusercontent.com/itme-brain/lazydev/main/flakes/elixir/flake.nix
+        cp ~/Documents/projects/lazydev/flakes/elixir/flake.nix .
         echo "use flake" >> .envrc && direnv allow
         ;;
       3)
-        wget -q https://raw.githubusercontent.com/itme-brain/lazydev/main/flakes/haskell/flake.nix
+        cp ~/Documents/projects/lazydev/flakes/haskell/flake.nix .
         echo "use flake" >> .envrc && direnv allow
         ;;
       # Add more cases here...
