@@ -74,6 +74,7 @@
     python3
 
 # LSPs
+    nodePackages.eslint
     nodePackages.vscode-langservers-extracted
     nodePackages.prettier
     nodePackages.typescript-language-server
