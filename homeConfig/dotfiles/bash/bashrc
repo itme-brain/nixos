@@ -203,13 +203,13 @@ function ldv() {
 
     case $choice in
       1)
-        (nix develop ~/Documents/developerEnvs#web)
+        (nix develop ~/Documents/projects/lazydev#web)
         ;;
       2)
-        (nix develop ~/Documents/developerEnvs#elixir)
+        (nix develop ~/Documents/projects/lazydev#elixir)
         ;;
       3)
-        (nix develop ~/Documents/developerEnvs#haskell)
+        (nix develop ~/Documents/projects/lazydev#haskell)
         ;;
       # Add more cases here...
       *)
