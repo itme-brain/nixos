@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = {
+        url = "github:nix-community/NUR";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     disko = {
         url = "github:nix-community/disko";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +27,7 @@
 	        allowUnfree = true;
       	};
       };
-
+    
     in    
       {
         nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
