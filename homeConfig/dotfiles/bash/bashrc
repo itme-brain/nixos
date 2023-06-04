@@ -4,7 +4,6 @@
 
 # Set EDITOR to nvim
 export EDITOR=nvim
-export HIGHLIGHT_STYLE=github
 
 # Check if the current shell is an SSH session
 is_ssh_session() {
