@@ -117,36 +117,19 @@
 
 # DOTFILE SYMLINKS
   home.file = {
-    ".config/home-manager/home.nix".source = ./home.nix; # Do not remove or edit this symlink
+    ".gitconfig".source = ./dotfiles/gitconfig;
+
+    ".config/" = {
+        source = ./dotfiles;
+        recursive = true;
+      };
     
     ".bashrc".source = ./dotfiles/bash/bashrc;
     ".bash_profile".source = ./dotfiles/bash/bash_profile;
 
-    ".config/sway/config".source = ./dotfiles/sway/config;
-    ".config/sway/wallpapers".source = ./dotfiles/sway/wallpapers;
-    
-    ".config/rofi/config.rasi".source = ./dotfiles/rofi/config.rasi;
-
-    ".config/alacritty".source = ./dotfiles/alacritty;
-    ".config/nvim/init.lua".source = ./dotfiles/nvim/init.lua;
-    ".config/nvim/lua".source = ./dotfiles/nvim/lua;
-
-    ".config/git/config".source = ./dotfiles/gitconfig;
-    ".config/fontconfig/fonts.conf".source = ./dotfiles/fontconfig/fonts.conf;
-
-    ".config/btop/btop.conf".source = ./dotfiles/btop/btop.conf;
-  };
- 
-
-# THEMES
-  home.file = {
-    ".local/share/themes".source = ./dotfiles/themes;
-
-    ".config/gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme-name = "Juno-ocean"
-      gtk-application-prefer-dark-theme = true
-      gtk-icon-theme-name = "Qogir"
-      '';
+    ".local/share/themes" = {
+        source = ./dotfiles/themes;
+        recursive = true;
+      };
   };
 }
