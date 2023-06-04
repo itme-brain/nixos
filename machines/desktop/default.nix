@@ -1,7 +1,1 @@
-{ pkgs, lib, config, ... }:
-
-{
-  import = [
-    ./.
-  ];
-}
+{ imports = ./.; }
