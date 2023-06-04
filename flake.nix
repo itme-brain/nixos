@@ -31,17 +31,16 @@
     in    
       {
         nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./sysConfig
-            disko.nixosModules.disko
-          ];
-        };
-       
-        homeConfigurations.bryan = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ./homeConfig/home.nix
+            ./machines/hardware-configuration.nix
+            ./machines/system.nix
+            disko.nixosModules.disko
+            home-manager.nixosModules.home-manager{
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.bryan = import ./homeConfig/home.nix;
+            }
           ];
         };
       };

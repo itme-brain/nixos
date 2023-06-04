@@ -2,6 +2,9 @@
 
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  
+  nix.system-features = "kvm";
+  environment.systemPackages = pkgs.virt-manager;
 
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
