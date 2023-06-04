@@ -105,26 +105,6 @@ cmp.setup({
 			s = cmp.mapping.confirm({ select = true }),
 			c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
 		}),
-		-- Lazyvim default
-		--		["<Tab>"] = cmp.mapping(function(fallback)
-		--			if vim.fn.pumvisible() == 1 then
-		--				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-y>", true, true, true), "n")
-		--			elseif luasnip.expand_or_jumpable() then
-		--				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-		--			else
-		--				fallback()
-		--			end
-		--		end, { "i", "s" }),
-
-		--		["<S-Tab>"] = cmp.mapping(function(fallback)
-		--			if vim.fn.pumvisible() == 1 then
-		--				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n")
-		--			elseif luasnip.jumpable(-1) then
-		--				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-		--			else
-		--				fallback()
-		--			end
-		--		end, { "i", "s" }),
 	},
 })
 

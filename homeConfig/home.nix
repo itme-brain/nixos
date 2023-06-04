@@ -76,7 +76,6 @@
 # LSPs
     nodePackages.eslint
     nodePackages.vscode-langservers-extracted
-    nodePackages.prettier
     nodePackages.typescript-language-server
     nodePackages.diagnostic-languageserver
     nodePackages.pyright
@@ -87,8 +86,6 @@
     nil
     marksman
     sumneko-lua-language-server
-    stylua
-
   ];
 
 # PROGRAM CONFIGS
@@ -112,7 +109,7 @@
 # GPG SSH AGENT 
   home.sessionVariables = {
     SSH_AUTH_SOCK = "${config.xdg.dataHome}/gnupg/S.gpg-agent.ssh";
-    };
+  };
  
 
 # DOTFILE SYMLINKS
