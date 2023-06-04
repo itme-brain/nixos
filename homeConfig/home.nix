@@ -102,9 +102,9 @@
 # NEOVIM
   programs.neovim = {
     enable = true;
-    plugins = with pkgs; [
-      vimPlugins.nvim-treesitter.withAllGrammars
-    ];
+#    plugins = with pkgs; [
+#      vimPlugins.nvim-treesitter.withAllGrammars
+#    ];
   };
 
 # SERVICES
