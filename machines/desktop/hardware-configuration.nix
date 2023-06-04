@@ -5,9 +5,9 @@
 
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernelModules = [ "coretemp" ];
   boot.extraModulePackages = [ ];
-
+  boot.kernelParams = [ "intel_iommu=on" ];
+  boot.kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   fileSystems."/" =
@@ -25,14 +25,14 @@
       fsType = "vfat";
     };
 
-  services.xserver.videoDrivers = [ "nvidia" ];                         # Uncomment    
-  hardware = {                                                        # this 
-    opengl.enable = true;                                             # codeblock
-    nvidia = {                                                        # for
-    package = config.boot.kernelPackages.nvidiaPackages.stable;       # NVIDIA
-    modesetting.enable = true;                                        # proprietary
-    };                                                                # driver
-  };                                                                  # support
+  services.xserver.videoDrivers = [ "nvidia" ]; 
+  hardware = {
+    opengl.enable = true;
+    nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    modesetting.enable = true;
+    };
+  };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
