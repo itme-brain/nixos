@@ -2,17 +2,31 @@
 
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-  
-  nix.system-features = "kvm";
-  environment.systemPackages = pkgs.virt-manager;
 
+# Kernel
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [ "intel_iommu=on" ];
   boot.kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  
+# Bootloader
+  boot.loader = {
+    grub = {
+      enable = true;
+      useOSProber = true;
+      devices = [ "nodev" ];
+      efiSupport = true;
+      configurationLimit = 5;
+    };
 
+    efi = {
+      canTouchEfiVariables = true;
+    };
+  };
+
+# FStab
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
       fsType = "ext4";
@@ -28,6 +42,8 @@
       fsType = "vfat";
     };
 
+# GPU
+  programs.sway.extraOptions = "--unsupported-gpu";
   services.xserver.videoDrivers = [ "nvidia" ]; 
   hardware = {
     opengl.enable = true;
@@ -37,6 +53,20 @@
     };
   };
 
+# Virtualisation
+  nix.system-features = "kvm";
+  environment.systemPackages = pkgs.virt-manager;
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      ovmf.enable = true;
+    };
+  };
+
+# CPU
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

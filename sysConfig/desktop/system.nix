@@ -6,7 +6,6 @@
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
-      allowed-users = "bryan";
       auto-optimise-store = true;
     };
     gc = {
@@ -22,57 +21,34 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  boot = {
-    loader = {
-      grub = {
-        enable = true;
-	      useOSProber = true;
-	      devices = [ "nodev" ];
-	      efiSupport = true;
-	      configurationLimit = 5;
-      };
-
-      efi = {
-        canTouchEfiVariables = true;
-      };
-    }; 
-#    extraModprobeConfig = ''
-#      options vfio-pci ids=10de:1f82,10de:10fa
-#    '';
-  };
-
+# GUI
   programs = {
     sway = {
       enable = true;
+
       extraPackages = with pkgs; [
-          rofi-wayland
-          grim
-          slurp
-          wl-clipboard
+        rofi-wayland
+        grim
+        slurp
+        wl-clipboard
 
-          xdg-utils
+        xdg-utils
 
-          fontconfig
-          qogir-icon-theme
-          emote
+        fontconfig
+        qogir-icon-theme
+        emote
 
-          pavucontrol
-        ];
+        pavucontrol
+      ];
+
       extraSessionCommands = ''
         if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
           exec sway 
         fi
-
-        if [ "$XDG_CURRENT_DESKTOP" = "sway" ] ; then
-            export _JAVA_AWT_WM_NONREPARENTING=1
-        fi
+        export _JAVA_AWT_WM_NONREPARENTING=1
       '';
     };
-
-    xwayland = { 
-      enable = true;
-    };
-
+    xwayland.enable = true;
     xdg.portal.wlr.enable = true;
     
     gnupg = {
@@ -81,8 +57,6 @@
         enableSSHSupport = true;
       };
     };
-
-    git.enable = true;
   };
 
   services.pipewire = {
@@ -109,6 +83,7 @@
     ];
   };
   
+# System Services
   services = {
     trezord.enable = true;
 
@@ -125,6 +100,7 @@
     useXkbConfig = true;
   };
 
+  # Locale
   time = {
     timeZone = "America/New_York";
   };
@@ -147,14 +123,5 @@
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall.enable = true;
-  };
-
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-      ovmf.enable = true;
-    };
   };
 }

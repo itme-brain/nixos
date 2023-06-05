@@ -9,11 +9,13 @@ in
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = "Bryan Ramos";
-      userEmail = "bryan@ramos.codes";
       extraConfig = {
         init = { defaultBranch = "main"; };
       };
+    };
+
+    home.file = {
+      ".gitconfig".source = ./gitconfig;
     };
   };
 }

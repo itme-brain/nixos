@@ -8,12 +8,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {
-        url = "github:nix-community/NUR";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
       };
     disko = {
-        url = "github:nix-community/disko";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -30,11 +30,10 @@
     
     in    
       {
-        nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.socratesV2 = nixpkgs.lib.nixosSystem {
           inherit pkgs;
           modules = [
-            ./machines/hardware-configuration.nix
-            ./machines/system.nix
+            ./machines
             disko.nixosModules.disko
             home-manager.nixosModules.home-manager{
               home-manager.useGlobalPkgs = true;
