@@ -33,7 +33,7 @@
   in
   {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      inherit system;
+      inherit pkgs;
       modules = [
         ./sysConfig/desktop
         disko.nixosModules.disko
