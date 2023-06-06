@@ -2,7 +2,7 @@
 
 {
   programs.home-manager.enable = true;
-  imports = [ (import ./modules/default.nix { inherit pkgs config; }) ];
+  imports = [ (import ./modules/default.nix { inherit pkgs; }) ];
   home.stateVersion = "22.11";
 
   home.username = "bryan";
