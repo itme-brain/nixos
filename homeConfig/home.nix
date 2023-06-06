@@ -8,7 +8,7 @@
   home.username = "bryan";
   home.homeDirectory = "/home/bryan";
 
-  modules = {
+  config.modules = {
     gui.enable = true;
     browsers.enable = true;
     alacritty.enable = true;
