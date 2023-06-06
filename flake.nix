@@ -4,10 +4,10 @@
   { 
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
-#      config.packageOverrides = pkgs: {
-#        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") 
-#        { inherit pkgs; };
-#      };
+      config.packageOverrides = pkgs: {
+        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") 
+        { inherit pkgs; };
+      };
     };
     home-manager = {
       url = "github:nix-community/home-manager/master";
