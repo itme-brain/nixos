@@ -18,6 +18,13 @@ in
   '';
 
   config = {
+    output = {
+      HDMI-A-1 = {
+        resolution = "190x1080";
+        position = "1920,0";
+        bg = "~/Pictures/wallpapers/mountains.jpg";
+      };
+    };
     modifier = "Mod1";
     menu = "\${pkgs.rofi-wayland}/bin/rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
     terminal = "\${pkgs.alacritty}/bin/alacritty";
