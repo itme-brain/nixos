@@ -13,7 +13,7 @@ in
       vimAlias = true;
       
       extraLuaConfig = import ./config/init.nix;
-      generatedConfigs = {lua = import ./config/config.nix;};
+#      generatedConfigs = {lua = import ./config/config.nix;};
       plugins = import ./config/plugins.nix { inherit pkgs; };
       extraPackages = import ./config/lsp.nix { inherit pkgs; };
     };

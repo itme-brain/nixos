@@ -7,7 +7,7 @@ let
 in 
 { options.modules.alacritty = { enable = mkEnableOption "alacritty"; };
   config = mkIf cfg.enable {
-    programs.alacritty = import ./config/alacritty.nix { inherit pkgs; };
+    programs.alacritty = import ./config/alacritty.nix { inherit pkgs lib; };
 
     home.packages = with pkgs; [
       terminus-nerdfont

@@ -8,8 +8,8 @@ in
 { options.modules.browsers = { enable = mkEnableOption "browsers"; };
   config = mkIf cfg.enable {
     programs.firefox = {
-      enabled = true;
-      profiles.bryan = import config/bryan.nix { inherit config; };
+      enable = true;
+      profiles.bryan = import config/bryan.nix { inherit pkgs; };
     };
 
     home.packages = [

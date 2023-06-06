@@ -1,9 +1,9 @@
-{ config, ... }:
+{ pkgs, ... }:
 
 {  
   isDefault = true;
   search.default = "Startpage";
-  extensions = with config.nur.repos.rycee.firefox-addons; [
+  extensions = with pkgs.nur.repos.rycee.firefox-addons; [
     ublock-origin
     darkreader
     keepassxc-browser

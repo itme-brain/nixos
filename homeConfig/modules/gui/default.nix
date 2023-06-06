@@ -7,8 +7,8 @@ let
 in 
 { options.modules.gui = { enable = mkEnableOption "gui"; };
   config = mkIf cfg.enable {
-    wayland.windowmanager.sway = import ./config/sway.nix { inherit pkgs; };
-    programs.rofi = import ./config/rofi.nix { inherit pkgs; };
+    wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
+    programs.rofi = import ./config/rofi.nix { inherit pkgs lib; };
 
     gtk = {
       enable = true;

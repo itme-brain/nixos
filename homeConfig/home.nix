@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   programs.home-manager.enable = true;
-  imports = ./modules/default.nix;
+  imports = [ ./modules/default.nix ];
   home.stateVersion = "22.11";
 
   home.username = "bryan";
