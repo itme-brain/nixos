@@ -26,14 +26,12 @@
 
   in    
   { nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      inherit pkgs;
       inherit system;
       modules = [
         ./sysConfig/desktop
         nur.nixosModules.nur
         disko.nixosModules.disko
-        home-manager.nixosModules.home-manager
-        {
+        home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.bryan = import ./homeConfig/home.nix;
