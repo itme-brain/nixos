@@ -12,11 +12,11 @@ in
 
     home.packages = with pkgs; [
       wget curl tree neofetch
-      unzip fping calc qrendcode
+      unzip fping calc qrencode
       fd pkg-config pciutils 
       neofetch mdbook rsync
-      android-studio docker
-      gcc gnumake
+      docker gcc gnumake
+      android-studio
     ];  
   };
 }

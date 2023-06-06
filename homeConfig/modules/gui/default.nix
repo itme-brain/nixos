@@ -3,12 +3,12 @@
 with lib;
 let 
   cfg = config.modules.gui;
-
+  
 in 
 { options.modules.gui = { enable = mkEnableOption "gui"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
-    programs.rofi = import ./config/rofi.nix { inherit pkgs lib; };
+    programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
 
     gtk = {
       enable = true;
@@ -21,7 +21,7 @@ in
     programs.btop.enable = true;
     fonts.fontconfig.enable = true;
   
-    home.packages = [
+    home.packages = with pkgs; [
       xdg-utils
       grim
       slurp

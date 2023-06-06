@@ -12,7 +12,7 @@ in
       profiles.bryan = import config/bryan.nix { inherit pkgs; };
     };
 
-    home.packages = [
+    home.packages = with pkgs; [
       google-chrome
       (tor-browser-bundle-bin.override {
         useHardenedMalloc = false; # NixOS bug requires this

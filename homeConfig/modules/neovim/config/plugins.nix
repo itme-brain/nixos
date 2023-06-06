@@ -3,11 +3,9 @@
 let
   github-theme = pkgs.vimUtils.buildVimPlugin {
     name = "github-theme";
-    src = pkgs.fetchFromGithub {
-      owner = "projekt0n";
-      repo = "github-nvim-theme";
-      rev = "ea713c37691b2519f56cd801a2330bdf66393d0f";
-      sha256 = "0cwr3b5r2ac7aizxmwb3mlhdc2sh0pw670vcwps79x9jp52yrj2y";
+    src = builtins.fetchTarball {
+      url = "https://github.com/projekt0n/github-nvim-theme/archive/refs/tags/v1.0.0.tar.gz";
+      sha256 = "15c65qw1sgw3v5wrwbg5f1fqb82qq1yr44g2nrwb7b7m134jyr1h";
     };
   };
 
@@ -23,7 +21,7 @@ with pkgs.vimPlugins;
     '';
   }
 
-  { plugin = lazygit.nvim; }
+  { plugin = lazygit-nvim; }
 
   {
     plugin = LazyVim;

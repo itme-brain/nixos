@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
 let 
@@ -7,7 +7,7 @@ let
 in 
 { options.modules.security = { enable = mkEnableOption "security"; };
   config = mkIf cfg.enable {
-    home.packages = [
+    home.packages = with pkgs; [
       keepassxc wireguard-tools ipscan
     ]; 
   };

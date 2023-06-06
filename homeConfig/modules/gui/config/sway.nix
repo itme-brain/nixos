@@ -7,6 +7,16 @@ in
 { enable = true;
   xwayland = true;
   wrapperFeatures.gtk = true;
+
+  extraOptions = [
+    "--unsupported-gpu"
+    "--my-next-gpu-wont-be-nvidia"
+  ];
+
+  extraSessionCommands = ''
+    export _JAVA_AWT_WM_NONREPARENTING=1
+  '';
+
   config = {
     modifier = "Mod1";
     menu = "\${pkgs.rofi-wayland}/bin/rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
@@ -24,16 +34,20 @@ in
       };
     };
 
-    bars.sway-bar = {
-      position = "top";
-      statusCommand = ''while :; do echo "$(free -h | awk '/^Mem/ {print $3}') '|' $(date +'%I:%M:%S %p') '|' $(date +'%m-%d-%Y')"; sleep 1; done'';
-      fonts = { 
-        names = [ "Noto Sans" "Noto Emoji" "Noto Color Emoji" ];
-        size = 10.0;
-      };
-      colors.background = "#0A0E14";
-      colors.statusline = "#FFFFFF";
-    };
+    bars = [
+      {
+        position = "top";
+        statusCommand = ''while :; do echo "$(free -h | awk '/^Mem/ {print $3}') '|' $(date +'%I:%M:%S %p') '|' $(date +'%m-%d-%Y')"; sleep 1; done'';
+        fonts = { 
+          names = [ "Noto Sans" "Noto Emoji" "Noto Color Emoji" ];
+          size = 10.0;
+        };
+        colors = {
+          background = "#0A0E14";
+          statusline = "#FFFFFF";
+        };
+      }
+    ];
 
     gaps = {
       smartGaps = false;
@@ -51,14 +65,5 @@ in
       "${modifier}+Shift+f" = "exec alacritty -e ranger";
       "${modifier}+Shift+d" = "exec emote";
     };
-
-    extraOptions = [
-      "--unsupported-gpu"
-      "--my-next-gpu-wont-be-nvidia"
-    ];
-
-    extraSessionCommands = ''
-      export _JAVA_AWT_WM_NONREPARENTING=1
-    '';
   };
 }

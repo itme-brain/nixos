@@ -13,5 +13,5 @@
     ./neovim/default.nix
     ./security/default.nix
     ./utils/default.nix
-  ] { inherit pkgs; }; 
+  ]; 
 }

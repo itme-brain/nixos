@@ -1,9 +1,9 @@
-{ description = "Fully Declarative YOLO";
+{
+  description = "Fully Declarative YOLO";
 
-  inputs = 
-  { 
+  inputs =
+  {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,21 +14,25 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, disko }:
+  outputs = { self, nixpkgs, home-manager, disko }:
   let
     system = "x86_64-linux";
+    overlays = [
+      (self: super: {
+        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
+        {inherit self;};
+      })
+    ];
     pkgs = import nixpkgs {
-      inherit system;
+      inherit system overlays;
       config = {
         allowUnfree = true;
-        packageOverrides = pkgs: {
-          nur = import nur { inherit pkgs; };
-        };
       };
     };
 
-  in    
-  { nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+  in
+  {
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
         ./sysConfig/desktop

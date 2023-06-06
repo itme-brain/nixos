@@ -80,7 +80,7 @@
 
   # Networking
   networking = {
-    hostName = "socratesV2";
+    hostName = "socrates";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
@@ -93,7 +93,7 @@
     enable = true;
     startWhenNeeded = true;
     settings = {
-      permitRootLogin = false;
+#      permitRootLogin = false;
       X11Forwarding = true;
       PasswordAuthentication = false;
     };

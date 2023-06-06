@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
 
-with lib;
 {
   enable = true;
   settings = {
@@ -15,63 +14,63 @@ with lib;
 
     colors = {
       primary = {
-        background = 0x0d1117;
-        foreground = 0xb3b1ad;
+        background = "#0d1117";
+        foreground = "#b3b1ad";
       };
 
       normal = {
-        black   =  0x484f58;
-        red     =  0xff7b72;
-        green   =  0x3fb950;
-        yellow  =  0xd29922;
-        blue    =  0x58a6ff;
-        magenta =  0xbc8cff;
-        cyan    =  0x39c5cf;
-        white   =  0xb1bac4;
+        black   = "#484f58";
+        red     = "#ff7b72";
+        green   = "#3fb950";
+        yellow  = "#d29922";
+        blue    = "#58a6ff";
+        magenta = "#bc8cff";
+        cyan    = "#39c5cf";
+        white   = "#b1bac4";
       };
 
       bright = {
-        black   =  0x6e7681; 
-        red     =  0xffa198;
-        green   =  0x56d364;
-        yellow  =  0xe3b341;
-        blue    =  0x79c0ff;
-        magenta =  0xd2a8ff;
-        cyan    =  0x56d4dd;
-        white   =  0xf0f6fc;
+        black   =  "#6e7681";
+        red     =  "#ffa198";
+        green   =  "#56d364";
+        yellow  =  "#e3b341";
+        blue    =  "#79c0ff";
+        magenta =  "#d2a8ff";
+        cyan    =  "#56d4dd";
+        white   =  "#f0f6fc";
       };
     };  
 
     font = {
       normal = {
-        family = terminus-nerdfont;
-        style = Medium;
+        family = "Terminus (TTF)";
+        style = "Regular";
       };
 
       bold = {
-        family = terminus-nerdfont;
-        style = Bold;
+        family = "Terminus (TTF)";
+        style = "Bold";
       };
 
       italic = {
-        family = terminus-nerdfont;
-        style = Medium Italic;
+        family = "Terminus (TTF)";
+        style = "Italic";
       };
 
       bold_italic = {
-        family = terminus-nerdfont;
-        style = Bold Italic;
+        family = "Terminus (TTF)";
+        style = "Bold Italic";
       };
     };
 
     size = 14;
 
     cursor = {
-      color = 0xffffff;
+      color = "#ffffff";
       style = {
-        shape = Block;
-        blinking = Always;
-        blink-interval = 750;
+        shape = "Block";
+        blinking = "Always";
+        blink_interval = 750;
       };
     };
   };

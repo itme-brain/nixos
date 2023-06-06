@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ ... }:
 
 {
   programs.home-manager.enable = true;
@@ -8,7 +8,7 @@
   home.username = "bryan";
   home.homeDirectory = "/home/bryan";
 
-  config.modules = {
+  modules = {
     gui.enable = true;
     browsers.enable = true;
     alacritty.enable = true;
