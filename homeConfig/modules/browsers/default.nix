@@ -9,7 +9,7 @@ in
   config = mkIf cfg.enable {
     programs.firefox = {
       enabled = true;
-      profiles.bryan = import config/bryan.nix { inherit pkgs; };
+      profiles.bryan = import config/bryan.nix { inherit config; };
     };
 
     home.packages = [
