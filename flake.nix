@@ -1,4 +1,4 @@
-{ description = "Modular NixOS Config";
+{ description = "Fully Declarative and Reproducible System";
 
   inputs = 
   { nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

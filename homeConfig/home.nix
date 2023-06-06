@@ -1,12 +1,28 @@
-{ user, ... }:
+{ me, config, ... }:
 
 { 
   home.stateVersion = "22.11";
-  programs.home-manager.enable = true;
 
   home = { 
-    username = user;
-    homeDirectory = "/home/${user}";
+    username = me;
+    homeDirectory = "/home/${me}";
   };
 
+  imports = ./modules;
+
+  config.modules = {
+    gui.enable = true;
+    browsers.enable = true;
+    alacritty.enable = true;
+    fun.enable = true;
+
+    bash.enable = true;
+    git.enable = true;
+    gpg.enable = true;
+    neovim.enable = true;
+
+    utils.enable = true;
+    security.enable = true;
+    corn.enable = true;
+  };
 }
