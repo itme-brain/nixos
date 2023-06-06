@@ -43,7 +43,6 @@
     };
 
 # GPU
-  programs.sway.extraOptions = "--unsupported-gpu";
   services.xserver.videoDrivers = [ "nvidia" ]; 
   hardware = {
     opengl.enable = true;

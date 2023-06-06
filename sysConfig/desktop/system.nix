@@ -1,8 +1,9 @@
-{ pkgs, lib, config, ... }:
-{
-  system.stateVersion = "23.05";
+{ pkgs, lib, desktop, me, ... }:
+
+{ system.stateVersion = "22.11";
   environment.defaultPackages = [ ];
 
+# Nix
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
@@ -13,52 +14,9 @@
       options = "weekly";
     };
   };
+  environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
 
-  users.users.bryan = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "home-manager" "input" "video" "audio" "kvm" "libvirtd" "docker" ]; 
-  };
-
-  security.sudo.wheelNeedsPassword = false;
-
-# GUI
-  programs = {
-    sway = {
-      enable = true;
-
-      extraPackages = with pkgs; [
-        rofi-wayland
-        grim
-        slurp
-        wl-clipboard
-
-        xdg-utils
-
-        fontconfig
-        qogir-icon-theme
-        emote
-
-        pavucontrol
-      ];
-
-      extraSessionCommands = ''
-        if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-          exec sway 
-        fi
-        export _JAVA_AWT_WM_NONREPARENTING=1
-      '';
-    };
-    xwayland.enable = true;
-    xdg.portal.wlr.enable = true;
-    
-    gnupg = {
-      agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
-    };
-  };
-
+# Audio
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -70,19 +28,19 @@
     alsa.enable = true;
     alsa.support32Bit = true;
   };
-    
-  fonts = {
-    fonts = with pkgs; [
-      terminus_font
-      nerdfonts
-      
-      noto-fonts
-      noto-fonts-cjk
-      
-      emojione
-    ];
+
+# Users
+  users.users.${me} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" "home-manager" "input" "video" "audio" "kvm" "libvirtd" "docker" ];
+    openssh.authorizedKeys.keyFiles = [ /etc/ssh/authorized_keys ];
   };
-  
+
+  security.sudo = {
+    wheelNeedsPassword = false;
+    execWheelOnly = true;
+  };
+
 # System Services
   services = {
     trezord.enable = true;
@@ -90,14 +48,9 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 0 * * *  bryan  /home/bryan/Documents/scripts/lnbackup_script.sh"
+        "0 0 * * *  ${me}  /home/${me}/Documents/scripts/lnbackup_script.sh"
       ];
     };
-  };
-
-  console = {
-    font = "Lat2-Terminus16";
-    useXkbConfig = true;
   };
 
   # Locale
@@ -117,11 +70,25 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
+  console = {
+    font = "Lat2-Terminus16";
+    useXkbConfig = true;
+  };
+
   # Networking
   networking = {
-    hostName = "socrates";
+    hostName = desktop;
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 22 80 443 ];
+    };
+  };
+
+  services.openssh = {
+    enable = true;
+    startWhenNeeded = true;
+    settings.PasswordAuthentication = false;
   };
 }
