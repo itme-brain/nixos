@@ -53,7 +53,7 @@
   };
 
 # Virtualisation
-  nix.system-features = "kvm";
+  nix.settings.system-features = "kvm";
   environment.systemPackages = pkgs.virt-manager;
 
   virtualisation.libvirtd = {

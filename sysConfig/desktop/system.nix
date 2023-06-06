@@ -1,4 +1,4 @@
-{ pkgs, lib, desktop, me, ... }:
+{ pkgs, lib, ... }:
 
 { system.stateVersion = "22.11";
   environment.defaultPackages = [ ];
@@ -8,10 +8,12 @@
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
       auto-optimise-store = true;
+      trusted-users = [ "bryan" ];
     };
     gc = {
-      automatics = true;
-      options = "weekly";
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
     };
   };
   environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
@@ -30,10 +32,10 @@
   };
 
 # Users
-  users.users.${me} = {
+  users.users.bryan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "home-manager" "input" "video" "audio" "kvm" "libvirtd" "docker" ];
-    openssh.authorizedKeys.keyFiles = [ /etc/ssh/authorized_keys ];
+    openssh.authorizedKeys.keyFiles = [ /home/bryan/.ssh/authorized_keys ];
   };
 
   security.sudo = {
@@ -48,7 +50,7 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 0 * * *  ${me}  /home/${me}/Documents/scripts/lnbackup_script.sh"
+        "0 0 * * *  bryan  /home/bryan/Documents/scripts/lnbackup_script.sh"
       ];
     };
   };
@@ -77,7 +79,7 @@
 
   # Networking
   networking = {
-    hostName = desktop;
+    hostName = "socratesV2";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
@@ -89,6 +91,10 @@
   services.openssh = {
     enable = true;
     startWhenNeeded = true;
-    settings.PasswordAuthentication = false;
+    settings = {
+      permitRootLogin = false;
+      X11Forwarding = true;
+      PasswordAuthentication = false;
+    };
   };
 }

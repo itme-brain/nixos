@@ -13,8 +13,8 @@ in
 
       initExtra = import ./config/prompt.nix;
       profileExtra = import ./config/bashprofile.nix;
-      bashrcExtra = import ./bashrc.nix;
-      shellAliases = import ./alias.nix;
+      bashrcExtra = import ./config/bashrc.nix;
+      shellAliases = import ./config/alias.nix;
     };
     
     services.gpg-agent.enableBashIntegration = true;

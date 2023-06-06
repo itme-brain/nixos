@@ -1,16 +1,14 @@
-{ me, config, ... }:
+{ pkgs, config, ... }:
 
-{ 
+{
+  programs.home-manager.enable = true;
+  imports = ./modules/default.nix;
   home.stateVersion = "22.11";
 
-  home = { 
-    username = me;
-    homeDirectory = "/home/${me}";
-  };
+  home.username = "bryan";
+  home.homeDirectory = "/home/bryan";
 
-  imports = ./modules;
-
-  config.modules = {
+  modules = {
     gui.enable = true;
     browsers.enable = true;
     alacritty.enable = true;

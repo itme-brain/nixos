@@ -1,4 +1,4 @@
-{ description = "Fully Declarative and Reproducible System";
+{ description = "Fully Declarative YOLO";
 
   inputs = 
   { nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -26,20 +26,19 @@
       };
     };
 
-    me = "bryan";
-    desktop = "socratesV2";
-
   in    
-  { nixosConfigurations.${desktop} = nixpkgs.lib.nixosSystem {
+  { nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit pkgs;
+      inherit system;
       modules = [
-        (import ./sysConfig { inherit me desktop; })
+        ./sysConfig/desktop
         nur.nixosModules.nur
         disko.nixosModules.disko
-        home-manager.nixosModules.home-manager{
+        home-manager.nixosModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${me} = import ./homeConfig/home.nix { inherit me; };
+          home-manager.users.bryan = import ./homeConfig/home.nix;
         }
       ];
     };

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, me, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
 let 
@@ -9,7 +9,7 @@ in
   config = mkIf cfg.enable {
     programs.firefox = {
       enabled = true;
-      profiles.${me} = import (config/${me}.nix) { inherit pkgs; };
+      profiles.bryan = import config/bryan.nix { inherit pkgs; };
     };
 
     home.packages = [
