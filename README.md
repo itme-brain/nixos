@@ -49,8 +49,6 @@ located by default in ```/etc/nixos/configuration.nix```
 
 ### Home-Manager
 
-> This is a standalone home-manager install, NOT a NixOS/darwin module.
-
 To initialize Home-Manager properly for the first time, run the following command: 
 
 ```nix run home-manager/master -- init```
