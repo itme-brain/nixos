@@ -19,8 +19,10 @@
     system = "x86_64-linux";
     overlays = [
       (self: super: {
-        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
-        {inherit self;};
+        nur = import (builtins.fetchTarball {
+          url = "https://github.com/nix-community/NUR/archive/master.tar.gz";
+          sha256 = "0a4jcks8nb4sb581gvd8kza9sw41bc8d1jdz4bv16plb9anfvcc0";
+        });
       })
     ];
     pkgs = import nixpkgs {
