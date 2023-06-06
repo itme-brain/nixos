@@ -2,14 +2,8 @@
 
   inputs = 
   { 
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-      config = {
-        packageOverrides = pkgs: {
-          nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") { inherit pkgs; };
-        };
-      };
-    };  
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nur.url = "github:nix-community/NUR";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,13 +14,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, disko }:
+  outputs = { self, nixpkgs, nur, home-manager, disko }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
       config = {
         allowUnfree = true;
+        packageOverrides = pkgs: {
+          nur = import nur { inherit pkgs; };
+        };
       };
     };
 
