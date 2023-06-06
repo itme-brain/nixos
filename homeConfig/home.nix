@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   programs.home-manager.enable = true;
-  imports = [ (import ./modules/default.nix) ];
+  imports = [ (import ./modules/default.nix { inherit pkgs; }) ];
   home.stateVersion = "22.11";
 
   home.username = "bryan";
@@ -22,5 +22,12 @@
     utils.enable = true;
     security.enable = true;
     corn.enable = true;
+  };
+
+  homeManagerConfig = {
+    homeManagerPath = "${pkgs.home-manager}/bin/home-manager";
+    extraConfig = ''
+      users.bryan = import ./homeConfig/home.nix { inherit config; };
+    '';
   };
 }
