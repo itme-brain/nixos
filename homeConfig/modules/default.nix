@@ -1,3 +1,5 @@
+{ pkgs, lib, config, ... }:
+
 { 
   imports = [ 
     ./alacritty/default.nix
@@ -11,5 +13,5 @@
     ./neovim/default.nix
     ./security/default.nix
     ./utils/default.nix
-  ]; 
+  ] { inherit pkgs; }; 
 }
