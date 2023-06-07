@@ -46,7 +46,7 @@ in
         position = "top";
         statusCommand = ''while :; do echo "$(free -h | awk '/^Mem/ {print $3}') '|' $(date +'%I:%M:%S %p') '|' $(date +'%m-%d-%Y')"; sleep 1; done'';
         fonts = { 
-          names = [ "Noto Sans" "Noto Emoji" "Noto Color Emoji" ];
+          names = [ "Noto Sans" ];
           size = 10.0;
         };
         colors = {

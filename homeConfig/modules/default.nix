@@ -2,16 +2,16 @@
 
 { 
   imports = [ 
-    ./alacritty/default.nix
-    ./bash/default.nix
-    ./browsers/default.nix
-    ./corn/default.nix
-    ./fun/default.nix
-    ./git/default.nix
-    ./gpg/default.nix
-    ./gui/default.nix
-    ./neovim/default.nix
-    ./security/default.nix
-    ./utils/default.nix
+    ./alacritty
+    ./bash
+    ./browsers
+    ./corn
+    ./fun
+    ./git
+    ./gpg
+    ./gui
+    ./neovim
+    ./security
+    ./utils
   ]; 
 }
