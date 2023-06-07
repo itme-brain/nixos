@@ -11,12 +11,19 @@ in
       enable = true;
       viAlias = true;
       vimAlias = true;
-      
+
+# TODO: Fix declarative setup
 #      extraLuaConfig = import ./config/init.nix;
-      plugins = with pkgs.vimPlugins; [
-        LazyVim
-      ];
+#      plugins = with pkgs.vimPlugins; [
+#        LazyVim
+#     ];
       extraPackages = import ./config/servers.nix { inherit pkgs; };
+    };
+
+# Bandaid fix until I can get the declarative setup working
+    home.file.".config/nvim" = {
+      source = ./config/lazyvim;
+      recursive = true;
     };
   };
 }
