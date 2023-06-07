@@ -1,10 +1,9 @@
 ''
-lua << EOF
+
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true 
 
-vim.o.guicursor = \'\'
 vim.o.clipboard = "unnamedplus"
 
 vim.o.foldmethod = "indent"
@@ -122,5 +121,4 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 require("notify").setup({
   background_colour = "#000000",
 })
-EOF
-''
+'' 

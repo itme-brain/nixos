@@ -22,7 +22,7 @@ in
       HDMI-A-1 = {
         resolution = "1920x1080";
         position = "1920,0";
-        bg = "~/Pictures/wallpapers/mountains.jpg";
+        bg = "~/Pictures/wallpapers/mountains.jpg fill";
       };
     };
     modifier = "Mod1";
