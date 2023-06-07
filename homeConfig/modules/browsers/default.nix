@@ -7,10 +7,8 @@ let
 in 
 { options.modules.browsers = { enable = mkEnableOption "browsers"; };
   config = mkIf cfg.enable {
-    programs.firefox = {
-      enable = true;
-      #profiles.bryan = import config/bryan.nix { inherit pkgs; };
-    };
+    programs.firefox.enable = true;
+    programs.chromium.enable = true;
 
     home.packages = with pkgs; [
       google-chrome
