@@ -1,6 +1,9 @@
 ''
 export EDITOR=nvim
 
+alias hmup="home-manager switch --flake '$HOME/Documents/projects/nixos#bryan'";
+alias nixup="sudo nixos-rebuild switch --flake '$HOME/Documents/projects/nixos#socrates'";
+
 function cdg() {
   if [[ $1 == "--help" ]]; then
     echo "A simple utility for navigating to the root of a git repo"
