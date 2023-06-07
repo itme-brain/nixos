@@ -61,6 +61,10 @@
         family = "Terminus";
         style = "Bold Italic";
       };
+
+      fallback = [
+        { family = "Noto Color Emoji"; }
+      ];
     };
 
     size = 14;
