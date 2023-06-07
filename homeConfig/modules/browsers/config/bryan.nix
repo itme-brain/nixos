@@ -21,6 +21,5 @@
 
     "geo.enabled" = false;
     "privacy.trackingprotection.enabled" = true;
-    "ui.key.menuAcessKeyFocus" = false;
   };
 }

@@ -1,4 +1,6 @@
 ''
+export EDITOR=nvim
+
 function cdg() {
   if [[ $1 == "--help" ]]; then
     echo "A simple utility for navigating to the root of a git repo"
