@@ -12,7 +12,7 @@ in
       viAlias = true;
       vimAlias = true;
       
-      extraConfig = import ./config/init.nix;
+      extraLuaConfig = import ./config/init.nix;
       plugins = import (./config/plugins) { inherit pkgs lib; };
       extraPackages = import ./config/servers.nix { inherit pkgs; };
     };
