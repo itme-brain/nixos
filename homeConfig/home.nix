@@ -5,8 +5,8 @@
   imports = [ (import ./modules/default.nix) ];
   home.stateVersion = "22.11";
 
-  home.username = "brain";
-  home.homeDirectory = "/home/brain";
+  home.username = "bryan";
+  home.homeDirectory = "/home/bryan";
 
   modules = {
     gui.enable = true;
