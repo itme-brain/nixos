@@ -19,7 +19,10 @@ in
     
     services.gpg-agent.enableBashIntegration = true;
     programs = {
-      direnv.nix-direnv.enable = true;
+      direnv = {
+      	enable = true;
+      	nix-direnv.enable = true;
+      };
       ripgrep.enable = true;
       lsd = {
         enable = true;

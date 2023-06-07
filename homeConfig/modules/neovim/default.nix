@@ -13,7 +13,9 @@ in
       vimAlias = true;
       
 #      extraLuaConfig = import ./config/init.nix;
-      plugins = import (./config/plugins) { inherit pkgs lib; };
+      plugins = with pkgs.vimPlugins; [
+        LazyVim
+      ];
       extraPackages = import ./config/servers.nix { inherit pkgs; };
     };
   };
