@@ -31,6 +31,7 @@ in
       xdg-utils
       grim
       slurp
+      wl-clipboard
 
       imv
       gimp
