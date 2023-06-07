@@ -3,13 +3,6 @@
 {  
   isDefault = true;
   search.default = "Startpage";
-  extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    ublock-origin
-    darkreader
-    keepassxc-browser
-    multi-account-containers
-  ];
-
   settings = {
     "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
 
@@ -17,7 +10,6 @@
     "media.peerconnection.enabled" = false;
     "browser.formfill.enable" = false;
 
-    "privacy.sanitize.sanitizeOnShutdown" = true;
     "toolkit.telemetry.enabled" = false;
     "toolkit.telemetry.archive.enabled" = false;
     "datareporting.healthreport.uploadEnabled" = false;

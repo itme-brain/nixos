@@ -8,10 +8,10 @@ in
   xwayland = true;
   wrapperFeatures.gtk = true;
 
-  extraOptions = [
-    "--unsupported-gpu"
-    "--my-next-gpu-wont-be-nvidia"
-  ];
+#  extraOptions = [
+#    "--unsupported-gpu"
+#    "--my-next-gpu-wont-be-nvidia"
+#  ];
 
   extraSessionCommands = ''
     export _JAVA_AWT_WM_NONREPARENTING=1
@@ -20,14 +20,14 @@ in
   config = {
     output = {
       HDMI-A-1 = {
-        resolution = "190x1080";
+        resolution = "1920x1080";
         position = "1920,0";
         bg = "~/Pictures/wallpapers/mountains.jpg";
       };
     };
     modifier = "Mod1";
-    menu = "\${pkgs.rofi-wayland}/bin/rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
-    terminal = "\${pkgs.alacritty}/bin/alacritty";
+    menu = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
+    terminal = "alacritty";
     startup = [{ command = "exec { exec alacritty -e sh -c 'neofetch; exec $SHELL'"; always = true; }];
 
     input = {
