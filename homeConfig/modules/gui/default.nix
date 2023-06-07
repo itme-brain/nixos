@@ -18,6 +18,12 @@ in
       iconTheme.name = "Qogir";
     };
 
+    qt = {
+      enable = true;
+      style.package = pkgs.juno-theme;
+      platformTheme = "gtk";
+    };
+
     programs.btop.enable = true;
     fonts.fontconfig.enable = true;
   
