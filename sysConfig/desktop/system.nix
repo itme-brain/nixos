@@ -1,7 +1,6 @@
 { pkgs, lib, ... }:
 
 { system.stateVersion = "22.11";
-  environment.defaultPackages = [ ];
 
 # Nix
   nix = {
@@ -18,6 +17,12 @@
     };
   };
   environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
+
+# Fonts
+  fonts.fonts = with pkgs; [
+    terminus_font
+    nerdfonts
+  ];
 
 # Audio
   services.pipewire = {

@@ -27,7 +27,7 @@
   in
   {
     nixosConfigurations.socrates = nixpkgs.lib.nixosSystem {
-      inherit pkgs;
+      inherit system pkgs;
       modules = [
         ./sysConfig/desktop
         disko.nixosModules.disko
