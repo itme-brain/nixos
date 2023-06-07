@@ -5,7 +5,7 @@ with pkgs.vimPlugins;
   { plugin = catppuccin-nvim;
     config = ''
         lua << EOF
-        equire("catppuccin").setup({
+        require("catppuccin").setup({
         flavour = "mocha", -- latte, frappe, macchiato, mocha
         background = { -- :h background
             light = "latte",

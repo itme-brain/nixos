@@ -21,5 +21,21 @@
 
     "geo.enabled" = false;
     "privacy.trackingprotection.enabled" = true;
+
+  userChrome = ''
+    #toolbar-menubar {
+      visibility: collapse !important;
+      margin-top: -22px !important;
+    }
+
+    :root[tabsintitlebar] #toolbar-menubar[autohide="true"] ~ #TabsToolbar .titlebar-placeholder[type="menubar"],
+    :root:not([tabsintitlebar]) #toolbar-menubar[autohide="true"] ~ #TabsToolbar {
+      display: none;
+    }
+
+    #toolbar-menubar[autohide="true"] ~ #TabsToolbar {
+      padding-top: 0 !important;
+    }
+  '';
   };
 }
