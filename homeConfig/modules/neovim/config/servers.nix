@@ -2,13 +2,11 @@
 
 let
   lsp = with pkgs; [
-    nil 
-    nixfmt
+    nil nixfmt
     marksman
-    sumneko-lua-language-server 
-    stylua
-    haskell-language-server 
-    hlint
+    sumneko-lua-language-server stylua
+    haskell-language-server hlint
+    nodePackages."@tailwindcss/language-server"
   ];
 
   lsp' = with pkgs.nodePackages; [

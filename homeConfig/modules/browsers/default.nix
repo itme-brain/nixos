@@ -11,7 +11,6 @@ in
     programs.chromium.enable = true;
 
     home.packages = with pkgs; [
-      google-chrome
       (tor-browser-bundle-bin.override {
         useHardenedMalloc = false; # NixOS bug requires this
       })
