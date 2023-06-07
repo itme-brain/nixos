@@ -43,22 +43,22 @@
 
     font = {
       normal = {
-        family = "Terminus (TTF)";
+        family = "Terminus";
         style = "Regular";
       };
 
       bold = {
-        family = "Terminus (TTF)";
+        family = "Terminus";
         style = "Bold";
       };
 
       italic = {
-        family = "Terminus (TTF)";
+        family = "Terminus";
         style = "Italic";
       };
 
       bold_italic = {
-        family = "Terminus (TTF)";
+        family = "Terminus";
         style = "Bold Italic";
       };
     };
