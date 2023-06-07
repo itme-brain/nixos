@@ -42,7 +42,7 @@
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.bryan = import ./homeConfig/home.nix;
+          home-manager.users.brain = import ./homeConfig/home.nix;
         }
       ];
     };

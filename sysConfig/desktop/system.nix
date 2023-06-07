@@ -9,7 +9,7 @@
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
       auto-optimise-store = true;
-      trusted-users = [ "bryan" ];
+      trusted-users = [ "brain" ];
     };
     gc = {
       automatic = true;
@@ -33,10 +33,10 @@
   };
 
 # Users
-  users.users.bryan = {
+  users.users.brain = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "home-manager" "input" "video" "audio" "kvm" "libvirtd" "docker" ];
-    openssh.authorizedKeys.keyFiles = [ /home/bryan/.ssh/authorized_keys ];
+    openssh.authorizedKeys.keyFiles = [ /home/brain/.ssh/authorized_keys ];
   };
 
   security.sudo = {
@@ -51,7 +51,7 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 0 * * *  bryan  /home/bryan/Documents/scripts/lnbackup_script.sh"
+        "0 0 * * *  brain  /home/brain/Documents/scripts/lnbackup_script.sh"
       ];
     };
   };
@@ -93,7 +93,7 @@
     enable = true;
     startWhenNeeded = true;
     settings = {
-#      permitRootLogin = false;
+      permitRootLogin = false;
       X11Forwarding = true;
       PasswordAuthentication = false;
     };
