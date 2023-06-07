@@ -23,13 +23,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
   virtual_text = false,
 })
 
-require("notify").setup({
-  background_colour = "#000000",
-})
-
-
 vim.api.nvim_set_keymap('n', '<PageUp>', '<PageUp>zz', {noremap = true})
 vim.api.nvim_set_keymap('n', '<PageDown>', '<PageDown>zz', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-U>', '<C-U>zz', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-D>', '<C-D>zz', {noremap = true})
-'' 
+
+''
