@@ -8,11 +8,6 @@ in
   xwayland = true;
   wrapperFeatures.gtk = true;
 
-#  extraOptions = [
-#    "--unsupported-gpu"
-#    "--my-next-gpu-wont-be-nvidia"
-#  ];
-
   extraSessionCommands = ''
     export _JAVA_AWT_WM_NONREPARENTING=1
   '';

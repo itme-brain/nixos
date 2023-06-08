@@ -45,14 +45,6 @@
 
 # GPU
   hardware.nvidia.open = true;
-#  services.xserver.videoDrivers = [ "nvidia" ]; 
-#  hardware = {
-#    opengl.enable = true;
-#    nvidia = {
-#    package = config.boot.kernelPackages.nvidiaPackages.stable;
-#    modesetting.enable = true;
-#    };
-#  };
 
 # Virtualisation
 #  nix.settings.system-features = [ "kvm" ];
