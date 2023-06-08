@@ -19,6 +19,7 @@
         allowUnfree = true;
       };
     };
+    myTerminal = pkgs.callPackage ./terminal/shell.nix { };
 
   in
   {
@@ -34,5 +35,7 @@
         }
       ];
     };
+
+    defaultPackage.x86_64-linux = myTerminal;
   };
 }

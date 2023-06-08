@@ -20,4 +20,4 @@ let
   ];
 
 in
-  lsp ++ lsp'
+  lsp ++ lsp' ++ pkgs.lazygit
