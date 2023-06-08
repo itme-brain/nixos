@@ -14,7 +14,6 @@ in
 #  ];
 
   extraSessionCommands = ''
-    exec alacritty -e sh -c 'neofetch; exec $SHELL'
     export _JAVA_AWT_WM_NONREPARENTING=1
   '';
 
