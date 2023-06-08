@@ -7,9 +7,10 @@
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.extraModulePackages = [ ];
-  boot.kernelParams = [ "intel_iommu=on" ];
-  boot.kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
+  boot.kernelModules = [ "coretemp" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+#  boot.kernelParams = [ "intel_iommu=on" ];
+#  boot.kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
   
 # Bootloader
   boot.loader = {
@@ -54,17 +55,17 @@
 #  };
 
 # Virtualisation
-  nix.settings.system-features = [ "kvm" ];
-  environment.systemPackages = [ pkgs.virt-manager ];
-
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-      ovmf.enable = true;
-    };
-  };
+#  nix.settings.system-features = [ "kvm" ];
+#  environment.systemPackages = [ pkgs.virt-manager ];
+#
+#  virtualisation.libvirtd = {
+#    enable = true;
+#    qemu = {
+#      package = pkgs.qemu_kvm;
+#      runAsRoot = true;
+#      ovmf.enable = true;
+#    };
+#  };
 
 # CPU
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
