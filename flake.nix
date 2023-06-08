@@ -19,7 +19,12 @@
         allowUnfree = true;
       };
     };
-    myTerminal = pkgs.callPackage ./terminal/shell.nix { };
+    configs = builtins.fetchTarball {
+      url = "https://github.com/itme-brain/nixos/raw/yolo-allin/terminal/configs.tar.gz";
+      sha256 = "1q6qcwp06hgia0wiz11jynxjh8l527ckfjpgz1cylczdfbv60vk1";
+    };
+
+    myTerminal = pkgs.callPackage ./terminal/shell.nix { inherit configs; };
 
   in
   {

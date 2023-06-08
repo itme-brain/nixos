@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs, configs, ... }:
 
 
 with pkgs;
@@ -13,9 +13,7 @@ mkShell {
   shellHook = ''
     echo "Preparing your environment, Bryan..."
 
-    wget https://github.com/itme-brain/nixos/tree/yolo-allin/terminal/configs.tar.gz
-    
-    tar -xzvf configs.tar.gz -C .
+    tar -xzvf ${configs} -C .
 
     if [ -f ~/.bashrc ] || [ -f ~/.config/alacritty/alacritty.yml ] || [ -d ~/.config/nvim ] || [ -f ~/.gitconfig ]; then
       echo "Backing up existing config files..."
@@ -37,7 +35,6 @@ mkShell {
 
     gpg --import configs/pub.key
 
-    rm configs.tar.gz
     rm configs
     find . -type d -empty -delete
 
@@ -55,6 +52,6 @@ mkShell {
     fi
 
     echo "Terminal ready."
-    echp "Run `ldv` to get some existing environments."
+    echo "Run `ldv` to get some existing environments."
   '';
 }

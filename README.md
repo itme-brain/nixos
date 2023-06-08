@@ -3,7 +3,9 @@
 My personal NixOS stash🔥
 
 The `sysConfig` directory contains subdirectories for each of my machines🖥️
+
 In the `homeConfig`🏠️ directory, you'll find various dotfiles and config files that make my home directory extra nixy
+
 `terminal` contains a config with my IDE📝 and configs by calling `nix build` against this flake.
 
 If you need a list of available Nix packages and options:
@@ -15,8 +17,10 @@ If you need a list of available Nix packages and options:
 ## Get Inspired 🌟
 
 Fork this repo and create your own NixOS config💫
+
 Take inspiration💡, borrow ideas💭 and customize it to your 💖 content
- ⚠️ Be sure to tailor any settings related to my hardware and system to your own hardware⚠️
+
+⚠️ Be sure to tailor any settings related to my hardware and system to your own hardware⚠️
 
 👉️Run `nixos-generate-config` if you need a new `hardware-configuration.nix`
 
