@@ -1,59 +1,42 @@
-# NixOS / Home-Manager Flake Configuration
+# MyNix ❄️👨‍💻
 
-This repository is a stash for my current NixOS and Home-Manager flake setup.
+My personal NixOS and config stash🔥
 
-The repository is structured in two main directories: ```homeConfig``` and ```sysConfig```.
+The `sysConfig` directory contains subdirectories for each of my machines🖥️
+In the `homeConfig`🏠️ directory, you'll find various dotfiles and config files that make my home directory extra nixy
 
-The ```homeConfig``` directory contains all the files related to home-manager.
-The ```sysConfig``` directory contains a modular NixOS system configuration.
+If you need a list of available Nix packages and options:
 
+- [nixpkgs Packages](https://search.nixos.org/packages) 📦️
+- [nixpkgs Options](https://search.nixos.org/options?) 🔍️
+- [home-manager Options](https://mipmip.github.io/home-manager-option-search/) ☕️
 
-My personal dotfiles are included in the ```homeConfig/dotfiles``` directory.
+## Get Inspired 🌟
 
-Feel free to clone/fork and use as you please.
+Fork this repo and create your own NixOS config💫
+Take inspiration💡, borrow ideas💭 and customize it to your 💖 content
+ ⚠️ Be sure to tailor any settings related to my hardware and system to your own hardware⚠️
 
+👉️Run `nixos-generate-config` if you need a new `hardware-configuration.nix`
 
-Here are useful resources for finding a list of nix packages and options...
+## Requirements ⚙️
 
-[NixOS](https://search.nixos.org/packages)
+Get ready to go down the Nix 🐇🕳️, make sure you have the following:
 
-[Home-Manager](https://mipmip.github.io/home-manager-option-search/)
+- Nix package manager ❄️
+- Nix 2.0 `flakes` enabled⚡️
 
-## Requirements
+Install Nix by visiting the [NixOS website](https://www.nixos.org/) or by using your package manager🚀
 
- - nix package manager *OR* NixOS
- - Home-Manager
- - Nix 2.0 (flake and nix-command) enabled
+### Enabling Flakes ❄️
 
-Install nix package manager or NixOS here - https://www.nixos.org/ or through your package manager.
+Unlock the full power of Nix, add the following line to your Nix configuration:
 
-If you are on NixOS, nix already comes installed and is the default package manager.
-
-### Enabling Flakes and Nix Commands
-
-First you need to enable the ```flakes``` and ```nix-command``` experimental features.
-
-Add this line anywhere to your nix configuration.
-
+```nix
+nix = {
+  package = pkgs.nixFlakes;
+  extraOptions = "experimental-features = nix-command flakes";
+};
 ```
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
-  };
-```
-If you are using nix on a Linux distro, macOS or Windows WSL your config file defaults to
-```~/.config/nix/nix.conf```
 
-If you are using NixOS add the code snippet to your system configuration instead, 
-located by default in ```/etc/nixos/configuration.nix```
-
-### Home-Manager
-
-To initialize Home-Manager properly for the first time, run the following command: 
-
-```nix run home-manager/master -- init```
-
-## Contributions
-
-If you find any issues or have any suggestions, 
-please feel free to open an issue or submit a pull request!
+# Happy Nix Hacking! ❄️🔧💻️❄️
