@@ -25,5 +25,8 @@ in
       source = ./config/lazyvim;
       recursive = true;
     };
+    home.packages = with pkgs; [
+      lazygit
+    ];
   };
 }
