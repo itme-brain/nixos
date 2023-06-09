@@ -2,11 +2,11 @@
 
 My personal NixOS stash🔥
 
-The `sysConfig` directory contains subdirectories for each of my machines🖥️
+The `sysConfig`🖥️ directory contains subdirectories for each of my machines
 
 In the `homeConfig`🏠️ directory, you'll find various dotfiles and config files that make my home directory extra nixy
 
-If you need a list of available Nix packages and options:
+If you need a list of available packages and options:
 
 - [nixpkgs Packages](https://search.nixos.org/packages) 📦️
 - [nixpkgs Options](https://search.nixos.org/options?) 🔍️
@@ -14,7 +14,9 @@ If you need a list of available Nix packages and options:
 
 ## Get Inspired 🌟
 
-Fork this repo and create your own NixOS config💫
+Ready to go down the Nix 🐇🕳️❓️
+
+Fork this repo and create your own NixOS config✨
 
 Take inspiration💡, borrow ideas💭 and customize it to your 💖 content
 
@@ -24,16 +26,16 @@ Take inspiration💡, borrow ideas💭 and customize it to your 💖 content
 
 ## Requirements ⚙️
 
-Get ready to go down the Nix 🐇🕳️, make sure you have the following:
-
 - Nix package manager ❄️
 - Nix 2.0 `flakes` enabled⚡️
 
-Install Nix by visiting the [NixOS website](https://www.nixos.org/) or by using your package manager🚀
+Install by visiting [nixos.org](https://www.nixos.org/) or through your package manager🚀
 
 ### Enabling Flakes ❄️
 
-Unlock the full power of Nix, add the following line to your Nix configuration:
+Unleash Nix💥 
+
+Add to your `nix.conf` or `configuration.nix`👇️
 
 ```nix
 nix = {
