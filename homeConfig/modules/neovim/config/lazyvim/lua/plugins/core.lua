@@ -14,6 +14,7 @@ return {
 	},
 
 	{ "williamboman/mason.nvim", enabled = false },
+	{ "williamboman/mason-lspconfig.nvim", enabled = false }, -- Optional
 
 	{
 		"VonHeikemen/lsp-zero.nvim",
@@ -21,7 +22,6 @@ return {
 		dependencies = {
 			-- LSP Support
 			{ "neovim/nvim-lspconfig" }, -- Required
-			{ "williamboman/mason-lspconfig.nvim" }, -- Optional
 
 			-- Autocompletion
 			{ "hrsh7th/nvim-cmp" }, -- Required
