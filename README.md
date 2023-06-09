@@ -6,8 +6,6 @@ The `sysConfig` directory contains subdirectories for each of my machines🖥️
 
 In the `homeConfig`🏠️ directory, you'll find various dotfiles and config files that make my home directory extra nixy
 
-`terminal` contains a config with my IDE📝 and configs by calling `nix build` against this flake.
-
 If you need a list of available Nix packages and options:
 
 - [nixpkgs Packages](https://search.nixos.org/packages) 📦️
