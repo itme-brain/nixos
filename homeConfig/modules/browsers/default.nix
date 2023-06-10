@@ -14,6 +14,7 @@ in
       (tor-browser-bundle-bin.override {
         useHardenedMalloc = false; # NixOS bug requires this
       })
+      vieb
     ];
   };
 }
