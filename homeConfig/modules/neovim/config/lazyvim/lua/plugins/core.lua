@@ -1,8 +1,8 @@
 return {
 	{
 		"projekt0n/github-nvim-theme",
-		lazy = false, -- make sure we load this during startup if it is your main colorscheme
-		priority = 1000, -- make sure to load this before all the other start plugins
+		lazy = false,
+		priority = 1000,
 		config = function()
 			require("github-theme").setup({
 				options = {
@@ -12,27 +12,6 @@ return {
 			vim.cmd("colorscheme github_dark_high_contrast")
 		end,
 	},
-
-	--	{
-	--		"catppuccin/nvim",
-	--		name = "catppuccin",
-	--		lazy = false,
-	--		priority = 1000,
-	--		config = function()
-	--			require("catppuccin").setup({
-	--				opts = {
-	--					color_overrides = {
-	--						mocha = {
-	--							base = "#000000",
-	--							mantle = "#000000",
-	--							crust = "#000000",
-	--						},
-	--					},
-	--				},
-	--			})
-	--			vim.cmd("colorscheme catppuccin-mocha")
-	--		end,
-	--	},
 
 	{
 		"VonHeikemen/lsp-zero.nvim",
