@@ -1,63 +1,53 @@
 return {
-	--	{
-	--		"projekt0n/github-nvim-theme",
-	--		lazy = false, -- make sure we load this during startup if it is your main colorscheme
-	--		priority = 1000, -- make sure to load this before all the other start plugins
-	--		config = function()
-	--			require("github-theme").setup({
-	--				options = {
-	--					transparent = true,
-	--				},
-	--			})
-	--			vim.cmd("colorscheme github_dark_high_contrast")
-	--		end,
-	--	},
-
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		lazy = false,
-		priority = 1000,
+		"projekt0n/github-nvim-theme",
+		lazy = false, -- make sure we load this during startup if it is your main colorscheme
+		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
-			require("catppuccin").setup({
-				opts = {
-					color_overrides = {
-						mocha = {
-							base = "#000000",
-							mantle = "#000000",
-							crust = "#000000",
-						},
-					},
+			require("github-theme").setup({
+				options = {
+					transparent = true,
 				},
 			})
-			vim.cmd("colorscheme catppuccin-mocha")
+			vim.cmd("colorscheme github_dark_high_contrast")
 		end,
 	},
 
-	{ "williamboman/mason.nvim", enabled = false },
-	{ "williamboman/mason-lspconfig.nvim", enabled = false }, -- Optional
+	--	{
+	--		"catppuccin/nvim",
+	--		name = "catppuccin",
+	--		lazy = false,
+	--		priority = 1000,
+	--		config = function()
+	--			require("catppuccin").setup({
+	--				opts = {
+	--					color_overrides = {
+	--						mocha = {
+	--							base = "#000000",
+	--							mantle = "#000000",
+	--							crust = "#000000",
+	--						},
+	--					},
+	--				},
+	--			})
+	--			vim.cmd("colorscheme catppuccin-mocha")
+	--		end,
+	--	},
 
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v2.x",
 		dependencies = {
-			-- LSP Support
-			{ "neovim/nvim-lspconfig" }, -- Required
+			{ "neovim/nvim-lspconfig" },
 
-			-- Autocompletion
-			{ "hrsh7th/nvim-cmp" }, -- Required
+			{ "hrsh7th/nvim-cmp" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
-			{ "hrsh7th/cmp-nvim-lsp" }, -- Required
+			{ "hrsh7th/cmp-nvim-lsp" },
 
-			{ "L3MON4D3/LuaSnip" }, -- Required
+			{ "L3MON4D3/LuaSnip" },
 		},
 	},
-
-	{ "raichoo/purescript-vim" },
-	{ "vmchale/dhall-vim" },
-	{ "elixir-lang/vim-elixir" },
-	{ "xiyaowong/transparent.nvim" },
 
 	{
 		"jackMort/ChatGPT.nvim",
@@ -73,4 +63,11 @@ return {
 			"nvim-telescope/telescope.nvim",
 		},
 	},
+
+	{ "raichoo/purescript-vim" },
+	{ "vmchale/dhall-vim" },
+	{ "elixir-lang/vim-elixir" },
+	{ "xiyaowong/transparent.nvim" },
+	{ "williamboman/mason.nvim", enabled = false },
+	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 }
