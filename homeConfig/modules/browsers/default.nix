@@ -16,5 +16,6 @@ in
       })
       vieb
     ];
+    home.file.".config/Vieb/viebrc".source = ./config/viebrc;
   };
 }
