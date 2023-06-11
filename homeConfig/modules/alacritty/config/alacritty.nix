@@ -9,12 +9,12 @@
     };
 
     window = {
-      opacity = 0.95;
+      opacity = 0.85;
     };
 
     colors = {
       primary = {
-        background = "#0d1117";
+        background = "#000000";
         foreground = "#cdd6f4";
       };
 
