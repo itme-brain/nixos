@@ -6,10 +6,10 @@ set closablepinnedtabs
 
 set darkreader
 set darkreaderblocklist=
-set darkreaderblocklist+=https://twitter.com
-set darkreaderblocklist+=https://reddit.com
-set darkreaderblocklist+=https://youtube.com
-set darkreaderblocklist+=https://github.com
+set darkreaderblocklist+=https://www.twitter.com
+set darkreaderblocklist+=https://www.reddit.com
+set darkreaderblocklist+=https://www.youtube.com
+set darkreaderblocklist+=https://www.github.com
 
 set downloadmethod=confirm
 set downloadpath=~/Downloads
@@ -66,6 +66,7 @@ set favoritepages=
 "Work
 set favoritepages+=https://search.nixos.org/packages
 set favoritepages+=https://www.protonmail.com/
+set favoritepages+=https://www.codewars.com/
 
 "Socials
 set favoritepages+=https://www.reddit.com/
