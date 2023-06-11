@@ -9,7 +9,7 @@
     };
 
     window = {
-      opacity = 0.85;
+      opacity = 0.80;
     };
 
     colors = {
