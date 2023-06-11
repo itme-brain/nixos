@@ -2,11 +2,6 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
-vim.opt.expandtab = true
-
 local lsp = require("lsp-zero").preset({})
 
 lsp.on_attach(function(client, bufnr)
@@ -46,7 +41,7 @@ cmp.setup({
 	},
 	sources = {
 		{ name = "nvim_lsp" },
-		--		{ name = "luasnip" },
+		{ name = "luasnip" },
 		-- other sources...
 	},
 	-- other configurations...
@@ -72,14 +67,14 @@ cmp.setup({
 		if vim.api.nvim_get_mode().mode == "c" then
 			return true
 		else
-			return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+			return not context.in_treesitter_capture("comment") and not context.in_syntax_group("comment")
 		end
 	end,
 	mapping = {
-		["<Tab>"] = cmp.mapping(function(fallback)
+		["<tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
-			-- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+			-- you could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
 			-- they way you will only jump inside the snippet region
 			elseif luasnip.expand_or_jumpable() then
 				luasnip.expand_or_jump()
@@ -90,7 +85,7 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 
-		["<S-Tab>"] = cmp.mapping(function(fallback)
+		["<s-tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
@@ -100,16 +95,14 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 
-		["<CR>"] = cmp.mapping({
+		["<cr>"] = cmp.mapping({
 			i = function(fallback)
 				if cmp.visible() and cmp.get_active_entry() then
-					cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+					cmp.confirm({ behavior = cmp.confirmbehavior.replace, select = true })
 				else
 					fallback()
 				end
 			end,
-			s = cmp.mapping.confirm({ select = true }),
-			c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
 		}),
 	},
 })

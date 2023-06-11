@@ -8,7 +8,12 @@ in
 { options.modules.utils = { enable = mkEnableOption "utils"; };
   config = mkIf cfg.enable {
     
-    services.syncthing.enable = true;
+#    services.syncthing = {
+#      enable = true;
+#      extraOptions = [
+#        "--gui-adddress:8384"
+#      ];
+#    };
 
     home.packages = with pkgs; [
       wget curl tree neofetch
