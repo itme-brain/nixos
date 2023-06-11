@@ -21,10 +21,10 @@ in
     };
 
 # Bandaid fix until I can get the declarative setup working
-    home.file.".config/nvim" = {
-      source = ./config/lazyvim;
-      recursive = true;
-    };
+#    home.file.".config/nvim" = {
+#      source = ./config/lazyvim;
+#      recursive = true;
+#    };
     home.packages = with pkgs; [
       lazygit
     ];
