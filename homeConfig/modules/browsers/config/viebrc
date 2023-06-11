@@ -9,6 +9,7 @@ set darkreaderblocklist=
 set darkreaderblocklist+=https://twitter.com
 set darkreaderblocklist+=https://reddit.com
 set darkreaderblocklist+=https://youtube.com
+set darkreaderblocklist+=https://github.com
 
 set downloadmethod=confirm
 set downloadpath=~/Downloads
