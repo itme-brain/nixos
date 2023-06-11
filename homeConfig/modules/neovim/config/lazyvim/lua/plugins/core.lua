@@ -58,4 +58,19 @@ return {
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
 	{ "xiyaowong/transparent.nvim" },
+
+	{
+		"jackMort/ChatGPT.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("chatgpt").setup({
+				api_key_cmd = "gpg --decrypt ~/Documents/tools/chatgpt-apikey.gpg 2>/dev/null",
+			})
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
+	},
 }
