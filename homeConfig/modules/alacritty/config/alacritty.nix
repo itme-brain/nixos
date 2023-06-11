@@ -14,77 +14,30 @@
 
     colors = {
       primary = {
-        background = "#0D1117";
-        foreground = "#CDD6F4";
-      };
-
-      cursor = {
-        text = "#1E1E2E";
-        cursor = "#F5E0DC";
-      };
-
-      search = {
-        matches = {
-          foreground = "#1E1E2E";
-          background = "#A6ADC8";
-        };
-        focused_match = {
-          foreground = "#1E1E2E";
-          background = "#A6E3A1";
-        };
-        footer_bar = {
-          foreground = "#1E1E2E";
-          background = "#A6ADC8";
-        };
-      };
-
-      hints = {
-        start = {
-          foreground = "#1E1E2E";
-          background = "#F9E2AF";
-        };
-        end = {
-          foreground = "#1E1E2E";
-          background = "#A6ADC8";
-        };
-      };
-
-      selection = {
-        text = "#1E1E2E";
-        background = "#F5E0DC";
+        background = "#0d1117";
+        foreground = "#cdd6f4";
       };
 
       normal = {
-        black = "#45475A";
-        red = "#F38BA8";
-        green = "#A6E3A1";
-        yellow = "#F9E2AF";
-        blue = "#89B4FA";
-        magenta = "#F5C2E7";
-        cyan = "#94E2D5";
-        white = "#BAC2DE";
+        black   = "#484f58";
+        red     = "#ff7b72";
+        green   = "#3fb950";
+        yellow  = "#d29922";
+        blue    = "#58a6ff";
+        magenta = "#bc8cff";
+        cyan    = "#39c5cf";
+        white   = "#b1bac4";
       };
 
       bright = {
-        black = "#585B70";
-        red = "#F38BA8";
-        green = "#A6E3A1";
-        yellow = "#F9E2AF";
-        blue = "#89B4FA";
-        magenta = "#F5C2E7";
-        cyan = "#94E2D5";
-        white = "#A6ADC8";
-      };
-
-      dim = {
-        black = "#45475A";
-        red = "#F38BA8";
-        green = "#A6E3A1";
-        yellow = "#F9E2AF";
-        blue = "#89B4FA";
-        magenta = "#F5C2E7";
-        cyan = "#94E2D5";
-        white = "#BAC2DE";
+        black   =  "#6e7681";
+        red     =  "#ffa198";
+        green   =  "#56d364";
+        yellow  =  "#e3b341";
+        blue    =  "#79c0ff";
+        magenta =  "#d2a8ff";
+        cyan    =  "#56d4dd";
+        white   =  "#f0f6fc";
       };
     };  
 
@@ -117,7 +70,7 @@
     size = 16;
 
     cursor = {
-      color = "#F5E0DC";
+      color = "#ffffff";
       style = {
         shape = "Block";
         blinking = "Always";
