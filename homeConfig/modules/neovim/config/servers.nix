@@ -3,7 +3,7 @@
 let
   lsp = with pkgs; [
     nil nixfmt
-    marksman
+    marksman shfmt
     sumneko-lua-language-server stylua
     haskell-language-server hlint
     nodePackages."@tailwindcss/language-server"
