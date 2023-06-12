@@ -8,6 +8,11 @@ vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
+vim.cmd([[
+  autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+  autocmd FileType haskell setlocal tabstop=4 shiftwidth=4 softtabstop=4
+]])
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 

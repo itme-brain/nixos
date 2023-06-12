@@ -1,9 +1,6 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
---
-vim.cmd([[highlight Normal guibg=NONE ctermbg=NONE]])
-
 local lsp = require("lsp-zero").preset({})
 
 lsp.on_attach(function(client, bufnr)
@@ -100,7 +97,7 @@ cmp.setup({
 		["<cr>"] = cmp.mapping({
 			i = function(fallback)
 				if cmp.visible() and cmp.get_active_entry() then
-					cmp.confirm({ behavior = cmp.confirmbehavior.replace, select = true })
+					cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
 				else
 					fallback()
 				end
