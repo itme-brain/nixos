@@ -49,4 +49,5 @@ return {
 	{ "xiyaowong/transparent.nvim" },
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
+	{ "catppuccin/nvim", enabled = false },
 }
