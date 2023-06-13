@@ -26,7 +26,7 @@ in
       recursive = true;
     };
     home.packages = with pkgs; [
-      lazygit
+      lazygit tmux
     ];
   };
 }
