@@ -11,6 +11,10 @@ in
       spotify
       discord
       steam
+
+      obs-studio
+      obs-studio-plugins.wlrobs
+      obs-studio-plugins.obs-pipewire-audio-capture
     ];
   };
 }
