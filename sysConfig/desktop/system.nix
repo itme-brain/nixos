@@ -71,7 +71,7 @@
     };
   };
 
-  # Locale
+# Locale
   time = {
     timeZone = "America/New_York";
   };
@@ -93,7 +93,7 @@
     useXkbConfig = true;
   };
 
-  # Networking
+# Networking
   networking = {
     hostName = "socrates";
     useDHCP = lib.mkDefault true;

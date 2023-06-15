@@ -7,20 +7,12 @@ let
 in 
 { options.modules.utils = { enable = mkEnableOption "utils"; };
   config = mkIf cfg.enable {
-    
-#    services.syncthing = {
-#      enable = true;
-#      extraOptions = [
-#        "--gui-adddress:8384"
-#      ];
-#    };
 
     home.packages = with pkgs; [
       wget curl tree neofetch
       unzip fping calc qrencode
       fd pkg-config pciutils 
-      neofetch mdbook rsync
-      docker gcc gnumake
+      mdbook rsync docker gcc gnumake
       android-studio
     ];  
   };
