@@ -21,7 +21,7 @@ function set_ps1_prompt() {
       git_branch="$(git rev-parse --short HEAD 2>/dev/null)"
     fi
 
-    git_branch=" \[\033[01;31m\]$git_branch󰘬:\[\033[00m\]"
+    git_branch="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
 
     if [ -f "$(git rev-parse --show-toplevel)/flake.nix" ]; then
         # If it exists, set the flake icon and color it blue
