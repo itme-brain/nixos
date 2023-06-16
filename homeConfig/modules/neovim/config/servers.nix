@@ -19,6 +19,9 @@ let
     pyright 
     purescript-language-server
   ];
-
+  
+  debug = with pkgs; [
+    haskellPackages.haskell-debug-adapter
+  ];
 in
-  lsp ++ lsp'
+  lsp ++ lsp' ++ debug
