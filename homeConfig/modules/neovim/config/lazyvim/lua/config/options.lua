@@ -11,6 +11,7 @@ vim.opt.smartindent = true
 vim.cmd([[
   autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
   autocmd FileType haskell setlocal tabstop=4 shiftwidth=4 softtabstop=4
+  autocmd FileType purescript setlocal tabstop=4 shiftwidth=4 softtabstop=4
 ]])
 
 vim.opt.ignorecase = true
