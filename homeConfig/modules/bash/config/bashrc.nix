@@ -1,5 +1,6 @@
 ''
 export EDITOR=nvim
+export DIRENV_LOG_FORMAT=
 
 alias hmup="home-manager switch --flake '$HOME/Documents/projects/nixos#bryan'";
 alias nixup="sudo nixos-rebuild switch --flake '$HOME/Documents/projects/nixos#socrates'";
