@@ -35,10 +35,7 @@ require("null-ls").setup({
 	end,
 })
 
---lsp.on_attach(function(client, bufnr)
---	lsp.default_keymaps({ buffer = bufnr })
---end)
-
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lsp.setup_servers({
 	"tsserver",
 	"eslint",
@@ -54,6 +51,7 @@ lsp.setup_servers({
 	"purescriptls",
 	"tailwindcss",
 	"bashls",
+	"dhall_lsp_server",
 })
 
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
