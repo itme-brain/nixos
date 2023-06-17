@@ -124,6 +124,6 @@ dap.configurations.haskell = {
 		ghciPrompt = "λ: ",
 		-- Adjust the prompt to the prompt you see when you invoke the ghci command below
 		ghciInitialPrompt = "λ: ",
-		ghciCmd = "ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
+		ghciCmd = "stack ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
 	},
 }
