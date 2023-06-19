@@ -1,34 +1,15 @@
 return {
 	{
-		"projekt0n/github-nvim-theme",
+		"olimorris/onedarkpro.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			require("github-theme").setup({
+			require("onedarkpro").setup({
 				options = {
-					transparent = true,
-				},
-				styles = { -- Style to be applied to different syntax groups
-					comments = "NONE", -- Value is any valid attr-list value `:help attr-list`
-					functions = "italic",
-					keywords = "bold",
-					variables = "NONE",
-					conditionals = "NONE",
-					constants = "NONE",
-					numbers = "NONE",
-					operators = "NONE",
-					strings = "NONE",
-					types = "NONE",
-				},
-				darken = { -- Darken floating windows and sidebar-like windows
-					floats = true,
-					sidebars = {
-						enable = true,
-						list = {}, -- Apply dark background to specific windows
-					},
+					transparency = true,
 				},
 			})
-			vim.cmd("colorscheme github_dark")
+			vim.cmd("colorscheme onedark_dark")
 		end,
 	},
 
