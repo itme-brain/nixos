@@ -79,6 +79,12 @@ cmp.setup({
 	-- other configurations...
 })
 
+require("lualine").setup({
+	options = {
+		theme = "onedark",
+	},
+})
+
 cmp.setup({
 	enabled = function()
 		-- disable completion in comments
