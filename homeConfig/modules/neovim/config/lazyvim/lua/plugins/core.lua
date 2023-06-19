@@ -65,7 +65,7 @@ return {
 	{ "raichoo/purescript-vim" },
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
-	{ "xiyaowong/transparent.nvim" },
+	--	{ "xiyaowong/transparent.nvim" },
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 	{ "jay-babu/mason-nvim-dap.nvim", enabled = false },
