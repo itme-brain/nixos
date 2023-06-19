@@ -9,7 +9,7 @@ return {
 					transparent = true,
 				},
 			})
-			vim.cmd("colorscheme github_dark")
+			vim.cmd("colorscheme github_dark_high_contrast")
 		end,
 	},
 

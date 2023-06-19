@@ -18,6 +18,12 @@
   };
   environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
 
+# DE
+  programs.sway = {
+    enable = true;
+    package = null;
+  };
+
 # Fonts
   fonts.fonts = with pkgs; [
     terminus_font
@@ -102,6 +108,7 @@
     enable = true;
     startWhenNeeded = true;
     settings = {
+      X11Forwarding = true;
       PasswordAuthentication = false;
     };
   };
