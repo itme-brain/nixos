@@ -19,25 +19,25 @@
       };
 
       normal = {
-        black   = "#484f58";
-        red     = "#ff7b72";
-        green   = "#3fb950";
-        yellow  = "#d29922";
-        blue    = "#58a6ff";
-        magenta = "#bc8cff";
-        cyan    = "#39c5cf";
-        white   = "#b1bac4";
+        black   = "#1e2127";
+        red     = "#e06c75";
+        green   = "#98c379";
+        yellow  = "#d19a66";
+        blue    = "#61afef";
+        magenta = "#c678dd";
+        cyan    = "#56b6c2";
+        white   = "#abb2bf";
       };
 
       bright = {
-        black   =  "#6e7681";
-        red     =  "#ffa198";
-        green   =  "#56d364";
-        yellow  =  "#e3b341";
-        blue    =  "#79c0ff";
-        magenta =  "#d2a8ff";
-        cyan    =  "#56d4dd";
-        white   =  "#f0f6fc";
+        black   =  "#5c6370";
+        red     =  "#e06c75";
+        green   =  "#98c379";
+        yellow  =  "#d19a66";
+        blue    =  "#61afef";
+        magenta =  "#c678dd";
+        cyan    =  "#56b6c2";
+        white   =  "#ffffff";
       };
     };  
 
