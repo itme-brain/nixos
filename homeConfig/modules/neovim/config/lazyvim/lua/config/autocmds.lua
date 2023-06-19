@@ -70,8 +70,15 @@ cmp.setup({
 		{ name = "luasnip" },
 		-- other sources...
 	},
+	formatting = {
+		format = function(entry, vim_item)
+			vim_item.menu = ""
+			return vim_item
+		end,
+	},
 	-- other configurations...
 })
+
 cmp.setup({
 	enabled = function()
 		-- disable completion in comments
