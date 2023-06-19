@@ -30,4 +30,6 @@ function cdg() {
 }
 
 source ~/Documents/projects/ldv/ldv.sh
+
+set -o vi
 ''
