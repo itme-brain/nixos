@@ -17,7 +17,7 @@ in
     };
 
     home.packages = with pkgs; [
-      spotify discord steam
+      spotify discord steam showmethekey
     ];
   };
 }
