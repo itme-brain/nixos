@@ -32,6 +32,7 @@ in
       grim
       slurp
       wl-clipboard
+      mako
 
       imv
       gimp
@@ -41,7 +42,7 @@ in
       noto-fonts-cjk
       noto-fonts-emoji
 
-      emote 
+      emote
     ];
   };
 }
