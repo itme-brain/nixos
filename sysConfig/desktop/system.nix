@@ -112,4 +112,6 @@
       PasswordAuthentication = false;
     };
   };
+
+  programs.steam.enable = true;
 }
