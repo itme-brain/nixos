@@ -44,5 +44,9 @@ in
 
       emote
     ];
+
+    home.file.".config/mako/config" = {
+        source = ./config/mako;
+      };
   };
 }
