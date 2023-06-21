@@ -23,7 +23,6 @@ in
     modifier = "Mod1";
     menu = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
     terminal = "alacritty";
-    startup = [{ command = "exec { exec alacritty -e sh -c 'neofetch; exec $SHELL'"; always = true; }];
 
     input = {
       keyboard = {
@@ -68,4 +67,11 @@ in
       "${modifier}+Shift+d" = "exec emote";
     };
   };
+
+  extraConfig = ''
+    for_window [app_id="one.alynx.showmethekey" title="Floating Window - Show Me The Key"] {
+      floating enable
+      sticky enable
+    }  
+  '';
 }
