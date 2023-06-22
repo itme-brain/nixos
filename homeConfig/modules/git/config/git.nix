@@ -9,7 +9,7 @@
   };
 
   ignores = [
-    "*.node_modules"
-    "*.direnv"
+    "node_modules"
+    ".direnv"
   ];
 }
