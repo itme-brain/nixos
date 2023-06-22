@@ -108,6 +108,10 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 		["<S-Tab>"] = cmp.mapping.select_prev_item(),
+
+		["<CR>"] = cmp.mapping(function(fallback)
+			fallback()
+		end, { "i", "s" }),
 	},
 })
 
