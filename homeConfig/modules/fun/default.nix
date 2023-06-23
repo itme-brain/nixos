@@ -18,7 +18,6 @@ in
 
     home.packages = with pkgs; [
       spotify webcord showmethekey
-      wineWowPackages.waylandFull lutris
     ];
   };
 }

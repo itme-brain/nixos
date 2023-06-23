@@ -32,4 +32,7 @@ function cdg() {
 source ~/Documents/projects/ldv/ldv.sh
 
 set -o vi
+
+bind 'set completion-ignore-case on'
+bind 'set completion-map-case on'
 ''
