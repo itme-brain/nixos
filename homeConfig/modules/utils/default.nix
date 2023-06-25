@@ -13,7 +13,7 @@ in
       unzip fping calc qrencode
       fd pkg-config pciutils 
       mdbook rsync docker gcc gnumake
-      android-studio exercism
+      exercism
     ];  
   };
 }
