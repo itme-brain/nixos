@@ -59,8 +59,6 @@
     execWheelOnly = true;
   };
 
-  programs.steam.enable = true;
-
 # System Services
   services = {
     trezord.enable = true;
