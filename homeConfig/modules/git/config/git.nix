@@ -11,5 +11,6 @@
   ignores = [
     "node_modules"
     ".direnv"
+    "dist-newstyle"
   ];
 }
