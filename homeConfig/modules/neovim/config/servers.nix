@@ -13,11 +13,11 @@ let
   lsp' = with pkgs.nodePackages; [
     vscode-langservers-extracted 
     typescript-language-server 
-    eslint
     bash-language-server 
     diagnostic-languageserver
-    pyright 
+    pyright
     purescript-language-server
+    volar
   ];
 
 in

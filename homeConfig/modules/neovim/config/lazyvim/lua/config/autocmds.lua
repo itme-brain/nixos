@@ -37,8 +37,7 @@ require("null-ls").setup({
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lsp.setup_servers({
-	"tsserver",
-	"eslint",
+	--"tsserver",
 	"hls",
 	"pyright",
 	"nil_ls",
@@ -52,11 +51,16 @@ lsp.setup_servers({
 	"tailwindcss",
 	"bashls",
 	"dhall_lsp_server",
+	"volar",
 })
 
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
 
 lsp.setup()
+
+require("lspconfig").volar.setup({
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+})
 
 local cmp = require("cmp")
 cmp.setup({
