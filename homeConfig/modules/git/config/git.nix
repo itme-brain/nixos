@@ -12,5 +12,8 @@
     "node_modules"
     ".direnv"
     "dist-newstyle"
+    ".nuxt/"
+    ".output/"
+    "dist"
   ];
 }
