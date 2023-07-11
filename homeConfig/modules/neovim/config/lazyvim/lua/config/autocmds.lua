@@ -62,6 +62,10 @@ require("lspconfig").volar.setup({
 	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
 })
 
+require("lspconfig").tailwindcss.setup({
+	cmd = { "npx", "tailwindcss-language-server", "--stdio" },
+})
+
 local cmp = require("cmp")
 cmp.setup({
 	snippet = {
