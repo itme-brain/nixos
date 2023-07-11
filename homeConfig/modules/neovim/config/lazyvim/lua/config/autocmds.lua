@@ -6,6 +6,15 @@ vim.cmd([[
   au BufRead,BufNewFile *.purs set filetype=purescript
 ]])
 
+require("which-key").register({
+	t = {
+		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | terminal<CR>",
+		"Open terminal in new window",
+	},
+}, {
+	prefix = "<leader>",
+})
+
 require("notify").setup({
 	background_colour = "#000000",
 })
