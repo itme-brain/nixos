@@ -45,7 +45,8 @@ return {
 		},
 	},
 
-	{
+	--[[
+  {
 		"jackMort/ChatGPT.nvim",
 		event = "VeryLazy",
 		config = function()
@@ -59,12 +60,12 @@ return {
 			"nvim-telescope/telescope.nvim",
 		},
 	},
+]]
 
 	{ "romgrk/nvim-treesitter-context" },
 	{ "raichoo/purescript-vim" },
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
-	--	{ "xiyaowong/transparent.nvim" },
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 	{ "jay-babu/mason-nvim-dap.nvim", enabled = false },
