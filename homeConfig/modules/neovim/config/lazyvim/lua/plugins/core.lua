@@ -60,6 +60,7 @@ return {
 		},
 	},
 
+	{ "romgrk/nvim-treesitter-context" },
 	{ "raichoo/purescript-vim" },
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
