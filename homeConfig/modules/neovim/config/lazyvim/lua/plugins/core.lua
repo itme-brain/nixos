@@ -45,6 +45,13 @@ return {
 		},
 	},
 
+	{
+		"neovim/nvim-lspconfig",
+		opts = {
+			autoformat = false,
+		},
+	},
+
 	--[[
   {
 		"jackMort/ChatGPT.nvim",
