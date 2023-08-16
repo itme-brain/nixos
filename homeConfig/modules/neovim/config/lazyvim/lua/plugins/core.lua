@@ -89,6 +89,18 @@ return {
 		end,
 	},
 
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    config = function()
+      require("neo-tree").setup({
+        window = {
+          position = "left",
+          width = 20,
+        },
+      })
+    end,
+  },
+
 	{ "raichoo/purescript-vim" },
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
