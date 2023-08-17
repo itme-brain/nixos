@@ -15,6 +15,7 @@ in
       mdbook rsync docker gcc gnumake
       exercism libreoffice-qt pandoc
       texlive.combined.scheme-tetex
+      pdftk
     ];  
   };
 }
