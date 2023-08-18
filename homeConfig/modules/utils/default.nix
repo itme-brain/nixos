@@ -13,9 +13,8 @@ in
       unzip fping calc qrencode
       fd pkg-config pciutils 
       mdbook rsync docker gcc gnumake
-      exercism libreoffice-qt pandoc
-      texlive.combined.scheme-tetex
+      exercism pandoc texlive.combined.scheme-tetex
       pdftk
-    ];  
+    ];
   };
 }
