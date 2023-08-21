@@ -35,7 +35,7 @@ in
 
       imv
       gimp
-      evince
+      okular
 
       noto-fonts
       noto-fonts-cjk
