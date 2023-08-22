@@ -11,6 +11,7 @@ in
 
     home.packages = with pkgs; [
       terminus-nerdfont
+      monocraft
       ranger
       highlight
     ];

@@ -43,22 +43,22 @@
 
     font = {
       normal = {
-        family = "Terminus";
+        family = "Monocraft";
         style = "Regular";
       };
 
       bold = {
-        family = "Terminus";
+        family = "Monocraft";
         style = "Bold";
       };
 
       italic = {
-        family = "Terminus";
+        family = "Monocraft";
         style = "Italic";
       };
 
       bold_italic = {
-        family = "Terminus";
+        family = "Monocraft";
         style = "Bold Italic";
       };
 
