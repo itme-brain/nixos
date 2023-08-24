@@ -14,7 +14,7 @@ in
       fd pkg-config pciutils 
       mdbook rsync docker gcc gnumake
       exercism pandoc texlive.combined.scheme-tetex
-      pdftk
+      pdftk zoom-us
     ];
   };
 }
