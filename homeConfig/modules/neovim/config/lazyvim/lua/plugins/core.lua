@@ -101,6 +101,7 @@ return {
     end,
   },
 
+  { "tpope/vim-fugitive" },
 	{ "raichoo/purescript-vim" },
 	{ "vmchale/dhall-vim" },
 	{ "elixir-lang/vim-elixir" },
