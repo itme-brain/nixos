@@ -13,6 +13,7 @@
   
 # Bootloader
   boot.loader = {
+    timeout = null;
     grub = {
       enable = true;
       useOSProber = true;
