@@ -11,11 +11,16 @@ in
     home.packages = with pkgs; [
       wget curl tree neofetch
       unzip fping calc qrencode
-      fd pkg-config pciutils 
+      fd pkg-config pciutils
       mdbook rsync docker gcc gnumake
       exercism pandoc texlive.combined.scheme-tetex
       pdftk zoom-us zip teams-for-linux
       aerc
     ];
+
+    home.file.".config/aerc" = {
+      source = ./aerc;
+      recursive = true;
+    };
   };
 }
