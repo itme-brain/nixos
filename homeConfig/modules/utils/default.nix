@@ -15,7 +15,7 @@ in
       mdbook rsync docker gcc gnumake
       exercism pandoc texlive.combined.scheme-tetex
       pdftk zoom-us zip teams-for-linux
-      aerc
+      aerc weechat
     ];
 
     home.file.".config/aerc" = {
