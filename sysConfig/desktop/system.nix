@@ -2,6 +2,12 @@
 
 { system.stateVersion = "22.11";
 
+  options.systemName = lib.mkOption {
+    type = lib.types.str;
+    default = "socrates";
+    description = "The name of the system.";
+  };
+
 # Nix
   nix = {
     package = pkgs.nixFlakes;
