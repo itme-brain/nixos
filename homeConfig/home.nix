@@ -1,14 +1,7 @@
-{ ... }:
-
-{
-  programs.home-manager.enable = true;
-  imports = [ (import ./modules) ];
-  home.stateVersion = "22.11";
-
-  home.username = "bryan";
-  home.homeDirectory = "/home/bryan";
-
-  modules = {
+{ config, ... }:
+let
+  hostname = config.systemName;
+  socratesModules = {
     gui.enable = true;
     browsers.enable = true;
     alacritty.enable = true;
@@ -23,4 +16,20 @@
     security.enable = true;
     corn.enable = true;
   };
+  archimedesModules = {
+  };
+  selectedModules =
+    if hostname == "archimedes"
+      then archimedesModules
+    else socratesModules;
+in
+{
+  programs.home-manager.enable = true;
+  imports = [ (import ./modules) ];
+  home.stateVersion = "22.11";
+
+  home.username = "bryan";
+  home.homeDirectory = "/home/bryan";
+
+  modules = selectedModules;
 }
