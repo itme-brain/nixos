@@ -1,14 +1,10 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
+  hostname = config.systemName;
   cfg = config.modules.utils;
-
-in 
-{ options.modules.utils = { enable = mkEnableOption "utils"; };
-  config = mkIf cfg.enable {
-
-    home.packages = with pkgs; [
+  socratesPkgs = with pkgs; [
       wget curl tree neofetch
       unzip fping calc qrencode
       fd pkg-config pciutils
@@ -16,7 +12,19 @@ in
       exercism pandoc texlive.combined.scheme-tetex
       pdftk zoom-us zip teams-for-linux
       aerc weechat
-    ];
+  ];
+  archimedesPkgs = with pkgs; [
+    wget curl tree qrencode fd
+    zip gcc gnumake docker rsync
+  ];
+  selectedPkgs =
+    if hostname == "archimedes"
+      then archimedesPkgs
+    else socratesPkgs;
+in
+{ options.modules.utils = { enable = mkEnableOption "utils"; };
+  config = mkIf cfg.enable {
+    home.packages = selectedPkgs;
 
     home.file.".config/aerc" = {
       source = ./aerc;
