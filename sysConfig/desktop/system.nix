@@ -2,10 +2,10 @@
 
 { system.stateVersion = "22.11";
 
-  options.systemName = lib.mkOption {
+  options.systemType = lib.mkOption {
     type = lib.types.str;
-    default = "socrates";
-    description = "The name of the system.";
+    default = "desktop";
+    description = "The type of system";
   };
 
 # Nix
@@ -22,6 +22,7 @@
       options = "--delete-older-than 30d";
     };
   };
+
   environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
 
 # DE
@@ -82,7 +83,7 @@
   time = {
     timeZone = "America/New_York";
   };
-  
+
   services.timesyncd = {
     enable = true;
     servers = [
@@ -115,8 +116,9 @@
     enable = true;
     startWhenNeeded = true;
     settings = {
-      X11Forwarding = true;
+      X11Forwarding = false;
       PasswordAuthentication = false;
+      PermitRootLogin = false;
     };
   };
 }
