@@ -1,7 +1,7 @@
 { config, ... }:
 let
-  hostname = config.systemName;
-  socratesModules = {
+  sys = config.systemType;
+  pcModules = {
     gui.enable = true;
     browsers.enable = true;
     alacritty.enable = true;
@@ -16,12 +16,17 @@ let
     security.enable = true;
     corn.enable = true;
   };
-  archimedesModules = {
+  serverModules = {
+    bash.enable = true;
+    git.enable = true;
+    gpg.enable = true;
+    utils.enable = true;
+    tmux.enable = true;
   };
   selectedModules =
-    if hostname == "archimedes"
-      then archimedesModules
-    else socratesModules;
+    if sys == "server"
+      then serverModules
+    else pcModules;
 in
 {
   programs.home-manager.enable = true;
