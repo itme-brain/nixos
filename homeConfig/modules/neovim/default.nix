@@ -1,10 +1,10 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.neovim;
 
-in 
+in
 { options.modules.neovim = { enable = mkEnableOption "neovim"; };
   config = mkIf cfg.enable {
     programs.neovim = {

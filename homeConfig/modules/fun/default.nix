@@ -1,10 +1,10 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.fun;
 
-in 
+in
 { options.modules.fun = { enable = mkEnableOption "fun"; };
   config = mkIf cfg.enable {
     programs.obs-studio = {
