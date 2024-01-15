@@ -2,25 +2,26 @@
 
 with lib;
 let
-  hostname = config.systemName;
+  sys = config.systemType;
   cfg = config.modules.utils;
-  socratesPkgs = with pkgs; [
+  pcPkgs = with pkgs; [
       wget curl tree neofetch
       unzip fping calc qrencode
       fd pkg-config pciutils
       mdbook rsync docker gcc gnumake
       exercism pandoc texlive.combined.scheme-tetex
       pdftk zoom-us zip teams-for-linux
-      aerc weechat
+      aerc weechat ranger
   ];
-  archimedesPkgs = with pkgs; [
+  serverPkgs = with pkgs; [
     wget curl tree qrencode fd
     zip gcc gnumake docker rsync
+    ranger
   ];
   selectedPkgs =
-    if hostname == "archimedes"
-      then archimedesPkgs
-    else socratesPkgs;
+    if sys == "server"
+      then serverPkgs
+    else pcPkgs;
 in
 { options.modules.utils = { enable = mkEnableOption "utils"; };
   config = mkIf cfg.enable {

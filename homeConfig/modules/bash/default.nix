@@ -2,24 +2,24 @@
 
 with lib;
 let
-  hostname = config.systemName;
+  sys = config.systemType;
   cfg = config.modules.bash;
-  socratesConfigs = {
+  pcConfigs = {
       initExtra = import ./config/desktop/prompt.nix;
       profileExtra = import ./config/desktop/bashprofile.nix;
       bashrcExtra = import ./config/desktop/bashrc.nix;
       shellAliases = import ./config/desktop/alias.nix;
   };
-  archimedesConfigs = {
+  serverConfigs = {
       initExtra = import ./config/server/prompt.nix;
       profileExtra = import ./config/server/bashprofile.nix;
       bashrcExtra = import ./config/server/bashrc.nix;
       shellAliases = import ./config/server/alias.nix;
   };
   selectedConfig =
-    if hostname == "archimedes"
-      then archimedesConfigs
-    else socratesConfigs;
+    if sys == "server"
+      then serverConfigs
+    else pcConfigs;
 in
 { options.modules.bash = { enable = mkEnableOption "bash"; };
   config = mkIf cfg.enable {
