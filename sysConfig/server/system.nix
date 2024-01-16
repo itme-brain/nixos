@@ -2,6 +2,12 @@
 
 { system.stateVersion = "22.11";
 
+  options.systemType = lib.mkOption {
+    type = lib.types.str;
+    default = "server";
+    description = "The type of system";
+  };
+
 # Nix
   nix = {
     package = pkgs.nixFlakes;
