@@ -28,18 +28,18 @@
   };
 
 # FStab
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
+  fileSystems."/" = {
+      device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
       fsType = "ext4";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/1639ee20-28d6-4649-814d-ba981c138b35";
+  fileSystems."/home" = {
+      device = "/dev/disk/by-uuid/1639ee20-28d6-4649-814d-ba981c138b35";
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/74B9-4AAF";
+  fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/74B9-4AAF";
       fsType = "vfat";
     };
 

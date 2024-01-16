@@ -28,18 +28,18 @@
     };
   };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/79093c66-1283-44d4-b03c-f87956bbada1";
+  fileSystems."/" = {
+      device = "/dev/disk/by-uuid/79093c66-1283-44d4-b03c-f87956bbada1";
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/0509-1D1F";
+  fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/0509-1D1F";
       fsType = "vfat";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/1e2d04b2-9a02-4de6-88cc-1e35d0838036";
+  fileSystems."/home" = {
+      device = "/dev/disk/by-uuid/1e2d04b2-9a02-4de6-88cc-1e35d0838036";
       fsType = "ext4";
     };
 
