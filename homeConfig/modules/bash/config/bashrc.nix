@@ -2,11 +2,6 @@
 export EDITOR=nvim
 export DIRENV_LOG_FORMAT=
 
-alias hmup="home-manager switch --flake '$HOME/Documents/projects/nixos#bryan'";
-alias nixup="sudo nixos-rebuild switch --flake '$HOME/Documents/projects/nixos#socrates'";
-alias chat="weechat";
-alias open="xdg-open";
-
 function cdg() {
   if [[ $1 == "--help" ]]; then
     echo "A simple utility for navigating to the root of a git repo"

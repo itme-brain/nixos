@@ -16,7 +16,7 @@ in
       bashrcExtra = import ./config/bashrc.nix;
       shellAliases = import ./config/alias.nix;
     };
-    
+
     services.gpg-agent.enableBashIntegration = true;
     programs = {
       direnv = {
