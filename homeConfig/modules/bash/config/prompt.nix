@@ -12,6 +12,7 @@ is_ssh_session() {
 function set_ps1_prompt() {
   local git_branch=""
   local flake_icon=""
+  local python_icon=""
   local cur_dir=""
 
   if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -40,11 +41,15 @@ function set_ps1_prompt() {
     cur_dir="\[\033[01;34m\]\w\[\033[00m\]"
   fi
 
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    python_icon="\[\033[01;33m\] \[\033[00m\]"
+  fi
+
   if [ -n "''${IN_NIX_SHELL:+x}" ]; then
-    PS1="$cur_dir\n$flake_icon\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
+    PS1="$cur_dir\n$flake_icon$python_icon\[\033[01;32m\]nixShell>$git_branch\[\033[00m\]"
   else
     if ! is_ssh_session; then
-      PS1="\n$cur_dir\n$flake_icon\[\033[01;32m\]>$git_branch\[\033[00m\]"
+      PS1="\n$cur_dir\n$flake_icon$python_icon\[\033[01;32m\]>$git_branch\[\033[00m\]"
     else
       PS1="\n\[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]\u@\h:\[\033[00m\] "
     fi
