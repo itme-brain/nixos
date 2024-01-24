@@ -12,8 +12,8 @@ in
       wget curl tree neofetch
       unzip fping calc qrencode
       fd pkg-config pciutils
-      mdbook rsync docker gcc gnumake
-      exercism pandoc texlive.combined.scheme-tetex
+      mdbook rsync docker exercism pandoc
+      texlive.combined.scheme-tetex
       pdftk zoom-us zip teams-for-linux
       aerc weechat asciidoctor
     ];
