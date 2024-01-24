@@ -11,10 +11,7 @@ in
     programs.chromium.enable = true;
 
     home.packages = with pkgs; [
-      (tor-browser-bundle-bin.override {
-        useHardenedMalloc = false; # NixOS bug requires this
-      })
-      vieb
+     tor-browser vieb
     ];
     home.file.".config/Vieb/viebrc".source = ./config/viebrc;
   };
