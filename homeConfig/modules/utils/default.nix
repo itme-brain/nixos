@@ -13,7 +13,7 @@ in
       unzip fping calc qrencode
       fd pkg-config pciutils
       mdbook rsync docker exercism pandoc
-      texlive.combined.scheme-tetex
+      texlive.combined.scheme-tetex glibc
       pdftk zoom-us zip teams-for-linux
       aerc weechat asciidoctor
     ];
