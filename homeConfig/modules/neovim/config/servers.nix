@@ -8,7 +8,6 @@ let
     haskell-language-server hlint
     nodePackages."@tailwindcss/language-server"
     dhall-lsp-server
-    llvmPackages_rocm.clang-tools-extra
   ];
 
   lsp' = with pkgs.nodePackages; [
