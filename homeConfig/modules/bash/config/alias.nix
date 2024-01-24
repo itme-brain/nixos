@@ -3,4 +3,5 @@
   nixup = "sudo nixos-rebuild switch --flake $HOME/Documents/projects/nixos#socrates";
   chat = "weechat";
   open = "xdg-open";
+  vi = "vim";
 }

@@ -18,6 +18,7 @@
     git.enable = true;
     gpg.enable = true;
     neovim.enable = true;
+    vim.enable = true;
 
     utils.enable = true;
     security.enable = true;

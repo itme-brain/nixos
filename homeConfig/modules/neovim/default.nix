@@ -9,7 +9,6 @@ in
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
-      viAlias = true;
       vimAlias = true;
       extraPackages = import ./config/servers.nix { inherit pkgs; };
     };
@@ -19,7 +18,7 @@ in
       recursive = true;
     };
     home.packages = with pkgs; [
-      lazygit tmux
+      lazygit
     ];
   };
 }
