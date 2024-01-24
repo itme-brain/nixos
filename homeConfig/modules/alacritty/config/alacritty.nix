@@ -39,9 +39,10 @@
         cyan    =  "#56b6c2";
         white   =  "#ffffff";
       };
-    };  
+    };
 
     font = {
+      size = 12;
       normal = {
         family = "Terminus";
         style = "Regular";
@@ -61,21 +62,13 @@
         family = "Terminus";
         style = "Bold Italic";
       };
-
-      fallback = [
-        { family = "Noto Color Emoji"; }
-      ];
     };
 
-    size = 16;
 
     cursor = {
-      color = "#ffffff";
-      style = {
-        shape = "Block";
-        blinking = "Always";
-        blink_interval = 750;
-      };
+    #  shape = "Block";
+    #  blinking = "Always";
+    #  blink_interval = 750;
     };
   };
 }
