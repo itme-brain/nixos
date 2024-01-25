@@ -17,7 +17,6 @@ in
       shellAliases = import ./config/alias.nix;
     };
 
-    services.gpg-agent.enableBashIntegration = true;
     programs = {
       direnv = {
       	enable = true;
