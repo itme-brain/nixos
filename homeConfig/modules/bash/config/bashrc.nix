@@ -2,6 +2,8 @@
 export EDITOR=nvim
 export DIRENV_LOG_FORMAT=
 
+eval "$(direnv hook bash)"
+
 function cdg() {
   if [[ $1 == "--help" ]]; then
     echo "A simple utility for navigating to the root of a git repo"
