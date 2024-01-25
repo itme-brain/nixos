@@ -6,6 +6,15 @@
 
   extraConfig = {
     init = { defaultBranch = "main"; };
+    mergetool = {
+      lazygit = {
+        cmd = "lazygit";
+        trustExitCode = true;
+      };
+    };
+    merge = {
+      tool = "lazygit";
+    };
   };
 
   ignores = [
