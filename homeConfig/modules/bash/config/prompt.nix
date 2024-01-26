@@ -5,7 +5,7 @@ check_ssh() {
   fi
 }
 
-function check_venv() {
+check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
     local nix_icon="\[\033[01;34m\] \[\033[00m\]"
     venv_icons+="$nix_icon"
@@ -23,7 +23,7 @@ function check_venv() {
   fi
 }
 
-function set_git_dir() {
+set_git_dir() {
   local git_curr_dir=$(realpath --relative-to="$git_root" .)
   local git_root_dir=$(basename "$git_root")
 
@@ -34,7 +34,7 @@ function set_git_dir() {
   fi
 }
 
-function check_git() {
+check_git() {
   if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     local git_branch=$(git branch --show-current)
     if [ -z "$git_branch" ]; then
