@@ -11,7 +11,7 @@ function check_venv() {
     venv_icons+="$nix_icon"
 
     if [ -n "$VIRTUAL_ENV" ]; then
-      python_icon="\[\033[01;96m\] \[\033[00m\]"
+      python_icon="\[\033[01;33m\] \[\033[00m\]"
       venv_icons+="$python_icon"
     fi
     if [ -d  "''${git_root}/node_modules" ]; then
@@ -25,6 +25,8 @@ function check_venv() {
 
 function set_git_dir() {
   local git_curr_dir=$(realpath --relative-to="$git_root" .)
+  local git_root_dir=$(basename "$git_root")
+
   if [ "$git_curr_dir" == "." ]; then
     working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
   else
@@ -40,7 +42,6 @@ function check_git() {
     fi
 
     git_root=$(git rev-parse --show-toplevel)
-    local git_root_dir=$(basename "$git_root")
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
 
     set_git_dir
