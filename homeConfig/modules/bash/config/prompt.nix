@@ -11,11 +11,11 @@ function check_venv() {
     venv_icons+="$nix_icon"
 
     if [ -n "$VIRTUAL_ENV" ]; then
-      python_icon="\[\033[01;31m\] \[\033[00m\]"
+      python_icon="\[\033[01;96m\] \[\033[00m\]"
       venv_icons+="$python_icon"
     fi
     if [ -d  "''${git_root}/node_modules" ]; then
-      node_icon="\[\033[01;33m\]󰌞 \[\033[00m\]"
+      node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
       venv_icons+="$node_icon"
     fi
   else
