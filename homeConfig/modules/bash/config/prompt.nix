@@ -14,13 +14,12 @@ check_venv() {
     if [ -n "$VIRTUAL_ENV" ]; then
       local python_icon="\[\033[01;33m\] \[\033[00m\]"
       venv_icons+="$python_icon"
-      return 0
     fi
     if [ -d  "''${git_root}/node_modules" ]; then
       local node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
       venv_icons+="$node_icon"
-      return 0
     fi
+
     return 0
   else
     unset venv_icons
@@ -29,9 +28,6 @@ check_venv() {
 }
 
 set_git_dir() {
-  local git_curr_dir=$(realpath --relative-to="$git_root" .)
-  local git_root_dir=$(basename "$git_root")
-
   if [ "$git_curr_dir" == "." ]; then
     working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
     return 0
@@ -41,17 +37,22 @@ set_git_dir() {
   fi
 }
 
-check_git() {
+check_in_project() {
   if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     local git_branch=$(git branch --show-current)
+    local git_root=$(git rev-parse --show-toplevel)
+
+    local git_curr_dir=$(realpath --relative-to="$git_root" .)
+    local git_root_dir=$(basename "$git_root")
+
     if [ -z "$git_branch" ]; then
       git_branch=$(git rev-parse --short HEAD)
     fi
 
-    git_root=$(git rev-parse --show-toplevel)
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
-
     set_git_dir
+    check_venv
+
     return 0
   fi
 }
@@ -62,13 +63,11 @@ function set_prompt() {
   local working_dir="\[\033[01;34m\]\w\[\033[00m\]"
 
   local ssh_PS1
-  local git_root
   local venv_icons
   local git_branch_PS1
 
-  check_git
   check_ssh
-  check_venv
+  check_in_project
 
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
   return 0
