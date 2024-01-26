@@ -2,6 +2,7 @@
 check_ssh() {
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     ssh_PS1="\n\[\033[01;37m\]\u@\h:\[\033[00m\]"
+    return 0
   fi
 }
 
@@ -13,13 +14,17 @@ check_venv() {
     if [ -n "$VIRTUAL_ENV" ]; then
       local python_icon="\[\033[01;33m\] \[\033[00m\]"
       venv_icons+="$python_icon"
+      return 0
     fi
     if [ -d  "''${git_root}/node_modules" ]; then
       local node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
       venv_icons+="$node_icon"
+      return 0
     fi
+    return 0
   else
     unset venv_icons
+    return 0
   fi
 }
 
@@ -29,8 +34,10 @@ set_git_dir() {
 
   if [ "$git_curr_dir" == "." ]; then
     working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
+    return 0
   else
     working_dir="\[\033[01;34m\] $git_root_dir/$git_curr_dir\[\033[00m\]"
+    return 0
   fi
 }
 
@@ -45,6 +52,7 @@ check_git() {
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
 
     set_git_dir
+    return 0
   fi
 }
 
@@ -63,6 +71,7 @@ function set_prompt() {
   check_venv
 
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
+  return 0
 }
 
 PROMPT_COMMAND="set_prompt"
