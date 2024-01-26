@@ -16,8 +16,10 @@
   outputs = { self, nixpkgs, home-manager, nixos-wsl }:
   let
     system = "x86_64-linux";
+    myOverlays = import ./overlays { inherit nixpkgs; };
     pkgs = import nixpkgs {
       inherit system;
+      overlays = [ (myOverlays) ];
       config = {
         allowUnfree = true;
       };
