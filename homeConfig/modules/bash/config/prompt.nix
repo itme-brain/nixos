@@ -9,12 +9,10 @@ function check_venv() {
   if [ -n "''${IN_NIX_SHELL}" ]; then
     if [ -n "$VIRTUAL_ENV" ]; then
       python_icon="\[\033[01;33m\] \[\033[00m\]"
-    else
-      unset python_icon
     fi
     nix_icon="\[\033[01;34m\] \[\033[00m\]"
   else
-    unset nix_icon
+    unset nix_icon python_icon
   fi
 }
 
