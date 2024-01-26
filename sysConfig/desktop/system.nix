@@ -16,7 +16,12 @@
       options = "--delete-older-than 30d";
     };
   };
-  environment.systemPackages = with pkgs; [ nix-init pavucontrol ];
+  environment.systemPackages = with pkgs; [
+    pavucontrol
+
+    nix-init
+    nix-prefetch-git
+  ];
 
 # DE
   programs.sway = {
