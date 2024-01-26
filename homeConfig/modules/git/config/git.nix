@@ -8,7 +8,7 @@
   };
 
   extraConfig = {
-    init = { defaultBranch = "main"; };
+    init = { defaultBranch = "master"; };
     mergetool = {
       lazygit = {
         cmd = "lazygit";
