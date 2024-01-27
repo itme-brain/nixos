@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
 { system.stateVersion = "22.11";
 
@@ -50,7 +50,15 @@
   };
 
 # Users
-  users.users = import ./user;
+  users.users = {
+    ${config.user.name} = {
+      isNormalUser = true;
+      extraGroups = config.user.groups;
+      openssh.authorizedKeys = lib.mkIf (config.user.name == "bryan") {
+        keys = config.user.sshKeys;
+      };
+    };
+  };
 
   security.sudo = {
     wheelNeedsPassword = false;
