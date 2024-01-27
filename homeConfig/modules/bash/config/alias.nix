@@ -1,5 +1,7 @@
+{ flakePath, ... }:
+
 {
-  nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#desktop";
+  nixup = "sudo nixos-rebuild switch --flake ${flakePath}/.#desktop";
   chat = "weechat";
   open = "xdg-open";
 }
