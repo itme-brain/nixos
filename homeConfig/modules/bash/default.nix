@@ -1,10 +1,10 @@
 { lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.bash;
 
-in 
+in
 { options.modules.bash = { enable = mkEnableOption "bash"; };
   config = mkIf cfg.enable {
     programs.bash = {

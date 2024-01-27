@@ -1,6 +1,5 @@
 {
-  hmup = "home-manager switch --flake '$HOME/Documents/projects/nixos#bryan'";
-  nixup = "sudo nixos-rebuild switch --flake $HOME/Documents/projects/nixos#desktop";
+  nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#desktop";
   chat = "weechat";
   open = "xdg-open";
 }

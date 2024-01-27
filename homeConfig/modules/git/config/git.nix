@@ -18,6 +18,9 @@
     merge = {
       tool = "lazygit";
     };
+    safe = {
+      directory = "/etc/nixos";
+    };
   };
 
   ignores = [
