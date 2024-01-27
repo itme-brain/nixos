@@ -64,7 +64,6 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 0 * * *  bryan  /home/bryan/Documents/scripts/lnbackup_script.sh"
       ];
     };
   };
