@@ -1,74 +1,69 @@
-{ pkgs, lib, ... }:
-
 {
-  enable = true;
-  settings = {
-    scrolling = {
-      history = 10000;
-      multiplier = 3;
+  scrolling = {
+    history = 10000;
+    multiplier = 3;
+  };
+
+  window = {
+    opacity = 0.90;
+  };
+
+  colors = {
+    primary = {
+      background = "#000000";
+      foreground = "#cdd6f4";
     };
 
-    window = {
-      opacity = 0.90;
+    normal = {
+      black   = "#1e2127";
+      red     = "#e06c75";
+      green   = "#98c379";
+      yellow  = "#d19a66";
+      blue    = "#61afef";
+      magenta = "#c678dd";
+      cyan    = "#56b6c2";
+      white   = "#abb2bf";
     };
 
-    colors = {
-      primary = {
-        background = "#000000";
-        foreground = "#cdd6f4";
-      };
-
-      normal = {
-        black   = "#1e2127";
-        red     = "#e06c75";
-        green   = "#98c379";
-        yellow  = "#d19a66";
-        blue    = "#61afef";
-        magenta = "#c678dd";
-        cyan    = "#56b6c2";
-        white   = "#abb2bf";
-      };
-
-      bright = {
-        black   =  "#5c6370";
-        red     =  "#e06c75";
-        green   =  "#98c379";
-        yellow  =  "#d19a66";
-        blue    =  "#61afef";
-        magenta =  "#c678dd";
-        cyan    =  "#56b6c2";
-        white   =  "#ffffff";
-      };
-    };
-
-    font = {
-      size = 12;
-      normal = {
-        family = "Terminus";
-        style = "Regular";
-      };
-
-      bold = {
-        family = "Terminus";
-        style = "Bold";
-      };
-
-      italic = {
-        family = "Terminus";
-        style = "Italic";
-      };
-
-      bold_italic = {
-        family = "Terminus";
-        style = "Bold Italic";
-      };
-    };
-
-
-    cursor = {
-    #  shape = "Block";
-    #  blinking = "Always";
-    #  blink_interval = 750;
+    bright = {
+      black   =  "#5c6370";
+      red     =  "#e06c75";
+      green   =  "#98c379";
+      yellow  =  "#d19a66";
+      blue    =  "#61afef";
+      magenta =  "#c678dd";
+      cyan    =  "#56b6c2";
+      white   =  "#ffffff";
     };
   };
+
+  font = {
+    size = 12;
+    normal = {
+      family = "Terminus";
+      style = "Regular";
+    };
+
+    bold = {
+      family = "Terminus";
+      style = "Bold";
+    };
+
+    italic = {
+      family = "Terminus";
+      style = "Italic";
+    };
+
+    bold_italic = {
+      family = "Terminus";
+      style = "Bold Italic";
+    };
+  };
+
+
+  #cursor = {
+  #  shape = "Block";
+  #  blinking = "Always";
+  #  blink_interval = 750;
+  #};
 }

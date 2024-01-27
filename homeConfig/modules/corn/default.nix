@@ -1,10 +1,10 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.corn;
 
-in 
+in
 { options.modules.corn = { enable = mkEnableOption "corn"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

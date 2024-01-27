@@ -1,13 +1,16 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.alacritty;
 
-in 
+in
 { options.modules.alacritty = { enable = mkEnableOption "alacritty"; };
   config = mkIf cfg.enable {
-    programs.alacritty = import ./config/alacritty.nix { inherit pkgs lib; };
+    programs.alacritty = {
+      enable = true;
+      settings = import ./config/alacritty.nix;
+    };
 
     home.packages = with pkgs; [
       terminus-nerdfont
