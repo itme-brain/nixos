@@ -4,6 +4,7 @@
 
 # Nix
   nix = {
+    channel.enable = false;
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
@@ -16,6 +17,7 @@
       options = "--delete-older-than 30d";
     };
   };
+
   environment.systemPackages = with pkgs; [
     pavucontrol
 
@@ -30,11 +32,10 @@
   };
 
 # Fonts
-  #fonts.packages = with pkgs; [
-  #  terminus_font
-  #  monocraft
-  #  nerdfonts
-  #];
+  fonts.packages = with pkgs; [
+    terminus_font
+    nerdfonts
+  ];
 
 # Audio
   services.pipewire = {
@@ -71,8 +72,7 @@
 
     cron = {
       enable = true;
-      systemCronJobs = [
-      ];
+      systemCronJobs = [];
     };
   };
 
@@ -80,7 +80,7 @@
   time = {
     timeZone = "America/New_York";
   };
-  
+
   services.timesyncd = {
     enable = true;
     servers = [
