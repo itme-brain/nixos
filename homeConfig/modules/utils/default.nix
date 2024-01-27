@@ -16,6 +16,7 @@ in
       texlive.combined.scheme-tetex glibc
       pdftk zoom-us zip teams-for-linux
       aerc weechat asciidoctor
+      gcc
     ];
 
     home.file.".config/aerc" = {
