@@ -83,6 +83,18 @@ require("lspconfig").volar.setup({
 	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
 })
 
+require("lspconfig").nil_ls.setup {
+  settings = {
+    ["nil"] = {
+      nix = {
+        flake = {
+          autoArchive = true,
+        }
+      }
+    }
+  }
+}
+
 local cmp = require("cmp")
 cmp.setup({
 	snippet = {
