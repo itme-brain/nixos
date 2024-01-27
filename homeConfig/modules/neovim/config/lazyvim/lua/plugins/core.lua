@@ -94,13 +94,9 @@ return {
     end,
   },
 
-  { "tpope/vim-fugitive" },
-	{ "raichoo/purescript-vim" },
-	{ "vmchale/dhall-vim" },
-	{ "elixir-lang/vim-elixir" },
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 	{ "jay-babu/mason-nvim-dap.nvim", enabled = false },
-	{ "catppuccin/nviim", enabled = false },
-	{ "folke/tokyonight", enabled = false },
+	{ "catppuccin/nvim", enabled = false },
+  { "folke/flash.nvim", enabled = false }
 }
