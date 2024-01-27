@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   modifier = config.wayland.windowManager.sway.config.modifier;
@@ -63,7 +63,7 @@ in
 
     floating.border = 0;
     window.border= 0;
-    
+
     keybindings = lib.mkOptionDefault {
       "${modifier}+q" = "kill";
       "Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png";
@@ -78,6 +78,7 @@ in
     for_window [app_id="one.alynx.showmethekey" title="Floating Window - Show Me The Key"] {
       floating enable
       sticky enable
-    }  
+    }
+    exec_always ${pkgs.autotiling}/bin/autotiling
   '';
 }

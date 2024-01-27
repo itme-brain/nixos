@@ -1,10 +1,10 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-let 
+let
   cfg = config.modules.gui;
-  
-in 
+
+in
 { options.modules.gui = { enable = mkEnableOption "gui"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
@@ -26,12 +26,13 @@ in
 
     programs.btop.enable = true;
     fonts.fontconfig.enable = true;
-  
+
     home.packages = with pkgs; [
       xdg-utils
       grim
       slurp
       wl-clipboard
+      autotiling
 
       imv
       gimp
