@@ -1,12 +1,14 @@
-{ ... }:
+{ config, ... }:
 
 {
   programs.home-manager.enable = true;
-  imports = [ (import ./modules) ];
+
+  imports = [ ./modules ../user ];
+
   home.stateVersion = "22.11";
 
-  home.username = "bryan";
-  home.homeDirectory = "/home/bryan";
+  home.username = "${config.user.name}";
+  home.homeDirectory = "/home/${config.user.name}";
 
   modules = {
     gui.enable = true;

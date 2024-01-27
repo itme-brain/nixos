@@ -1,1 +1,1 @@
-{ imports = [ ./hardware.nix ./system.nix ./user ]; }
+{ imports = [ ./hardware.nix ./system.nix ../../user ]; }
