@@ -100,7 +100,7 @@
 
 # Networking
   networking = {
-    hostName = "socrates";
+    hostName = "${config.user.host}";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
