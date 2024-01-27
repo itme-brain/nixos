@@ -8,7 +8,7 @@
     extraOptions = "experimental-features = nix-command flakes";
     settings = {
       auto-optimise-store = true;
-      trusted-users = [ "bryan" ];
+      trusted-users = [ "${config.user.name}" ];
     };
     gc = {
       automatic = true;

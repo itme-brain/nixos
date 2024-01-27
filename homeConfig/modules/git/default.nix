@@ -2,12 +2,13 @@
 
 with lib;
   let cfg = config.modules.git;
+  isBryan = config.user.name == "bryan";
 
 in
 { options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs = {
-      git = import ./config/git.nix;
+      git = if isBryan then import ./config/git.nix else { enable = true; };
       gh = {
         enable = true;
         settings.git_protocol = "ssh";
