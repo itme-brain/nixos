@@ -30,11 +30,11 @@
   };
 
 # Fonts
-  fonts.packages = with pkgs; [
-    terminus_font
-    monocraft
-    nerdfonts
-  ];
+  #fonts.packages = with pkgs; [
+  #  terminus_font
+  #  monocraft
+  #  nerdfonts
+  #];
 
 # Audio
   services.pipewire = {
