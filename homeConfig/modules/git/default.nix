@@ -8,7 +8,9 @@ in
 { options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs = {
-      git = if isBryan then import ./config/git.nix else { enable = true; };
+      git = {
+        enable = true;
+      } // (lib.optionalAttrs isBryan (import ./config/git.nix));
       gh = {
         enable = true;
         settings.git_protocol = "ssh";

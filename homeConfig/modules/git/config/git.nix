@@ -1,5 +1,4 @@
 {
-  enable = true;
   userName = "Bryan Ramos";
   userEmail = "bryan@ramos.codes";
   signing = {
