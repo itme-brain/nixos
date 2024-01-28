@@ -15,5 +15,21 @@ in
       electrum
       bisq-desktop
     ];
+
+    systemd.user.services.trezord = {
+      Unit = {
+        Description = "Trezor Bridge";
+        After = [ "network.target" ];
+        Wants = [ "network.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.trezord}/bin/trezord";
+        Restart = "always";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
   };
 }
