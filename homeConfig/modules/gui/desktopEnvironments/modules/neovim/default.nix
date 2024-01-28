@@ -9,6 +9,7 @@ in
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
+      defaultEditor = true;
       vimAlias = true;
       extraPackages = import ./config/servers.nix { inherit pkgs; };
     };

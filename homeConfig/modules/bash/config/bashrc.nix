@@ -1,5 +1,4 @@
 ''
-export EDITOR=nvim
 export DIRENV_LOG_FORMAT=
 
 function cdg() {
