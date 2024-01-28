@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 # Replace with your user configurations
 {
@@ -7,6 +7,7 @@
       type = lib.types.attrs;
       default = {
         name = "bryan";
+        shell = pkgs.bash;
 
         groups = [
           "wheel" "networkmanager" "home-manager"
