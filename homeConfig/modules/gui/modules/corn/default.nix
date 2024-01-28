@@ -8,8 +8,12 @@ in
 { options.modules.corn = { enable = mkEnableOption "corn"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      trezor-suite trezorctl 
-      electrum bisq-desktop
+      trezor-suite
+      trezorctl
+      trezord
+
+      electrum
+      bisq-desktop
     ];
   };
 }

@@ -6,10 +6,20 @@ let
 
 in
 { options.modules.gui = { enable = mkEnableOption "gui"; };
+  imports = [ ./modules ];
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
     programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
     programs.bash.profileExtra = import ./config/shellHook.nix;
+
+    modules = {
+      alacritty.enable = true;
+      browsers.enable = true;
+      corn.enable = true;
+      fun.enable = true;
+      guiUtils.enable = true;
+      neovim.enable = true;
+    };
 
     gtk = {
       enable = true;
@@ -25,25 +35,10 @@ in
       platformTheme = "gtk";
     };
 
-    programs.btop.enable = true;
+    programs = {
+      imv.enable = true;
+    };
+
     fonts.fontconfig.enable = true;
-
-    home.packages = with pkgs; [
-      xdg-utils
-      grim
-      slurp
-      wl-clipboard
-      autotiling
-
-      imv
-      gimp
-      okular
-
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-
-      emote
-    ];
   };
 }

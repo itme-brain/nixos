@@ -45,9 +45,6 @@
 
   environment.systemPackages = with pkgs; [
     pavucontrol
-
-    nix-init
-    nix-prefetch-git
   ];
 
 # DE
@@ -83,8 +80,6 @@
 
 # System Services
   services = {
-    trezord.enable = true;
-
     cron = {
       enable = true;
       systemCronJobs = [];

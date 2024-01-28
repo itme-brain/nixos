@@ -6,22 +6,21 @@ let
 
 in
 { options.modules.utils = { enable = mkEnableOption "utils"; };
+  imports = [ ./modules ];
   config = mkIf cfg.enable {
+    modules = {
+      vim.enable = false;
+      email.enable = true;
+      irc.enable = true;
+      dev.enable = true;
+    };
 
     home.packages = with pkgs; [
       wget curl tree neofetch
       unzip fping calc qrencode
       fd pkg-config pciutils
-      mdbook rsync docker exercism pandoc
-      texlive.combined.scheme-tetex glibc
-      pdftk zoom-us zip teams-for-linux
-      aerc weechat asciidoctor
-      gcc
+      mdbook rsync pandoc texlive.combined.scheme-tetex
+      zip asciidoctor
     ];
-
-    home.file.".config/aerc" = {
-      source = ./aerc;
-      recursive = true;
-    };
   };
 }

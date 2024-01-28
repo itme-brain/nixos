@@ -11,18 +11,11 @@
   home.homeDirectory = "/home/${config.user.name}";
 
   modules = {
-    gui.enable = true;
-    browsers.enable = true;
-    alacritty.enable = true;
-    fun.enable = true;
-
     bash.enable = true;
     git.enable = true;
     gpg.enable = true;
-    neovim.enable = true;
-
-    utils.enable = true;
+    gui.enable = true;
     security.enable = true;
-    corn.enable = true;
+    utils.enable = true;
   };
 }
