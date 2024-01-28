@@ -10,7 +10,9 @@ in
     programs.btop.enable = true;
     home.packages = with pkgs; [
       gimp
+      okular
       pdftk
+
       teams-for-linux
       zoom-us
       exercism

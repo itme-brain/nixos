@@ -14,9 +14,9 @@ in
 
     home.packages = with pkgs; [
       terminus-nerdfont
-      monocraft
-      ranger
-      highlight
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
     ];
   };
 }
