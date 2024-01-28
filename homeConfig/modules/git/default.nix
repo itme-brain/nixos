@@ -19,6 +19,6 @@ in
 
     home.packages = with pkgs; [
       git-crypt
-    ];
+    ] ++ optional isBryan lazygit;
   };
 }
