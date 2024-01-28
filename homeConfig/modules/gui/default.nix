@@ -9,6 +9,7 @@ in
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
     programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
+    programs.bash.profileExtra = import ./config/shellHook.nix;
 
     gtk = {
       enable = true;
