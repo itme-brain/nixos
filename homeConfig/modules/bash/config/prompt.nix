@@ -7,20 +7,20 @@ check_ssh() {
 }
 
 check_venv() {
+  if [ -n "$VIRTUAL_ENV" ]; then
+    local python_icon="\[\033[01;33m\] \[\033[00m\]"
+    venv_icons+="$python_icon"
+  elif [ -d  "''${git_root}/node_modules" ]; then
+    local node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
+    venv_icons+="$node_icon"
+  fi
+    return 0
+}
+
+check_nix() {
   if [ -n "$IN_NIX_SHELL" ]; then
     local nix_icon="\[\033[01;34m\] \[\033[00m\]"
     venv_icons+="$nix_icon"
-
-    if [ -n "$VIRTUAL_ENV" ]; then
-      local python_icon="\[\033[01;33m\] \[\033[00m\]"
-      venv_icons+="$python_icon"
-    fi
-    if [ -d  "''${git_root}/node_modules" ]; then
-      local node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
-      venv_icons+="$node_icon"
-    fi
-
-    return 0
   else
     unset venv_icons
     return 0
@@ -67,6 +67,7 @@ function set_prompt() {
   local git_branch_PS1
 
   check_ssh
+  check_nix
   check_in_project
 
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
