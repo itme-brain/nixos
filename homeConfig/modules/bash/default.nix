@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.bash;
-  flakePath = builtins.toString config.user.defaultFlakePath;
 
 in
 { options.modules.bash = { enable = mkEnableOption "bash"; };
@@ -15,7 +14,7 @@ in
       initExtra = import ./config/prompt.nix;
       profileExtra = import ./config/bashprofile.nix;
       bashrcExtra = import ./config/bashrc.nix;
-      shellAliases = import ./config/alias.nix { inherit flakePath; };
+      shellAliases = import ./config/alias.nix;
     };
 
     programs = {

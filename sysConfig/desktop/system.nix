@@ -2,6 +2,11 @@
 
 { system.stateVersion = "22.11";
 
+# Users
+  users.users = {
+    ${config.user.name} = config.user;
+  };
+
 # Nix
   nix = {
     channel.enable = false;
@@ -15,6 +20,22 @@
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
+    };
+  };
+
+# Bootloader
+  boot.loader = {
+    timeout = null;
+    grub = {
+      enable = true;
+      useOSProber = true;
+      devices = [ "nodev" ];
+      efiSupport = true;
+      configurationLimit = 5;
+    };
+
+    efi = {
+      canTouchEfiVariables = true;
     };
   };
 
@@ -50,17 +71,7 @@
     alsa.support32Bit = true;
   };
 
-# Users
-  users.users = {
-    ${config.user.name} = {
-      isNormalUser = true;
-      extraGroups = config.user.groups;
-      openssh.authorizedKeys = lib.mkIf (config.user.name == "bryan") {
-        keys = config.user.sshKeys;
-      };
-    };
-  };
-
+# Sudo Options
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
@@ -100,7 +111,7 @@
 
 # Networking
   networking = {
-    hostName = "${config.user.host}";
+    hostName = "socrates";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {

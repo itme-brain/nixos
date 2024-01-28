@@ -10,37 +10,23 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [ "intel_iommu=on" ];
   boot.kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
-  
-# Bootloader
-  boot.loader = {
-    timeout = null;
-    grub = {
-      enable = true;
-      useOSProber = true;
-      devices = [ "nodev" ];
-      efiSupport = true;
-      configurationLimit = 5;
-    };
-
-    efi = {
-      canTouchEfiVariables = true;
-    };
-  };
 
 # FStab
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
-    fsType = "ext4";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
+      fsType = "ext4";
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/1639ee20-28d6-4649-814d-ba981c138b35";
-    fsType = "ext4";
-  };
+    "/home" = {
+      device = "/dev/disk/by-uuid/1639ee20-28d6-4649-814d-ba981c138b35";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/74B9-4AAF";
-    fsType = "vfat";
+    "/boot" = {
+      device = "/dev/disk/by-uuid/74B9-4AAF";
+      fsType = "vfat";
+    };
   };
 
 # GPU
@@ -48,7 +34,10 @@
 
 # Virtualisation
   nix.settings.system-features = [ "kvm" ];
-  environment.systemPackages = [ pkgs.virt-manager ];
+
+  environment.systemPackages = with pkgs; [
+    virt-manager
+  ];
 
   virtualisation.libvirtd = {
     enable = true;
