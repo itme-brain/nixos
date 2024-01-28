@@ -4,7 +4,11 @@
 
 # Users
   users.users = {
-    ${config.user.name} = config.user;
+    ${config.user.name} = {
+      isNormalUser = true;
+      extraGroups = config.user.groups;
+      openssh.authorizedKeys.keys = config.user.sshKeys;
+    };
   };
 
 # Nix

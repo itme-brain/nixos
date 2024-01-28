@@ -2,7 +2,6 @@
 
 with lib;
   let cfg = config.modules.git;
-  isBryan = config.user.name == "bryan";
 
 in
 { options.modules.git = { enable = mkEnableOption "git"; };
@@ -10,7 +9,7 @@ in
     programs = {
       git = {
         enable = true;
-      } // (lib.optionalAttrs isBryan (import ./config/git.nix));
+      } // config.user.gitConfig;
       gh = {
         enable = true;
         settings.git_protocol = "ssh";
@@ -19,6 +18,6 @@ in
 
     home.packages = with pkgs; [
       git-crypt
-    ] ++ optional isBryan lazygit;
+    ];
   };
 }

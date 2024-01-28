@@ -3,19 +3,13 @@
 with lib;
 let
   cfg = config.modules.gpg;
-  isBryan = config.user.name == "bryan";
 
 in
 { options.modules.gpg = { enable = mkEnableOption "gpg"; };
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
-      publicKeys = if isBryan then [
-        {
-          text = import ./config/pubKey.nix;
-          trust = 5;
-        }
-      ] else [];
+      publicKeys = [ config.user.pgpKey ];
     };
 
     services.gpg-agent = {
