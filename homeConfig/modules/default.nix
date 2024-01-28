@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
-{ 
-  imports = [ 
+{
+  imports = [
     ./alacritty
     ./bash
     ./browsers
@@ -13,5 +13,5 @@
     ./neovim
     ./security
     ./utils
-  ]; 
+  ];
 }
