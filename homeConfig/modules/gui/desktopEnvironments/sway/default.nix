@@ -32,10 +32,6 @@ in
       platformTheme = "gtk";
     };
 
-    programs = {
-      imv.enable = true;
-    };
-
     home.packages = with pkgs; [
       xdg-utils
       grim
@@ -45,7 +41,18 @@ in
 
       ranger
       highlight
+
+      terminus-nerdfont
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+
+      emote
     ];
+
+    programs = {
+      imv.enable = true;
+    };
 
     fonts.fontconfig.enable = true;
 

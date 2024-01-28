@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 with lib;
 let
@@ -11,12 +11,5 @@ in
       enable = true;
       settings = import ./config/alacritty.nix;
     };
-
-    home.packages = with pkgs; [
-      terminus-nerdfont
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-    ];
   };
 }

@@ -8,7 +8,9 @@ in
 { options.modules.security = { enable = mkEnableOption "security"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      pass wireguard-tools ipscan
+      pass
+      wireguard-tools
+      ipscan
     ];
   };
 }

@@ -17,7 +17,9 @@ in
     };
 
     home.packages = with pkgs; [
-      spotify webcord showmethekey
+      spotify
+      webcord
+      showmethekey
     ];
   };
 }
