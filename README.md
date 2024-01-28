@@ -1,6 +1,8 @@
-# MyNix ❄️👨‍💻
+# My NixOS Configurations ❄️👨‍💻
 
-My personal NixOS stash🔥
+My modular NixOS🔥
+
+The `user` directory is where you can customize user configurations, the system is configured to grab all attributes defined in here.
 
 The `sysConfig`🖥️ directory contains subdirectories for each of my machines
 
