@@ -11,9 +11,9 @@ let
   ];
 
   lsp' = with pkgs.nodePackages; [
-    vscode-langservers-extracted 
-    typescript-language-server 
-    bash-language-server 
+    vscode-langservers-extracted
+    typescript-language-server
+    bash-language-server
     diagnostic-languageserver
     pyright
     purescript-language-server
