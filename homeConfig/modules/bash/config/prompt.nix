@@ -38,23 +38,20 @@ set_git_dir() {
 }
 
 check_in_project() {
-  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    local git_branch=$(git branch --show-current)
-    local git_root=$(git rev-parse --show-toplevel)
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    local git_branch=$(git branch --show-current 2>/dev/null)
+    git_branch=''${git_branch:-$(git rev-parse --short HEAD)}
+
+    local git_dir=$(git rev-parse --git-dir)
+    local git_root=$(dirname "$(realpath "$git_dir")")
 
     local git_curr_dir=$(realpath --relative-to="$git_root" .)
     local git_root_dir=$(basename "$git_root")
 
-    if [ -z "$git_branch" ]; then
-      git_branch=$(git rev-parse --short HEAD)
-    fi
-
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+
     set_git_dir
     check_venv
-
-    return 0
-  fi
 }
 
 function set_prompt() {
