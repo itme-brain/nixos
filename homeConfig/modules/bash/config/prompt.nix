@@ -6,23 +6,38 @@ check_ssh() {
   fi
 }
 
-check_venv() {
-  if [ -n "$VIRTUAL_ENV" ]; then
-    local python_icon="\[\033[01;33m\] \[\033[00m\]"
-    venv_icons+="$python_icon"
-  elif [ -d  "''${git_root}/node_modules" ]; then
-    local node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
-    venv_icons+="$node_icon"
+add_icon() {
+  local icon=$1
+  if [[ ! $venv_icons =~ $icon ]]; then
+    venv_icons+="$icon"
   fi
-    return 0
 }
 
-check_nix() {
+remove_icon() {
+  local icon=$1
+  venv_icons=''${venv_icons//$icon/}
+}
+
+python_icon="\[\033[01;33m\]\[\033[00m\]"
+node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
+nix_icon="\[\033[01;34m\]\[\033[00m\]"
+
+check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
-    local nix_icon="\[\033[01;34m\] \[\033[00m\]"
-    venv_icons+="$nix_icon"
+    add_icon "$nix_icon"
+    if [ -n "$VIRTUAL_ENV" ]; then
+      add_icon "$python_icon"
+    else
+      remove_icon "$python_icon"
+    fi
+
+    if [ -d "''${git_root}/node_modules" ]; then
+      add_icon "$node_icon"
+    else
+      remove_icon "$node_icon"
+    fi
   else
-    unset venv_icons
+    remove_icon "$nix_icon"
     return 0
   fi
 }
@@ -37,8 +52,9 @@ set_git_dir() {
   fi
 }
 
-check_in_project() {
-  if git rev-parse --git-dir >/dev/null 2>&1; then
+check_project() {
+  local git_dir=$(git rev-parse --git-dir 2>/dev/null)
+  if [ -n "$git_dir" ]; then
     local git_branch=$(git branch --show-current 2>/dev/null)
     git_branch=''${git_branch:-$(git rev-parse --short HEAD)}
 
@@ -52,6 +68,9 @@ check_in_project() {
 
     set_git_dir
     check_venv
+  fi
+
+  return 0
 }
 
 function set_prompt() {
@@ -64,8 +83,7 @@ function set_prompt() {
   local git_branch_PS1
 
   check_ssh
-  check_nix
-  check_in_project
+  check_project
 
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
   return 0
