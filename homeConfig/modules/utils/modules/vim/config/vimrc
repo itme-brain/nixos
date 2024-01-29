@@ -49,7 +49,7 @@ highlight HighlightedyankRegion ctermfg=NONE guifg=NONE
 highlight Normal ctermbg=NONE guibg=NONE
 highlight NormalNC ctermbg=NONE guibg=NONE
 highlight Search ctermfg=yellow guifg=yellow
-highlight Search ctermfg=NONE guifg=NONE
+highlight Search ctermbg=black guibg=black
 
 vnoremap < <gv
 vnoremap > >gv
