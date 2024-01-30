@@ -1,0 +1,68 @@
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+if empty(glob('~/.vim/plugged'))
+  silent! :PlugInstall | q
+endif
+
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+  \| endif
+
+call plug#begin('~/.vim/plugged')
+
+  Plug 'joshdick/onedark.vim'
+  Plug 'tpope/vim-surround'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+  Plug 'junegunn/fzf.vim'
+  Plug 'mtdl9/vim-log-highlighting'
+  Plug 'machakann/vim-highlightedyank'
+  Plug 'itchyny/lightline.vim'
+
+call plug#end()
+
+let mapleader = " "
+colorscheme onedark
+
+let $FZF_DEFAULT_OPTS = '--bind=tab:up,shift-tab:down'
+let g:fzf_layout = { 'window': 'enew' }
+let g:highlightedyank_highlight_duration = 80
+let g:lightline = { 'colorscheme': 'one', }
+
+set laststatus=2
+
+set number
+set relativenumber
+set cursorline
+
+set noincsearch
+set ignorecase
+
+set clipboard=unnamedplus
+set noswapfile
+
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
+highlight CursorLine ctermbg=NONE guibg=NONE
+highlight CursorLineNr ctermfg=magenta guifg=magenta
+highlight HighlightedyankRegion ctermfg=NONE guifg=NONE
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NormalNC ctermbg=NONE guibg=NONE
+highlight Search ctermfg=yellow guifg=yellow
+highlight Search ctermbg=black guibg=black
+
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap <C-U> <C-U>zz
+nnoremap <C-D> <C-D>zz
+nnoremap <leader>e :Explore<CR>
+nnoremap <leader><ESC> :noh<CR>
+nnoremap <leader>/ :Rg<Space>
+nnoremap <Leader>ts :execute "normal! a" . strftime('[%b %d %H:%M:%S - BR]')<CR>

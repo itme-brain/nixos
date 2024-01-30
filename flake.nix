@@ -7,9 +7,13 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/2311.5.3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager }:
+  outputs = { self, nixpkgs, home-manager, nixos-wsl }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -24,12 +28,40 @@
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system pkgs;
       modules = [
-        ./sysConfig/desktop
+        ./src/systems/desktop
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.bryan = import ./homeConfig/home.nix;
+          home-manager.users.bryan = import ./src/systems/desktop/home.nix;
+        }
+      ];
+    };
+    nixosConfigurations.windows = nixpkgs.lib.nixosSystem {
+      inherit system pkgs;
+      modules = [
+        ./src/systems/wsl
+        nixos-wsl.nixosModules.wsl
+        {
+          wsl = {
+            enable = true;
+            defaultUser = nixpkgs.lib.mkDefault "bryan";
+            nativeSystemd = true;
+
+            wslConf = {
+              boot.command = "cd";
+              network = {
+                hostname = "plato";
+                generateHosts = true;
+              };
+            };
+          };
+        }
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.bryan = import ./src/systems/wsl/home.nix;
         }
       ];
     };
