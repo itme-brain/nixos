@@ -1,8 +1,8 @@
 { lib, ... }:
 
-{ 
+{
   imports = [
     ../../user
-    ./system.nix 
+    ./system.nix
   ];
 }

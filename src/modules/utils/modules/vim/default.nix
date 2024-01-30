@@ -9,10 +9,11 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [ 
-        vim 
+        vim
        ];
-      file.".config/.vimrc" = {
-        source = ./config/vimrc;
+      file.".vim" = {
+        source = ./config;
+        recursive = true;
       };
     };
     programs.bash.shellAliases = {

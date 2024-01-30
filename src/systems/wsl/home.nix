@@ -6,9 +6,9 @@
     nixup = "sudo nixos-rebuild switch --flake .#windows";
   };
 
-  imports = [ 
-    ../../modules 
-    ../../user 
+  imports = [
+    ../../modules
+    ../../user
   ];
 
   home.stateVersion = "23.11";

@@ -13,7 +13,6 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| endif
 
 call plug#begin('~/.vim/plugged')
-
   Plug 'joshdick/onedark.vim'
   Plug 'tpope/vim-surround'
   Plug 'jiangmiao/auto-pairs'
@@ -22,16 +21,26 @@ call plug#begin('~/.vim/plugged')
   Plug 'mtdl9/vim-log-highlighting'
   Plug 'machakann/vim-highlightedyank'
   Plug 'itchyny/lightline.vim'
-
+  Plug 'tpope/vim-fugitive'
+  Plug 'mhinz/vim-signify'
 call plug#end()
 
-let mapleader = " "
+let mapleader = "\<Space>"
 colorscheme onedark
+
+highlight CursorLine ctermbg=NONE guibg=NONE
+highlight CursorLineNr ctermfg=magenta guifg=magenta
+highlight HighlightedyankRegion ctermfg=NONE guifg=NONE
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NormalNC ctermbg=NONE guibg=NONE
+highlight Search ctermfg=yellow guifg=yellow
+highlight Search ctermbg=black guibg=black
+
+let g:highlightedyank_highlight_duration = 80
+let g:lightline = { 'colorscheme': 'one', }
 
 let $FZF_DEFAULT_OPTS = '--bind=tab:up,shift-tab:down'
 let g:fzf_layout = { 'window': 'enew' }
-let g:highlightedyank_highlight_duration = 80
-let g:lightline = { 'colorscheme': 'one', }
 
 set laststatus=2
 
@@ -49,20 +58,29 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
-highlight CursorLine ctermbg=NONE guibg=NONE
-highlight CursorLineNr ctermfg=magenta guifg=magenta
-highlight HighlightedyankRegion ctermfg=NONE guifg=NONE
-highlight Normal ctermbg=NONE guibg=NONE
-highlight NormalNC ctermbg=NONE guibg=NONE
-highlight Search ctermfg=yellow guifg=yellow
-highlight Search ctermbg=black guibg=black
-
 vnoremap < <gv
 vnoremap > >gv
-
 nnoremap <C-U> <C-U>zz
 nnoremap <C-D> <C-D>zz
+
+nnoremap <leader>gs :Git status<CR>
+nnoremap <leader>gl :Git log<CR>
+nnoremap <leader>ga :Git add<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gd :Git diff<CR>
+
 nnoremap <leader>e :Explore<CR>
-nnoremap <leader><ESC> :noh<CR>
 nnoremap <leader>/ :Rg<Space>
+
+nnoremap <leader>bd :bd<CR>
+nnoremap H :bprevious<CR>
+nnoremap L :bnext<CR>
+
+nnoremap <leader>wh :split<CR>
+nnoremap <leader>wv :vsplit<CR>
+nnoremap <leader>wd :q<CR>
+nnoremap <leader>ww :wincmd w<CR>
+nnoremap <leader>wW :wincmd W<CR>
+
 nnoremap <Leader>ts :execute "normal! a" . strftime('[%b %d %H:%M:%S - BR]')<CR>
+nnoremap <leader><ESC> :noh<CR>
