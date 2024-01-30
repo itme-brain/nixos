@@ -47,30 +47,37 @@ set_git_dir() {
     working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
     return 0
   else
-    working_dir="\[\033[01;34m\] $git_root_dir/$git_curr_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\] $git_root_dir$git_curr_dir\[\033[00m\]"
     return 0
   fi
 }
 
+relative_path() {
+  local absolute_target=$(readlink -f "$1")
+  local absolute_base=$(readlink -f "$2")
+  echo "''${absolute_target#$absolute_base}"
+}
+
 check_project() {
   local git_dir=$(git rev-parse --git-dir 2>/dev/null)
+
   if [ -n "$git_dir" ]; then
     local git_branch=$(git branch --show-current 2>/dev/null)
-    git_branch=''${git_branch:-$(git rev-parse --short HEAD)}
+    git_branch=''${git_branch:-$(git rev-parse --short HEAD 2>/dev/null)}
 
     local git_dir=$(git rev-parse --git-dir)
-    local git_root=$(dirname "$(realpath "$git_dir")")
+    local git_root=$(dirname "$(readlink -f "$git_dir")")
 
-    local git_curr_dir=$(realpath --relative-to="$git_root" .)
+    local git_curr_dir=$(relative_path "." "$git_root")
     local git_root_dir=$(basename "$git_root")
 
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
 
     set_git_dir
     check_venv
-  fi
 
-  return 0
+    return 0
+  fi
 }
 
 function set_prompt() {
