@@ -1,5 +1,5 @@
 {
-  description = "Fully Declarative YOLO";
+  description = "Nix Flake Configurations for Bryan";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";

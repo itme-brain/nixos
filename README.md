@@ -2,12 +2,6 @@
 
 My modular NixOS🔥
 
-The `user` directory is where you can customize user configurations, the system is configured to grab all attributes defined in here.
-
-The `sysConfig`🖥️ directory contains subdirectories for each of my machines
-
-In the `homeConfig`🏠️ directory, you'll find various dotfiles and config files that make my home directory extra nixy
-
 If you need a list of available packages and options:
 
 - [nixpkgs Packages](https://search.nixos.org/packages) 📦️
@@ -35,10 +29,9 @@ Install by visiting [nixos.org](https://www.nixos.org/) or through your package 
 
 ### Enabling Flakes ❄️
 
-Unleash Nix💥 
+Unleash Nix💥
 
 Add to your `nix.conf` or `configuration.nix`👇️
-
 ```nix
 nix = {
   package = pkgs.nixFlakes;
