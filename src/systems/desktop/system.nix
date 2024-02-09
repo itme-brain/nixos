@@ -89,6 +89,7 @@
 # Locale
   time = {
     timeZone = "America/New_York";
+    hardwareClockInLocalTime = true;
   };
 
   services.timesyncd = {
