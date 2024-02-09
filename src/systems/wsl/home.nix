@@ -3,7 +3,7 @@
 {
   programs.home-manager.enable = true;
   programs.bash.shellAliases = {
-    nixup = "sudo nixos-rebuild switch --flake .#windows";
+    nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#windows";
   };
 
   imports = [
