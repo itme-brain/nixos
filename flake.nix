@@ -1,5 +1,5 @@
 {
-  description = "Nix Flake Configurations for Bryan";
+  description = "My NixOS Configs";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
@@ -30,11 +30,7 @@
       modules = [
         ./src/systems/desktop
         home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.bryan = import ./src/systems/desktop/home.nix;
-        }
+          (import ./src/systems/desktop/home.nix)
       ];
     };
     nixosConfigurations.windows = nixpkgs.lib.nixosSystem {
@@ -42,27 +38,9 @@
       modules = [
         ./src/systems/wsl
         nixos-wsl.nixosModules.wsl
-        {
-          wsl = {
-            enable = true;
-            defaultUser = nixpkgs.lib.mkDefault "bryan";
-            nativeSystemd = true;
-
-            wslConf = {
-              boot.command = "cd";
-              network = {
-                hostname = "plato";
-                generateHosts = true;
-              };
-            };
-          };
-        }
+          (import ./src/systems/wsl/wsl.nix)
         home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.bryan = import ./src/systems/wsl/home.nix;
-        }
+          (import ./src/systems/wsl/home.nix)
       ];
     };
   };
