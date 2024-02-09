@@ -14,6 +14,8 @@ in
 
       electrum
       bisq-desktop
+
+      sparrow
     ];
 
     systemd.user.services = {
