@@ -18,9 +18,9 @@ remove_icon() {
   venv_icons=''${venv_icons//$icon/}
 }
 
-python_icon="\[\033[01;33m\]\[\033[00m\]"
-node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
-nix_icon="\[\033[01;34m\]\[\033[00m\]"
+python_icon="\[\033[01;33m\] \[\033[00m\]"
+node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
+nix_icon="\[\033[01;34m\] \[\033[00m\]"
 
 check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
