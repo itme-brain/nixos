@@ -4,15 +4,15 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${config.user.name} = {
+    imports = [
+      ../../user
+      ../../modules
+    ];
+
     programs.home-manager.enable = true;
     programs.bash.shellAliases = {
       nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#windows";
     };
-
-    imports = [
-      ../../modules
-      ../../user
-    ];
 
     home.stateVersion = "23.11";
 
