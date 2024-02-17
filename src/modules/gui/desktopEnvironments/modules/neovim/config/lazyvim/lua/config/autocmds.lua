@@ -8,8 +8,18 @@ vim.cmd([[
 ]])
 
 require("which-key").register({
+  w = {
+    d = {
+      "<cmd>bd<CR> | close<CR>",
+      "Delete window and buffer"
+    },
+    D = {
+      "<cmd>close<CR>",
+      "Delete window only",
+    },
+  },
 	t = {
-		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | set winfixheight | terminal | startinsert<CR>",
+		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | set winfixheight | terminal<CR>",
 		"Open Terminal",
 	},
 }, {
