@@ -9,8 +9,8 @@ vim.cmd([[
 
 require("which-key").register({
 	t = {
-		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | terminal<CR>",
-		"Open terminal in new window",
+		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | set winfixheight | terminal | startinsert<CR>",
+		"Open Terminal",
 	},
 }, {
 	prefix = "<leader>",
