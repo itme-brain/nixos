@@ -56,7 +56,7 @@
 # Fonts
   fonts.packages = with pkgs; [
     terminus_font
-    nerdfonts
+    terminus-nerdfont
   ];
 
 # Audio
