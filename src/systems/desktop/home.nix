@@ -6,7 +6,7 @@
   home-manager.users.${config.user.name} = {
     imports = [
       ../../user
-      ../../modules
+      ../../modules/user
     ];
 
     programs.home-manager.enable = true;

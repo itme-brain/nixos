@@ -27,6 +27,7 @@
       options = "--delete-older-than 30d";
     };
   };
+
 # Sudo Options
   security.sudo = {
     wheelNeedsPassword = false;

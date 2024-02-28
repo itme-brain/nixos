@@ -1,1 +1,9 @@
-# TODO: nixify the server 
+{ ... }:
+
+{
+  imports = [
+    ../../user
+    ./hardware.nix
+    ./system.nix
+  ];
+}

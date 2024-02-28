@@ -1,6 +1,10 @@
 { pkgs, lib, config, ... }:
 
-{ system.stateVersion = "22.11";
+{ system.stateVersion = "23.11";
+
+  imports = [
+    ../../modules/system
+  ];
 
 # Users
   users.users = {
@@ -43,34 +47,11 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    pavucontrol
-  ];
-
-# DE
-  programs.sway = {
-    enable = true;
-    package = null;
-  };
-
 # Fonts
   fonts.packages = with pkgs; [
     terminus_font
     terminus-nerdfont
   ];
-
-# Audio
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-
-    wireplumber.enable = true;
-
-    pulse.enable = true;
-    jack.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-  };
 
 # Sudo Options
   security.sudo = {
@@ -103,7 +84,7 @@
 
 # Networking
   networking = {
-    hostName = "socrates";
+    hostName = "archimedes";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
