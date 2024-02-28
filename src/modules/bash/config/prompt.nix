@@ -18,32 +18,38 @@ remove_icon() {
   venv_icons=''${venv_icons//$icon/}
 }
 
-python_icon="\[\033[01;33m\] \[\033[00m\]"
-node_icon="\[\033[01;93m\]󰌞 \[\033[00m\]"
-nix_icon="\[\033[01;34m\] \[\033[00m\]"
+python_icon="\[\033[01;33m\]\[\033[00m\]"
+node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
+nix_icon="\[\033[01;34m\]\[\033[00m\]"
 
 check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
     add_icon "$nix_icon"
-    if [ -n "$VIRTUAL_ENV" ]; then
-      add_icon "$python_icon"
-    else
-      remove_icon "$python_icon"
-    fi
-
-    if [ -d "''${git_root}/node_modules" ]; then
-      add_icon "$node_icon"
-    else
-      remove_icon "$node_icon"
-    fi
   else
     remove_icon "$nix_icon"
-    return 0
+  fi
+
+  if [ -n "$VIRTUAL_ENV" ]; then
+    add_icon "$python_icon"
+  else
+    remove_icon "$python_icon"
+  fi
+
+  if [ -d "''${git_root}/node_modules" ]; then
+    add_icon "$node_icon"
+  else
+    remove_icon "$node_icon"
   fi
 }
 
 set_git_dir() {
-  if [ "$git_curr_dir" == "." ]; then
+  local superproject_root=$(git rev-parse --show-superproject-working-tree 2>/dev/null)
+  if [[ -n "$superproject_root" ]]; then
+    # If inside a submodule, display only the root of the parent and the submodule name
+    local submodule_name=$(basename "$git_root")
+
+    working_dir="\[\033[01;34m\] ''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
+  elif [ "$git_curr_dir" == "." ]; then
     working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
     return 0
   else
@@ -59,14 +65,11 @@ relative_path() {
 }
 
 check_project() {
-  local git_dir=$(git rev-parse --git-dir 2>/dev/null)
+  local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
 
-  if [ -n "$git_dir" ]; then
+  if [ -n "$git_root" ]; then
     local git_branch=$(git branch --show-current 2>/dev/null)
     git_branch=''${git_branch:-$(git rev-parse --short HEAD 2>/dev/null)}
-
-    local git_dir=$(git rev-parse --git-dir)
-    local git_root=$(dirname "$(readlink -f "$git_dir")")
 
     local git_curr_dir=$(relative_path "." "$git_root")
     local git_root_dir=$(basename "$git_root")
