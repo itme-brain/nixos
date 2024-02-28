@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.corn;
+  cfg = config.modules.bitcoin;
 
 in
-{ options.modules.corn = { enable = mkEnableOption "corn"; };
+{ options.modules.bitcoin = { enable = mkEnableOption "bitcoin"; };
 
   imports = [
     ./core-lightning
@@ -13,6 +13,10 @@ in
   ];
 
   config = mkIf cfg.enable {
+    programs.bash.shellAliases = {
+      btc = "bitcoin-cli";
+    };
+
     users = {
       users = {
         "bitcoind" = {
@@ -23,15 +27,18 @@ in
       };
       groups = {
         "bitcoin" = {
-          members = [ "core-lightning" "electrs" ];
+          members = [ "clightning" "electrs" ];
         };
       };
     };
+
     services.bitcoind = {
-      "main-net" = {
+      "bitcoind" = {
         enable = true;
+        testnet = false;
         user = "bitcoind";
         group = "bitcoin";
+        #extraConfig = TODO;
       };
     };
   };

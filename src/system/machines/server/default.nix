@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../user
+    ../../../user
     ./hardware.nix
     ./system.nix
   ];

@@ -25,23 +25,35 @@
 
   in
   {
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      inherit system pkgs;
-      modules = [
-        ./src/systems/desktop
-        home-manager.nixosModules.home-manager
-          (import ./src/systems/desktop/home.nix)
-      ];
-    };
-    nixosConfigurations.windows = nixpkgs.lib.nixosSystem {
-      inherit system pkgs;
-      modules = [
-        ./src/systems/wsl
-        nixos-wsl.nixosModules.wsl
-          (import ./src/systems/wsl/wsl.nix)
-        home-manager.nixosModules.home-manager
-          (import ./src/systems/wsl/home.nix)
-      ];
+    nixosConfigurations = {
+      desktop = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/desktop
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/desktop/home.nix)
+        ];
+      };
+
+      windows = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/wsl
+          nixos-wsl.nixosModules.wsl
+            (import ./src/system/machines/wsl/wsl.nix)
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/wsl/home.nix)
+        ];
+      };
+
+      server = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/server
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/server/home.nix)
+        ];
+      };
     };
   };
 }

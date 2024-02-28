@@ -3,8 +3,17 @@
 { system.stateVersion = "23.11";
 
   imports = [
-    ../../modules/system
+    ../modules
   ];
+
+  modules = {
+    bitcoin = {
+      enable = true;
+      clightning = true;
+      electrs = true;
+      sparrow-server = true;
+    };
+  };
 
 # Users
   users.users = {
