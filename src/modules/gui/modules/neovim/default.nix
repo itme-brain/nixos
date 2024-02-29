@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.neovim;
+  cfg = config.modules.user.gui.neovim;
 
 in
-{ options.modules.gui.neovim = { enable = mkEnableOption "gui.neovim"; };
+{ options.modules.user.gui.neovim = { enable = mkEnableOption "user.gui.neovim"; };
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;

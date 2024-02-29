@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.utils.email;
+  cfg = config.modules.user.utils.email;
 
 in
-{ options.modules.utils.email = { enable = mkEnableOption "utils.email"; };
+{ options.modules.user.utils.email = { enable = mkEnableOption "user.utils.email"; };
   config = mkIf cfg.enable {
     programs.aerc = {
       enable = true;

@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.utils.vim;
+  cfg = config.modules.user.utils.vim;
 
 in
-{ options.modules.utils.vim = { enable = mkEnableOption "utils.vim"; };
+{ options.modules.user.utils.vim = { enable = mkEnableOption "user.utils.vim"; };
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [ 

@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.utils;
+  cfg = config.modules.user.utils;
 
 in
-{ options.modules.utils = { enable = mkEnableOption "utils"; };
+{ options.modules.user.utils = { enable = mkEnableOption "user.utils"; };
   imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

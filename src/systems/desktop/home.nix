@@ -20,27 +20,29 @@
     home.homeDirectory = "/home/${config.user.name}";
 
     modules = {
-      bash.enable = true;
-      git.enable = true;
-      gpg.enable = true;
-      security.enable = true;
+      user = {
+        bash.enable = true;
+        git.enable = true;
+        gpg.enable = true;
+        security.enable = true;
 
-      utils = {
-        enable = true;
-        dev.enable = true;
-        irc.enable = true;
-        vim.enable = false;
-      };
+        utils = {
+          enable = true;
+          dev.enable = true;
+          irc.enable = true;
+          vim.enable = false;
+        };
 
-      gui = {
-        enable = true;
-        alacritty.enable = true;
-        browsers.enable = true;
-        corn.enable = true;
-        fun.enable = true;
-        neovim.enable = true;
-        utils.enable = true;
-        writing.enable = true;
+        gui = {
+          sway.enable = true;
+          alacritty.enable = true;
+          browsers.enable = true;
+          corn.enable = true;
+          fun.enable = true;
+          neovim.enable = true;
+          utils.enable = true;
+          writing.enable = true;
+        };
       };
     };
   };

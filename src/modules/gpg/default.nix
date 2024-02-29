@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gpg;
+  cfg = config.modules.user.gpg;
 
 in
-{ options.modules.gpg = { enable = mkEnableOption "gpg"; };
+{ options.modules.user.gpg = { enable = mkEnableOption "user.gpg"; };
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;

@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.fun;
+  cfg = config.modules.user.gui.fun;
 
 in
-{ options.modules.gui.fun = { enable = mkEnableOption "gui.fun"; };
+{ options.modules.user.gui.fun = { enable = mkEnableOption "user.gui.fun"; };
   config = mkIf cfg.enable {
     programs.obs-studio = {
       enable = true;

@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.browsers;
+  cfg = config.modules.user.gui.browsers;
 
 in
-{ options.modules.gui.browsers = { enable = mkEnableOption "gui.browsers"; };
+{ options.modules.user.gui.browsers = { enable = mkEnableOption "user.gui.browsers"; };
   config = mkIf cfg.enable {
     programs.firefox.enable = true;
 

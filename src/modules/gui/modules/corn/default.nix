@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.corn;
+  cfg = config.modules.user.gui.corn;
 
 in
-{ options.modules.gui.corn = { enable = mkEnableOption "gui.corn"; };
+{ options.modules.user.gui.corn = { enable = mkEnableOption "user.gui.corn"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       trezor-suite
