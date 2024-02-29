@@ -21,14 +21,25 @@ in
 
     systemd.services.electrs = {
       Unit = {
-        after = [ "network.target" "bitcoind.service" ];
-        wantedBy = [ "multi-user.target" ];
+        Description = "Electrs Bitcoin Indexer";
+        After = [ "network.target" "bitcoind.service" ];
+        Requires = [ "bitcoind.service" ];
       };
       Service = {
-        ExecStart = "${pkgs.electrs}/bin/electrs --conf=...";
-        Restart = "always";
+        ExecStartPre = "/usr/bin/sleep 10";
+        ExecStart = "${pkgs.electrs}/bin/electrs";
+
         User = "electrs";
         Group = "bitcoin";
+        Type = "simple";
+
+        KillMode = "process";
+        TimeoutSec = "60";
+        Restart = "always";
+        RestartSec = "60";
+      };
+      Install = {
+        WantedBy = [ "multi-user.target" ];
       };
     };
   };

@@ -47,7 +47,7 @@ in
 
         PrivateTmp = true;
         ProtectSystem = "full";
-        NoNetPrivileges = true;
+        NoNewPrivileges = true;
         PrivateDevies = true;
       };
       Install = {

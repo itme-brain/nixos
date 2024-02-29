@@ -38,7 +38,29 @@ in
         testnet = false;
         user = "bitcoind";
         group = "bitcoin";
-        #extraConfig = TODO;
+        configFile = /var/lib/bitcoind/bitcoin.conf;
+
+        rpc = {
+          "btcd" = {
+            #passwordHMAC = #CHECK IF THIS IS SAFE TO EXPOSE!!;
+          };
+          port = 8332;
+        };
+
+        extraConfig = ''
+          server=1
+          mempoolfullrbf=1
+          v2transport=1
+
+          rpcbind=127.0.0.1
+          rpcallowip=127.0.0.1
+
+          proxy=127.0.0.1:9050
+          listen=1
+          listenonion=1
+          torcontrol=127.0.0.1:9051
+          torenablecircuit=1
+        '';
       };
     };
   };
