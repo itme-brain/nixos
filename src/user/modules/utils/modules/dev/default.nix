@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.utils.dev;
+  cfg = config.modules.user.utils.dev;
 
 in
-{ options.modules.utils.dev = { enable = mkEnableOption "utils.dev"; };
+{ options.modules.user.utils.dev = { enable = mkEnableOption "user.utils.dev"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nix-init

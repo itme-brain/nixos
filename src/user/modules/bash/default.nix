@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.bash;
+  cfg = config.modules.user.bash;
 
 in
-{ options.modules.bash = { enable = mkEnableOption "bash"; };
+{ options.modules.user.bash = { enable = mkEnableOption "user.bash"; };
   config = mkIf cfg.enable {
     programs.bash = {
       enable = true;

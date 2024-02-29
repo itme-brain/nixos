@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.writing;
+  cfg = config.modules.user.gui.writing;
 
 in
-{ options.modules.gui.writing = { enable = mkEnableOption "gui.writing"; };
+{ options.modules.user.gui.writing = { enable = mkEnableOption "user.gui.writing"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       mdbook

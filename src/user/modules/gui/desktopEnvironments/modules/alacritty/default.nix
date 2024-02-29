@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.gui.alacritty;
+  cfg = config.modules.user.gui.alacritty;
 
 in
-{ options.modules.gui.alacritty = { enable = mkEnableOption "gui.alacritty"; };
+{ options.modules.user.gui.alacritty = { enable = mkEnableOption "user.gui.alacritty"; };
   config = mkIf cfg.enable {
     programs.alacritty = {
       enable = true;
