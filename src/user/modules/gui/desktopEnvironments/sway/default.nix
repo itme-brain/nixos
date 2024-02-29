@@ -6,7 +6,6 @@ let
 
 in
 { options.modules.user.gui.sway = { enable = mkEnableOption "user.gui.sway"; };
-  imports = [ ../../modules ];
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
     programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
