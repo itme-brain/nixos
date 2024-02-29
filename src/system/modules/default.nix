@@ -1,6 +1,6 @@
 {
   imports = [
-    ./corn
+    ./bitcoin
     ./security
   ];
 }

@@ -1,11 +1,12 @@
 { lib, pkgs, config, ... }:
 
 with lib;
-  let cfg = config.modules.bitcoin.core-lightning;
+  let cfg = config.modules.system.bitcoin.core-lightning;
 
 in
-{ options.modules.bitcoin.core-lightning = { enable = mkEnableOption "bitcoin.core-lightning"; };
+{ options.modules.system.bitcoin.core-lightning = { enable = mkEnableOption "system.bitcoin.core-lightning"; };
   config = mkIf cfg.enable {
+    imports = [  ./modules ];
     programs.bash.shellAliases = {
       cln = "lightningd";
     };
@@ -24,16 +25,33 @@ in
       };
     };
 
-    systemd.services.clightning = {
+    systemd.services.lightningd = {
       Unit = {
-        after = [ "network.target" "bitcoind.service" ];
-        wantedBy = [ "multi-user.target" ];
+        Description = "Core Lightning daemon";
+        Requires = [ "bitcoind.service" ];
+        After = [ "bitcoind.service" "network-online.target" ];
+        Wants = [ "network-online.target" ];
       };
       Service = {
-        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=...";
-        Restart = "always";
+        ExecStartPre = "/usr/bin/sleep 10";
+        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=/var/lib/clightning/.lightning/config";
+
+        RuntimeDirectory = "lightningd";
+
         User = "clightning";
         Group = "bitcoin";
+
+        Type = "forking";
+        PIDFile = "/run/lightningd/lightningd.pid";
+        Restart = "on-failute";
+
+        PrivateTmp = true;
+        ProtectSystem = "full";
+        NoNetPrivileges = true;
+        PrivateDevies = true;
+      };
+      Install = {
+        WantedBy = [ "multi-user.target" ];
       };
     };
   };

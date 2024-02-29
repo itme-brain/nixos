@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.bitcoin;
+  cfg = config.modules.system.bitcoin;
 
 in
-{ options.modules.bitcoin = { enable = mkEnableOption "bitcoin"; };
+{ options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
 
   imports = [
     ./core-lightning
