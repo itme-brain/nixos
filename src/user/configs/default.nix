@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 
-# Replace with your user configurations
+# Replace symlink at root of repo with user configs
 {
   options = {
     user = lib.mkOption {
