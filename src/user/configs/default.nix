@@ -3,10 +3,11 @@
 # Replace symlink at root of repo with user configs
 {
   options = {
-    user = lib.mkOption {
+    user = lib.mkOption rec {
       type = lib.types.attrs;
       default = {
         name = "bryan";
+        email = "bryan@ramos.codes";
         shell = pkgs.bash;
 
         groups = [
@@ -20,7 +21,7 @@
 
         gitConfig = {
           userName = "Bryan Ramos";
-          userEmail = "bryan@ramos.codes";
+          userEmail = "${default.user.email}";
           signing = {
             key = "F1F3466458452B2DF351F1E864D12BA95ACE1F2D";
             signByDefault = true;

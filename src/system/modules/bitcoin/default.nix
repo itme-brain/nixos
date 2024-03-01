@@ -7,10 +7,7 @@ let
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
 
-  imports = [
-    ./core-lightning
-    ./sparrow-cli
-  ];
+  imports = [ ./modules ];
 
   config = mkIf cfg.enable {
     programs.bash.shellAliases = {

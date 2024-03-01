@@ -2,6 +2,6 @@
   imports = [
     ./core-lightning
     ./electrs
-    ./sparrow-cli
+    ./sparrow-server
   ];
 }
