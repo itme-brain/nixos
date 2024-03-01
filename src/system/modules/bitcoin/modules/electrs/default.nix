@@ -1,4 +1,5 @@
 { lib, pkgs, config, ... }:
+#TODO: electrs configuration file
 
 with lib;
   let cfg = config.modules.bitcoin.electrs;
@@ -15,6 +16,8 @@ in
           description = "electrs system user";
           isSystemUser = true;
           group = "bitcoin";
+          home = /var/lib/electrs;
+          createHome = true;
         };
       };
     };
@@ -34,9 +37,9 @@ in
         Type = "simple";
 
         KillMode = "process";
-        TimeoutSec = "60";
+        TimeoutSec = 60;
         Restart = "always";
-        RestartSec = "60";
+        RestartSec = 60;
       };
       Install = {
         WantedBy = [ "multi-user.target" ];

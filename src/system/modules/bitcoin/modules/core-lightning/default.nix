@@ -1,4 +1,5 @@
 { lib, pkgs, config, ... }:
+#TODO: c-lightning config file
 
 with lib;
   let cfg = config.modules.system.bitcoin.core-lightning;
@@ -6,21 +7,23 @@ with lib;
 in
 { options.modules.system.bitcoin.core-lightning = { enable = mkEnableOption "system.bitcoin.core-lightning"; };
   config = mkIf cfg.enable {
-    imports = [  ./modules ];
+    imports = [ ./modules ];
     programs.bash.shellAliases = {
       cln = "lightningd";
     };
 
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       clightning
     ];
 
     users = {
       users = {
-        "clightning" = {
-          description = "clightning system user";
+        "c-lightning" = {
+          description = "core-lightning system user";
           isSystemUser = true;
           group = "bitcoin";
+          home = /var/lib/c-lightning;
+          createHome = true;
         };
       };
     };
@@ -33,12 +36,23 @@ in
         Wants = [ "network-online.target" ];
       };
       Service = {
-        ExecStartPre = "/usr/bin/sleep 10";
-        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=/var/lib/clightning/.lightning/config";
+        ExecStartPre =
+        let
+          lightningConf = ''
+          ''; #put lightning conf here
+        in
+          "${pkgs.writeShellScript "prepare-clightning-config" ''
+            mkdir -p /var/lib/c-lightning/.lightning
+            chown -R c-lightning:bitcoin /var/lib/c-lightning
+            echo "${lightningConf}" > /var/lib/c-lightning/.lightning/config
+            chmod 600 /var/lib/c-lightning/.lightning/config
+          ''}";
+
+        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=/var/lib/c-lightning/.lightning/config";
 
         RuntimeDirectory = "lightningd";
 
-        User = "clightning";
+        User = "c-lightning";
         Group = "bitcoin";
 
         Type = "forking";
@@ -49,6 +63,7 @@ in
         ProtectSystem = "full";
         NoNewPrivileges = true;
         PrivateDevies = true;
+        MemoryDenyWriteAccess = false;
       };
       Install = {
         WantedBy = [ "multi-user.target" ];

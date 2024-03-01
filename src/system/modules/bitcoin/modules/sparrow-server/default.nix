@@ -2,12 +2,12 @@
 
 with lib;
   let
-    cfg = config.modules.gui.bitcoin.sparrow-server;
+    cfg = config.modules.system.bitcoin.sparrow-server;
     sparrow-server = import ./derivation.nix { inherit pkgs; };
 in
-{ options.modules.gui.bitcoin.sparrow-server = { enable = mkEnableOption "gui.bitcoin.sparrow-server"; };
+{ options.modules.system.bitcoin.sparrow-server = { enable = mkEnableOption "system.bitcoin.sparrow-server"; };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       sparrow-server
     ];
   };

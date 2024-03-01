@@ -23,6 +23,8 @@ in
           description = "bitcoind system user";
           isSystemUser = true;
           group = "bitcoin";
+          home = /var/lib/bitcoind;
+          createHome = true;
         };
       };
       groups = {
@@ -41,9 +43,6 @@ in
         configFile = /var/lib/bitcoind/bitcoin.conf;
 
         rpc = {
-          "btcd" = {
-            #passwordHMAC = #CHECK IF THIS IS SAFE TO EXPOSE!!;
-          };
           port = 8332;
         };
 
