@@ -6,7 +6,8 @@
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
-      extraGroups = config.user.groups;
+      extraGroups = config.user.groups
+        ++ [ "video" "audio" "kvm" "libvirtd" "docker" ];
       openssh.authorizedKeys.keys = config.user.sshKeys;
     };
   };

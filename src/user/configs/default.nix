@@ -10,9 +10,7 @@
         shell = pkgs.bash;
 
         groups = [
-          "wheel" "networkmanager" "home-manager"
-          "input" "video" "audio"
-          "kvm" "libvirtd" "docker"
+          "wheel" "networkmanager" "home-manager" "input"
         ];
 
         sshKeys = [
@@ -20,7 +18,7 @@
           "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBK2ROz7EVvE+nzF5k9EYZ2v3JhBzk058uh3QJTzcG4t70fkZgh9y56AOx26eXlKQWuuV05e8EkWRuVI8gfA2ROI="
         ];
 
-        gitConfig= {
+        gitConfig = {
           userName = "Bryan Ramos";
           userEmail = "bryan@ramos.codes";
           signing = {
