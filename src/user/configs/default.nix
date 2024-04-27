@@ -1,6 +1,5 @@
 { lib, pkgs, ... }:
 
-# Replace symlink at root of repo with user configs
 let
   userConfigs = rec {
     name = "bryan";
