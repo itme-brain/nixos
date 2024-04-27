@@ -2,7 +2,6 @@
 
 { system.stateVersion = "22.11";
 
-# Users
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
@@ -12,7 +11,6 @@
     };
   };
 
-# Nix
   nix = {
     channel.enable = false;
     package = pkgs.nixFlakes;
@@ -28,7 +26,6 @@
     };
   };
 
-# Bootloader
   boot.loader = {
     timeout = null;
     grub = {
@@ -48,19 +45,16 @@
     pavucontrol
   ];
 
-# DE
   programs.sway = {
     enable = true;
     package = null;
   };
 
-# Fonts
   fonts.packages = with pkgs; [
     terminus_font
     terminus-nerdfont
   ];
 
-# Audio
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -73,13 +67,11 @@
     alsa.support32Bit = true;
   };
 
-# Sudo Options
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
   };
 
-# Locale
   time = {
     timeZone = "America/New_York";
     hardwareClockInLocalTime = true;
@@ -102,7 +94,6 @@
     useXkbConfig = true;
   };
 
-# Networking
   networking = {
     hostName = "socrates";
     useDHCP = lib.mkDefault true;
