@@ -6,6 +6,7 @@ let
     email = "bryan@ramos.codes";
     shell = pkgs.bash;
 
+    # This will pull an image from your ~Pictures/wallpapers directory
     wallpaper = "mountains.jpg";
 
     groups = [ "wheel" "networkmanager" "home-manager" "input" ];
