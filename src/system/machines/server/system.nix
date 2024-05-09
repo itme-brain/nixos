@@ -15,7 +15,6 @@
     };
   };
 
-# Users
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
@@ -24,7 +23,6 @@
     };
   };
 
-# Nix
   nix = {
     channel.enable = false;
     package = pkgs.nixFlakes;
@@ -40,7 +38,6 @@
     };
   };
 
-# Bootloader
   boot.loader = {
     timeout = null;
     grub = {
@@ -56,19 +53,16 @@
     };
   };
 
-# Fonts
   fonts.packages = with pkgs; [
     terminus_font
     terminus-nerdfont
   ];
 
-# Sudo Options
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
   };
 
-# Locale
   time = {
     timeZone = "America/New_York";
     hardwareClockInLocalTime = true;
@@ -91,7 +85,6 @@
     useXkbConfig = true;
   };
 
-# Networking
   networking = {
     hostName = "archimedes";
     useDHCP = lib.mkDefault true;

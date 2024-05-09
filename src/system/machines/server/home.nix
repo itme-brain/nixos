@@ -19,16 +19,14 @@
     home.homeDirectory = "/home/${config.user.name}";
 
     modules = {
-      bash.enable = true;
-      git.enable = true;
-      gpg.enable = true;
-
-      utils = {
-        enable = true;
+      user = {
+        bash.enable = true;
+        git.enable = true;
+        gui.enable = false;
+        gpg.enable = true;
+        utils.enable = true;
         vim.enable = true;
       };
-
-      gui.enable = false;
     };
   };
 }
