@@ -56,9 +56,9 @@
         ];
       };
     };
-    homeConfigurations."bryan" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."work" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = [ ./src/system/machines/nix-less ];
+      modules = [ ./src/system/machines/workstation ];
     };
   };
 }
