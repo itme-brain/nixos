@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../user/configs
+    ../../../user/configs
     ./system.nix
   ];
 }
