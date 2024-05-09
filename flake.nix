@@ -22,10 +22,10 @@
         allowUnfree = true;
       };
     };
-    config = import ./user.config.nix;
 
   in
   {
+    import = ./user.configs.nix;
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
@@ -56,6 +56,9 @@
         ];
       };
     };
-    homeConfigurations = import ./src/system/machines/nix-less;
+    homeConfigurations."bryan" = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [ ./src/system/machines/nix-less ];
+    };
   };
 }

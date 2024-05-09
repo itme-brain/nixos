@@ -9,14 +9,14 @@
     homeDirectory = "/home/${config.user.name}";
 
     file.".config/home-manager" = {
-      source = ../../../../../nixos;
+      source = ../../../..;
       recursive = true;
     };
   };
 
   programs.home-manager.enable = true;
   programs.bash.shellAliases = {
-    nixup = "home-manager switch";
+    nixup = "home-manager switch --flake";
   };
 
   nix = {
@@ -25,11 +25,6 @@
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "${config.user.name}" ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
     };
   };
   modules = {
@@ -42,8 +37,6 @@
         alacritty.enable = true;
         browsers.enable = true;
         neovim.enable = true;
-
-
       };
       utils = {
         enable = true;
