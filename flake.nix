@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    home-manager= {
+    home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -22,6 +22,7 @@
         allowUnfree = true;
       };
     };
+    config = import ./user.config.nix;
 
   in
   {
@@ -52,6 +53,15 @@
           ./src/system/machines/server
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/server/home.nix)
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      ${config.user.name} = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./src/system/machines/nix-less
         ];
       };
     };
