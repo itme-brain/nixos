@@ -5,6 +5,9 @@ let
     name = "bryan";
     email = "bryan@ramos.codes";
     shell = pkgs.bash;
+
+    wallpaper = "mountains.jpg";
+
     groups = [ "wheel" "networkmanager" "home-manager" "input" ];
 
     sshKeys = [
