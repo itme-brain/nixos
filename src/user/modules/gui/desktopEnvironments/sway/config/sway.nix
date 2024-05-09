@@ -17,13 +17,13 @@ in
       HDMI-A-1 = {
         resolution = "1920x1080";
         position = "0,0";
-        bg = "/etc/nixos/src/user/modules/gui/desktopEnvironments/wallpapers fill";
+        bg = "~/Pictures/wallpapers fill";
       };
       DP-1 = {
         resolution = "1080x1920";
         position = "1920,0";
         transform = "90";
-        bg = "/etc/nixos/src/user/modules/gui/desktopEnvironments/wallpapers fill";
+        bg = "~/Pictures/wallpapers fill";
       };
     };
     modifier = "Mod1";
