@@ -25,7 +25,6 @@
 
   in
   {
-    import = ./user.configs.nix;
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
