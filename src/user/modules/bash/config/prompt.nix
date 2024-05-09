@@ -9,7 +9,7 @@ check_ssh() {
 add_icon() {
   local icon=$1
   if [[ ! $venv_icons =~ $icon ]]; then
-    venv_icons+="$icon"
+    venv_icons+="$icon "
   fi
 }
 

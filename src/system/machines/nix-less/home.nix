@@ -1,37 +1,56 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.${config.user.name} = {
-    imports = [
-      ../../../user
-    ];
+  imports = [ ../../../user ];
 
-    programs.home-manager.enable = true;
-    programs.bash.shellAliases = {
-      nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#windows";
+  home = {
+    stateVersion = "23.11";
+    username = "${config.user.name}";
+    homeDirectory = "/home/${config.user.name}";
+
+    file.".config/home-manager" = {
+      source = ../../../../../nixos;
+      recursive = true;
     };
+  };
 
-    home.stateVersion = "23.11";
+  programs.home-manager.enable = true;
+  programs.bash.shellAliases = {
+    nixup = "home-manager switch";
+  };
 
-    home.username = "${config.user.name}";
-    home.homeDirectory = "/home/${config.user.name}";
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = "experimental-features = nix-command flakes";
+    settings = {
+      auto-optimise-store = true;
+      trusted-users = [ "${config.user.name}" ];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
+  modules = {
+    user = {
+      bash.enable = true;
+      git.enable = true;
+      gpg.enable = true;
+      security.enable = false;
+      gui = {
+        alacritty.enable = true;
+        browsers.enable = true;
+        neovim.enable = true;
 
-    modules = {
-      user = {
-        bash.enable = true;
-        git.enable = true;
-        gpg.enable = true;
-        gui.enable = false;
-        security.enable = true;
-        utils = {
-          enable = true;
-          dev.enable = true;
-          email.enable = true;
-          irc.enable = true;
-          vim.enable = true;
-        };
+
+      };
+      utils = {
+        enable = true;
+        dev.enable = true;
+        email.enable = true;
+        irc.enable = true;
+        vim.enable = true;
       };
     };
   };

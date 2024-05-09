@@ -56,14 +56,6 @@
         ];
       };
     };
-
-    homeConfigurations = {
-      ${config.user.name} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./src/system/machines/nix-less
-        ];
-      };
-    };
+    homeConfigurations = import ./src/system/machines/nix-less;
   };
 }
