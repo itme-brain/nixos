@@ -36,7 +36,7 @@
         ];
       };
 
-      windows = nixpkgs.lib.nixosSystem {
+      wsl = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
           ./src/system/machines/wsl
