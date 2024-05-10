@@ -10,6 +10,8 @@ in
     home.packages = with pkgs; [
       nix-init
       nix-prefetch-git
+
+      gcc
     ];
   };
 }

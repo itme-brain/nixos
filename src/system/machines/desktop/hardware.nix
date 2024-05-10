@@ -14,12 +14,12 @@
 # FStab
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/af24c5b3-8a6e-4333-a61d-922a97928cae";
+      device = "/dev/disk/by-uuid/d4e0a913-9ba8-451e-9086-b6d5d483dd9f";
       fsType = "ext4";
     };
 
     "/home" = {
-      device = "/dev/disk/by-uuid/1639ee20-28d6-4649-814d-ba981c138b35";
+      device = "/dev/disk/by-uuid/e1780967-0b87-46ff-8200-430d79d59e47";
       fsType = "ext4";
     };
 
