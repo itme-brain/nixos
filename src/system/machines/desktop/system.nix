@@ -21,7 +21,7 @@
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "${config.user.name}" ];
-      substitute = false;
+      substitute = true;
       max-jobs = "auto";
     };
     gc = {
