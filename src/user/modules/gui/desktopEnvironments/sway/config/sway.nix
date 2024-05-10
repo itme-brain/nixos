@@ -28,7 +28,7 @@ in
     };
     modifier = "Mod1";
     menu = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
-    terminal = "alacritty";
+    terminal = "${pkgs.alacritty}/bin/alacritty";
 
     input = {
       keyboard = {
