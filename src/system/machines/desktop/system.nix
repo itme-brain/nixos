@@ -38,7 +38,7 @@
       useOSProber = true;
       devices = [ "nodev" ];
       efiSupport = true;
-      configurationLimit = 5;
+      configurationLimit = 3;
       splashImage = null;
     };
 
