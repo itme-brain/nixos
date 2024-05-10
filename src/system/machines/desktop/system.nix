@@ -18,6 +18,8 @@
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "${config.user.name}" ];
+      substitute = false;
+      max-jobs = "auto";
     };
     gc = {
       automatic = true;
