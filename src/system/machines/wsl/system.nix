@@ -7,7 +7,7 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
-      openssh.authorizedKeys.keys = config.user.sshKey1;
+      openssh.authorizedKeys.keys = config.user.sshKeys.key1;
     };
   };
   boot.isContainer = true;
