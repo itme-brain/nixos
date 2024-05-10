@@ -7,7 +7,7 @@
       isNormalUser = true;
       extraGroups = config.user.groups
         ++ [ "video" "audio" "kvm" "libvirtd" "docker" ];
-      openssh.authorizedKeys.keys = config.user.sshKeys;
+      openssh.authorizedKeys.keys = config.user.sshKey2;
     };
   };
 
