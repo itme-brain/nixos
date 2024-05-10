@@ -33,8 +33,6 @@
   hardware.nvidia.open = true;
 
 # Virtualisation
-  nix.settings.system-features = [ "kvm" ];
-
   environment.systemPackages = with pkgs; [
     virt-manager
   ];
