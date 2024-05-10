@@ -43,7 +43,8 @@
   };
 
   environment.systemPackages = with pkgs; [
-    pavucontrol
+    vim
+    git
   ];
 
   programs.sway = {

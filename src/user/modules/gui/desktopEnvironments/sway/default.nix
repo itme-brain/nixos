@@ -32,6 +32,7 @@ in
     };
 
     home.packages = with pkgs; [
+      pavucontrol
       xdg-utils
       grim
       slurp
