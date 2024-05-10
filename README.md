@@ -1,6 +1,6 @@
-# My NixOS Configurations ❄️👨‍💻
+# My Nix Configurations ❄️‍💻
 
-My modular NixOS🔥
+My modular Nix configs🔥
 
 If you need a list of available packages and options:
 
@@ -8,35 +8,24 @@ If you need a list of available packages and options:
 - [nixpkgs Options](https://search.nixos.org/options?) 🔍️
 - [home-manager Options](https://mipmip.github.io/home-manager-option-search/) ☕️
 
-## Get Inspired 🌟
-
-Ready to go down the Nix 🐇🕳️❓️
-
 Fork this repo and create your own NixOS config✨
 
 Take inspiration💡, borrow ideas💭 and customize it to your 💖 content
 
 ⚠️ Be sure to tailor any settings related to my hardware and system to your own hardware⚠️
 
-👉️Run `nixos-generate-config` if you need a new `hardware-configuration.nix`
-
 ## Requirements ⚙️
 
-- Nix package manager ❄️
-- Nix 2.0 `flakes` enabled⚡️
+- [Nix package manager](https://www.nixos.org/)
+- [Nix 2.0 `flakes` enabled](https://nixos.wiki/wiki/Flakes#Enable_flakes_permanently_in_NixOS)
+- [home-manager installed](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone)*optional*
 
-Install by visiting [nixos.org](https://www.nixos.org/) or through your package manager🚀
+# End-Points Exposed ❄️🔧💻️❄️
 
-### Enabling Flakes ❄️
+NixOS Configurations:
+  - desktop
+  - wsl
+  - server (wip)
 
-Unleash Nix💥
-
-Add to your `nix.conf` or `configuration.nix`👇️
-```nix
-nix = {
-  package = pkgs.nixFlakes;
-  extraOptions = "experimental-features = nix-command flakes";
-};
-```
-
-# Happy Nix Hacking! ❄️🔧💻️❄️
+Home-Manager Configurations:
+  - workstation

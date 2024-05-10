@@ -1,6 +1,6 @@
 {
   imports = [
-    ./configs
+    ./desktopEnvironments
     ./modules
   ];
 }
