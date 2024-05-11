@@ -16,7 +16,26 @@ in
 
       pkg-config
       qrencode
+
+      docker
     ];
+
+    programs = {
+      bash = {
+        initExtra = mkAfter ''
+          ${import ./config/penpot.nix}
+        '';
+      };
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
+
+    home.sessionVariables = {
+      DIRENV_LOG_FORMAT = " ";
+    };
   };
 
   programs.bash.bashrcExtra = ''

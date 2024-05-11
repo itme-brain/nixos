@@ -11,18 +11,12 @@ in
       enable = true;
       enableCompletion = true;
 
-      initExtra = import ./config/prompt.nix;
-      profileExtra = import ./config/bashprofile.nix;
+      initExtra = import ./config/prompt.nix { inherit lib config; };
       bashrcExtra = import ./config/bashrc.nix;
       shellAliases = import ./config/alias.nix;
     };
 
     programs = {
-      direnv = {
-      	enable = true;
-        enableBashIntegration = true;
-      	nix-direnv.enable = true;
-      };
       ripgrep.enable = true;
       lsd = {
         enable = true;

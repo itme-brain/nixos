@@ -1,7 +1,9 @@
 { lib, pkgs, config, ... }:
 
 with lib;
-  let cfg = config.modules.user.git;
+let
+  cfg = config.modules.user.git;
+  bash = config.modules.user.bash;
 
 in
 { options.modules.user.git = { enable = mkEnableOption "user.git"; };
@@ -19,5 +21,9 @@ in
     home.packages = with pkgs; [
       git-crypt
     ];
+
+    programs.bash.initExtra = mkAfter ''
+      ${import ./config/cdg.nix}
+    '';
   };
 }
