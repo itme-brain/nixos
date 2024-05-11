@@ -10,8 +10,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       wget curl tree neofetch
-      unzip fping calc qrencode
-      fd pkg-config pciutils
+      unzip fping calc fd pciutils
       rsync zip
     ];
   };

@@ -10,6 +10,10 @@ in
     home.packages = with pkgs; [
       nix-init
       nix-prefetch-git
+      nurl
+
+      pkg-config
+      qrencode
     ];
   };
 }
