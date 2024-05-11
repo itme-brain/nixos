@@ -1,16 +1,43 @@
 { lib, pkgs, config, ... }:
-#TODO: c-lightning config file
 
 with lib;
-  let cfg = config.modules.system.bitcoin.core-lightning;
+let
+  cfg = config.modules.system.bitcoin.core-lightning;
+  restPlugin = config.modules.system.bitcoin.core-lightning.REST;
+  home = /var/lib/clightning;
 
 in
 { options.modules.system.bitcoin.core-lightning = { enable = mkEnableOption "system.bitcoin.core-lightning"; };
-  config = mkIf cfg.enable {
-    imports = [ ./modules ];
-    programs.bash.shellAliases = {
-      cln = "lightningd";
-    };
+  config = mkIf cfg.enable rec {
+    imports = [ ./plugins ];
+    nixpkgs.overlays = [
+      (final: prev: {
+        clightning = prev.clightning.overrideAttrs (old: rec {
+          version = "24.02.2";
+          src = builtins.fetchurl {
+            url = ''
+              https://github.com/ElementsProject/lightning/releases/download/v${version}/clightning-v${version}.zip
+            '';
+            sha256 = ''
+              sha256-096jlfrda4pq8zwp9iqaq8gnnb8r3vir42vjrfamxd53kdy42aq1
+            '';
+          };
+          buildInputs = with pkgs; old.buildInputs
+          ++ lib.optionals (restPlugin.enable) [
+            nodejs
+          ];
+          nativeBuildInputs = with pkgs; old.nativeBuildInputs
+          ++ lib.optionals (restPlugin.enable) [
+            makeWrapper
+          ];
+          postInstall = old.postInstallPhase
+          ++ lib.optionals (restPlugin.enable) ''
+            wrapProgram $out/clrest.js \
+              --suffix PATH "${lib.makeBinPath [ nodejs ]}"
+          '';
+        });
+      })
+    ];
 
     environment.systemPackages = with pkgs; [
       clightning
@@ -18,15 +45,17 @@ in
 
     users = {
       users = {
-        "c-lightning" = {
+        "clightning" = {
+          inherit home;
           description = "core-lightning system user";
           isSystemUser = true;
           group = "bitcoin";
-          home = /var/lib/c-lightning;
           createHome = true;
         };
       };
     };
+
+    conf = pkgs.writeText "lightning.conf" (import ./config { inherit home; });
 
     systemd.services.lightningd = {
       Unit = {
@@ -36,23 +65,16 @@ in
         Wants = [ "network-online.target" ];
       };
       Service = {
-        ExecStartPre =
-        let
-          lightningConf = ''
-          ''; #put lightning conf here
-        in
-          "${pkgs.writeShellScript "prepare-clightning-config" ''
-            mkdir -p /var/lib/c-lightning/.lightning
-            chown -R c-lightning:bitcoin /var/lib/c-lightning
-            echo "${lightningConf}" > /var/lib/c-lightning/.lightning/config
-            chmod 600 /var/lib/c-lightning/.lightning/config
-          ''}";
-
-        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=/var/lib/c-lightning/.lightning/config";
+        ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
+        ExecStart = ''
+          ${pkgs.clightning}/bin/lightningd \
+          --conf=${conf}
+          --lightning-dir=${home}
+        '';
 
         RuntimeDirectory = "lightningd";
 
-        User = "c-lightning";
+        User = "clightning";
         Group = "bitcoin";
 
         Type = "forking";
@@ -62,7 +84,7 @@ in
         PrivateTmp = true;
         ProtectSystem = "full";
         NoNewPrivileges = true;
-        PrivateDevies = true;
+        PrivateDevices = true;
         MemoryDenyWriteAccess = false;
       };
       Install = {

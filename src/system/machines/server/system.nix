@@ -26,7 +26,10 @@
   nix = {
     channel.enable = false;
     package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-going = true
+    '';
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "${config.user.name}" ];

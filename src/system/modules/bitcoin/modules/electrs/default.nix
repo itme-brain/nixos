@@ -1,11 +1,29 @@
 { lib, pkgs, config, ... }:
-#TODO: electrs configuration file
 
 with lib;
-  let cfg = config.modules.bitcoin.electrs;
+let
+  cfg = config.modules.bitcoin.electrs;
+  home = /var/lib/electrs;
+
 in
 { options.modules.bitcoin.electrs = { enable = mkEnableOption "bitcoin.electrs"; };
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable rec {
+    nixpkgs.overlays = [
+      (final: prev: {
+        electrs = prev.electrs.overrideAttrs (old: rec {
+          version = "0.10.4";
+          src = fetchFromGithub {
+            owner = old.owner;
+            repo = old.pname;
+            rev = "${version}";
+            hash = ''
+              sha256-0xw2532nmaxx9bjdpnnby03b83wc9zs8bv1wdfgv9q1phccqbkz1
+            '';
+          };
+        });
+      })
+    ];
+
     environment.systemPackages = with pkgs; [
       electrs
     ];
@@ -13,14 +31,16 @@ in
     users = {
       users = {
         "electrs" = {
+          inherit home;
           description = "electrs system user";
           isSystemUser = true;
           group = "bitcoin";
-          home = /var/lib/electrs;
           createHome = true;
         };
       };
     };
+
+    conf = pkgs.writeText "config.toml" (import ./config { inherit home; });
 
     systemd.services.electrs = {
       Unit = {
@@ -29,13 +49,13 @@ in
         Requires = [ "bitcoind.service" ];
       };
       Service = {
-        ExecStartPre = "/usr/bin/sleep 10";
-        ExecStart = "${pkgs.electrs}/bin/electrs";
+        ExecStartPre = "${pkgs.coreutils}/sleep 10";
+        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${conf}";
 
         User = "electrs";
         Group = "bitcoin";
-        Type = "simple";
 
+        Type = "simple";
         KillMode = "process";
         TimeoutSec = 60;
         Restart = "always";

@@ -1,4 +1,5 @@
 { lib, config, pkgs, ... }:
+#TODO: Finish
 
 with lib;
 let
@@ -15,7 +16,13 @@ in
     };
     services.nginx = {
       enable = true;
+      enableReload = true;
+
+      user = "nginx";
+      group = "nginx";
+
       package = pkgs.nginxMainLine;
+      config = import ./config;
     };
   };
 }

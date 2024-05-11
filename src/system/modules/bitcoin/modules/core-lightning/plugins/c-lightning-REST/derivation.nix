@@ -1,4 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+#TODO: Figure out how to symlink to the /var/lib/clightning/plugins directory
 
 with pkgs;
 stdenv.mkDerivation rec {
@@ -10,19 +11,15 @@ stdenv.mkDerivation rec {
     sha256 = "1swg53vbacsrsgy79lni07dy2h44b0yf2kad7j4fv17az4gwnxk7";
   };
 
-  buildInputs = with pkgs; [
-    nodejs
-  ];
-
   installPhase = ''
     mkdir -p $out
     cp -r * $out/
   '';
 
-  meta = {
-    description = "c-lighting REST API";
+  meta = with lib; {
+    description = "REST APIs for Core Lightning written with node.js";
     homepage = "https://github.com/Ride-The-Lightning/c-lightning-REST";
-    license = stdenv.lib.licenses.mit;
-    platforms = stdenv.lib.platforms.linux;
+    license = licenses.mit;
+    platforms = platforms.linux;
   };
 }

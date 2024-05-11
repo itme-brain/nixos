@@ -3,11 +3,11 @@
 with pkgs;
 stdenv.mkDerivation rec {
   pname = "sparrow-server";
-  version = "1.8.2";
+  version = "1.9.0";
 
   src = fetchurl {
     url = "https://github.com/sparrowwallet/sparrow/releases/download/${version}/sparrow-server-${version}-x86_64.tar.gz";
-    sha256 = "16hyrf8j7mv3m1ry7r2k3w70yxbf6smgcm5d35xy2hjqfmahv65m";
+    sha256 = "sha256-0vzgqjq208jwxfp83ss6rm08d0fd2jnph81gkkh13sg78xj2vqfc";
   };
 
   installPhase = ''
@@ -15,10 +15,10 @@ stdenv.mkDerivation rec {
     cp -r * $out/bin
   '';
 
-  meta = {
-    description = "Sparrow Server";
+  meta = with lib; {
+    description = "Desktop Bitcoin Wallet focused on security and privacy. Free and open source.";
     homepage = "https://sparrowwallet.com/";
-    license = stdenv.lib.licenses.mit;
-    platforms = stdenv.lib.platforms.linux;
+    license = licenses.asl20;
+    platforms = platforms.linux;
   };
 }
