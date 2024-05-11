@@ -12,7 +12,6 @@ check_ssh() {
     return 0
   fi
 }
-
 ${optionalString git.enable ''
 add_icon() {
   local icon=$1
@@ -91,7 +90,6 @@ check_project() {
   fi
 }
 ''}
-
 function set_prompt() {
   local green_arrow="\[\033[01;32m\]>> "
   local white_text="\[\033[00m\]"
@@ -107,7 +105,7 @@ function set_prompt() {
   check_project
   ''}
 
-  PS1="$ssh_PS1\n$working_dir$green_arrow$white_text"
+  PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"
 
   ${optionalString git.enable ''
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
