@@ -11,8 +11,7 @@ in
       enable = true;
       enableCompletion = true;
 
-      initExtra = import ./config/prompt.nix;
-      profileExtra = import ./config/bashprofile.nix;
+      initExtra = import ./config/prompt.nix { inherit lib config; };
       bashrcExtra = import ./config/bashrc.nix;
       shellAliases = import ./config/alias.nix;
     };
