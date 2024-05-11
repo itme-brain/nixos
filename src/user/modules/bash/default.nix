@@ -14,10 +14,6 @@ in
       initExtra = import ./config/prompt.nix { inherit lib config; };
       bashrcExtra = import ./config/bashrc.nix;
       shellAliases = import ./config/alias.nix;
-
-      shellOptions = [
-        "set -o vi"
-      ];
     };
 
     programs = {
