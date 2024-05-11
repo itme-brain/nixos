@@ -18,8 +18,17 @@ in
       docker
     ];
 
-    programs.bash.initExtra = mkAfter ''
-      ${import ./config/penpot.nix}
-    '';
+    programs = {
+      bash = {
+        initExtra = mkAfter ''
+          ${import ./config/penpot.nix}
+        '';
+      };
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
   };
 }
