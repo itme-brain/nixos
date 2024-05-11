@@ -13,6 +13,9 @@ in
       nurl
 
       docker
+
+      pkg-config
+      qrencode
     ];
   };
 

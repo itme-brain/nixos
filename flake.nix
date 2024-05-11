@@ -1,5 +1,5 @@
 {
-  description = "My NixOS Configs";
+  description = "My Nix Configs";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
@@ -57,7 +57,9 @@
     };
     homeConfigurations."work" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = [ ./src/system/machines/workstation ];
+      modules = [
+        ./src/system/machines/workstation
+      ];
     };
   };
 }
