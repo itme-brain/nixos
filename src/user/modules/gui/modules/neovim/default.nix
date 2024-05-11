@@ -11,6 +11,7 @@ in
       enable = true;
       defaultEditor = true;
       vimAlias = true;
+      vimdiffAlias = true;
       extraPackages = import ./config/servers.nix { inherit pkgs; };
     };
 
