@@ -14,6 +14,12 @@ in
 
       pkg-config
       qrencode
+
+      docker
     ];
+
+    programs.bash.initExtra = mkAfter ''
+      ${import ./config/penpot.nix}
+    '';
   };
 }
