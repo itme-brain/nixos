@@ -105,10 +105,11 @@ function set_prompt() {
   check_project
   ''}
 
-  PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"
 
-  ${optionalString git.enable ''
+  ${if git.enable then ''
   PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
+  '' else ''
+  PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"
   ''}
   return 0
 }
