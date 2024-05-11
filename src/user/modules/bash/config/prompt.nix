@@ -12,6 +12,7 @@ check_ssh() {
     return 0
   fi
 }
+
 ${optionalString git.enable ''
 add_icon() {
   local icon=$1
@@ -52,7 +53,6 @@ check_venv() {
 set_git_dir() {
   local superproject_root=$(git rev-parse --show-superproject-working-tree 2>/dev/null)
   if [[ -n "$superproject_root" ]]; then
-    # If inside a submodule, display only the root of the parent and the submodule name
     local submodule_name=$(basename "$git_root")
 
     working_dir="\[\033[01;34m\] ''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
@@ -98,6 +98,7 @@ function set_prompt() {
   local ssh_PS1
 
   check_ssh
+
   ${optionalString git.enable ''
   local venv_icons
   local git_branch_PS1
@@ -105,12 +106,10 @@ function set_prompt() {
   check_project
   ''}
 
-
-  ${if git.enable then ''
-  PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
-  '' else ''
-  PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"
-  ''}
+  ${if git.enable
+    then ''PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"''
+    else ''PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"''
+  }
   return 0
 }
 
