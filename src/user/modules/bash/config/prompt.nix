@@ -1,8 +1,3 @@
-{ config, lib, ... }:
-let
-  git = config.modules.user.git;
-
-in
 ''
 check_ssh() {
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
@@ -11,36 +6,6 @@ check_ssh() {
   fi
 }
 
-
-function set_prompt() {
-  local green_arrow="\[\033[01;32m\]>> "
-  local white_text="\[\033[00m\]"
-  local working_dir="\[\033[01;34m\]\w\[\033[00m\]"
-
-  local ssh_PS1
-
-  check_ssh
-  ${lib.optionalString git.enable ''
-  local venv_icons
-  local git_branch_PS1
-
-  check_project
-  ''}
-
-  PS1="$ssh_PS1\n$working_dir$green_arrow$white_text"
-
-  ${lib.optionalString (git.enable) ''
-  PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
-  ''}
-  return 0
-}
-
-PROMPT_COMMAND="set_prompt"
-''
-
-++ lib.mkoptional (git.enable)
-
-''
 add_icon() {
   local icon=$1
   if [[ ! $venv_icons =~ $icon ]]; then
@@ -117,4 +82,22 @@ check_project() {
     return 0
   fi
 }
+
+function set_prompt() {
+  local green_arrow="\[\033[01;32m\]>> "
+  local white_text="\[\033[00m\]"
+  local working_dir="\[\033[01;34m\]\w\[\033[00m\]"
+
+  local ssh_PS1
+  local venv_icons
+  local git_branch_PS1
+
+  check_ssh
+  check_project
+
+  PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"
+  return 0
+}
+
+PROMPT_COMMAND="set_prompt"
 ''
