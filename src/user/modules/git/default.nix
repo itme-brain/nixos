@@ -10,6 +10,26 @@ in
     programs = {
       git = {
         enable = true;
+        extraConfig = {
+          init = { defaultBranch = "master"; };
+          mergetool = {
+            vimdiff = {
+              trustExitCode = true;
+            };
+          };
+          merge = { tool = "vimdiff"; };
+          safe = {
+            directory = "${config.user.nixosDir}";
+          };
+        };
+        ignores = [
+          "node_modules"
+          ".direnv"
+          "dist-newstyle"
+          ".nuxt/"
+          ".output/"
+          "dist"
+        ];
       } // config.user.gitConfig;
       gh = {
         enable = true;

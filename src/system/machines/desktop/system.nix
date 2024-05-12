@@ -6,8 +6,8 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups
-        ++ [ "video" "audio" "kvm" "libvirtd" "docker" ];
-      openssh.authorizedKeys.keys = config.user.sshKeys.key2;
+        ++ [ "video" "audio" "kvm" "libvirtd" ];
+      openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key2}" ];
     };
   };
 

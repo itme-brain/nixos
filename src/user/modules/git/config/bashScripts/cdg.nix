@@ -5,7 +5,6 @@ function cdg() {
     return 0
   fi
 
-  # Check for invalid command
   if [[ -n "$1" ]]; then
     echo "Invalid command: $1. Try 'cdg --help'."
     return 1

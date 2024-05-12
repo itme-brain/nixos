@@ -10,7 +10,7 @@
 
     programs.home-manager.enable = true;
     programs.bash.shellAliases = {
-      nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#desktop";
+      nixup = "sudo nixos-rebuild switch --flake ${config.user.nixosDir}/.#desktop";
     };
 
     home.stateVersion = "22.11";
@@ -22,8 +22,11 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gpg.enable = true;
-        security.enable = true;
+
+        security = {
+          enable = true;
+          gpg.enable = true;
+        };
 
         utils = {
           enable = true;
