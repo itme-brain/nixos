@@ -22,8 +22,11 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gpg.enable = true;
-        security.enable = true;
+
+        security = {
+          enable = true;
+          gpg.enable = true;
+        };
 
         utils = {
           enable = true;
