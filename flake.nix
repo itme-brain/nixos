@@ -36,8 +36,8 @@
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/desktop/modules/home-manager)
-          disko.nixosModules.disko
-            (import ./src/system/machines/desktop/modules/disko)
+          #disko.nixosModules.disko
+          #  (import ./src/system/machines/desktop/modules/disko)
         ];
       };
 
