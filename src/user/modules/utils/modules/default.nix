@@ -3,6 +3,7 @@
     ./dev
     ./email
     ./irc
+    ./neovim
     ./vim
   ];
 }

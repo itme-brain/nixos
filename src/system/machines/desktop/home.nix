@@ -29,6 +29,7 @@
           enable = true;
           dev.enable = true;
           irc.enable = true;
+          neovim.enable = true;
           vim.enable = false;
         };
 
@@ -38,7 +39,6 @@
           browsers.enable = true;
           corn.enable = true;
           fun.enable = true;
-          neovim.enable = true;
           utils.enable = true;
           writing.enable = true;
         };

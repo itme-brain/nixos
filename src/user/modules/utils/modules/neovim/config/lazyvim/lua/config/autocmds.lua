@@ -66,10 +66,8 @@ lsp.setup_servers({
 	"diagnosticls",
 	"lua_ls",
 	"marksman",
-	"purescriptls",
 	"tailwindcss",
 	"bashls",
-	"dhall_lsp_server",
 	"volar",
   "clangd",
 })
@@ -81,7 +79,6 @@ lsp.setup()
 local cmp_nvim_lsp = require "cmp_nvim_lsp"
 
 require("lspconfig").clangd.setup {
-  on_attach = on_attach,
   capabilities = cmp_nvim_lsp.default_capabilities(),
   cmd = {
     "clangd",
