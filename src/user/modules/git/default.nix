@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.user.git;
-  bash = config.modules.user.bash;
 
 in
 { options.modules.user.git = { enable = mkEnableOption "user.git"; };
@@ -22,8 +21,8 @@ in
       git-crypt
     ];
 
-    programs.bash.initExtra = mkAfter ''
-      ${import ./config/cdg.nix}
+    programs.bash.initExtra = ''
+      ${import ./config/bashScripts/cdg.nix}
     '';
   };
 }
