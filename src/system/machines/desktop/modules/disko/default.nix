@@ -13,7 +13,7 @@
             {
               name = "boot";
               start = "0";
-              end = "100M";
+              end = "200M";
               fs-type = "fat32";
               bootable = true;
               content = {
@@ -24,7 +24,7 @@
             }
             {
               start = "100M";
-              end = "100%FREE";
+              end = "150G";
               content = {
                 type = "lvm_pv";
                 vg = "stick";
@@ -44,7 +44,7 @@
           partitions = [
             {
               start = "0";
-              end = "100%";
+              end = "200G";
               content = {
                 type = "lvm_pv";
                 vg = "ssd";
