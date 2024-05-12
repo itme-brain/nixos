@@ -8,7 +8,6 @@ userConfigs = rec {
   name = "bryan";
   email = "bryan@ramos.codes";
   shell = pkgs.bash;
-  nixosDir = /etc/nixos; # PATH to this repo
 
   # Image name from ~Pictures/wallpapers directory
   wallpaper = "mountains.jpg";

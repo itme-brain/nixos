@@ -19,7 +19,7 @@ in
           };
           merge = { tool = "vimdiff"; };
           safe = {
-            directory = "${config.user.nixosDir}";
+            directory = "/etc/nixos";
           };
         };
         ignores = [

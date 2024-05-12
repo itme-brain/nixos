@@ -29,10 +29,6 @@ in
       };
     };
 
-    programs.git.ignores = [
-      ".direnv"
-    ];
-
     home.sessionVariables = {
       DIRENV_LOG_FORMAT = " ";
     };
