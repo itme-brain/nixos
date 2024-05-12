@@ -31,7 +31,7 @@
         modules = [
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
-            (import ./src/system/machines/desktop/home.nix)
+            (import ./src/system/machines/desktop/modules/home-manager)
         ];
       };
 

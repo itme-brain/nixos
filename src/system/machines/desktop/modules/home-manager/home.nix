@@ -4,9 +4,7 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${config.user.name} = {
-    imports = [
-      ../../../user
-    ];
+    imports = [ ../../../../../user ];
 
     programs.home-manager.enable = true;
     programs.bash.shellAliases = {
