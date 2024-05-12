@@ -1,4 +1,4 @@
-{ disks ? [ "/dev/nvme0n1" "/dev/sda" ], ... }: 
+{ disks ? [ "/dev/nvme0n1" "/dev/sdb" ], ... }:
 
 {
   disko.devices = {
@@ -23,8 +23,8 @@
               };
             }
             {
-              start = "100M";
-              end = "150G";
+              start = "200M";
+              end = "100%FREE";
               content = {
                 type = "lvm_pv";
                 vg = "stick";
@@ -44,7 +44,7 @@
           partitions = [
             {
               start = "0";
-              end = "200G";
+              end = "100%FREE";
               content = {
                 type = "lvm_pv";
                 vg = "ssd";
@@ -91,7 +91,7 @@
             size = "1M";
           };
           home = {
-            size = "100%";
+            size = "200G";
             content = {
               name = "home";
               type = "filesystem";
