@@ -6,8 +6,8 @@ let
 
 in
 { options.modules.user.security = { enable = mkEnableOption "user.security"; };
+  imports = [ ./modules ];
   config = mkIf cfg.enable {
-    imports = [ ./modules ];
     home.packages = with pkgs; [
       pass
       wireguard-tools

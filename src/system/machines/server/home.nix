@@ -10,7 +10,7 @@
 
     programs.home-manager.enable = true;
     programs.bash.shellAliases = {
-      nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#server";
+      nixup = "sudo nixos-rebuild switch --flake ${config.user.nixosDir}/.#server";
     };
 
     home.stateVersion = "23.11";

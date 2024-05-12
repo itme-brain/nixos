@@ -16,6 +16,7 @@ in
       enable = true;
       enableSshSupport = true;
       enableBashIntegration = true;
+      enableScDaemon = true;
       pinentryFlavor = "tty";
     };
   };
