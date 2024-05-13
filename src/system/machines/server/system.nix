@@ -2,19 +2,6 @@
 
 { system.stateVersion = "23.11";
 
-  imports = [
-    ../modules
-  ];
-
-  modules = {
-    bitcoin = {
-      enable = true;
-      clightning = true;
-      electrs = true;
-      sparrow-server = true;
-    };
-  };
-
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
