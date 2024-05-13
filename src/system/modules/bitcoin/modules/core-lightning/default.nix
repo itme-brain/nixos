@@ -11,8 +11,8 @@ let
 
 in
 { options.modules.system.bitcoin.core-lightning = { enable = mkEnableOption "system.bitcoin.core-lightning"; };
+  imports = [ ./plugins ];
   config = mkIf (cfg.enable && btc.enable) {
-    imports = [ ./plugins ];
     nixpkgs.overlays = [
       (final: prev: {
         clightning = prev.clightning.overrideAttrs (old: rec {
