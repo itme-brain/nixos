@@ -5,7 +5,7 @@ let
   cfg = config.modules.system.bitcoin;
   version = "27.0";
 
-  home = /var/lib/bitcoind;
+  home = "/var/lib/bitcoind";
   #conf = pkgs.writeText "bitcoin.conf" (import ./config);
 
 
