@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.modules.system.bitcoin.core-lightning.REST;
+  cfg = cln.REST;
   cln = config.modules.system.bitcoin.core-lightning;
 
 in

@@ -2,12 +2,16 @@
 
 with lib;
 let
-  cfg = config.modules.bitcoin.electrs;
+  cfg = config.modules.system.bitcoin.electrs;
   home = /var/lib/electrs;
+
+  btc = config.modules.system.bitcoin;
+
+  conf = pkgs.writeText "config.toml" (import ./config { inherit home; });
 
 in
 { options.modules.bitcoin.electrs = { enable = mkEnableOption "bitcoin.electrs"; };
-  config = mkIf cfg.enable rec {
+  config = mkIf (cfg.enable && btc.enable) {
     nixpkgs.overlays = [
       (final: prev: {
         electrs = prev.electrs.overrideAttrs (old: rec {
@@ -40,7 +44,6 @@ in
       };
     };
 
-    conf = pkgs.writeText "config.toml" (import ./config { inherit home; });
 
     systemd.services.electrs = {
       Unit = {

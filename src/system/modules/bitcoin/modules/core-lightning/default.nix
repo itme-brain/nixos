@@ -3,12 +3,15 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin.core-lightning;
-  restPlugin = config.modules.system.bitcoin.core-lightning.REST;
+  rest = config.modules.system.bitcoin.core-lightning.REST;
   home = /var/lib/clightning;
+
+  btc = config.modules.system.bitcoin;
+  conf = pkgs.writeText "lightning.conf" (import ./config { inherit home; });
 
 in
 { options.modules.system.bitcoin.core-lightning = { enable = mkEnableOption "system.bitcoin.core-lightning"; };
-  config = mkIf cfg.enable rec {
+  config = mkIf (cfg.enable && btc.enable) {
     imports = [ ./plugins ];
     nixpkgs.overlays = [
       (final: prev: {
@@ -22,16 +25,16 @@ in
               sha256-096jlfrda4pq8zwp9iqaq8gnnb8r3vir42vjrfamxd53kdy42aq1
             '';
           };
-          buildInputs = with pkgs; old.buildInputs
-          ++ lib.optionals (restPlugin.enable) [
+          buildInputs = with pkgs; old.buildInputs ++
+          lib.optionals (rest.enable) [
             nodejs
           ];
-          nativeBuildInputs = with pkgs; old.nativeBuildInputs
-          ++ lib.optionals (restPlugin.enable) [
+          nativeBuildInputs = with pkgs; old.nativeBuildInputs ++
+          lib.optionals (rest.enable) [
             makeWrapper
           ];
-          postInstall = old.postInstallPhase
-          ++ lib.optionals (restPlugin.enable) ''
+          postInstall = old.postInstallPhase ++
+          lib.optionals (rest.enable) ''
             wrapProgram $out/clrest.js \
               --suffix PATH "${lib.makeBinPath [ nodejs ]}"
           '';
@@ -54,8 +57,6 @@ in
         };
       };
     };
-
-    conf = pkgs.writeText "lightning.conf" (import ./config { inherit home; });
 
     systemd.services.lightningd = {
       Unit = {

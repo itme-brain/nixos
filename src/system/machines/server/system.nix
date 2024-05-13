@@ -2,9 +2,7 @@
 
 { system.stateVersion = "23.11";
 
-  imports = [
-    ../modules
-  ];
+  imports = [ ../modules ];
 
   modules = {
     bitcoin = {
@@ -13,10 +11,13 @@
       electrs = true;
       sparrow-server = true;
     };
+    tor = {
+      enable = true;
+    };
   };
 
   users.users = {
-    ${config.user.name} = {
+    "${config.user.name}" = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key1}" ];
@@ -49,6 +50,7 @@
       devices = [ "nodev" ];
       efiSupport = true;
       configurationLimit = 5;
+      splashImage = null;
     };
 
     efi = {

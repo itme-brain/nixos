@@ -1,9 +1,12 @@
 { lib, config, pkgs, ... }:
-#TODO: Finish
 
 with lib;
 let
   cfg = config.modules.system.nginx;
+
+  btc = config.modules.system.bitcoin;
+  cln = btc.core-lightning;
+  electrum = btc.electrs;
 
 in
 { options.modules.system.nginx = { enable = mkEnableOption "system.nginx"; };
@@ -24,5 +27,11 @@ in
       package = pkgs.nginxMainLine;
       config = import ./config;
     };
+
+    networking.firewall.allowedTCPPorts =
+      optionals cln.REST.enable
+        [ 9734 ] ++
+      optionals electrum.enable
+        [ 50001 ];
   };
 }

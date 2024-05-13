@@ -1,15 +1,18 @@
 { pkgs, lib, config, ... }:
-#TODO: Add tor settings here
 
 with lib;
 let
   cfg = config.modules.system.bitcoin;
   version = "27.0";
+
   home = /var/lib/bitcoind;
+  conf = pkgs.writeText "bitcoin.conf" (import ./config);
+
+  tor = config.modules.system.tor;
 
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
-  config = mkIf cfg.enable rec {
+  config = mkIf (cfg.enable && tor.enable) {
     imports = [ ./modules ];
     nixpkgs.overlays = [
       (final: prev: {
@@ -46,7 +49,7 @@ in
       };
     };
 
-    conf = pkgs.writeText "bitcoin.conf" (import ./config);
+    networking.firewall.allowedTCPPorts = [ 8333 ];
 
     services.bitcoind = {
       "bitcoind" = {
@@ -64,11 +67,6 @@ in
           };
         };
       };
-    };
-
-    services.tor = {
-      enable = true;
-
     };
   };
 }
