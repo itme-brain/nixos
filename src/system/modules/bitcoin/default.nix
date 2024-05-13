@@ -6,7 +6,7 @@ let
   version = "27.0";
 
   home = "/var/lib/bitcoind";
-  #conf = pkgs.writeText "bitcoin.conf" (import ./config);
+  conf = pkgs.writeText "bitcoin.conf" (import ./config);
 
 
 in
@@ -37,12 +37,13 @@ in
           createHome = true;
         };
       };
-      #groups = {
-      #  "bitcoin" = {
-      #    members = [
-      #    ];
-      #  };
-      #};
+      groups = {
+        "bitcoin" = {
+          members = [
+            "bitcoind"
+          ];
+        };
+      };
     };
 
     networking.firewall.allowedTCPPorts = [ 8333 ];
@@ -52,7 +53,7 @@ in
         enable = true;
         user = "bitcoind";
         group = "bitcoin";
-        #configFile = conf;
+        configFile = conf;
 
         rpc = {
           port = 8332;
