@@ -16,12 +16,8 @@ in
       (final: prev: {
         bitcoind = prev.bitcoind.overrideAttrs (old: {
           src = fetchTarball {
-            url = ''
-              https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz
-            '';
-            sha256 = ''
-              sha256-05i4zrdwr2rnbimf4fmklbm1mrvxg1bnv3yrrx44cp66ba0nd3jg
-            '';
+            url = "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz";
+            sha256 = "sha256-T45mgVrGXEZIz9mPbVd4feca6qKzOuJqXDaLzFv+JBY=";
           };
         });
       })
