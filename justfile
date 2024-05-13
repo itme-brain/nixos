@@ -86,3 +86,15 @@ gh MESSAGE:
   git add -A
   git commit -m "{{MESSAGE}}"
   git push
+
+#Fetch resources and compute sha256 hash
+hash URL:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  if echo "{{URL}}" | grep -E '\.(tar\.gz|tgz|zip)$'; then
+    CONTENTS=$(nix-prefetch-url --unpack "{{URL}}")
+  else
+    CONTENTS=$(nix-prefetch-url "{{URL}}")
+  fi
+  HASH=$(echo -n "$CONTENTS" | nix hash to-sri --type sha256)
+  echo "$HASH"

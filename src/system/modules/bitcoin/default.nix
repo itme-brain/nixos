@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin;
-  version = "27.0";
 
   home = "/var/lib/bitcoind";
   conf = pkgs.writeText "bitcoin.conf" (import ./config);
@@ -14,13 +13,22 @@ in
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
-        bitcoind = prev.bitcoind.overrideAttrs (old: {
+        bitcoind = prev.stdenv.mkDerivation rec {
+          pname = "bitcoind";
+          version = "27.0";
+
           src = fetchTarball {
             url = "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz";
             sha256 = "sha256-T45mgVrGXEZIz9mPbVd4feca6qKzOuJqXDaLzFv+JBY=";
           };
-          nativeBuildInputs = [ autoreconfHook ];
-        });
+
+          phase = [ "unpackPhase" "installPhase" ];
+
+          installPhase = ''
+            mkdir -p $out/bin
+            cp bin/* $out/bin
+          '';
+        };
       })
     ];
 
