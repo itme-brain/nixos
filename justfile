@@ -79,3 +79,11 @@ install TYPE="nixos":
       echo "Error: Please enter a valid response (y/n)" \
     fi
   fi
+
+# Commit all changes and push to upstream
+gh:
+  @echo "Commit message:"
+  @read message
+  git add -A
+  git commit -m "$$message"
+  git push
