@@ -86,7 +86,7 @@
   };
 
   networking = {
-    hostName = "archimedes";
+    hostName = "server";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
