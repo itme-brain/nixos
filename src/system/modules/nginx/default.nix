@@ -10,8 +10,8 @@ let
 
 in
 { options.modules.system.nginx = { enable = mkEnableOption "system.nginx"; };
+  imports = [ ./sites ];
   config = mkIf cfg.enable {
-    imports = [ ./sites ];
     security.acme = {
       defaults = {
         email = config.user.email;
