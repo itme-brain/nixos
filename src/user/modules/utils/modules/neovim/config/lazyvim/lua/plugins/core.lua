@@ -94,6 +94,11 @@ return {
     end,
   },
 
+  {
+    "NoahTheDuke/vim-just",
+    ft = { "just" },
+  },
+
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 	{ "jay-babu/mason-nvim-dap.nvim", enabled = false },
