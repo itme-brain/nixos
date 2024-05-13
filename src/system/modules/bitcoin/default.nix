@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, autoreconfHook, ... }:
 
 with lib;
 let
@@ -19,6 +19,7 @@ in
             url = "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz";
             sha256 = "sha256-T45mgVrGXEZIz9mPbVd4feca6qKzOuJqXDaLzFv+JBY=";
           };
+          nativeBuildInputs = [ autoreconfHook ];
         });
       })
     ];
