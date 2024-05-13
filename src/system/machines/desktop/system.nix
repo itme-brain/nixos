@@ -52,10 +52,7 @@
     git
   ];
 
-  programs.sway = {
-    enable = true;
-    package = null;
-  };
+  security.polkit.enable = true;
 
   fonts.packages = with pkgs; [
     terminus_font

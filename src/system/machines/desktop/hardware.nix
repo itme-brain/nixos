@@ -30,21 +30,13 @@
   };
 
 # GPU
-  services.xserver.videoDrivers = lib.mkDefault ["nvidia"];
-
   hardware.opengl = {
     enable = true;
     driSupport = true;
-    driSupport32Bit = true;
+    driSupport32Bit = false;
   };
 
-  hardware.nvidia = {
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    nvidiaSettings = true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-  };
+  hardware.nvidia.open = true;
 
 # Virtualisation
   environment.systemPackages = with pkgs; [
