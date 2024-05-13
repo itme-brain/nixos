@@ -68,5 +68,11 @@
         ./src/system/machines/workstation
       ];
     };
+
+    devShells.${system}.default = with pkgs; mkShell {
+      packages = [
+        just
+      ];
+    };
   };
 }
