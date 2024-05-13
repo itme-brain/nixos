@@ -8,8 +8,8 @@ let
 
 in
 { options.modules.system.tor = { enable = mkEnableOption "system.tor"; };
+  imports = [ ./modules ];
   config = mkIf cfg.enable {
-    imports = [ ./modules ];
     services.tor = {
       enable = true;
 
