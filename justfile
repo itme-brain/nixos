@@ -35,6 +35,40 @@ test TYPE="nix" SYSTEM="desktop":
       ;;
   esac
 
+# Build the nix expression and hydrate the results directory
+build TYPE="nix" SYSTEM="desktop":
+  #!/usr/bin/env bash
+  set -euo pipefail
+  case "{{TYPE}}" in
+    "nix")
+      if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
+        echo "Hydrating resulting NixOS configuration for {{SYSTEM}}..."
+        nix build .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
+        exit 0
+      else
+        echo "Error: Unknown argument - '{{SYSTEM}}'"
+        echo "Use one of:"
+        echo "  desktop"
+        echo "  server"
+        echo "  laptop"
+        echo "  wsl"
+        exit 1
+      fi
+      ;;
+    "home")
+      echo "Hydrating resulting home configuration..."
+      nix build --dry-run .#homeConfigurations."workstation".config.home-manager.build.toplevel -L
+      exit 0
+      ;;
+    *)
+      echo "Invalid usage: {{TYPE}}.";
+      echo "Use one of:"
+      echo "  nixos"
+      echo "  home"
+      exit 1
+      ;;
+  esac
+
 # NixOS-rebuild switch short-hand
 up SYSTEM="desktop":
   @echo "Switching to next generation"
