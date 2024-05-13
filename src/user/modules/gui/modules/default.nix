@@ -5,7 +5,6 @@
     ./corn
     ./fun
     ./utils
-    ./neovim
     ./writing
   ];
 }

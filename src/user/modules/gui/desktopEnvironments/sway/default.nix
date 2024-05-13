@@ -17,13 +17,13 @@ in
       };
     };
 
-    gtk = {
-      enable = true;
-      theme.package = pkgs.juno-theme;
-      theme.name = "Juno-ocean";
-      iconTheme.package = pkgs.qogir-icon-theme;
-      iconTheme.name = "Qogir";
-    };
+    #gtk = {
+    #  enable = true;
+    #  theme.package = pkgs.juno-theme;
+    #  theme.name = "Juno-ocean";
+    #  iconTheme.package = pkgs.qogir-icon-theme;
+    #  iconTheme.name = "Qogir";
+    #};
 
     qt = {
       enable = true;

@@ -6,7 +6,7 @@ let
 in
 { enable = true;
   xwayland = true;
-  wrapperFeatures.gtk = true;
+  #wrapperFeatures.gtk = true;
 
   extraSessionCommands = ''
     export _JAVA_AWT_WM_NONREPARENTING=1

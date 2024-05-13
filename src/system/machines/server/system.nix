@@ -19,7 +19,7 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
-      openssh.authorizedKeys.keys = config.user.sshKeys.key1;
+      openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key1}" ];
     };
   };
 
@@ -89,7 +89,7 @@
   };
 
   networking = {
-    hostName = "archimedes";
+    hostName = "server";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {

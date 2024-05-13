@@ -1,4 +1,4 @@
-{ disks ? [ "/dev/nvme0n1" "/dev/sda" ], ... }: 
+{ disks ? [ "/dev/nvme0n1" "/dev/sdb" ], ... }:
 
 {
   disko.devices = {
@@ -13,7 +13,7 @@
             {
               name = "boot";
               start = "0";
-              end = "100M";
+              end = "200M";
               fs-type = "fat32";
               bootable = true;
               content = {
@@ -23,7 +23,7 @@
               };
             }
             {
-              start = "100M";
+              start = "200M";
               end = "100%FREE";
               content = {
                 type = "lvm_pv";
@@ -44,7 +44,7 @@
           partitions = [
             {
               start = "0";
-              end = "100%";
+              end = "100%FREE";
               content = {
                 type = "lvm_pv";
                 vg = "ssd";
@@ -91,7 +91,7 @@
             size = "1M";
           };
           home = {
-            size = "100%";
+            size = "200G";
             content = {
               name = "home";
               type = "filesystem";

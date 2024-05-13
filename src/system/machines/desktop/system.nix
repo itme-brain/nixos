@@ -6,8 +6,8 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups
-        ++ [ "video" "audio" "kvm" "libvirtd" "docker" ];
-      openssh.authorizedKeys.keys = config.user.sshKeys.key2;
+        ++ [ "video" "audio" "kvm" "libvirtd" ];
+      openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key2}" ];
     };
   };
 
@@ -52,10 +52,7 @@
     git
   ];
 
-  programs.sway = {
-    enable = true;
-    package = null;
-  };
+  security.polkit.enable = true;
 
   fonts.packages = with pkgs; [
     terminus_font
@@ -102,7 +99,7 @@
   };
 
   networking = {
-    hostName = "socrates";
+    hostName = "desktop";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {

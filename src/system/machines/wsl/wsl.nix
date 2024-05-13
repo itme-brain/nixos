@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ config, lib, ... }:
 
 {
   imports = [
@@ -7,13 +7,13 @@
 
   wsl = {
     enable = true;
-    defaultUser = pkgs.lib.mkDefault "${config.user.name}";
+    defaultUser = lib.mkDefault config.user.name;
     nativeSystemd = true;
 
     wslConf = {
       boot.command = "cd";
       network = {
-        hostname = "plato";
+        hostname = "wsl";
         generateHosts = true;
       };
     };

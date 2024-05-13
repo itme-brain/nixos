@@ -30,6 +30,12 @@
   };
 
 # GPU
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = false;
+  };
+
   hardware.nvidia.open = true;
 
 # Virtualisation

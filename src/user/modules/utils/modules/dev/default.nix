@@ -22,9 +22,7 @@ in
 
     programs = {
       bash = {
-        initExtra = mkAfter ''
-          ${import ./config/penpot.nix}
-        '';
+        initExtra = import ./config/penpot.nix;
       };
       direnv = {
         enable = true;

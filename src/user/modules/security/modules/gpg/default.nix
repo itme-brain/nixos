@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.user.gpg;
+  cfg = config.modules.user.security.gpg;
 
 in
-{ options.modules.user.gpg = { enable = mkEnableOption "user.gpg"; };
+{ options.modules.user.security.gpg = { enable = mkEnableOption "user.security.gpg"; };
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
@@ -16,6 +16,7 @@ in
       enable = true;
       enableSshSupport = true;
       enableBashIntegration = true;
+      enableScDaemon = true;
       pinentryFlavor = "tty";
     };
   };

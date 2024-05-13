@@ -4,9 +4,7 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${config.user.name} = {
-    imports = [
-      ../../../user
-    ];
+    imports = [ ../../../../../user ];
 
     programs.home-manager.enable = true;
     programs.bash.shellAliases = {
@@ -22,13 +20,17 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gpg.enable = true;
-        security.enable = true;
+
+        security = {
+          enable = true;
+          gpg.enable = true;
+        };
 
         utils = {
           enable = true;
           dev.enable = true;
           irc.enable = true;
+          neovim.enable = true;
           vim.enable = false;
         };
 
@@ -38,7 +40,6 @@
           browsers.enable = true;
           corn.enable = true;
           fun.enable = true;
-          neovim.enable = true;
           utils.enable = true;
           writing.enable = true;
         };
