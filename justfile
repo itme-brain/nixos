@@ -1,3 +1,6 @@
+default:
+  @just --list
+
 # Output what derivations will be built
 test TYPE="nixos" SYSTEM="desktop":
   #!/usr/bin/env bash
