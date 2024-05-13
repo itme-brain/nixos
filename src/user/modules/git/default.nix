@@ -41,8 +41,6 @@ in
       git-crypt
     ];
 
-    programs.bash.initExtra = ''
-      ${import ./config/bashScripts/cdg.nix}
-    '';
+    programs.bash.initExtra = import ./config/bashScripts/cdg.nix;
   };
 }

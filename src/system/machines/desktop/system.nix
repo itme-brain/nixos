@@ -102,7 +102,7 @@
   };
 
   networking = {
-    hostName = "socrates";
+    hostName = "desktop";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
