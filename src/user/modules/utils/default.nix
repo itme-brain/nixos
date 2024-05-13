@@ -11,7 +11,7 @@ in
     home.packages = with pkgs; [
       wget curl tree neofetch
       unzip fping calc fd pciutils
-      rsync zip
+      rsync zip lshw
     ];
   };
 }
