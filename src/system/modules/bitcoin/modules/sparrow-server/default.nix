@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.modules.system.bitcoin.sparrow-server;
   btc = config.modules.system.bitcoin;
+  cfg = btc.sparrow-server;
 
 in
-{ options.modules.system.bitcoin.sparrow-server = { enable = mkEnableOption "system.bitcoin.sparrow-server"; };
+{ options.modules.system.bitcoin.sparrow-server = { enable = mkEnableOption "bitcoin.sparrow-server"; };
   config = mkIf (cfg.enable && btc.enable) {
     nixpkgs.overlays = [
       (final: prev: {
