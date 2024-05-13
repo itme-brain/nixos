@@ -29,6 +29,7 @@ in
           ".nuxt/"
           ".output/"
           "dist"
+          "result"
         ];
       } // config.user.gitConfig;
       gh = {
