@@ -23,7 +23,11 @@
         bash.enable = true;
         git.enable = true;
         gui.enable = false;
-        gpg.enable = true;
+
+        security = {
+          gpg.enable = true;
+        };
+
         utils.enable = true;
         vim.enable = true;
       };
