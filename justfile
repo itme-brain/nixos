@@ -34,20 +34,18 @@ test TYPE="nixos" SYSTEM="desktop":
 
 # NixOS-rebuild switch short-hand
 up SYSTEM="desktop":
+  @echo "Switching to next generation"
   sudo nixos-rebuild switch --flake .#{{SYSTEM}}
 
 # NixOS-rebuild boot short-hand
 boot SYSTEM="desktop":
+  @echo "Switching to next generation on reboot"
   sudo nixos-rebuild boot --flake .#{{SYSTEM}}
 
 # Commit all changes and push to upstream
 gh MESSAGE:
   #!/usr/bin/env bash
   set -euo pipefail
-  if [ -n "{{MESSAGE}}" ]; then
-    git add -A
-    git commit -m "{{MESSAGE}}"
-    git push
-  else
-    echo "Error: Empty commit message"
-  fi
+  git add -A
+  git commit -m "{{MESSAGE}}"
+  git push
