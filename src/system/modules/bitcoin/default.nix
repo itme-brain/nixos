@@ -12,20 +12,20 @@ let
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
   config = mkIf cfg.enable {
-    #nixpkgs.overlays = [
-    #  (final: prev: {
-    #    bitcoind = prev.bitcoind.overrideAttrs (old: {
-    #      src = fetchTarball {
-    #        url = ''
-    #          https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz
-    #        '';
-    #        sha256 = ''
-    #          sha256-05i4zrdwr2rnbimf4fmklbm1mrvxg1bnv3yrrx44cp66ba0nd3jg
-    #        '';
-    #      };
-    #    });
-    #  })
-    #];
+    nixpkgs.overlays = [
+      (final: prev: {
+        bitcoind = prev.bitcoind.overrideAttrs (old: {
+          src = fetchTarball {
+            url = ''
+              https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz
+            '';
+            sha256 = ''
+              sha256-05i4zrdwr2rnbimf4fmklbm1mrvxg1bnv3yrrx44cp66ba0nd3jg
+            '';
+          };
+        });
+      })
+    ];
 
     users = {
       users = {
