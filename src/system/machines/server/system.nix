@@ -5,14 +5,16 @@
   imports = [ ../../modules ];
 
   modules = {
-    bitcoin = {
-      enable = true;
-      clightning = true;
-      electrum = true;
-      sparrow-server = true;
-    };
-    tor = {
-      enable = true;
+    system = {
+      bitcoin = {
+        enable = true;
+        clightning = true;
+        electrum = true;
+        sparrow-server = true;
+      };
+      tor = {
+        enable = true;
+      };
     };
   };
 
