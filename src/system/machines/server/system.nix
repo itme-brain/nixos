@@ -8,7 +8,7 @@
     bitcoin = {
       enable = true;
       clightning = true;
-      electrs = true;
+      electrum = true;
       sparrow-server = true;
     };
     tor = {

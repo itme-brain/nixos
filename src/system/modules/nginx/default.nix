@@ -6,7 +6,7 @@ let
 
   btc = config.modules.system.bitcoin;
   cln = btc.core-lightning;
-  electrum = btc.electrs;
+  elec = btc.electrum;
 
 in
 { options.modules.system.nginx = { enable = mkEnableOption "system.nginx"; };
@@ -31,7 +31,7 @@ in
     networking.firewall.allowedTCPPorts =
       optionals cln.REST.enable
         [ 9734 ] ++
-      optionals electrum.enable
+      optionals elec.enable
         [ 50001 ];
   };
 }
