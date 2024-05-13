@@ -2,6 +2,8 @@
 
 { system.stateVersion = "23.11";
 
+  imports = [ ../modules ];
+
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
