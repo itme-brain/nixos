@@ -22,7 +22,6 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gui.enable = false;
 
         security = {
           gpg.enable = true;
