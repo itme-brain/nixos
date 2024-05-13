@@ -2,7 +2,7 @@
 
 { system.stateVersion = "23.11";
 
-  imports = [ ../modules ];
+  imports = [ ../../modules ];
 
   modules = {
     bitcoin = {
