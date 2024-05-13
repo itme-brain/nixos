@@ -2,11 +2,11 @@ default:
   @just --list
 
 # Output what derivations will be built
-test TYPE="nixos" SYSTEM="desktop":
+test TYPE="nix" SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
-    "nixos")
+    "nix")
       if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
         echo "Testing NixOS configuration for {{SYSTEM}}..."
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
