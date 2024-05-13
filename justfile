@@ -2,40 +2,46 @@
 test TYPE="nixos" SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
-  if [ "{{TYPE}}" = "home" ]; then
-    if [ -n "{{SYSTEM}}" ]; then
-      echo "Error: Undefined argument"
-      exit 1
-    fi
-    echo "Testing home configuration..."
-    nix build --dry-run .#homeConfigurations."workstation".config.system.build.toplevel -L
-  elif [ "{{TYPE}}" = "nixos" ]; then
-    if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
-      echo "Testing NixOS configuration for {{SYSTEM}}..."
-      nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
-    else
-      echo "Error: Unknown argument - '{{SYSTEM}}'"
+  case "{{TYPE}}" in
+    "nixos")
+      if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
+        echo "Testing NixOS configuration for {{SYSTEM}}..."
+        nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
+        exit 0
+      else
+        echo "Error: Unknown argument - '{{SYSTEM}}'"
+        echo "Use one of:"
+        echo "  desktop"
+        echo "  server"
+        echo "  laptop"
+        echo "  wsl"
+        exit 1
+      fi
+      ;;
+    "home")
+      echo "Testing home configuration..."
+      nix build --dry-run .#homeConfigurations."workstation".config.home-manager.build.toplevel -L
+      exit 0
+      ;;
+    *)
+      echo "Invalid usage: {{TYPE}}.";
       echo "Use one of:"
-      echo "  desktop"
-      echo "  server"
-      echo "  laptop"
-      echo "  wsl"
+      echo "  nixos"
+      echo "  home"
       exit 1
-    fi
-  else
-    echo "Invalid usage: {{TYPE}}.";
-    echo "Use one of:"
-    echo "  nixos"
-    echo "  home"
-    exit 1
-  fi
+      ;;
+  esac
 
-# Symlinks /etc/nixos or ~/.config/home-manager to this repo
-install:
-  source ./install
+# NixOS-rebuild switch short-hand
+up SYSTEM="desktop":
+  sudo nixos-rebuild switch --flake .#{{SYSTEM}}
+
+# NixOS-rebuild boot short-hand
+boot SYSTEM="desktop":
+  sudo nixos-rebuild boot --flake .#{{SYSTEM}}
 
 # Commit all changes and push to upstream
-gh MESSAGE="":
+gh MESSAGE:
   #!/usr/bin/env bash
   set -euo pipefail
   if [ -n "{{MESSAGE}}" ]; then
