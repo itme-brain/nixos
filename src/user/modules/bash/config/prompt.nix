@@ -28,7 +28,7 @@ remove_icon() {
 }
 
 ${if gui.enable then ''
-if [ -z "$DISPLAY" ]; then
+if [ -n "$DISPLAY" ]; then
   python_icon="\[\033[01;33m\]\[\033[00m\]"
   node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
   nix_icon="\[\033[01;34m\]\[\033[00m\]"
@@ -65,7 +65,7 @@ check_venv() {
 
 set_git_dir() {
   ${if gui.enable then ''
-  if [ -z "$DISPLAY" ]; then
+  if [ -n "$DISPLAY" ]; then
     project_icon=""
   else
     project_icon="../"
@@ -104,7 +104,7 @@ check_project() {
     local git_root_dir=$(basename "$git_root")
 
     ${if gui.enable then ''
-    if [ -z "$DISPLAY" ]; then
+    if [ -n "$DISPLAY" ]; then
       git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
     else
       git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
