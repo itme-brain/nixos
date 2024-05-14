@@ -25,7 +25,13 @@ test SYSTEM TYPE="nixos":
   set -euo pipefail
   case "{{TYPE}}" in
     "nixos")
-      if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
+      if
+        [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "server" ] || \
+        [ "{{SYSTEM}}" = "wsl" ] || \
+        [ "{{SYSTEM}}" = "vm" ] || \
+        [ "{{SYSTEM}}" = "laptop" ]
+      then
         echo "Testing NixOS configuration for {{SYSTEM}}..."
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
         exit 0
@@ -36,6 +42,7 @@ test SYSTEM TYPE="nixos":
         echo "  server"
         echo "  laptop"
         echo "  wsl"
+        echo "  vm"
         exit 1
       fi
       ;;
@@ -59,7 +66,13 @@ make SYSTEM TYPE="nixos":
   set -euo pipefail
   case "{{TYPE}}" in
     "nixos")
-      if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
+      if
+        [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "server" ] || \
+        [ "{{SYSTEM}}" = "wsl" ] || \
+        [ "{{SYSTEM}}" = "vm" ] || \
+        [ "{{SYSTEM}}" = "laptop" ]
+      then
         echo "Hydrating resulting NixOS configuration for {{SYSTEM}}..."
         nix build .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
         exit 0
@@ -70,6 +83,7 @@ make SYSTEM TYPE="nixos":
         echo "  server"
         echo "  laptop"
         echo "  wsl"
+        echo "  vm"
         exit 1
       fi
       ;;

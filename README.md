@@ -14,6 +14,7 @@ NixOS Configurations:
   - desktop
   - wsl
   - server (wip)
+  - vm
 
 Home-Manager Configurations:
   - workstation

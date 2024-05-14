@@ -82,7 +82,7 @@
   };
 
   networking = {
-    hostName = "server";
+    hostName = "vm";
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     firewall = {
