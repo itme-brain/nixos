@@ -97,7 +97,7 @@ options:
   @xdg-open https://search.nixos.org/options
 
 # NixOS-rebuild switch short-hand
-switch BACK:
+switch:
   @echo -e "\033[32m->> Switching to next generation ->>\033[0m"
   @sudo nixos-rebuild switch --flake .#{{SYSTEM}}
 
