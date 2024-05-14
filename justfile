@@ -20,11 +20,11 @@ clean:
   echo "All clean!"
 
 # Output what derivations will be built
-test SYSTEM TYPE="nixos":
+test TYPE SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
-    "nixos")
+    "nix")
       if
         [ "{{SYSTEM}}" = "desktop" ] || \
         [ "{{SYSTEM}}" = "server" ] || \
@@ -54,18 +54,18 @@ test SYSTEM TYPE="nixos":
     *)
       echo "Invalid usage: {{TYPE}}.";
       echo "Use one of:"
-      echo "  nixos"
+      echo "  nix"
       echo "  home"
       exit 1
       ;;
   esac
 
 # Build the nix expression and hydrate the results directory - pass VM flag to build a VM
-make SYSTEM TYPE="nixos":
+make TYPE SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
-    "nixos")
+    "nix")
       if
         [ "{{SYSTEM}}" = "desktop" ] || \
         [ "{{SYSTEM}}" = "server" ] || \
@@ -93,7 +93,12 @@ make SYSTEM TYPE="nixos":
       exit 0
       ;;
     "vm")
-      if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
+      if
+        [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "server" ] || \
+        [ "{{SYSTEM}}" = "wsl" ] || \
+        [ "{{SYSTEM}}" = "laptop" ]
+      then
         echo "Building VM for {{SYSTEM}}..."
         nixos-rebuild build-vm --flake .#{{SYSTEM}}
         result/bin/run-{{SYSTEM}}-vm
@@ -111,7 +116,7 @@ make SYSTEM TYPE="nixos":
     *)
       echo "Invalid usage: {{TYPE}}."
       echo "Use one of:"
-      echo "  nixos"
+      echo "  nix"
       echo "  home"
       exit 1
       ;;
