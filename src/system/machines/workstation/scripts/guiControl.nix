@@ -1,5 +1,5 @@
 ''
-function nome() {
+function ui() {
   case $1 in
     on)
       sudo systemctl set-default graphical.target
