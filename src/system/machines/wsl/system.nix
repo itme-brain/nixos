@@ -47,7 +47,7 @@
     timeZone = "America/New_York";
   };
 
-  services.timesyncd = {
+  services.timesyncd = lib.mkDefault {
     enable = true;
     servers = [
       "0.pool.ntp.org"
