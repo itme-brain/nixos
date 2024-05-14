@@ -1,8 +1,10 @@
+SYSTEM := "$(echo $HOSTNAME)"
+
 default:
   @just --list
 
 # Output what derivations will be built
-test TYPE="nix" SYSTEM="desktop":
+test SYSTEM TYPE="nix":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
@@ -36,7 +38,7 @@ test TYPE="nix" SYSTEM="desktop":
   esac
 
 # Build the nix expression and hydrate the results directory - pass VM flag to build a VM
-build TYPE="nix" SYSTEM="desktop":
+build SYSTEM TYPE="nix":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
@@ -85,15 +87,25 @@ build TYPE="nix" SYSTEM="desktop":
       ;;
   esac
 
+search PKG:
+  nix search nixpkgs {{PKG}}
+
+pkgs:
+  @xdg-open https://search.nixos.org/packages
+
+options:
+  @xdg-open https://search.nixos.org/options
+
 # NixOS-rebuild switch short-hand
-up SYSTEM="desktop":
-  @echo "Switching to next generation"
-  sudo nixos-rebuild switch --flake .#{{SYSTEM}}
+switch BACK:
+  @echo -e "\033[32m->> Switching to next generation ->>\033[0m"
+  @sudo nixos-rebuild switch --flake .#{{SYSTEM}}
 
 # NixOS-rebuild boot short-hand
-boot SYSTEM="desktop":
+boot:
+  @echo -e "\033[34m->> Reboot to new generation ->>\033[0m"
   @echo "Switching to next generation on reboot"
-  sudo nixos-rebuild boot --flake .#{{SYSTEM}}
+  @sudo nixos-rebuild boot --flake .#{{SYSTEM}}
 
 # Commit all changes and push to upstream
 gh MESSAGE:
