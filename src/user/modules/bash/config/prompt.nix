@@ -35,12 +35,12 @@ if [ -n "$DISPLAY" ]; then
 else
   python_icon="\[\033[01;33m\]py\[\033[00m\]"
   node_icon="\[\033[01;93m\]js\[\033[00m\]"
-  nix_icon="\[\033[01;34m\]nix[\033[00m\]"
+  nix_icon="\[\033[01;34m\]nix\[\033[00m\]"
 fi
 '' else ''
-python_icon="\[\033[01;33m\]venv\[\033[00m\]"
+python_icon="\[\033[01;33m\]py\[\033[00m\]"
 node_icon="\[\033[01;93m\]js\[\033[00m\]"
-nix_icon="\[\033[01;34m\]nix[\033[00m\]"
+nix_icon="\[\033[01;34m\]nix\[\033[00m\]"
 ''}
 
 check_venv() {
@@ -66,7 +66,7 @@ check_venv() {
 set_git_dir() {
   ${if gui.enable then ''
   if [ -n "$DISPLAY" ]; then
-    project_icon=""
+    project_icon=" "
   else
     project_icon="../"
   fi
@@ -77,12 +77,12 @@ set_git_dir() {
   if [[ -n "$superproject_root" ]]; then
     local submodule_name=$(basename "$git_root")
 
-    working_dir="\[\033[01;34m\]$project_icon ''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
   elif [ "$git_curr_dir" == "." ]; then
-    working_dir="\[\033[01;34m\]$project_icon $git_root_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon$git_root_dir\[\033[00m\]"
     return 0
   else
-    working_dir="\[\033[01;34m\]$project_icon $git_root_dir$git_curr_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon$git_root_dir$git_curr_dir\[\033[00m\]"
     return 0
   fi
 }
@@ -107,10 +107,10 @@ check_project() {
     if [ -n "$DISPLAY" ]; then
       git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
     else
-      git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
+      git_branch_PS1="\[\033[01;31m\]$git_branch:\[\033[00m\]"
     fi
     '' else ''
-    git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
+    git_branch_PS1="\[\033[01;31m\]$git_branch:\[\033[00m\]"
     ''}
 
     set_git_dir
