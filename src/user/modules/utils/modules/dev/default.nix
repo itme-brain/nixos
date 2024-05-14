@@ -30,7 +30,7 @@ in
     };
 
     home.sessionVariables = {
-      DIRENV_LOG_FORMAT = " ";
+      DIRENV_LOG_FORMAT = "";
     };
   };
 }
