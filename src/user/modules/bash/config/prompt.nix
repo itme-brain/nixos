@@ -28,9 +28,15 @@ remove_icon() {
 }
 
 ${if gui.enable then ''
-python_icon="\[\033[01;33m\]\[\033[00m\]"
-node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
-nix_icon="\[\033[01;34m\]\[\033[00m\]"
+if [ -z "$DISPLAY" ]; then
+  python_icon="\[\033[01;33m\]\[\033[00m\]"
+  node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
+  nix_icon="\[\033[01;34m\]\[\033[00m\]"
+else
+  python_icon="\[\033[01;33m\]py\[\033[00m\]"
+  node_icon="\[\033[01;93m\]js\[\033[00m\]"
+  nix_icon="\[\033[01;34m\]nix[\033[00m\]"
+fi
 '' else ''
 python_icon="\[\033[01;33m\]venv\[\033[00m\]"
 node_icon="\[\033[01;93m\]js\[\033[00m\]"
@@ -57,13 +63,16 @@ check_venv() {
   fi
 }
 
-${if gui.enable then ''
-project_icon=""
-'' else ''
-project_icon="\[\033[01;34m\]git>\033[00m\]"
-
-''}
 set_git_dir() {
+  ${if gui.enable then ''
+  if [ -z "$DISPLAY" ]; then
+    project_icon=""
+  else
+    project_icon="../"
+  fi
+  '' else ''
+  project_icon="../"
+  ''}
   local superproject_root=$(git rev-parse --show-superproject-working-tree 2>/dev/null)
   if [[ -n "$superproject_root" ]]; then
     local submodule_name=$(basename "$git_root")
@@ -95,7 +104,11 @@ check_project() {
     local git_root_dir=$(basename "$git_root")
 
     ${if gui.enable then ''
-    git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+    if [ -z "$DISPLAY" ]; then
+      git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+    else
+      git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
+    fi
     '' else ''
     git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
     ''}
