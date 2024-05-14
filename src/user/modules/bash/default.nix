@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.modules.user.bash;
+  gui = config.modules.user.gui.sway;
 
 in
 { options.modules.user.bash = { enable = mkEnableOption "user.bash"; };
@@ -18,9 +19,11 @@ in
 
     programs = {
       ripgrep.enable = true;
-      lsd = {
+      eza = {
         enable = true;
         enableAliases = true;
+      } // optionalAttrs gui.enable {
+        icons = true;
       };
     };
   };

@@ -3,6 +3,7 @@
 with lib;
 let
   git = config.modules.user.git;
+  gui = config.modules.user.gui.sway;
 
 in
 ''
@@ -26,9 +27,15 @@ remove_icon() {
   venv_icons=''${venv_icons//$icon/}
 }
 
+${if gui.enable then ''
 python_icon="\[\033[01;33m\]\[\033[00m\]"
 node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
 nix_icon="\[\033[01;34m\]\[\033[00m\]"
+'' else ''
+python_icon="\[\033[01;33m\]venv\[\033[00m\]"
+node_icon="\[\033[01;93m\]js\[\033[00m\]"
+nix_icon="\[\033[01;34m\]nix[\033[00m\]"
+''}
 
 check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
@@ -50,17 +57,23 @@ check_venv() {
   fi
 }
 
+${if gui.enable then ''
+project_icon=""
+'' else ''
+project_icon="\[\033[01;34m\]git>[\033[00m\]"
+
+''}
 set_git_dir() {
   local superproject_root=$(git rev-parse --show-superproject-working-tree 2>/dev/null)
   if [[ -n "$superproject_root" ]]; then
     local submodule_name=$(basename "$git_root")
 
-    working_dir="\[\033[01;34m\] ''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon ''${superproject_root##*/}/$submodule_name$git_curr_dir\[\033[00m\]"
   elif [ "$git_curr_dir" == "." ]; then
-    working_dir="\[\033[01;34m\] $git_root_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon $git_root_dir\[\033[00m\]"
     return 0
   else
-    working_dir="\[\033[01;34m\] $git_root_dir$git_curr_dir\[\033[00m\]"
+    working_dir="\[\033[01;34m\]$project_icon $git_root_dir$git_curr_dir\[\033[00m\]"
     return 0
   fi
 }
@@ -81,7 +94,11 @@ check_project() {
     local git_curr_dir=$(relative_path "." "$git_root")
     local git_root_dir=$(basename "$git_root")
 
+    ${if gui.enable then ''
     git_branch_PS1="\[\033[01;31m\]$git_branch 󰘬:\[\033[00m\]"
+    '' else ''
+    git_branch_PS1="\[\033[01;31m\]$git_branch ~:\[\033[00m\]"
+    ''}
 
     set_git_dir
     check_venv
