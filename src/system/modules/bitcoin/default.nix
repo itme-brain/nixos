@@ -1,4 +1,4 @@
-{ pkgs, lib, config, autoreconfHook, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
 let
@@ -13,30 +13,21 @@ in
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
-        bitcoind = prev.stdenv.mkDerivation rec {
-          pname = "bitcoind";
+        bitcoind = prev.bitcoind.overrideAttrs (old: {
           version = "27.0";
-
           src = fetchTarball {
-            url = "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}-x86_64-linux-gnu.tar.gz";
-            sha256 = "sha256-T45mgVrGXEZIz9mPbVd4feca6qKzOuJqXDaLzFv+JBY=";
+            url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
+            sha256 = "sha256-U2tR3WySD3EssA3a14wUtA3e0t/5go0isqNZSSma7m4=";
           };
-
-          phase = [ "unpackPhase" "installPhase" ];
-
-          installPhase = ''
-            mkdir -p $out/bin
-            cp bin/* $out/bin
-          '';
-        };
+        });
       })
     ];
 
     users = {
       users = {
-        "bitcoind" = {
+        "btc" = {
           inherit home;
-          description = "bitcoind system user";
+          description = "Bitcoin Core system user";
           isSystemUser = true;
           group = "bitcoin";
           createHome = true;
@@ -45,29 +36,24 @@ in
       groups = {
         "bitcoin" = {
           members = [
-            "bitcoind"
+            "btc"
           ];
         };
       };
     };
 
+    programs.bash.shellAliases = {
+      btc = "bitcoind";
+    };
+
     networking.firewall.allowedTCPPorts = [ 8333 ];
 
     services.bitcoind = {
-      "bitcoind" = {
+      "btc" = {
         enable = true;
-        user = "bitcoind";
+        user = "btc";
         group = "bitcoin";
         configFile = conf;
-
-        rpc = {
-          port = 8332;
-          #users = {
-          #  config.user.name = {
-          #    passwordHMAC = "";
-          #  };
-          #};
-        };
       };
     };
   };
