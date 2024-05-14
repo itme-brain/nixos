@@ -108,21 +108,24 @@ boot:
   @sudo nixos-rebuild boot --flake .#{{SYSTEM}}
 
 # Commit all changes and push to upstream
-gh MESSAGE:
+gh COMMIT_MESSAGE:
   #!/usr/bin/env bash
   set -euo pipefail
   git add -A
-  git commit -m "{{MESSAGE}}"
+  git commit -m "{{COMMIT_MESSAGE}}"
   git push
 
 #Fetch resources and compute sha256 hash
 hash URL:
   #!/usr/bin/env bash
   set -euo pipefail
+
   if echo "{{URL}}" | grep -E '\.(tar\.gz|tgz|zip)$'; then
-    CONTENTS=$(nix-prefetch-url --unpack "{{URL}}")
+    CONTENTS=$(nix-prefetch-url --unpack {{URL}} | tail -n 1)
   else
-    CONTENTS=$(nix-prefetch-url "{{URL}}")
+    CONTENTS=$(nix-prefetch-url {{URL}} | tail -n 1)
   fi
-  HASH=$(echo -n "$CONTENTS" | nix hash to-sri --type sha256)
-  echo "$HASH"
+
+  HASH=$(nix hash to-sri --type sha256 "$CONTENTS")
+
+  echo -e "\033[32m$HASH\033[0m"
