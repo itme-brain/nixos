@@ -46,7 +46,7 @@
         modules = [
           ./src/system/machines/server
           home-manager.nixosModules.home-manager
-            (import ./src/system/machines/server/home.nix)
+            (import ./src/system/machines/server/modules/home-manager)
         ];
       };
 
