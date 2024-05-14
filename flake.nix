@@ -41,6 +41,15 @@
         ];
       };
 
+      server = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/server
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/server/modules/home-manager)
+        ];
+      };
+
       wsl = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
@@ -49,15 +58,6 @@
             (import ./src/system/machines/wsl/wsl.nix)
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/wsl/home.nix)
-        ];
-      };
-
-      server = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          ./src/system/machines/server
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/server/home.nix)
         ];
       };
     };

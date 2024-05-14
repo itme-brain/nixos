@@ -1,7 +1,5 @@
 {
   imports = [
     ./bitcoin
-    ./nginx
-    ./tor
   ];
 }

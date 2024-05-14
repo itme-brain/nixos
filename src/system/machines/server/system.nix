@@ -2,16 +2,11 @@
 
 { system.stateVersion = "23.11";
 
-  imports = [
-    ../modules
-  ];
+  imports = [ ../../modules ];
 
   modules = {
-    bitcoin = {
-      enable = true;
-      clightning = true;
-      electrs = true;
-      sparrow-server = true;
+    system = {
+      bitcoin.enable = true;
     };
   };
 
@@ -68,7 +63,7 @@
     hardwareClockInLocalTime = true;
   };
 
-  services.timesyncd = {
+  services.timesyncd = lib.mkDefault {
     enable = true;
     servers = [
       "0.pool.ntp.org"

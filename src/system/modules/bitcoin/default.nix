@@ -4,59 +4,56 @@ with lib;
 let
   cfg = config.modules.system.bitcoin;
 
+  home = "/var/lib/bitcoind";
+  conf = pkgs.writeText "bitcoin.conf" (import ./config);
+
+
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
-
-  imports = [ ./modules ];
-
   config = mkIf cfg.enable {
-    programs.bash.shellAliases = {
-      btc = "bitcoin-cli";
-    };
+    nixpkgs.overlays = [
+      (final: prev: {
+        bitcoind = prev.bitcoind.overrideAttrs (old: rec {
+          version = "27.0";
+          src = fetchTarball {
+            url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
+            sha256 = "sha256-U2tR3WySD3EssA3a14wUtA3e0t/5go0isqNZSSma7m4=";
+          };
+        });
+      })
+    ];
 
     users = {
       users = {
-        "bitcoind" = {
-          description = "bitcoind system user";
+        "btc" = {
+          inherit home;
+          description = "Bitcoin Core system user";
           isSystemUser = true;
           group = "bitcoin";
-          home = /var/lib/bitcoind;
           createHome = true;
         };
       };
       groups = {
         "bitcoin" = {
-          members = [ "clightning" "electrs" ];
+          members = [
+            "btc"
+          ];
         };
       };
     };
 
+    programs.bash.shellAliases = {
+      btc = "bitcoind";
+    };
+
+    networking.firewall.allowedTCPPorts = [ 8333 ];
+
     services.bitcoind = {
-      "bitcoind" = {
+      "btc" = {
         enable = true;
-        testnet = false;
-        user = "bitcoind";
+        user = "btc";
         group = "bitcoin";
-        configFile = /var/lib/bitcoind/bitcoin.conf;
-
-        rpc = {
-          port = 8332;
-        };
-
-        extraConfig = ''
-          server=1
-          mempoolfullrbf=1
-          v2transport=1
-
-          rpcbind=127.0.0.1
-          rpcallowip=127.0.0.1
-
-          proxy=127.0.0.1:9050
-          listen=1
-          listenonion=1
-          torcontrol=127.0.0.1:9051
-          torenablecircuit=1
-        '';
+        configFile = conf;
       };
     };
   };
