@@ -4,6 +4,21 @@ SYSTEM := "$(echo $HOSTNAME)"
 default:
   @just --list
 
+# Clean up build artifacts
+clean:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  echo "Cleaning build artifacts"
+  if [ -d result ]; then
+    echo "Removing result directory..."
+    rm ./result;
+  fi
+  if ls *.qcow2 1> /dev/null 2>&1; then
+    echo "Removing virtual disk..."
+    rm ./*.qcow2;
+  fi
+  echo "All clean!"
+
 # Output what derivations will be built
 test SYSTEM TYPE="nix":
   #!/usr/bin/env bash
@@ -39,7 +54,7 @@ test SYSTEM TYPE="nix":
   esac
 
 # Build the nix expression and hydrate the results directory - pass VM flag to build a VM
-build SYSTEM TYPE="nix":
+make SYSTEM TYPE="nix":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
