@@ -12,6 +12,7 @@ in
         enable = true;
         extraConfig = {
           init = { defaultBranch = "master"; };
+          format = { pretty = "oneline"; };
           mergetool = {
             vimdiff = {
               trustExitCode = true;
