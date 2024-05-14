@@ -10,12 +10,16 @@
     };
   };
 
+#TESTING
   users.mutableUsers = false;
+
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key1}" ];
+
+#TESTING
       initialPassword = "123";
     };
   };
@@ -43,6 +47,7 @@
       devices = [ "nodev" ];
       efiSupport = true;
       configurationLimit = 5;
+      splashImage = null;
     };
 
     efi = {
