@@ -4,12 +4,6 @@
 
   imports = [ ../../modules ];
 
-  modules = {
-    system = {
-      bitcoin.enable = true;
-    };
-  };
-
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;

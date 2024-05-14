@@ -3,7 +3,7 @@
 with lib;
 let
   git = config.modules.user.git;
-  gui = config.modules.user.gui.sway;
+  gui = config.modules.user.gui.alacritty;
 
 in
 ''
