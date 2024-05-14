@@ -1,6 +1,10 @@
+{ lib }:
+
+with lib;
+mkForce
 {
   cd = "cd -L";
   grep = "grep --color";
-  tree = "lt --icon=never";
-  lt = "lt --icon=never";
+  tree = "eza --tree --icons=never";
+  lt = "eza --tree --icons=never";
 }
