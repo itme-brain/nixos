@@ -60,6 +60,17 @@
             (import ./src/system/machines/wsl/home.nix)
         ];
       };
+
+      vm = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/vm
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/vm/modules/home-manager)
+          disko.nixosModules.disko
+            (import ./src/system/machines/vm/modules/disko)
+        ];
+      };
     };
 
     homeConfigurations."work" = home-manager.lib.homeManagerConfiguration {
