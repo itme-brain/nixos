@@ -13,15 +13,14 @@ in
         extraConfig = {
           init = { defaultBranch = "master"; };
           format = { pretty = "oneline"; };
+          log = { abbrevCommit = true; };
           mergetool = {
             vimdiff = {
               trustExitCode = true;
             };
           };
           merge = { tool = "vimdiff"; };
-          safe = {
-            directory = "/etc/nixos";
-          };
+          safe = { directory = "/etc/nixos"; };
         };
         ignores = [
           "node_modules"
