@@ -4,34 +4,30 @@
   disko.devices = {
     disk = {
       one = {
-        type = "disk";
         device = builtins.elemAt disks 0;
+        type = "disk";
         content = {
-          type = "table";
-          format = "gpt";
-          partitions = [
-            {
-              name = "boot";
-              start = "0";
-              end = "200M";
-              fs-type = "fat32";
-              bootable = true;
+          type = "gpt";
+          partitions = {
+            boot = {
+              size = "200M";
+              type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
               };
-            }
-            {
-              name = "root";
-              start = "200M";
-              end = "100%FREE";
+              bootable = true;
+              priority = 1;
+            };
+            primary = {
+              size = "100%";
               content = {
                 type = "lvm_pv";
                 vg = "vm";
               };
-            }
-          ];
+            };
+          };
         };
       };
     };
@@ -49,13 +45,10 @@
           root = {
             size = "100%";
             content = {
-              name = "nixos";
               type = "filesystem";
               format = "ext4";
               mountpoint = "/";
-              mountOptions = [
-                "defaults"
-              ];
+              mountOptions = [ "defaults" ];
             };
           };
         };
