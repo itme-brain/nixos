@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
-        bitcoind = prev.bitcoind.overrideAttrs (old: {
+        bitcoind = prev.bitcoind.overrideAttrs (old: rec {
           version = "27.0";
           src = fetchTarball {
             url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
