@@ -20,11 +20,11 @@ clean:
   echo "All clean!"
 
 # Output what derivations will be built
-test SYSTEM TYPE="nix":
+test SYSTEM TYPE="nixos":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
-    "nix")
+    "nixos")
       if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
         echo "Testing NixOS configuration for {{SYSTEM}}..."
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
@@ -54,11 +54,11 @@ test SYSTEM TYPE="nix":
   esac
 
 # Build the nix expression and hydrate the results directory - pass VM flag to build a VM
-make SYSTEM TYPE="nix":
+make SYSTEM TYPE="nixos":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
-    "nix")
+    "nixos")
       if [ "{{SYSTEM}}" = "desktop" ] || [ "{{SYSTEM}}" = "server" ] || [ "{{SYSTEM}}" = "wsl" ] || [ "{{SYSTEM}}" = "laptop" ]; then
         echo "Hydrating resulting NixOS configuration for {{SYSTEM}}..."
         nix build .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
@@ -103,24 +103,24 @@ make SYSTEM TYPE="nix":
       ;;
   esac
 
-# Search the nixpkgs flake for packages that mention PKG
+# grep nixpkgs for PKG
 search PKG:
   nix search nixpkgs {{PKG}}
 
-# Open the nixos packages search in the browser
+# Open nixos packages in the browser
 pkgs:
   @xdg-open https://search.nixos.org/packages
 
-# Open the nixos options search in the browser
+# Open nixos options in the browser
 options:
   @xdg-open https://search.nixos.org/options
 
-# NixOS-rebuild switch short-hand
+# NixOS-rebuild switch for the current system
 switch:
   @echo -e "\033[32m->> Switching to next generation ->>\033[0m"
   @sudo nixos-rebuild switch --flake .#{{SYSTEM}}
 
-# NixOS-rebuild boot short-hand
+# NixOS-rebuild boot for the current system
 boot:
   @echo -e "\033[34m->> Reboot to new generation ->>\033[0m"
   @echo "Switching to next generation on reboot"
