@@ -1,6 +1,5 @@
 ''
 server=1
-daemon=1
 
 mempoolfullrbf=1
 v2transport=1
