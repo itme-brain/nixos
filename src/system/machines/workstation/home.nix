@@ -31,8 +31,11 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gpg.enable = true;
-        security.enable = false;
+
+        security= {
+          gpg.enable = true;
+        };
+
         gui = {
           sway.enable = true;
           alacritty.enable = true;
