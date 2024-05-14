@@ -28,6 +28,7 @@
     };
 
   in
+  with pkgs;
   {
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
@@ -80,6 +81,6 @@
       ];
     };
 
-    devShells.${system}.default = pkgs.callPackage ./shell.nix {};
+    devShells.${system}.default = callPackage ./shell.nix {};
   };
 }
