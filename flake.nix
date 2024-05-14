@@ -80,10 +80,6 @@
       ];
     };
 
-    devShells.${system}.default = with pkgs; mkShell {
-      packages = [
-        just
-      ];
-    };
+    devShells.${system}.default = pkgs.callPackage ./shell.nix {};
   };
 }
