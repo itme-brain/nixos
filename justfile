@@ -1,5 +1,6 @@
 SYSTEM := "$(echo $HOSTNAME)"
 
+# Print this list
 default:
   @just --list
 
@@ -87,12 +88,15 @@ build SYSTEM TYPE="nix":
       ;;
   esac
 
+# Search the nixpkgs flake for packages that mention PKG
 search PKG:
   nix search nixpkgs {{PKG}}
 
+# Open the nixos packages search in the browser
 pkgs:
   @xdg-open https://search.nixos.org/packages
 
+# Open the nixos options search in the browser
 options:
   @xdg-open https://search.nixos.org/options
 
