@@ -46,7 +46,7 @@ in
       btc = "bitcoind";
     };
 
-    networking.firewall.allowedTCPPorts = [ 8333 ];
+    #networking.firewall.allowedTCPPorts = [ 8333 ];
 
     services.bitcoind = {
       "btc" = {

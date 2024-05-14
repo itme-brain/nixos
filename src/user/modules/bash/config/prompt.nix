@@ -60,7 +60,7 @@ check_venv() {
 ${if gui.enable then ''
 project_icon=""
 '' else ''
-project_icon="\[\033[01;34m\]git>[\033[00m\]"
+project_icon="\[\033[01;34m\]git>\033[00m\]"
 
 ''}
 set_git_dir() {

@@ -9,7 +9,7 @@ in
   imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      wget curl tree neofetch
+      wget curl neofetch
       unzip fping calc fd pciutils
       rsync zip lshw
     ];
