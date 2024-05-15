@@ -12,19 +12,19 @@ let
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "system.bitcoin.electrum"; };
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        electrs = prev.electrs.overrideAttrs (old: rec {
-          version = "0.10.4";
-          src = fetchFromGithub {
-            rev = "${version}";
-            hash = ''
-              sha256-0xw2532nmaxx9bjdpnnby03b83wc9zs8bv1wdfgv9q1phccqbkz1
-            '';
-          };
-        });
-      })
-    ];
+    #nixpkgs.overlays = [
+    #  (final: prev: {
+    #    electrs = prev.electrs.overrideAttrs (old: rec {
+    #      version = "0.10.4";
+    #      src = fetchFromGithub {
+    #        rev = "${version}";
+    #        hash = ''
+    #          sha256-0xw2532nmaxx9bjdpnnby03b83wc9zs8bv1wdfgv9q1phccqbkz1
+    #        '';
+    #      };
+    #    });
+    #  })
+    #];
 
     #environment.systemPackages = with pkgs; [
     #  electrs
