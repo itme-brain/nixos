@@ -1,7 +1,5 @@
-{ home, ... }:
-
 let
-  daemonDir = /var/lib/bitcoin;
+  daemonDir = "/var/lib/bitcoin";
 
 in
 ''
@@ -11,7 +9,7 @@ in
 
   cookie-file = "${daemonDir}/.cookie"
 
-  db_dir = "${home}/db"
+  db_dir = "/var/lib/electrs/db"
 
   log_filters = "INFO"
   timestamp = true

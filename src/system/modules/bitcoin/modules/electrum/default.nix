@@ -7,7 +7,7 @@ let
 
   btc = config.modules.system.bitcoin;
 
-  conf = pkgs.writeText "config.toml" (import ./config { inherit home; });
+  conf = pkgs.writeText "config.toml" (import ./config);
 
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "system.bitcoin.electrum"; };
@@ -26,9 +26,9 @@ in
     #  })
     #];
 
-    #environment.systemPackages = with pkgs; [
-    #  electrs
-    #];
+    environment.systemPackages = with pkgs; [
+      electrs
+    ];
 
     #users = {
     #  users = {
