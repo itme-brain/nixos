@@ -46,7 +46,7 @@ in
       btc = "bitcoind";
     };
 
-    #networking.firewall.allowedTCPPorts = [ 8333 ];
+    networking.firewall.allowedTCPPorts = [ 8333 ];
 
     services.bitcoind = {
       "btc" = {
@@ -54,6 +54,8 @@ in
         user = "btc";
         group = "bitcoin";
         configFile = conf;
+        dataDir = home;
+        pidFile = "${home}/bitcoind.pid";
       };
     };
   };
