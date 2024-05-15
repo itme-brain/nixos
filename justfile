@@ -20,7 +20,7 @@ clean:
   echo "All clean!"
 
 # Output what derivations will be built
-test TYPE SYSTEM="desktop":
+out TYPE SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
@@ -34,6 +34,47 @@ test TYPE SYSTEM="desktop":
       then
         echo "Testing NixOS configuration for {{SYSTEM}}..."
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
+        exit 0
+      else
+        echo "Error: Unknown argument - '{{SYSTEM}}'"
+        echo "Use one of:"
+        echo "  desktop"
+        echo "  server"
+        echo "  laptop"
+        echo "  wsl"
+        echo "  vm"
+        exit 1
+      fi
+      ;;
+    "home")
+      echo "Testing home configuration..."
+      nix build --dry-run .#homeConfigurations."workstation".config.home-manager.build.toplevel -L
+      exit 0
+      ;;
+    *)
+      echo "Invalid usage: {{TYPE}}.";
+      echo "Use one of:"
+      echo "  nix"
+      echo "  home"
+      exit 1
+      ;;
+  esac
+
+# Test switch into the next generation
+test TYPE SYSTEM="desktop":
+  #!/usr/bin/env bash
+  set -euo pipefail
+  case "{{TYPE}}" in
+    "nix")
+      if
+        [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "server" ] || \
+        [ "{{SYSTEM}}" = "wsl" ] || \
+        [ "{{SYSTEM}}" = "vm" ] || \
+        [ "{{SYSTEM}}" = "laptop" ]
+      then
+        echo "Testing next NixOS generation for {{SYSTEM}}..."
+        sudo nixos-rebuild test .#{{SYSTEM}}
         exit 0
       else
         echo "Error: Unknown argument - '{{SYSTEM}}'"
