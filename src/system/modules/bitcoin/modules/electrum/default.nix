@@ -30,17 +30,17 @@ in
       electrs
     ];
 
-    #users = {
-    #  users = {
-    #    "electrs" = {
-    #      inherit home;
-    #      description = "electrs system user";
-    #      isSystemUser = true;
-    #      group = "bitcoin";
-    #      createHome = true;
-    #    };
-    #  };
-    #};
+    users = {
+      users = {
+        "electrs" = {
+          inherit home;
+          description = "electrs system user";
+          isSystemUser = true;
+          group = "bitcoin";
+          createHome = true;
+        };
+      };
+    };
 
 
     #systemd.services.electrs = {
