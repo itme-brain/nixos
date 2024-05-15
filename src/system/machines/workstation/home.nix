@@ -10,9 +10,6 @@
     programs.home-manager.enable = true;
 
     programs.bash = {
-      shellAliases = {
-        nixup = "home-manager switch --flake";
-      };
       initExtra =
         import ./scripts/guiControl
       ;

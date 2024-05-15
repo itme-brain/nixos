@@ -7,9 +7,6 @@
     imports = [ ../../../../../user ];
 
     programs.home-manager.enable = true;
-    programs.bash.shellAliases = {
-      nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#server";
-    };
 
     home.stateVersion = "23.11";
 
