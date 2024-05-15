@@ -51,7 +51,7 @@ in
       scriptArgs = "--config=${conf}";
 
       after = [
-        "bitcoind*.service"
+        "bitcoind-btc.service"
       ];
 
       serviceConfig = {
@@ -66,7 +66,7 @@ in
         RestartSec = 60;
       };
       requisite = [
-        "bitcoind*.service"
+        "bitcoind-btc.service"
         "network.target"
       ];
     };
