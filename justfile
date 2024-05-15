@@ -180,6 +180,14 @@ switch:
   @echo -e "\033[32m->> Switching to next generation ->>\033[0m"
   @sudo nixos-rebuild switch --flake .#{{SYSTEM}}
 
+# Rollback to previous generation
+rollback SYSTEM="nixos":
+  #!/usr/bin/env bash
+  set -euo pipefail
+  if [ {{SYSTEM}} = "nixos" ]; then
+    sudo nixos-rebuild switch --rollback
+  fi
+
 # NixOS-rebuild boot for the current system
 boot:
   @echo -e "\033[34m->> Reboot to new generation ->>\033[0m"
