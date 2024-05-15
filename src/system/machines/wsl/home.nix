@@ -19,9 +19,12 @@
       user = {
         bash.enable = true;
         git.enable = true;
-        gpg.enable = true;
-        gui.enable = false;
-        security.enable = true;
+
+        security = {
+          enable = true;
+          gpg.enable = true;
+        };
+
         utils = {
           enable = true;
           dev.enable = true;
