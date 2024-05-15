@@ -9,7 +9,12 @@ in
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
-      publicKeys = [ config.user.pgpKey ];
+      publicKeys = [
+        {
+          text = "${config.user.keys.pgp.primary}";
+          trust = 5;
+        }
+      ];
     };
 
     services.gpg-agent = {

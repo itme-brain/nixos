@@ -7,7 +7,7 @@
       isNormalUser = true;
       extraGroups = config.user.groups
         ++ [ "video" "audio" "kvm" "libvirtd" ];
-      openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key2}" ];
+      openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.android}" ];
     };
   };
 

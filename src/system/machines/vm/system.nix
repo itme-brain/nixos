@@ -8,7 +8,7 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
-      openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key1}" ];
+      openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
     };
   };
 
