@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin.electrum;
-  home = /var/lib/electrs;
+  home = "/var/lib/electrs";
 
   btc = config.modules.system.bitcoin;
 
