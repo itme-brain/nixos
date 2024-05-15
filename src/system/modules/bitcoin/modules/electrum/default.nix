@@ -11,7 +11,7 @@ let
 
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "system.bitcoin.electrum"; };
-  config = mkIf (cfg.enable && btc.enable) {
+  config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
         electrs = prev.electrs.overrideAttrs (old: rec {
