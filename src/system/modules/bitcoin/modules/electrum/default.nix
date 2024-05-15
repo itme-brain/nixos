@@ -10,7 +10,7 @@ let
   conf = pkgs.writeText "config.toml" (import ./config { inherit home; });
 
 in
-{ options.modules.system.bitcoin.electrum = { enable = mkEnableOption "bitcoin.electrum"; };
+{ options.modules.system.bitcoin.electrum = { enable = mkEnableOption "system.bitcoin.electrum"; };
   config = mkIf (cfg.enable && btc.enable) {
     nixpkgs.overlays = [
       (final: prev: {
