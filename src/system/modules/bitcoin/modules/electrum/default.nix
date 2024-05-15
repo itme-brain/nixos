@@ -47,7 +47,7 @@ in
       description = "Electrs Bitcoin Indexer";
 
       script = "${pkgs.electrs}/bin/electrs";
-      scriptArgs = "--config=${conf}";
+      scriptArgs = "--conf=${conf}";
 
       after = [
         "bitcoind-btc.service"
