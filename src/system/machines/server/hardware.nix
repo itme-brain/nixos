@@ -10,17 +10,12 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/79093c66-1283-44d4-b03c-f87956bbada1";
-      fsType = "ext4";
-    };
-
-    "/home" = {
-      device = "/dev/disk/by-uuid/1e2d04b2-9a02-4de6-88cc-1e35d0838036";
+      device = "/dev/disk/by-uuid/d306c57e-b12f-473e-8985-2114f488831d2";
       fsType = "ext4";
     };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/0509-1D1F";
+      device = "/dev/disk/by-uuid/3BAA-D9DC";
       fsType = "vfat";
     };
   };
