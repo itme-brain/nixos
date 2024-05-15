@@ -17,8 +17,6 @@ in
         electrs = prev.electrs.overrideAttrs (old: rec {
           version = "0.10.4";
           src = fetchFromGithub {
-            owner = old.owner;
-            repo = old.pname;
             rev = "${version}";
             hash = ''
               sha256-0xw2532nmaxx9bjdpnnby03b83wc9zs8bv1wdfgv9q1phccqbkz1
