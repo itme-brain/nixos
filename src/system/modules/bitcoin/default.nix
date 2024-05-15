@@ -38,6 +38,7 @@ in
         "bitcoin" = {
           members = [
             "btc"
+            "electrs"
           ];
         };
       };
