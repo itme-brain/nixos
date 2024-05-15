@@ -10,17 +10,11 @@
     };
   };
 
-#TESTING
-  users.mutableUsers = false;
-
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.sshKeys.key1}" ];
-
-#TESTING
-      initialPassword = "123";
     };
   };
 
@@ -54,6 +48,12 @@
       canTouchEfiVariables = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    wget
+    git
+    vim
+  ];
 
   fonts.packages = with pkgs; [
     terminus_font
