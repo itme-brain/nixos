@@ -43,28 +43,28 @@ in
     };
 
 
-    #systemd.services.electrs = {
-    #  Unit = {
-    #    Description = "Electrs Bitcoin Indexer";
-    #    After = [ "network.target" "bitcoind.service" ];
-    #    Requires = [ "bitcoind.service" ];
-    #  };
-    #  Service = {
-    #    ExecStartPre = "${pkgs.coreutils}/sleep 10";
-    #    ExecStart = "${pkgs.electrs}/bin/electrs --conf=${conf}";
+    systemd.services.electrs = {
+      Unit = {
+        Description = "Electrs Bitcoin Indexer";
+        After = [ "network.target" "bitcoind.service" ];
+        Requires = [ "bitcoind.service" ];
+      };
+      Service = {
+        ExecStartPre = "${pkgs.coreutils}/sleep 10";
+        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${conf}";
 
-    #    User = "electrs";
-    #    Group = "bitcoin";
+        User = "electrs";
+        Group = "bitcoin";
 
-    #    Type = "simple";
-    #    KillMode = "process";
-    #    TimeoutSec = 60;
-    #    Restart = "always";
-    #    RestartSec = 60;
-    #  };
-    #  Install = {
-    #    WantedBy = [ "multi-user.target" ];
-    #  };
-    #};
+        Type = "simple";
+        KillMode = "process";
+        TimeoutSec = 60;
+        Restart = "always";
+        RestartSec = 60;
+      };
+      Install = {
+        WantedBy = [ "multi-user.target" ];
+      };
+    };
   };
 }
