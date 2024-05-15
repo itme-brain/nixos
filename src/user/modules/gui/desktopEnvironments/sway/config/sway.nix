@@ -61,8 +61,15 @@ in
       inner = 10;
     };
 
-    floating.border = 0;
-    window.border= 0;
+    floating = {
+      titlebar = false;
+      border = 0;
+    };
+
+    window = {
+      titlebar = false;
+      border= 0;
+    };
 
     keybindings = lib.mkOptionDefault {
       "${modifier}+q" = "kill";

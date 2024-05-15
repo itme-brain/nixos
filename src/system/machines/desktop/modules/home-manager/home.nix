@@ -11,7 +11,7 @@
       nixup = "sudo nixos-rebuild switch --flake /etc/nixos/.#desktop";
     };
 
-    home.stateVersion = "22.11";
+    home.stateVersion = "23.11";
 
     home.username = "${config.user.name}";
     home.homeDirectory = "/home/${config.user.name}";
