@@ -11,6 +11,7 @@ let
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
   config = mkIf cfg.enable {
+    imports = [ ./modules ];
     nixpkgs.overlays = [
       (final: prev: {
         bitcoind = prev.bitcoind.overrideAttrs (old: rec {
