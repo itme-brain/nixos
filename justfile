@@ -74,7 +74,7 @@ test TYPE SYSTEM="desktop":
         [ "{{SYSTEM}}" = "laptop" ]
       then
         echo "Testing next NixOS generation for {{SYSTEM}}..."
-        sudo nixos-rebuild test .#{{SYSTEM}}
+        sudo nixos-rebuild test --flake .#{{SYSTEM}}
         exit 0
       else
         echo "Error: Unknown argument - '{{SYSTEM}}'"
