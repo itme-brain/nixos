@@ -9,7 +9,7 @@ in
 
   cookie-file = "${daemonDir}/.cookie"
 
-  db_dir = "/var/lib/electrs/db"
+  db_dir = "/var/lib/electrs"
 
   log_filters = "INFO"
   timestamp = true
