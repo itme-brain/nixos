@@ -44,14 +44,17 @@ in
 
 
     systemd.services.electrs = {
-      Unit = {
-        Description = "Electrs Bitcoin Indexer";
-        After = [ "network.target" "bitcoind.service" ];
-        Requires = [ "bitcoind.service" ];
-      };
-      Service = {
-        ExecStartPre = "${pkgs.coreutils}/sleep 10";
-        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${conf}";
+      description = "Electrs Bitcoin Indexer";
+
+      preStart = "${pkgs.coreutils}/sleep 5";
+      script = "${pkgs.electrs}/bin/electrs";
+      scriptArgs = "--config=${conf}";
+
+      after = [
+        "bitcoind*.service"
+      ];
+
+      serviceConfig = {
 
         User = "electrs";
         Group = "bitcoin";
@@ -62,9 +65,10 @@ in
         Restart = "always";
         RestartSec = 60;
       };
-      Install = {
-        WantedBy = [ "multi-user.target" ];
-      };
+      requisite = [
+        "bitcoind*.service"
+        "network.target"
+      ];
     };
   };
 }
