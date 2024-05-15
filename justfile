@@ -101,7 +101,7 @@ test TYPE SYSTEM="desktop":
       ;;
   esac
 
-# Build the nix expression and hydrate the results directory - pass VM flag to build a VM
+# Build the nix expression and hydrate the results directory
 make TYPE SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
@@ -133,27 +133,6 @@ make TYPE SYSTEM="desktop":
       nix build --dry-run .#homeConfigurations."workstation".config.home-manager.build.toplevel -L
       exit 0
       ;;
-    "vm")
-      if
-        [ "{{SYSTEM}}" = "desktop" ] || \
-        [ "{{SYSTEM}}" = "server" ] || \
-        [ "{{SYSTEM}}" = "wsl" ] || \
-        [ "{{SYSTEM}}" = "laptop" ]
-      then
-        echo "Building VM for {{SYSTEM}}..."
-        nixos-rebuild build-vm --flake .#{{SYSTEM}}
-        result/bin/run-{{SYSTEM}}-vm
-        exit 0
-      else
-        echo "Error: Unknown argument - '{{SYSTEM}}'"
-        echo "Use one of:"
-        echo "  desktop"
-        echo "  server"
-        echo "  laptop"
-        echo "  wsl"
-        exit 1
-      fi
-      ;;
     *)
       echo "Invalid usage: {{TYPE}}."
       echo "Use one of:"
@@ -162,6 +141,32 @@ make TYPE SYSTEM="desktop":
       exit 1
       ;;
   esac
+
+# Deploy a vm of the defined system
+vm SYSTEM:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  if
+    [ "{{SYSTEM}}" = "desktop" ] || \
+    [ "{{SYSTEM}}" = "server" ] || \
+    [ "{{SYSTEM}}" = "wsl" ] || \
+    [ "{{SYSTEM}}" = "vm" ] || \
+    [ "{{SYSTEM}}" = "laptop" ]
+  then
+    echo "Building VM for {{SYSTEM}}..."
+    nixos-rebuild build-vm --flake .#{{SYSTEM}}
+    result/bin/run-{{SYSTEM}}-vm
+    exit 0
+  else
+    echo "Error: Unknown argument - '{{SYSTEM}}'"
+    echo "Use one of:"
+    echo "  desktop"
+    echo "  server"
+    echo "  laptop"
+    echo "  vm"
+    echo "  wsl"
+    exit 1
+  fi
 
 # grep nixpkgs for PKG
 search PKG:
