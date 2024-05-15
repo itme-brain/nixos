@@ -6,7 +6,10 @@
 
   modules = {
     system = {
-      bitcoin.enable = true;
+      bitcoin = {
+        enable = true;
+        electrum = true;
+      };
     };
   };
 
