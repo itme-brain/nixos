@@ -46,7 +46,6 @@ in
     systemd.services.electrs = {
       description = "Electrs Bitcoin Indexer";
 
-      preStart = "${pkgs.coreutils}/sleep 5";
       script = "${pkgs.electrs}/bin/electrs";
       scriptArgs = "--config=${conf}";
 
