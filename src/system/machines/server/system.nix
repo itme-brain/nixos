@@ -8,7 +8,7 @@
     system = {
       bitcoin = {
         enable = true;
-        electrum = true;
+        electrum.enable = true;
       };
     };
   };
