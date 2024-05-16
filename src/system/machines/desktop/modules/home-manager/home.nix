@@ -32,7 +32,7 @@
         };
 
         gui = {
-          sway.enable = true;
+          wm.sway.enable = true;
           alacritty.enable = true;
           browsers.enable = true;
           corn.enable = true;

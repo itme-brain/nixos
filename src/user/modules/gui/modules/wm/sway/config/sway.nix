@@ -2,6 +2,10 @@
 
 let
   modifier = config.wayland.windowManager.sway.config.modifier;
+  wallpapers = builtins.path {
+    path = ./wallpapers;
+    name = "wallpapers";
+  };
 
 in
 { enable = true;
@@ -17,13 +21,13 @@ in
       HDMI-A-1 = {
         resolution = "1920x1080";
         position = "0,0";
-        bg = "~/Pictures/wallpapers/${config.user.wallpaper} fill";
+        bg = "${wallpapers}/${config.user.wallpaper} fill";
       };
       DP-1 = {
         resolution = "1080x1920";
         position = "1920,0";
         transform = "90";
-        bg = "~/Pictures/wallpapers/${config.user.wallpaper} fill";
+        bg = "${wallpapers}/${config.user.wallpaper} fill";
       };
     };
     modifier = "Mod1";
