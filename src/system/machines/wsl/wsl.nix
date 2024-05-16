@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 {
-  imports = [ ./modules/user ];
+  imports = [ ./modules/home-manager/user/configs ];
 
   wsl = {
     enable = true;
