@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./configs
-    ./modules
-  ];
-}
+{ imports = [ ./configs ./modules ]; }
