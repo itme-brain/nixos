@@ -2,7 +2,6 @@
 
 with lib;
 let
-  cfg = config.modules.user.bash;
   gui = config.modules.user.gui.wm;
 
   wm = {
@@ -10,25 +9,23 @@ let
   };
 
 in
-{ options.modules.user.bash = { enable = mkEnableOption "user.bash"; };
-  config = mkIf cfg.enable {
-    programs.bash = {
+{
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+
+    initExtra = import ./config/prompt.nix;
+    bashrcExtra = import ./config/bashrc.nix;
+    shellAliases = import ./config/alias.nix;
+  };
+
+  programs = {
+    ripgrep.enable = true;
+    eza = {
       enable = true;
-      enableCompletion = true;
-
-      initExtra = import ./config/prompt.nix { inherit lib config; };
-      bashrcExtra = import ./config/bashrc.nix;
-      shellAliases = import ./config/alias.nix { inherit lib; };
-    };
-
-    programs = {
-      ripgrep.enable = true;
-      eza = {
-        enable = true;
-        enableAliases = true;
-      } // optionalAttrs wm.enable {
-        icons = true;
-      };
+      enableAliases = true;
+    } // optionalAttrs wm.enable {
+      icons = true;
     };
   };
 }

@@ -1,42 +1,47 @@
-{ lib, config, ... }:
+{ lib ? import <nixpkgs>, config ? import <nixpkgs>, ... }:
 
+with builtins;
 let
+  moduleType = "user";
 
-moduleType = "user";
-
-mkModules = dir: pathAcc: (
-  builtins.foldl' (acc: node:
-    let
-      path = dir + (if dir == ./. then null else "/") + node;
-      accPath = if pathAcc == "" then node else pathAcc + "." + node;
-    in
-      if lib.isDirectory path && node != "config" then
-        if node != "modules" then
-          let
-            moduleOptions = {
-              ${accPath} = {
-                enable = lib.mkEnableOption "${moduleType}.${accPath}";
-              };
-            };
-            moduleConfig = {
-              ${accPath} = lib.mkIf config.modules.${moduleType}.${accPath}.enable (import path);
-            };
-          in
-            {
-              options = acc // moduleOptions;
-              config = acc // moduleConfig;
-            } // (mkModules path accPath)
+  mkModules = dir: pathAcc: (
+    trace "Processing dir: ${dir} with pathAcc: ${pathAcc}" (
+    foldl' (attrs: node:
+      let
+      path = dir + "/" + node;
+      accPath =
+        if pathAcc == ""
+          then node
+        else if node != "modules"
+          then pathAcc + "." + node
         else
-          mkModules path accPath
+          pathAcc;
+      in
+      if node == "modules" then
+        trace "Entering modules dir: ${modules}" (mkModules path accPath // attrs)
       else
-        acc
-  ) { opts = {}; cfg = {}; } (builtins.attrNames (builtins.readDir dir))
-);
+        let
+          moduleOpts = {
+            ${accPath} = {
+              enable = lib.mkEnableOption "Enable ${node} module";
+            };
+          };
+          moduleCfgs = {
+            ${accPath} = lib.mkIf config.modules.${moduleType}.${accPath}.enable (import path);
+          };
+        in
+        trace "Processing node: ${node} at path: ${path} with accumulatedPath: ${accPath}"(
+          mkModules path accPath // {
+            opts = attrs.opts // moduleOpts;
+            cfgs = attrs.cfg // moduleCfgs;
+          })
+    )) { opts = {}; cfgs = {}; } (filter (node: node != "config" && readFileType node == "directory")(attrNames (readDir dir)))
+  );
 
-result = mkModules ./.;
+  result = mkModules ./.;
 
 in
 {
-  options = { modules.user = result.options; };
-  config = { modules.user = result.config; };
+  options.modules.user = result.opts;
+  config.modules.user = result.opts;
 }

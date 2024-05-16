@@ -5,7 +5,7 @@
   };
 
   window = {
-    opacity = 0.90;
+    opacity = 1;
   };
 
   colors = {
