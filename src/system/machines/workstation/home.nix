@@ -34,7 +34,7 @@
         };
 
         gui = {
-          sway.enable = true;
+          wm.sway.enable = true;
           alacritty.enable = true;
           browsers.enable = true;
           neovim.enable = true;

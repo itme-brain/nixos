@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.user.gui.sway;
+  cfg = config.modules.user.gui.wm.sway;
 
 in
-{ options.modules.user.gui.sway = { enable = mkEnableOption "user.gui.sway"; };
+{ options.modules.user.gui.wm.sway = { enable = mkEnableOption "user.gui.wm.sway"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
     programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
@@ -55,10 +55,5 @@ in
     };
 
     fonts.fontconfig.enable = true;
-
-    home.file."Pictures/wallpapers" = {
-      source = ../../wallpapers;
-      recursive = true;
-    };
   };
 }

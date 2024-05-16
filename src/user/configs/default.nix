@@ -9,7 +9,7 @@ userConfigs = rec {
   email = "bryan@ramos.codes";
   shell = pkgs.bash;
 
-  # Image name from ~Pictures/wallpapers directory
+  # From wallpapers directory
   wallpaper = "mountains.jpg";
 
   groups = [ "wheel" "networkmanager" "home-manager" "input" ];
