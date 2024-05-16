@@ -1,9 +1,7 @@
 { config, lib, ... }:
 
 {
-  imports = [
-    ../../../user
-  ];
+  imports = [ ./modules/user ];
 
   wsl = {
     enable = true;

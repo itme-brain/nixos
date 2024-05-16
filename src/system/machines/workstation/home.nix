@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../../../user ];
+  imports = [ ./user ];
 
   home = {
     stateVersion = "23.11";
@@ -20,7 +20,6 @@
       extraOptions = "experimental-features = nix-command flakes";
       settings = {
         auto-optimise-store = true;
-        trusted-users = [ "${config.user.name}" ];
       };
     };
 

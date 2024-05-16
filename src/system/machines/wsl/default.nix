@@ -1,8 +1,6 @@
-{ ... }:
-
 {
   imports = [
-    ../../../user/configs
+    ./modules/home-manager/user/configs
     ./system.nix
   ];
 }

@@ -58,7 +58,7 @@
           nixos-wsl.nixosModules.wsl
             (import ./src/system/machines/wsl/wsl.nix)
           home-manager.nixosModules.home-manager
-            (import ./src/system/machines/wsl/home.nix)
+            (import ./src/system/machines/wsl/modules/home-manager)
         ];
       };
 

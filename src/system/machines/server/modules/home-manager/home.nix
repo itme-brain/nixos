@@ -4,9 +4,7 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${config.user.name} = {
-    imports = [
-      ../../../user
-    ];
+    imports = [ ./user ];
 
     programs.home-manager.enable = true;
 
@@ -21,15 +19,11 @@
         git.enable = true;
 
         security = {
-          enable = true;
           gpg.enable = true;
         };
 
         utils = {
           enable = true;
-          dev.enable = true;
-          email.enable = true;
-          irc.enable = true;
           vim.enable = true;
         };
       };
