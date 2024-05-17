@@ -4,7 +4,10 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${config.user.name} = {
-    imports = [ ./user ];
+    imports = [
+    ../../../../../user/modules { inherit config; }
+    ../../../../../user/configs
+    ];
 
     programs.home-manager.enable = true;
 

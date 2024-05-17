@@ -1,7 +1,7 @@
 { config, ... }:
 
 { imports = [
-  ./configs
-  ./modules { inherit config; }
+    ./configs
+    ./modules { inherit config; }
   ];
 }

@@ -6,7 +6,7 @@ let
   mkModules = dir: pathAcc: (
     foldl' (attrs: node:
     let
-    nodePath = "${dir}/${node}";
+    path = "${dir}/${node}";
     accumulatedPath =
       if dir == ./.
         then node
@@ -16,7 +16,7 @@ let
         pathAcc;
     in
     if readFileType node == "directory"
-      then mkModules nodePath accumulatedPath // attrs
+      then mkModules path accumulatedPath // attrs
     else if node == "default.nix" then
       let
       enableOpt = {
@@ -25,7 +25,7 @@ let
         };
       };
       moduleCfgs = lib.mkIf config.modules.user.${accumulatedPath}.enable
-        (import nodePath);
+        (import path);
       in
       {
         opts = attrs.opts // enableOpt;
