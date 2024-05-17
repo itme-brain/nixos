@@ -1,44 +1,39 @@
-{ lib ? import <nixpkgs>, config ? import <nixpkgs>, ... }:
+{ lib, config, ... }:
 
 with builtins;
 let
-  moduleType = "user";
 
   mkModules = dir: pathAcc: (
     foldl' (attrs: node:
-      let
-      path = "${dir}/${node}";
-      accPath =
-        if readFileType node == "directory" then
-          if pathAcc == ""
-            then node
-          else if node != "modules"
-            then "${pathAcc}.${node}"
-          else
-            pathAcc
-        else
-          "";
-      in
-      if node == "default.nix" && dir != ./. then
-        let
-        moduleOpts = {
-          ${accPath} = {
-            enable = lib.mkEnableOption "Enable ${accPath} module";
-          };
-        };
-        moduleCfgs = {
-          ${accPath} = lib.mkIf config.modules.${moduleType}.${accPath}.enable (import path);
-        };
-        in
-        {
-          opts = attrs.opts // moduleOpts;
-          cfgs = attrs.cfgs // moduleCfgs;
-        }
-      else if readFileType path == "directory" then
-        (mkModules path pathAcc // attrs)
+    let
+    nodePath = "${dir}/${node}";
+    accumulatedPath =
+      if dir == ./.
+        then node
+      else if node != "modules"
+        then "${pathAcc}.${node}"
       else
-        attrs
-    ) { opts = {}; cfgs = {}; } (filter (node: node != "config") (attrNames (readDir dir)))
+        pathAcc;
+    in
+    if readFileType node == "directory"
+      then mkModules nodePath accumulatedPath // attrs
+    else if node == "default.nix" then
+      let
+      enableOpt = {
+        ${accumulatedPath} = {
+          enable = lib.mkEnableOption "Enable ${accumulatedPath} module";
+        };
+      };
+      moduleCfgs = lib.mkIf config.modules.user.${accumulatedPath}.enable
+        (import nodePath);
+      in
+      {
+        opts = attrs.opts // enableOpt;
+        cfgs = attrs.cfgs // moduleCfgs;
+      }
+    else
+      attrs
+    ) { opts = {}; cfgs = {}; } (filter (node: readFileType "${dir}/${node}" == "directory" || node == "default.nix" && node != "config") (attrNames (readDir dir)))
   );
 
   result = mkModules ./.;
@@ -46,5 +41,5 @@ let
 in
 {
   options.modules.user = result.opts;
-  config.modules.user = result.cfgs;
+  config = result.cfgs;
 }
