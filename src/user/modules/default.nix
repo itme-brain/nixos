@@ -43,5 +43,5 @@ let
 in
 {
   options.modules.user = result.opts;
-  config.modules.user = result.opts;
+  config.modules.user = result.cfgs;
 }
