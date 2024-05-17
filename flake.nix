@@ -34,6 +34,7 @@
       desktop = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          ./src/user
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/desktop/modules/home-manager)
