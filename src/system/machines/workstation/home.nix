@@ -49,7 +49,7 @@
       };
     };
 
-    home.file.".config/home-manager" = {
+    file.".config/home-manager" = {
       source = ../../../..;
       recursive = true;
     };
