@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../../../user ];
+  imports = [ ./user ];
 
   home = {
     stateVersion = "23.11";
@@ -47,6 +47,11 @@
           vim.enable = true;
         };
       };
+    };
+
+    home.file.".config/home-manager" = {
+      source = ../../../..;
+      recursive = true;
     };
   };
 }
