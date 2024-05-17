@@ -76,9 +76,7 @@
 
     homeConfigurations."work" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = [
-        ./src/system/machines/workstation
-      ];
+      modules = [ ./src/system/machines/workstation ];
     };
 
     devShells.${system}.default = callPackage ./shell.nix {};
