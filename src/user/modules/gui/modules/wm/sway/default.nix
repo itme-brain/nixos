@@ -8,7 +8,12 @@ in
 { options.modules.user.gui.wm.sway = { enable = mkEnableOption "user.gui.wm.sway"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
-    programs.rofi = import ./config/rofi.nix { inherit pkgs config lib; };
+    programs.rofi = import ./config/rofi { inherit pkgs config lib; };
+
+    home.file.".config/rofi" = {
+      source = ./config/rofi/config;
+      recursive = true;
+    };
 
     programs.bash = {
       profileExtra = import ./config/shellHook.nix;
