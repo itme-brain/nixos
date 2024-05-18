@@ -7,6 +7,9 @@ in
   package = pkgs.rofi-wayland;
   location = "center";
   terminal = "\${pkgs.alacritty}/bin/alacritty";
+  plugins = with pkgs; [
+    rofi-emoji
+  ];
 
     theme = {
       "*" = {

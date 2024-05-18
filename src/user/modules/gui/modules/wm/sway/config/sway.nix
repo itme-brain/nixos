@@ -81,7 +81,7 @@ in
       "Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png";
       "${modifier}+Print" = ''exec sh -c 'grim -g "$(swaymsg -t get_tree | jq -j '"'"'.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"'"'"')" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png' '';
       "${modifier}+Shift+f" = "exec alacritty -e sh -c 'EDITOR=nvim ranger'";
-      "${modifier}+Shift+d" = "exec emote";
+      "${modifier}+Shift+d" = "exec rofi -modi emoji -show emoji";
     };
   };
 
