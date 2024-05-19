@@ -90,10 +90,6 @@ in
   };
 
   extraConfig = ''
-    for_window [app_id="one.alynx.showmethekey" title="Floating Window - Show Me The Key"] {
-      floating enable
-      sticky enable
-    }
     exec_always ${pkgs.autotiling}/bin/autotiling
   '';
 }
