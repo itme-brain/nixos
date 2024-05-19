@@ -17,6 +17,10 @@ in
   '';
 
   config = {
+    fonts = {
+      names = [ "Terminus" ];
+    };
+
     output = {
       HDMI-A-1 = {
         resolution = "1920x1080";
@@ -49,8 +53,8 @@ in
       {
         position = "top";
         statusCommand = ''while :; do echo "$(free -h | awk '/^Mem/ {print $3}') '|' $(date +'%I:%M:%S %p') '|' $(date +'%m-%d-%Y')"; sleep 1; done'';
-        fonts = { 
-          names = [ "Noto Sans" ];
+        fonts = {
+          names = [ "Terminus" ];
           size = 10.0;
         };
         colors = {
@@ -82,6 +86,9 @@ in
       "${modifier}+Print" = ''exec sh -c 'grim -g "$(swaymsg -t get_tree | jq -j '"'"'.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"'"'"')" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png' '';
       "${modifier}+Shift+f" = "exec alacritty -e sh -c 'EDITOR=nvim ranger'";
       "${modifier}+Shift+d" = "exec rofi -modi emoji -show emoji";
+      "${modifier}+Shift+Return" = ''
+        exec alacritty --working-directory -e $(pwd)
+      '';
     };
   };
 

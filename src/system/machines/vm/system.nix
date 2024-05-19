@@ -43,10 +43,10 @@
     };
   };
 
-  fonts.packages = with pkgs; [
-    terminus_font
-    terminus-nerdfont
-  ];
+  #fonts.packages = with pkgs; [
+  #  terminus_font
+  #  terminus-nerdfont
+  #];
 
   security.sudo = {
     wheelNeedsPassword = false;

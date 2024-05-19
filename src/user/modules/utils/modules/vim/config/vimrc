@@ -70,7 +70,7 @@ nnoremap <leader>ga :Git add<CR>
 nnoremap <leader>gc :Git commit<CR>
 nnoremap <leader>gd :Git diff<CR>
 
-nnoremap <leader>e :Explore<CR>
+nnoremap <leader>e :Ex<CR>
 nnoremap <leader>/ :Rg<Space>
 
 nnoremap <leader>bd :bd<CR>

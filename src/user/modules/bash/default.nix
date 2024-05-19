@@ -26,9 +26,10 @@ in
       eza = {
         enable = true;
         enableAliases = true;
-      } // optionalAttrs wm.enable {
-        icons = true;
       };
+      #// optionalAttrs wm.enable {
+      #  icons = true;
+      #};
     };
   };
 }

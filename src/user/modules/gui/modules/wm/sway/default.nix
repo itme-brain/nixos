@@ -16,7 +16,7 @@ in
     };
 
     programs.bash = {
-      profileExtra = import ./config/shellHook.nix;
+      profileExtra = import ./config/shellHook.nix { inherit config lib; };
       shellAliases = {
         open = "xdg-open";
       };

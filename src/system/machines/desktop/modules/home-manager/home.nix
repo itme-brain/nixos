@@ -23,6 +23,8 @@
           gpg.enable = true;
         };
 
+        tmux.enable = true;
+
         utils = {
           enable = true;
           dev.enable = true;

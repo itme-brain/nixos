@@ -4,6 +4,7 @@
     ./git
     ./gui
     ./security
+    ./tmux
     ./utils
   ];
 }
