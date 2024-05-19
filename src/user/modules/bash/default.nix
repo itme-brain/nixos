@@ -3,11 +3,6 @@
 with lib;
 let
   cfg = config.modules.user.bash;
-  gui = config.modules.user.gui.wm;
-
-  wm = {
-    enable = builtins.any (mod: mod.enable or false) (builtins.attrValues gui);
-  };
 
 in
 { options.modules.user.bash = { enable = mkEnableOption "user.bash"; };
@@ -27,9 +22,6 @@ in
         enable = true;
         enableAliases = true;
       };
-      #// optionalAttrs wm.enable {
-      #  icons = true;
-      #};
     };
   };
 }
