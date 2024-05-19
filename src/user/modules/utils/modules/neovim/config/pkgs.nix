@@ -7,15 +7,17 @@ let
     sumneko-lua-language-server stylua
     haskell-language-server hlint
     nodePackages."@tailwindcss/language-server"
+    dhall-lsp-server
   ];
 
   lsp' = with pkgs.nodePackages; [
-    vscode-langservers-extracted
     typescript-language-server
+    vscode-langservers-extracted
     bash-language-server
     diagnostic-languageserver
     pyright
-    volar
+    purescript-language-server
+    vls
   ];
 
   extraPackages = with pkgs; [
