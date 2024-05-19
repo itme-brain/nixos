@@ -39,10 +39,12 @@ in
     home.packages = with pkgs; [
       pavucontrol
       xdg-utils
-      grim
-      slurp
       wl-clipboard
       autotiling
+
+      grim
+      jq
+      slurp
 
       ranger
       highlight
