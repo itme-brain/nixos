@@ -98,7 +98,11 @@ check_project() {
 
   if [ -n "$git_root" ]; then
     local git_branch=$(git branch --show-current 2>/dev/null)
-    git_branch=''${git_branch:-$(git rev-parse --short HEAD 2>/dev/null)}
+
+    if [ -z "$git_branch" ]; then
+      git_branch=$(git describe --tags --exact-match 2>/dev/null)
+      git_branch=''${git_branch:-$(git rev-parse --short HEAD 2>/dev/null)}
+    fi
 
     local git_curr_dir=$(relative_path "." "$git_root")
     local git_root_dir=$(basename "$git_root")
