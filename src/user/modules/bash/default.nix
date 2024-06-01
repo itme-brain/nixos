@@ -20,7 +20,11 @@ in
       ripgrep.enable = true;
       eza = {
         enable = true;
-        enableAliases = true;
+        enableBashIntegration = true;
+        enableFishIntegration = false;
+        enableZshIntegration = false;
+        enableNushellIntegration = false;
+        enableIonIntegration = false;
       };
     };
   };

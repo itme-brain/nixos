@@ -33,7 +33,7 @@ in
     qt = {
       enable = true;
       style.package = pkgs.juno-theme;
-      platformTheme = "gtk";
+      platformTheme.name = "gtk";
     };
 
     home.packages = with pkgs; [

@@ -2,7 +2,7 @@
 
 let
   lsp = with pkgs; [
-    nil nixfmt
+    nil nixfmt-rfc-style
     marksman shfmt
     sumneko-lua-language-server stylua
     haskell-language-server hlint

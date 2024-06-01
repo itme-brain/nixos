@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
 let
@@ -22,7 +22,7 @@ in
       enableSshSupport = true;
       enableBashIntegration = true;
       enableScDaemon = true;
-      pinentryFlavor = "tty";
+      pinentryPackage = pkgs.pinentry-tty;
     };
   };
 }
