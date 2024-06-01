@@ -72,6 +72,11 @@ in
     floating = {
       titlebar = false;
       border = 0;
+      criteria = [
+        {
+          title = "Android Emulator";
+        }
+      ];
     };
 
     window = {
