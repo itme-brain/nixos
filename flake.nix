@@ -79,6 +79,11 @@
       modules = [ ./src/system/machines/workstation ];
     };
 
-    devShells.${system}.default = callPackage ./shell.nix {};
+    devShells.${system}.default = mkShell {
+      name = "devShell";
+      packages = [
+        just
+      ];
+    };
   };
 }
