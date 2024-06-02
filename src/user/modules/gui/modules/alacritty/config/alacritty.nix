@@ -8,6 +8,14 @@
     opacity = 1;
   };
 
+  keyboard.bindings = [
+    {
+      key = "Enter";
+      mods = "Alt | Shift";
+      action = "SpawnNewInstance";
+    }
+  ];
+
   colors = {
     primary = {
       background = "#000000";
