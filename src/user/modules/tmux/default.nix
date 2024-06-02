@@ -24,7 +24,7 @@ in
       mouse = if wm.enable then true else false;
 
       prefix = "M";
-      shell = "\${pkgs.bash}/bin/bash";
+      #shell = "\${pkgs.bash}/bin/bash";
 
       plugins = with pkgs.tmuxPlugins; [
         {
