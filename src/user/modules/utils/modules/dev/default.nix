@@ -16,6 +16,7 @@ in
       qrencode
 
       docker
+      virt-manager
     ];
 
     programs = {
