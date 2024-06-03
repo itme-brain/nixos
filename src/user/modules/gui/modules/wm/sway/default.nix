@@ -15,13 +15,6 @@ in
       recursive = true;
     };
 
-    programs.bash = {
-      profileExtra = import ./config/shellHook.nix { inherit config lib; };
-      shellAliases = {
-        open = "xdg-open";
-      };
-    };
-
     #gtk = {
     #  enable = true;
     #  theme.package = pkgs.juno-theme;

@@ -37,7 +37,7 @@
   };
 
   hardware.nvidia.open = true;
-
+#
 # Virtualisation
   virtualisation.libvirtd = {
     enable = true;
