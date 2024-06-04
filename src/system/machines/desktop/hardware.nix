@@ -33,11 +33,11 @@
   hardware.opengl = {
     enable = true;
     driSupport = true;
-    driSupport32Bit = false;
+    driSupport32Bit = true;
   };
 
   hardware.nvidia.open = true;
-#
+
 # Virtualisation
   virtualisation.libvirtd = {
     enable = true;

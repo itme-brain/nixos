@@ -23,7 +23,7 @@ in
 
         monitor = [
           "HDMI-A-1, 1920x1080, 0x0, 1"
-          "DP-1, 1080x1920, 1920x0, 1, transform, 1"
+          "DP-1, 1920x1080, 1920x0, 1"
         ];
 
         exec-once = [
@@ -31,13 +31,18 @@ in
         ];
 
         bind = [
-          "$mod, Enter, $terminal"
+          "$mod, Return, exec, $terminal"
           "$mod, q, killactive"
 
-          "$mod, J, swapwindow, d"
-          "$mod, K, swapwindow, u"
-          "$mod, H, swapwindow, l"
-          "$mod, L, swapwindow, r"
+          "$mod, J, movefocus, d"
+          "$mod, K, movefocus, u"
+          "$mod, H, movefocus, l"
+          "$mod, L, movefocus, r"
+
+          "$mod&SHIFT, J, movewindow, d"
+          "$mod&SHIFT, K, movewindow, u"
+          "$mod&SHIFT, H, movewindow, l"
+          "$mod&SHIFT, L, movewindow, r"
 
           "$mod, F, fullscreen"
 
@@ -72,7 +77,7 @@ in
 
         input = {
           kb_layout = "us";
-          follow_mouse = 0;
+          follow_mouse = 1;
           accel_profile = "flat";
           sensitivity = 0.65;
         };
@@ -80,12 +85,6 @@ in
         env = [
           "HYPRCURSOR_SIZE, 24"
           "GTK_THEME, Qogir"
-
-          #"LIBVA_DRIVER_NAME, nvidia"
-          #"XDG_SESSION_TYPE, wayland"
-          #"GBM_BACKEND, nvidia-drm"
-          #"__GLX_VENDOR_LIBRARY_NAME, nvidia"
-          #"NVD_BACKEND, direct"
         ];
       };
     };
@@ -217,13 +216,18 @@ in
       platformTheme.name = "gtk";
     };
 
-    xdg.portal.enable = true;
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-hyprland
+      ];
+      config.common.default = "*";
+    };
 
     home.packages = with pkgs; [
       pavucontrol
       xdg-utils
       wl-clipboard
-      xdg-desktop-portal-hyprland
       dconf
 
       grim
