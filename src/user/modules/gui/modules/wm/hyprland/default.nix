@@ -98,11 +98,11 @@ in
         rofi-emoji
       ];
     };
+
     home.file.".config/rofi" = {
       source = ./config/rofi/config;
       recursive = true;
     };
-
 
     programs.waybar = {
       enable = true;
