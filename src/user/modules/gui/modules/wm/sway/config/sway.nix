@@ -28,9 +28,8 @@ in
         bg = "${wallpapers}/${config.user.wallpaper} fill";
       };
       DP-1 = {
-        resolution = "1080x1920";
+        resolution = "1920x1080";
         position = "1920,0";
-        transform = "90";
         bg = "${wallpapers}/${config.user.wallpaper} fill";
       };
     };
