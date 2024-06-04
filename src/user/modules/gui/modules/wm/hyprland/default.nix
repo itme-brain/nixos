@@ -217,6 +217,8 @@ in
       platformTheme.name = "gtk";
     };
 
+    xdg.portal.enable = true;
+
     home.packages = with pkgs; [
       pavucontrol
       xdg-utils
