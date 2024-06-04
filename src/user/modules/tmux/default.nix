@@ -12,10 +12,6 @@ let
 in
 { options.modules.user.tmux = { enable = mkEnableOption "Enable tmux module"; };
   config = mkIf cfg.enable {
-    programs.bash = mkIf (!wm.enable) {
-      profileExtra = import ./config/shellHook.nix;
-    };
-
     programs.tmux = {
       enable = true;
       newSession = true;

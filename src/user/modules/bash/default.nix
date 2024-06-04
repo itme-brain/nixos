@@ -13,7 +13,8 @@ in
 
       initExtra = import ./config/prompt.nix { inherit lib config; };
       bashrcExtra = import ./config/bashrc.nix;
-      shellAliases = import ./config/alias.nix { inherit lib; };
+      shellAliases = import ./config/alias.nix { inherit lib config; };
+      profileExtra = import ./config/shellHook.nix { inherit lib config; };
     };
 
     programs = {
