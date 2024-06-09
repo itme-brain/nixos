@@ -1,3 +1,9 @@
+{ config, ... }:
+
+let
+hyprland = config.modules.user.gui.wm.hyprland;
+
+in
 {
   scrolling = {
     history = 10000;
@@ -5,7 +11,7 @@
   };
 
   window = {
-    opacity = 1;
+    opacity = if hyprland.enable then 0.9 else 1;
   };
 
   keyboard.bindings = [

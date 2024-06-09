@@ -1,0 +1,119 @@
+{
+  "layer": "top",
+  "position": "top",
+  "output": "HDMI-A-1",
+  "modules-left": ["custom/logo", "clock",  "custom/weather", "custom/bitcoin", "memory", "cpu", "temperature"],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["tray", "pulseaudio", "network"],
+  "reload_style_on_change":true,
+
+  "custom/logo": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "alacritty -e neofetch"
+  },
+
+  "hyprland/workspaces": {
+    "format": "<span color='#ffffff'>{icon}</span>",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "active": "",
+      "default": ""
+    },
+    "persistent-workspaces": {
+      "*": [ 2, 3, 4, 5, 6 ]
+    }
+  },
+
+  "custom/weather": {
+    "format": "<span color='#ffffff'>{}</span>",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/weather.sh",
+    "interval": 10,
+  },
+
+  "custom/bitcoin": {
+    "format": "<span color='#ef8e19'>󰠓 </span><span color='#ffffff'>:{}</span>",
+    "interval": 30,
+    "exec": "~/.config/waybar/scripts/getBlock",
+    "on-click": "xdg-open https://www.mempool.space",
+  },
+
+  "clock": {
+    "format": "{:%I:%M:%S %p}",
+    "interval":1,
+    "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar-weeks-pos": "right",
+    "today-format": "<span color='#7645AD'><b><u>{}</u></b></span>",
+    "format-calendar": "<span color='#aeaeae'><b>{}</b></span>",
+    "format-calendar-weeks": "<span color='#aeaeae'><b>W{:%V}</b></span>",
+    "format-calendar-weekdays": "<span color='#aeaeae'><b>{}</b></span>"
+  },
+
+  "network": {
+    "format-wifi": "<span color='#ffffff'> </span>",
+    "format-ethernet":"<span color='#ffffff'>󰌘</span>",
+    "format-disconnected": "<span class='#e11e2d'></span>",
+    "tooltip-format": "{ipaddr}",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%) | {ipaddr}",
+    "tooltip-format-ethernet": "{ifname} | {ipaddr}",
+    "tooltip-format-disconnected": "Offline",
+    "on-click": "alacritty -e nmtui"
+  },
+
+  "cpu": {
+    "interval": 1,
+    "format": "<span color='#ffd808'> </span><span color='#ffffff'>:{usage}%</span>",
+    "min-length": 6,
+    "max-length": 6,
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+  },
+
+  "memory": {
+    "format": "<span color='#cc63ff'>󱐋</span><span color='#ffffff'>:{percentage}%</span>"
+  },
+
+  "temperature": {
+    "format": "<span color='#99c3ff'>󱩱 </span><span color='#ffffff'>:{temperatureC}°C</span>",
+    "format-critical": "<span color='#fd4400'>󰈸</span><span color='#ffffff'>:{temperatureC}°C</span>",
+    "interval": 1,
+    "critical-threshold": 80,
+    "on-click": "alacritty -e btop",
+  },
+
+  "pulseaudio": {
+    "format": "<span color='#ffffff'>{icon}</span>",
+    "format-bluetooth":"󰂰",
+    "format-muted": "<span font='12'></span>",
+    "format-icons": {
+      "headphones": "",
+      "bluetooth": "󰥰",
+      "handsfree": "",
+      "headset": "󱡬",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["","",""]
+    },
+    "justify": "center",
+    "on-click": "pavucontrol",
+    "tooltip-format": "{volume}%"
+  },
+
+  "jack": {
+    "format": "{} 󱎔",
+    "format-xrun": "{xruns} xruns",
+    "format-disconnected": "DSP off",
+    "realtime": true
+  },
+
+  "tray": {
+    "icon-size": 14,
+    "spacing": 10
+  },
+}

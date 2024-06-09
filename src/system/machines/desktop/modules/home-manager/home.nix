@@ -34,7 +34,7 @@
         };
 
         gui = {
-          wm.sway.enable = true;
+          wm.hyprland.enable = true;
 
           alacritty.enable = true;
           browsers.enable = true;

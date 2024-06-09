@@ -14,7 +14,7 @@ in
   config = mkIf (cfg.enable && wm.enable) {
     programs.alacritty = {
       enable = true;
-      settings = import ./config/alacritty.nix;
+      settings = import ./config/alacritty.nix { inherit config; };
     };
   };
 }

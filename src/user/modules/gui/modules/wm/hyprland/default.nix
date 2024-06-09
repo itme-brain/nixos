@@ -10,7 +10,7 @@ let
   };
 
 in
-{ options.modules.user.gui.wm.hyprland = { enable = mkEnableOption "Enable hyprland wm module"; };
+{ options.modules.user.gui.wm.hyprland = { enable = mkEnableOption "Enable hyprland module"; };
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
@@ -47,7 +47,7 @@ in
           "$mod, F, fullscreen"
 
           ", Print, exec, grim ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
-          "SHIFT, Print, exec, grim -g \"$slurp)\" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
+          "SHIFT, Print, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
           "$mod&SHIFT, F, exec, alacritty -e sh -c 'EDITOR=nvim ranger'"
           #''$mod&SHIFT, Print, exec, sh -c 'grim -g "$(swaymsg -t get_tree | jq -j '"'"'.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"'"'"')" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png'"''
 
@@ -75,6 +75,20 @@ in
           "float, title:(Android Emulator)"
         ];
 
+        general = {
+          layout = "master";
+          border_size = 0;
+        };
+
+        decoration = {
+          rounding = 10;
+        };
+
+        master = {
+          drop_at_cursor = false;
+          new_is_master = false;
+        };
+
         input = {
           kb_layout = "us";
           follow_mouse = 1;
@@ -85,6 +99,11 @@ in
         env = [
           "HYPRCURSOR_SIZE, 24"
           "GTK_THEME, Qogir"
+
+          "LIBVA_DRIVER_NAME,nvidia"
+          "XDG_SESSION_TYPE,wayland"
+          "GBM_BACKEND,nvidia-drm"
+          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         ];
       };
     };
@@ -99,87 +118,46 @@ in
       ];
     };
 
-    home.file.".config/rofi" = {
-      source = ./config/rofi/config;
-      recursive = true;
+    home = {
+      file = {
+        ".config/rofi" = {
+          source = ./config/rofi/config;
+          recursive = true;
+        };
+        ".config/waybar" = {
+          source = ./config/waybar;
+          recursive = true;
+        };
+      };
+
+      packages = with pkgs; [
+        pavucontrol
+        xdg-utils
+        wl-clipboard
+        cliphist
+
+        dconf
+
+        grim
+        jq
+        slurp
+
+        ranger
+        highlight
+
+        terminus-nerdfont
+        noto-fonts
+        noto-fonts-cjk
+        noto-fonts-emoji
+      ];
+
+      sessionVariables = {
+        NIXOS_OZONE_WL = 1;
+      };
     };
 
     programs.waybar = {
       enable = true;
-      settings = [
-        {
-          mainBar = {
-            font-family = "Terminus";
-            font-size = 12;
-            background-color = "rgba(10, 14, 20, 1)";
-            color = "#FFFFFF";
-
-            layer = "top";
-            output = [
-              "HDMI-A-1"
-            ];
-
-            position = "top";
-            height = 10;
-
-            modules-left = [
-              "hyprland/workspaces"
-              "wlr/taskbar"
-            ];
-
-            modules-center = [
-              "clock"
-            ];
-
-            modules-right = [
-              "memory"
-              "network"
-              "tray"
-            ];
-
-            "hyprland/workspaces" = {
-              active-only = true;
-              format = "{name}";
-            };
-
-            "wlr/taskbar" = {
-              format = "{icon}";
-              icon_size = 14;
-              icon-theme = "Qogir";
-              tooltip-format = "{title}";
-              on-click = "minimize-raise";
-              ignore-list = [
-                "Alacritty"
-                "rofi"
-              ];
-              rewrite = {
-                "Firefox Web Browser" = "Firefox";
-              };
-            };
-
-            "clock" = {
-              format = "%I:%M:%S %p | %m-%d-%Y";
-              interval = 60;
-            };
-
-            "memory" = {
-              format = "RAM: {percentage}%";
-              interval = 30;
-            };
-
-            "network" = {
-              format-disconnected = "<span color=\"#FF0000\">󰜺</span>";
-              format-wifi = "<span color=\"##00FF00\">󰖩</span>{essid}({signalStrength}%)";
-              format-ethernet = "<span color=\"##00FF00\">󰈁</span>{cidr}";
-            };
-
-            "tray" = {
-              icon_size = 16;
-              spacing = 10;
-            };
-          };
-        }
-      ];
     };
 
     services.hyprpaper = {
@@ -201,18 +179,27 @@ in
     gtk = {
       enable = true;
       theme = {
-        package = pkgs.juno-theme;
         name = "Juno-ocean";
+        package = pkgs.juno-theme;
       };
       iconTheme = {
-        package = pkgs.qogir-icon-theme;
         name = "Qogir";
+        package = pkgs.qogir-icon-theme;
+      };
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
       };
     };
 
     qt = {
       enable = true;
-      style.package = pkgs.juno-theme;
+      style = {
+        name = "juno-ocean";
+        package = pkgs.juno-theme;
+      };
       platformTheme.name = "gtk";
     };
 
@@ -223,25 +210,6 @@ in
       ];
       config.common.default = "*";
     };
-
-    home.packages = with pkgs; [
-      pavucontrol
-      xdg-utils
-      wl-clipboard
-      dconf
-
-      grim
-      jq
-      slurp
-
-      ranger
-      highlight
-
-      terminus-nerdfont
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-    ];
 
     programs = {
       imv.enable = true;
