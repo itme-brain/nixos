@@ -2,9 +2,9 @@
   "layer": "top",
   "position": "top",
   "output": "HDMI-A-1",
-  "modules-left": ["custom/logo", "clock",  "custom/weather", "custom/bitcoin", "memory", "cpu", "temperature"],
-  "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["tray", "pulseaudio", "network"],
+  "modules-left": [ "custom/logo", "clock",  "custom/weather", "custom/bitcoin", "memory", "cpu" ],
+  "modules-center": [ "hyprland/workspaces" ],
+  "modules-right": [ "tray", "pulseaudio", "network" ],
   "reload_style_on_change":true,
 
   "custom/logo": {
@@ -38,7 +38,7 @@
   },
 
   "custom/bitcoin": {
-    "format": "<span color='#ef8e19'>󰠓 </span><span color='#ffffff'>:{}</span>",
+    "format": "<span color='#ef8e19'>󰠓 </span><span color='#ffffff'>{}</span>",
     "interval": 30,
     "exec": "~/.config/waybar/scripts/getBlock",
     "on-click": "xdg-open https://www.mempool.space",
@@ -68,14 +68,14 @@
 
   "cpu": {
     "interval": 1,
-    "format": "<span color='#ffd808'> </span><span color='#ffffff'>:{usage}%</span>",
+    "format": "<span color='#ffd808'> </span><span color='#ffffff'>{usage}%</span>",
     "min-length": 6,
     "max-length": 6,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
   },
 
   "memory": {
-    "format": "<span color='#cc63ff'>󱐋</span><span color='#ffffff'>:{percentage}%</span>"
+    "format": "<span color='#cc63ff'>󱐋</span><span color='#ffffff'>{percentage}%</span>"
   },
 
   "temperature": {
