@@ -27,21 +27,22 @@ remove_icon() {
   venv_icons=''${venv_icons//$icon/}
 }
 
+py="py"
+js="js"
+nix="nix"
+
 ${if gui.enable then ''
 if [ -n "$DISPLAY" ]; then
-  python_icon="\[\033[01;33m\]\[\033[00m\]"
-  node_icon="\[\033[01;93m\]󰌞\[\033[00m\]"
-  nix_icon="\[\033[01;34m\]\[\033[00m\]"
-else
-  python_icon="\[\033[01;33m\]py\[\033[00m\]"
-  node_icon="\[\033[01;93m\]js\[\033[00m\]"
-  nix_icon="\[\033[01;34m\]nix\[\033[00m\]"
+  py=""
+  js="󰌞"
+  nix=""
 fi
 '' else ''
-python_icon="\[\033[01;33m\]py\[\033[00m\]"
-node_icon="\[\033[01;93m\]js\[\033[00m\]"
-nix_icon="\[\033[01;34m\]nix\[\033[00m\]"
 ''}
+
+python_icon="\[\033[01;33m\]$py\[\033[00m\]"
+node_icon="\[\033[01;93m\]$js\[\033[00m\]"
+nix_icon="\[\033[01;34m\]$nix\[\033[00m\]"
 
 check_venv() {
   if [ -n "$IN_NIX_SHELL" ]; then
