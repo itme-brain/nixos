@@ -22,6 +22,7 @@
     vulkan-tools
     vulkan-extension-layer
     glxinfo
+    mesa
 
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
