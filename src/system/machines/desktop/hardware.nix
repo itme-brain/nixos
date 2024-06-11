@@ -21,6 +21,7 @@
     vulkan-loader
     vulkan-tools
     vulkan-extension-layer
+    glxinfo
 
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
