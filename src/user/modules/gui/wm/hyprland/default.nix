@@ -98,7 +98,7 @@ in
 
         env = [
           "HYPRCURSOR_SIZE, 24"
-          "GTK_THEME, Qogir"
+          "GTK_THEME, Juno-ocean"
 
           "LIBVA_DRIVER_NAME,nvidia"
           "XDG_SESSION_TYPE,wayland"
