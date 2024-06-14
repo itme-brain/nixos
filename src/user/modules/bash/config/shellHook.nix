@@ -25,6 +25,7 @@ case $- in
       exec Hyprland
       ''
       }
+      exit 0
     fi
     ''}
     ${optionalString tmux.enable ''
