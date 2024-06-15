@@ -110,7 +110,7 @@
 
   services.openssh = {
     enable = true;
-    startWhenNeeded = true;
+    startWhenNeeded = false;
     settings = {
       X11Forwarding = false;
       PasswordAuthentication = true;
