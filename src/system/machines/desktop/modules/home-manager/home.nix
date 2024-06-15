@@ -35,6 +35,7 @@
 
         gui = {
           wm.hyprland.enable = true;
+
           browser = {
             firefox.enable = true;
           };

@@ -13,7 +13,7 @@ in
         passff-host
       ];
       profiles = {
-        "${config.user.name}" = {
+        "default" = {
           bookmarks = config.user.bookmarks;
 
           search = {
@@ -34,38 +34,41 @@ in
             Personal = {
               color = "blue";
               icon = "fingerprint";
-              id = 0;
+              id = 1;
             };
             Work = {
               color = "yellow";
               icon = "briefcase";
-              id = 1;
+              id = 2;
             };
             Banking = {
               color = "green";
               icon = "dollar";
-              id = 2;
+              id = 3;
             };
             Social = {
               color = "red";
               icon = "chill";
-              id = 3;
+              id = 4;
             };
             Shopping = {
               color = "purple";
               icon = "cart";
-              id = 4;
+              id = 5;
             };
           };
+
           settings = {
-            "ui.key.menuAcessKeyFocuses" = false;
+            "layout.spellcheckDefault" = 0;
+            "ui.key.menuAccessKeyFocuses" = false;
             "signon.rememberSignons" = false;
             "extensions.pocket.enabled" = false;
+            "extensions.autoDisableScopes" = 0;
 
             # May break extensions due to Nix
             "extensions.enabledScopes" = 5;
 
-            # May break stuff but increase privacy
+            # May break stuff but increases privacy
             #"extensions.webextensions.restrictedDomains" = "";
             #"privacy.resistFingerprinting" = true;
             #"privacy.resistFingerprinting.letterboxing" = true;
