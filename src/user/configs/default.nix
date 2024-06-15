@@ -14,8 +14,6 @@ userConfigs = rec {
 
   groups = [ "wheel" "networkmanager" "home-manager" "input" ];
 
-  keys = import ./keys;
-
   gitConfig = optionalAttrs modules.git.enable {
     userName = "Bryan Ramos";
     userEmail = email;
@@ -25,6 +23,7 @@ userConfigs = rec {
     };
   };
 
+  keys = import ./keys;
   bookmarks = import ./bookmarks;
 };
 
