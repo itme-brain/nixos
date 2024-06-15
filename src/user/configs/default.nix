@@ -30,9 +30,9 @@ in
 {
   options = {
     user = mkOption {
+      description = "User Configurations";
       type = types.attrs;
       default = userConfigs;
-      description = "User Configurations";
     };
   };
 }

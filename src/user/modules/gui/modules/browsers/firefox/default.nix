@@ -7,6 +7,18 @@ let
 in
 { options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
   config = mkIf cfg.enable {
-    programs.firefox.enable = true;
+    programs.firefox = {
+      enable = true;
+      nativeMessagingHosts = with pkgs; [
+        passff-host
+      ];
+      profiles = {
+        "${config.user.name}" = {
+          bookmarks = [
+            (import ../../../../../configs/bookmarks)
+          ];
+        };
+      };
+    };
   };
 }
