@@ -3,15 +3,10 @@
 with lib;
 let
   cfg = config.modules.user.gui.fun;
-  gui = config.modules.user.gui.wm;
-
-  wm = {
-    enable = builtins.any (mod: mod.enable or false) (builtins.attrValues gui);
-  };
 
 in
-{ options.modules.user.gui.fun = { enable = mkEnableOption "user.gui.fun"; };
-  config = mkIf (cfg.enable && wm.enable) {
+{ options.modules.user.gui.fun = { enable = mkEnableOption "Enable entertainment apps"; };
+  config = mkIf cfg.enable {
     programs.obs-studio = {
       enable = true;
       plugins = with pkgs.obs-studio-plugins; [

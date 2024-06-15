@@ -6,6 +6,5 @@
     ./fun
     ./utils
     ./writing
-    ./wm
   ];
 }
