@@ -24,6 +24,8 @@ userConfigs = rec {
       signByDefault = true;
     };
   };
+
+  bookmarks = import ./bookmarks;
 };
 
 in

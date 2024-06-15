@@ -15,10 +15,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #inputs.sops-nix = {
-    #  url = "github:Mic92/sops-nix";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
   };
 
   outputs = { self, nixpkgs, home-manager, nixos-wsl, disko }:
@@ -39,15 +35,8 @@
         inherit system pkgs;
         modules = [
           ./src/system/machines/desktop
-          {
-            home-manager = {
-              nixosModules.home-manager =
-                (import ./src/system/machines/desktop/modules/home-manager);
-              #sharedModules = [
-              #  sops-nix.homeManagerModules.sops
-              #];
-            };
-          }
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/desktop/modules/home-manager)
           #disko.nixosModules.disko
           #  (import ./src/system/machines/desktop/modules/disko)
         ];

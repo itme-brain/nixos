@@ -14,9 +14,7 @@ in
       ];
       profiles = {
         "${config.user.name}" = {
-          bookmarks = [
-            (import ../../../../../configs/bookmarks)
-          ];
+          bookmarks = config.user.bookmarks;
         };
       };
     };
