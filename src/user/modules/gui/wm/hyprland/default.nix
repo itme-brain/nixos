@@ -73,6 +73,7 @@ in
 
         windowrulev2 = [
           "float, title:(Android Emulator)"
+          "float, title: Extension: (PassFF)"
         ];
 
         general = {

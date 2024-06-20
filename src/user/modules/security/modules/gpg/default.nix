@@ -3,9 +3,13 @@
 with lib;
 let
   cfg = config.modules.user.security.gpg;
+  gui = config.modules.user.gui.wm;
+  wm = {
+    enable = builtins.any (mod: mod.enable or false) (builtins.attrValues gui);
+  };
 
 in
-{ options.modules.user.security.gpg = { enable = mkEnableOption "user.security.gpg"; };
+{ options.modules.user.security.gpg = { enable = mkEnableOption "Enable GPG module"; };
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
@@ -22,7 +26,12 @@ in
       enableSshSupport = true;
       enableBashIntegration = true;
       enableScDaemon = true;
-      pinentryPackage = pkgs.pinentry-tty;
+
+      pinentryPackage =
+      if wm.enable then
+        pkgs.pinentry-gtk2
+      else
+        pkgs.pinentry-curses;
     };
   };
 }

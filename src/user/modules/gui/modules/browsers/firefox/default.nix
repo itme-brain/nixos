@@ -5,13 +5,38 @@ let
   cfg = config.modules.user.gui.browser.firefox;
 
 in
-{ options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
+{
+  options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      passff-host
+    ];
+    home.file = {
+      ".mozilla/native-messaging-hosts/passff.json" = {
+        text = ''
+          {
+            "name": "passff",
+            "description": "Host for communicating with zx2c4 pass",
+            "path": "${pkgs.passff-host}/share/passff-host/passff.py",
+            "type": "stdio",
+            "allowed_extensions": [ "passff@invicem.pro" ]
+          }
+        '';
+      };
+    };
+    assertions =
+    let
+      pinentry = config.services.gpg-agent.pinentryPackage;
+    in
+    [
+      {
+        assertion = pinentry != pkgs.pinentry-curses || pinentry != pkgs.pinentry-tty;
+        message = "Firefox plugin passff requires graphical pinentry";
+      }
+    ];
+
     programs.firefox = {
       enable = true;
-      nativeMessagingHosts = with pkgs; [
-        passff-host
-      ];
       profiles = {
         "default" = {
           bookmarks = config.user.bookmarks;
@@ -83,6 +108,7 @@ in
 
             "browser.urlbar.suggest.history" = false;
             "browser.urlbar.suggest.topsites" = false;
+            "browser.urlbar.sponsoredTopSites" = false;
             "browser.urlbar.autoFill" = false;
             "browser.toolbars.bookmarks.showOtherBookmarks" = false;
 
@@ -260,6 +286,8 @@ in
             "security.tls.version.enable-deprecated" = false;
             "extensions.webcompat-reporter.enabled" = false;
             "extensions.quarantinedDomains.enabled" = true;
+
+            "media.videocontrols.picture-in-picture.enabled" = false;
           };
         };
       };
