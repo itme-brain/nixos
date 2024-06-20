@@ -18,7 +18,7 @@ in
 
     home.packages = with pkgs; [
       spotify
-      webcord
+      discord
     ];
   };
 }
