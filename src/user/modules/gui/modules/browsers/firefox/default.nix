@@ -3,11 +3,7 @@
 with lib;
 let
   cfg = config.modules.user.gui.browser.firefox;
-
-in
-{
-  options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
-  config = mkIf cfg.enable {
+  passff = {
     home.packages = with pkgs; [
       passff-host
     ];
@@ -34,7 +30,12 @@ in
         message = "Firefox plugin passff requires graphical pinentry";
       }
     ];
+  };
 
+in
+{
+  options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
+  config = mkIf cfg.enable (passff // {
     programs.firefox = {
       enable = true;
       profiles = {
@@ -292,5 +293,5 @@ in
         };
       };
     };
-  };
+  });
 }
