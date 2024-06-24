@@ -82,6 +82,11 @@ in
               icon = "cart";
               id = 5;
             };
+            Google = {
+              color = "orange";
+              icon = "vacation";
+              id = 6;
+            };
           };
 
           settings = {
@@ -111,6 +116,9 @@ in
             "browser.urlbar.suggest.topsites" = false;
             "browser.urlbar.sponsoredTopSites" = false;
             "browser.urlbar.autoFill" = false;
+            "browser.urlbar.suggest.pocket" = false;
+            "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
+            "browser.urlbar.suggest.quicksuggest.sponsored" = false;
             "browser.toolbars.bookmarks.showOtherBookmarks" = false;
 
             "browser.newtabpage.enabled" = false;
@@ -216,7 +224,7 @@ in
 
             "browser.download.start_downloads_in_tmp_dir" = false;
             "browser.helperApps.deleteTempFileOnExit" = true;
-            "browser.uitour.enabled" = true;
+            "browser.uitour.enabled" = false;
 
             "devtools.debugger.remote-enabled" = false;
             "permissions.manager.defaultsUrl" = "";
@@ -245,10 +253,10 @@ in
             "privacy.clearOnShutdown.history" = true;
             "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = true;
 
-            "privacy.clearOnShutdown.cookies" = true;
+            "privacy.clearOnShutdown.cookies" = false;
             "privacy.clearOnShutdown.offlineApss" = true;
             "privacy.clearOnShutdown.sessions" = true;
-            "privacy.clearOnShutdown_v2.cookiesAndStorage" = true;
+            "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
 
             "privacy.clearSiteData.cache" = true;
             "privacy.clearSiteData.cookiesAndStorage" = false;
