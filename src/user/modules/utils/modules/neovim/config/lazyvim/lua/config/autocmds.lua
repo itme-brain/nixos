@@ -57,22 +57,17 @@ local lsp = require("lsp-zero").preset({})
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lsp.setup_servers({
 	"tsserver",
-	"hls",
 	"pyright",
 	"nil_ls",
 	"cssls",
 	"html",
-	"diagnosticls",
 	"lua_ls",
 	"marksman",
 	"tailwindcss",
 	"bashls",
   "clangd",
-  "purescriptls",
-  "dhall_lsp_server",
   "jsonls",
   "vuels"
-	--"volar"
 })
 
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
