@@ -59,18 +59,6 @@
     terminus-nerdfont
   ];
 
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-
-    wireplumber.enable = true;
-
-    pulse.enable = true;
-    jack.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-  };
-
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
@@ -79,16 +67,6 @@
   time = {
     timeZone = "America/New_York";
     hardwareClockInLocalTime = true;
-  };
-
-  services.timesyncd = lib.mkDefault {
-    enable = true;
-    servers = [
-      "0.pool.ntp.org"
-      "1.pool.ntp.org"
-      "2.pool.ntp.org"
-      "3.pool.ntp.org"
-    ];
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -108,12 +86,40 @@
     };
   };
 
-  services.openssh = {
-    enable = true;
-    startWhenNeeded = false;
-    settings = {
-      X11Forwarding = false;
-      PasswordAuthentication = true;
+  programs = {
+    nix-ld = {
+      enable = true;
+    };
+  };
+
+  services = {
+    timesyncd = lib.mkDefault {
+      enable = true;
+      servers = [
+        "0.pool.ntp.org"
+        "1.pool.ntp.org"
+        "2.pool.ntp.org"
+        "3.pool.ntp.org"
+      ];
+    };
+    pipewire = {
+      enable = true;
+      audio.enable = true;
+
+      wireplumber.enable = true;
+
+      pulse.enable = true;
+      jack.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+    };
+    openssh = {
+      enable = true;
+      startWhenNeeded = false;
+      settings = {
+        X11Forwarding = false;
+        PasswordAuthentication = false;
+      };
     };
   };
 }
