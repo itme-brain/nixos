@@ -120,6 +120,8 @@ in
             "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
             "browser.urlbar.suggest.quicksuggest.sponsored" = false;
             "browser.toolbars.bookmarks.showOtherBookmarks" = false;
+            "browser.aboutwelcome.showModal" = false;
+            "browser.migrate.content-modal.about-welcome-behavior" = "";
 
             "browser.newtabpage.enabled" = false;
             "browser.newtabpage.activity-stream.showSponsored" = false;
