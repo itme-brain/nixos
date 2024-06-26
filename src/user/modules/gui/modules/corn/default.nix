@@ -12,8 +12,6 @@ in
       trezorctl
       trezord
 
-      bisq-desktop
-
       sparrow
     ];
 

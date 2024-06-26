@@ -52,16 +52,17 @@
     git
   ];
 
-  security.polkit.enable = true;
-
   fonts.packages = with pkgs; [
     terminus_font
     terminus-nerdfont
   ];
 
-  security.sudo = {
-    wheelNeedsPassword = false;
-    execWheelOnly = true;
+  security = {
+    sudo = {
+      wheelNeedsPassword = false;
+      execWheelOnly = true;
+    };
+    polkit.enable = true;
   };
 
   time = {
@@ -83,12 +84,6 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 80 443 ];
-    };
-  };
-
-  programs = {
-    nix-ld = {
-      enable = true;
     };
   };
 
