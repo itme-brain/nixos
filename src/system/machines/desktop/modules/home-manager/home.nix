@@ -27,7 +27,10 @@
 
         utils = {
           enable = true;
-          dev.enable = true;
+          dev = {
+            enable = true;
+            pcb.enable = true;
+          };
           irc.enable = true;
           neovim.enable = true;
           vim.enable = false;
