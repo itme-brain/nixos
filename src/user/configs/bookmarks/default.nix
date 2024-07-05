@@ -190,18 +190,18 @@
           {
             name = "Fidelity";
             url = "https://fidelity.com";
-            tags = [ "money" "stocks" "banking" ];
+            tags = [ "banking" ];
             keyword = "bank";
           }
           {
             name = "Chase";
             url = "https://chase.com";
-            tags = [ "money" "banking" ];
+            tags = [ "banking" ];
           }
           {
             name = "Wells Fargo";
             url = "https://wellsfargo.com";
-            tags = [ "money" "banking" ];
+            tags = [ "banking" ];
           }
           {
             name = "Crapto";
@@ -209,8 +209,7 @@
               {
                 name = "Coinbase";
                 url = "https://coinbase.com";
-                tags = [ "bitcoin" ];
-                keyword = "btc";
+                tags = [ "banking" ];
               }
             ];
           }
