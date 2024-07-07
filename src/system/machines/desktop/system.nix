@@ -113,7 +113,7 @@
       startWhenNeeded = false;
       settings = {
         X11Forwarding = false;
-        PasswordAuthentication = false;
+        PasswordAuthentication = true;
       };
     };
   };
