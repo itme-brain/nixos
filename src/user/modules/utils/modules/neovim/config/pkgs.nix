@@ -6,6 +6,7 @@ let
     marksman
     sumneko-lua-language-server stylua
     nodePackages."@tailwindcss/language-server"
+    ccls
   ];
 
   lsp' = with pkgs.nodePackages; [

@@ -65,7 +65,7 @@ lsp.setup_servers({
 	"marksman",
 	"tailwindcss",
 	"bashls",
-  "clangd",
+  "ccls",
   "jsonls",
   "vuels"
 })
@@ -76,13 +76,13 @@ lsp.setup()
 
 local cmp_nvim_lsp = require "cmp_nvim_lsp"
 
-require("lspconfig").clangd.setup {
-  capabilities = cmp_nvim_lsp.default_capabilities(),
-  cmd = {
-    "clangd",
-    "--offset-encoding=utf-16",
-  },
-}
+--require("lspconfig").clangd.setup {
+--  capabilities = cmp_nvim_lsp.default_capabilities(),
+--  cmd = {
+--    "clangd",
+--    "--offset-encoding=utf-16",
+--  },
+--}
 
 require("lspconfig").cssls.setup {
   settings = {
