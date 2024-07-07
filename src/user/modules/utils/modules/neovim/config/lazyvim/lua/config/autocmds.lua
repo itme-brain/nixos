@@ -156,23 +156,21 @@ cmp.setup({
 		end
 	end,
 	mapping = {
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-		["<C-n>"] = cmp.mapping.select_next_item(),
---	["<Down>"] = cmp.mapping.select_next_item(),
---	["<Up>"] = cmp.mapping.select_prev_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<Down>"] = cmp.mapping.select_next_item(),
+    ["<Up>"] = cmp.mapping.select_prev_item(),
+		["<C-p>"] = cmp.mapping.scroll_docs(-4),
+		["<C-n>"] = cmp.mapping.scroll_docs(4),
 
-		["<Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif cmp.completed then
-				cmp.confirm({ select = true })
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		["<S-Tab>"] = cmp.mapping.select_prev_item(),
+		--["<Tab>"] = cmp.mapping(function(fallback)
+		--	if cmp.visible() then
+		--		cmp.select_next_item()
+		--	elseif cmp.completed then
+		--		cmp.confirm({ select = true })
+		--	else
+		--		fallback()
+		--	end
+		--end, { "i", "s" }),
+		--["<S-Tab>"] = cmp.mapping.select_prev_item(),
 
 		["<CR>"] = cmp.mapping(function(fallback)
 			fallback()
