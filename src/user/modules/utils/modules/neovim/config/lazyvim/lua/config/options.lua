@@ -12,6 +12,10 @@ vim.cmd([[
   autocmd FileType c,cpp,haskell,python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 ]])
 
+vim.cmd([[
+  au BufRead,BufNewFile *.purs set filetype=purescript
+]])
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
@@ -21,5 +25,6 @@ vim.opt.undofile = true
 
 vim.o.termguicolors = true
 vim.opt.guicursor = "n-v-c:block,i:block,r:block"
+vim.g.autoformat = false
 
 vim.cmd [[highlight PmenuSel guifg=#53565d guibg=#f0c981]]
