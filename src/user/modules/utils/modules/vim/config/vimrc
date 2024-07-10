@@ -23,6 +23,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'tpope/vim-fugitive'
   Plug 'mhinz/vim-signify'
+  Plug 'osyo-manga/vim-anzu'
 call plug#end()
 
 let mapleader = "\<Space>"
@@ -58,6 +59,15 @@ set noswapfile
 set tabstop=2
 set shiftwidth=2
 set expandtab
+
+set statusline=%{anzu#search_status()}
+
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+nmap * <Plug>(anzu-star-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)
+
+nmap <Esc><Esc> <Plug>(anzu-clear-search-status)
 
 vnoremap < <gv
 vnoremap > >gv
