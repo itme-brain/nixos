@@ -168,6 +168,10 @@
                     keyword = "docs";
                   }
                   {
+                    name = "Linux Kernel";
+                    url = "https://docs.kernel.org";
+                  }
+                  {
                     name = "References";
                     bookmarks = [
                       {
