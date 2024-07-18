@@ -10,7 +10,7 @@ userConfigs = rec {
   shell = pkgs.bash;
 
   # From wallpapers directory
-  wallpaper = "mountains.jpg";
+  wallpaper = "targon.jpg";
 
   groups = [ "wheel" "networkmanager" "home-manager" "input" ];
 

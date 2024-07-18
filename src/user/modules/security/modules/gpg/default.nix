@@ -29,7 +29,7 @@ in
 
       pinentryPackage =
       if wm.enable then
-        pkgs.pinentry-gtk2
+        pkgs.pinentry-gnome3
       else
         pkgs.pinentry-curses;
     };
