@@ -140,6 +140,19 @@
             tags = [ "dev" "work" "forum" ];
           }
           {
+            name = "Learning";
+            bookmarks = [
+              {
+                name = "Leetcode";
+                url = "https://leetcode.com";
+              }
+              {
+                name = "CodeWars";
+                url = "https://codewars.com";
+              }
+            ];
+          }
+          {
             name = "Tools";
             bookmarks = [
               {

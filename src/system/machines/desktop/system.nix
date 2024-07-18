@@ -6,7 +6,7 @@
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups
-        ++ [ "video" "audio" "kvm" "libvirtd" ];
+        ++ [ "video" "audio" "kvm" "libvirtd" "dialout" ];
       openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.android}" ];
     };
   };
@@ -50,6 +50,7 @@
   environment.systemPackages = with pkgs; [
     vim
     git
+    usbutils
   ];
 
   fonts.packages = with pkgs; [

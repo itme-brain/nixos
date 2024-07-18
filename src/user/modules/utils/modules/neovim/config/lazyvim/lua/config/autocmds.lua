@@ -60,9 +60,10 @@ lsp.setup_servers({
 	"marksman",
 	"tailwindcss",
 	"bashls",
-  "ccls",
+  "clangd",
   "jsonls",
-  "vuels"
+  "vuels",
+  "arduino-language-server"
 })
 
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())

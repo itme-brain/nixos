@@ -6,7 +6,8 @@ let
     marksman
     sumneko-lua-language-server stylua
     nodePackages."@tailwindcss/language-server"
-    ccls
+    clang-tools
+    arduino-language-server
   ];
 
   lsp' = with pkgs.nodePackages; [
