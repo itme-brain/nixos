@@ -7,7 +7,7 @@ let
     sumneko-lua-language-server stylua
     nodePackages."@tailwindcss/language-server"
     clang-tools
-    arduino-language-server
+    #arduino-language-server
   ];
 
   lsp' = with pkgs.nodePackages; [

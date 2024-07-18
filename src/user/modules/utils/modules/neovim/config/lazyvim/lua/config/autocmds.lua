@@ -62,8 +62,8 @@ lsp.setup_servers({
 	"bashls",
   "clangd",
   "jsonls",
-  "vuels",
-  "arduino-language-server"
+  "vuels"
+  --"arduino-language-server"
 })
 
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
