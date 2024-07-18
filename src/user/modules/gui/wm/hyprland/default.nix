@@ -87,7 +87,7 @@ in
 
         master = {
           drop_at_cursor = false;
-          new_is_master = false;
+          #new_is_master = false;
         };
 
         input = {
