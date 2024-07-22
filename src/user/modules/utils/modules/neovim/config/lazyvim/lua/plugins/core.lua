@@ -45,23 +45,6 @@ return {
 		},
 	},
 
-	--[[
-  {
-		"jackMort/ChatGPT.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("chatgpt").setup({
-				api_key_cmd = "pass show api/chatgpt-apikey",
-			})
-		end,
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-	},
-]]
-
 	{
 		"nvim-treesitter/nvim-treesitter-context",
 		config = function()
@@ -94,10 +77,29 @@ return {
     end,
   },
 
-  {
-    "NoahTheDuke/vim-just",
-    ft = { "just" },
+  { "NoahTheDuke/vim-just", ft = { "just" }, },
+  { "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    build = "make install_jsregexp",
+    --dependencies = { "rafamadriz/friendly-snippets" },
   },
+  --{ "rafamadriz/friendly-snippets" },
+	--[[
+  {
+		"jackMort/ChatGPT.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("chatgpt").setup({
+				api_key_cmd = "pass show api/chatgpt-apikey",
+			})
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
+	},
+  --]]
 
 	{ "williamboman/mason.nvim", enabled = false },
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },

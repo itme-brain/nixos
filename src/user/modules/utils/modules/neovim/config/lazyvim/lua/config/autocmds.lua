@@ -2,52 +2,15 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
-require("which-key").register({
-  w = {
-    d = {
-      "<cmd>bd<CR> | close<CR>",
-      "Delete window and buffer"
-    },
-    D = {
-      "<cmd>close<CR>",
-      "Delete window only",
-    },
-  },
-	t = {
-		"<cmd>:new | setlocal nonumber norelativenumber | resize 10 | set winfixheight | terminal<CR>",
-		"Open Terminal",
-	},
-}, {
-	prefix = "<leader>",
-})
-
-require("notify").setup({
-	background_colour = "#000000",
+require("which-key").add({
+  { "<leader>wd", "<cmd>bd<CR> | close<CR>", mode = "n", desc = "Delete window & buffer" },
+  { "<leader>wD", "<cmd>close<CR>", mode = "n", desc = "Delete window" },
+  { "<leader>t", "<cmd>:new | setlocal nonumber norelativenumber | resize 10 | terminal<CR>", mode = "n", desc = "Open Terminal" }
 })
 
 local lsp = require("lsp-zero").preset({})
-
---require("null-ls").setup({
---	-- you can reuse a shared lspconfig on_attach callback here
---	on_attach = function(client, bufnr)
---		if client.supports_method("textDocument/formatting") then
---			vim.api.nvim_clear_autocmds({ group = vim.api.nvim_create_augroup("LspFormatting", {}), buffer = bufnr })
---			vim.api.nvim_create_autocmd("BufWritePre", {
---				group = augroup,
---				buffer = bufnr,
---				callback = function()
---					vim.lsp.buf.format({
---						bufnr = bufnr,
---						filter = function(client)
---							return client.name == "null-ls"
---						end,
---					})
---					vim.lsp.buf.formatting_sync()
---				end,
---			})
---		end
---	end,
---})
+local cmp_nvim_lsp = require "cmp_nvim_lsp"
+local cmp = require("cmp")
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lsp.setup_servers({
@@ -65,48 +28,16 @@ lsp.setup_servers({
   "vuels"
   --"arduino-language-server"
 })
-
-require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
-
 lsp.setup()
 
-local cmp_nvim_lsp = require "cmp_nvim_lsp"
-
---require("lspconfig").clangd.setup {
---  capabilities = cmp_nvim_lsp.default_capabilities(),
---  cmd = {
---    "clangd",
---    "--offset-encoding=utf-16",
---  },
---}
-
-require("lspconfig").cssls.setup {
-  settings = {
-    css = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    },
-    scss = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    },
-    less = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    },
-  }
+require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+require("lspconfig").clangd.setup {
+  capabilities = cmp_nvim_lsp.default_capabilities(),
+  cmd = {
+    "clangd",
+    "--offset-encoding=utf-16",
+  },
 }
-
---require("lspconfig").volar.setup({
---	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
---})
-
 require("lspconfig").nil_ls.setup {
   settings = {
     ["nil"] = {
@@ -119,8 +50,17 @@ require("lspconfig").nil_ls.setup {
   }
 }
 
-local cmp = require("cmp")
 cmp.setup({
+	enabled = function()
+		-- disable completion in comments
+		local context = require("cmp.config.context")
+		-- keep command mode completion enabled when cursor is in a comment
+		if vim.api.nvim_get_mode().mode == "c" then
+			return true
+		else
+			return not context.in_treesitter_capture("comment") and not context.in_syntax_group("comment")
+		end
+	end,
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
@@ -137,37 +77,14 @@ cmp.setup({
 			return vim_item
 		end,
 	},
-	-- other configurations...
-})
-
-cmp.setup({
-	enabled = function()
-		-- disable completion in comments
-		local context = require("cmp.config.context")
-		-- keep command mode completion enabled when cursor is in a comment
-		if vim.api.nvim_get_mode().mode == "c" then
-			return true
-		else
-			return not context.in_treesitter_capture("comment") and not context.in_syntax_group("comment")
-		end
-	end,
 	mapping = {
-    ["<Down>"] = cmp.mapping.select_next_item(),
-    ["<Up>"] = cmp.mapping.select_prev_item(),
-		["<C-p>"] = cmp.mapping.scroll_docs(-4),
-		["<C-n>"] = cmp.mapping.scroll_docs(4),
-
-		--["<Tab>"] = cmp.mapping(function(fallback)
-		--	if cmp.visible() then
-		--		cmp.select_next_item()
-		--	elseif cmp.completed then
-		--		cmp.confirm({ select = true })
-		--	else
-		--		fallback()
-		--	end
-		--end, { "i", "s" }),
-		--["<S-Tab>"] = cmp.mapping.select_prev_item(),
-
+    -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings
+    ["<C-p>"] = cmp.mapping.select_next_item(),
+    ["<C-n>"] = cmp.mapping.select_prev_item(),
+		["<C-d>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<C-y>"] = cmp.mapping.confirm(),
 		["<CR>"] = cmp.mapping(function(fallback)
 			fallback()
 		end, { "i", "s" }),
