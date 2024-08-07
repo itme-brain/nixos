@@ -1,32 +1,16 @@
 return {
 	{
-		"olimorris/onedarkpro.nvim",
-		lazy = false,
-		priority = 1000,
+		"chriskempson/base16-vim",
 		config = function()
-			require("onedarkpro").setup({
-				colors = {
-					bg = "#000000",
-					fg = "#abb2bf",
-					red = "#ef596f",
-					orange = "#d19a66",
-					yellow = "#e5c07b",
-					green = "#89ca78",
-					cyan = "#2bbac5",
-					blue = "#61afef",
-					purple = "#d55fde",
-					white = "#abb2bf",
-					black = "#000000",
-					gray = "#434852",
-					highlight = "#e2be7d",
-					comment = "#7f848e",
-					none = "NONE",
-				},
-				options = {
-					transparency = true,
-				},
-			})
-			vim.cmd("colorscheme onedark")
+			vim.cmd("colorscheme base16-eighties")
+      vim.cmd([[
+        hi Normal guibg=NONE ctermbg=NONE
+        hi NonText guibg=NONE ctermbg=NONE
+        hi LineNr guibg=NONE ctermbg=NONE
+        hi CursorLine guibg=NONE ctermbg=NONE
+        hi CursorLineNr guibg=NONE ctermbg=NONE guifg=#FFCC66 ctermfg=Yellow cterm=bold
+        hi GitGutterChange guibg=NONE
+      ]])
 		end,
 	},
 
@@ -83,7 +67,7 @@ return {
     build = "make install_jsregexp",
     --dependencies = { "rafamadriz/friendly-snippets" },
   },
-  --{ "rafamadriz/friendly-snippets" },
+
 	--[[
   {
 		"jackMort/ChatGPT.nvim",

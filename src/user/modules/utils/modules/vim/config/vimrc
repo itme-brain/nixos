@@ -13,7 +13,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| endif
 
 call plug#begin('~/.vim/plugged')
-  Plug 'petobens/colorish'
+  Plug 'chriskemson/base16-vim'
   Plug 'tpope/vim-surround'
   Plug 'jiangmiao/auto-pairs'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
@@ -28,18 +28,20 @@ call plug#end()
 
 let mapleader = "\<Space>"
 set background=dark
-colorscheme onedarkish
+colorscheme base16-eighties
 
+highlight Normal  ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
 highlight CursorLine ctermbg=NONE guibg=NONE
-highlight CursorLineNr ctermfg=magenta guifg=magenta
-highlight HighlightedyankRegion ctermfg=NONE guifg=NONE
-highlight Normal ctermbg=NONE guibg=NONE
+highlight CursorLineNr ctermfg=Yellow guifg=#FFCC66 ctermbg=NONE guibg=NONE cterm=bold
+highlight HighlightedyankRegion ctermfg=Black guifg=#FFFFFF ctermbg=Yellow guibg=#FFA500
 highlight NormalNC ctermbg=NONE guibg=NONE
-highlight Search ctermfg=yellow guifg=yellow
-highlight Search ctermbg=black guibg=black
+highlight Search ctermfg=Black guifg=#000000 ctermbg=Yellow guibg=#FFCC66
+highlight LineNr ctermbg=NONE guibg=NONE
+highlight Visual ctermbg=LightGray guibg=#E8E8E8 ctermfg=Black guifg=#000000
 
-let g:highlightedyank_highlight_duration = 80
-let g:lightline = { 'colorscheme': 'one', }
+let g:highlightedyank_highlight_duration = 140
+let g:lightline = { 'colorscheme': 'deus', }
 
 let $FZF_DEFAULT_OPTS = '--bind=tab:up,shift-tab:down'
 let g:fzf_layout = { 'window': 'enew' }
