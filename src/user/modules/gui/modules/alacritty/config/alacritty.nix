@@ -24,31 +24,45 @@ in
 
   colors = {
     primary = {
-      background = "#000000";
-      foreground = "#cdd6f4";
+      background = "0x000000";
+      foreground = "0xffffff";
+    };
+
+    cursor = {
+      text = "0x2d2d2d";
+      cursor = "0xd3d0c8";
     };
 
     normal = {
-      black   = "#1e2127";
-      red     = "#e06c75";
-      green   = "#98c379";
-      yellow  = "#d19a66";
-      blue    = "#61afef";
-      magenta = "#c678dd";
-      cyan    = "#56b6c2";
-      white   = "#abb2bf";
+      black = "0x2d2d2d";
+      red = "0xf2777a";
+      green = "0x99cc99";
+      yellow = "0xffcc66";
+      blue = "0x6699cc";
+      magenta = "0xcc99cc";
+      cyan = "0x66cccc";
+      white = "0xd3d0c8";
     };
 
     bright = {
-      black   =  "#5c6370";
-      red     =  "#e06c75";
-      green   =  "#98c379";
-      yellow  =  "#d19a66";
-      blue    =  "#61afef";
-      magenta =  "#c678dd";
-      cyan    =  "#56b6c2";
-      white   =  "#ffffff";
+      black = "0x747369";
+      red = "0xf2777a";
+      green = "0x99cc99";
+      yellow = "0xffcc66";
+      blue = "0x6699cc";
+      magenta = "0xcc99cc";
+      cyan = "0x66cccc";
+      white = "0xf2f0ec";
     };
+
+    indexedColors = [
+      { index = 16; color = "0xf99157"; }
+      { index = 17; color = "0xd27b53"; }
+      { index = 18; color = "0x393939"; }
+      { index = 19; color = "0x515151"; }
+      { index = 20; color = "0xa09f93"; }
+      { index = 21; color = "0xe8e6df"; }
+    ];
   };
 
   font = {
