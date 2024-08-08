@@ -2,7 +2,7 @@ return {
 	{
 		"chriskempson/base16-vim",
 		config = function()
-			vim.cmd("colorscheme base16-eighties")
+			vim.cmd("colorscheme base16-onedark")
       vim.cmd([[
         hi Normal guibg=NONE ctermbg=NONE
         hi NonText guibg=NONE ctermbg=NONE

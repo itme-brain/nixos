@@ -28,7 +28,7 @@ call plug#end()
 
 let mapleader = "\<Space>"
 set background=dark
-colorscheme base16-eighties
+colorscheme base16-onedark
 
 highlight Normal  ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
