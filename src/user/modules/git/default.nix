@@ -12,8 +12,8 @@ in
         enable = true;
         extraConfig = {
           init = { defaultBranch = "master"; };
-          format = { pretty = "oneline"; };
-          log = { abbrevCommit = true; };
+          #format = { pretty = "oneline"; };
+          #log = { abbrevCommit = true; };
           mergetool = {
             vimdiff = {
               trustExitCode = true;
