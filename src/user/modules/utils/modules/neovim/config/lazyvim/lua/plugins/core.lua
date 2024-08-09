@@ -3,13 +3,19 @@ return {
 		"chriskempson/base16-vim",
 		config = function()
 			vim.cmd("colorscheme base16-onedark")
-      vim.cmd([[
+			vim.cmd([[
         hi Normal guibg=NONE ctermbg=NONE
         hi NonText guibg=NONE ctermbg=NONE
         hi LineNr guibg=NONE ctermbg=NONE
         hi CursorLine guibg=NONE ctermbg=NONE
-        hi CursorLineNr guibg=NONE ctermbg=NONE guifg=#FFCC66 ctermfg=Yellow cterm=bold
-        hi GitGutterChange guibg=NONE
+        hi CursorLineNr guibg=NONE ctermbg=NONE guifg=#E5C07B ctermfg=Yellow cterm=bold
+        hi GitGutterChange guibg=NONE ctermbg=NONE
+        hi GitGutterAdd guibg=NONE ctermbg=NONE
+        hi GitGutterDelete guibg=NONE ctermbg=NONE
+        hi WinSeparator guibg=NONE ctermbg=NONE
+        "hi LazyNormal guibg=#060810 ctermbg=#060810
+        "hi LazyProp guibg=NONE ctermbg=NONE
+        "hi WhichKeyNormal guibg=#060810 ctermbg=#060810
       ]])
 		end,
 	},
@@ -49,24 +55,25 @@ return {
 		end,
 	},
 
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    config = function()
-      require("neo-tree").setup({
-        window = {
-          position = "left",
-          width = 20,
-        },
-      })
-    end,
-  },
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		config = function()
+			require("neo-tree").setup({
+				window = {
+					position = "left",
+					width = 20,
+				},
+			})
+		end,
+	},
 
-  { "NoahTheDuke/vim-just", ft = { "just" }, },
-  { "L3MON4D3/LuaSnip",
-    version = "v2.*",
-    build = "make install_jsregexp",
-    --dependencies = { "rafamadriz/friendly-snippets" },
-  },
+	{ "NoahTheDuke/vim-just", ft = { "just" } },
+	{
+		"L3MON4D3/LuaSnip",
+		version = "v2.*",
+		build = "make install_jsregexp",
+		--dependencies = { "rafamadriz/friendly-snippets" },
+	},
 
 	--[[
   {
@@ -89,5 +96,5 @@ return {
 	{ "williamboman/mason-lspconfig.nvim", enabled = false },
 	{ "jay-babu/mason-nvim-dap.nvim", enabled = false },
 	{ "catppuccin/nvim", enabled = false },
-  { "folke/flash.nvim", enabled = false }
+	{ "folke/flash.nvim", enabled = false },
 }

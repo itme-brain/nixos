@@ -27,4 +27,4 @@ vim.o.termguicolors = true
 vim.opt.guicursor = "n-v-c:block,i:block,r:block"
 vim.g.autoformat = false
 
-vim.cmd [[highlight PmenuSel guifg=#53565d guibg=#f0c981]]
+vim.cmd([[highlight PmenuSel guifg=#53565d guibg=#f0c981]])

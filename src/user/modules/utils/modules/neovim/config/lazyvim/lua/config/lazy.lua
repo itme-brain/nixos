@@ -7,6 +7,12 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
+  --config = function ()
+  --  vim.cmd([[
+  --    hi LazyNormal guibg=#060810 ctermbg=#060810
+  --    hi LazyProp guibg=NONE ctermbg=NONE
+  --  ]])
+  --end,
 	spec = {
 		-- add LazyVim and import its plugins
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },

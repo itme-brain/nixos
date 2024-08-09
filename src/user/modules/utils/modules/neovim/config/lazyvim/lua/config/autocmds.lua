@@ -8,6 +8,12 @@ require("which-key").add({
   { "<leader>t", "<cmd>:new | setlocal nonumber norelativenumber | resize 10 | terminal<CR>", mode = "n", desc = "Open Terminal" }
 })
 
+require("lualine").setup({
+  options = {
+    theme = 'iceberg_dark'
+  }
+})
+
 local lsp = require("lsp-zero").preset({})
 local cmp_nvim_lsp = require "cmp_nvim_lsp"
 local cmp = require("cmp")
