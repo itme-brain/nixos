@@ -38,14 +38,14 @@
   },
 
   "custom/blockheight": {
-    "format": "<span color='#ef8e19'>󰠓 </span><span color='#ffffff'>{}</span>",
+    "format": "<span color='#ef8e19'>󰠓 </span><span color='#ffffff'>{} </span>",
     "interval": 30,
     "exec": "~/.config/waybar/scripts/getBlock",
     "on-click": "xdg-open https://www.mempool.space",
   },
 
   "custom/price": {
-    "format": "<span color='#00ff00'> $</span><span color='#ffffff'>{}</span>",
+    "format": "<span color='#00ff00'>$</span><span color='#ffffff'>{}</span>",
     "interval": 10,
     "exec": "~/.config/waybar/scripts/getPrice",
     "on-click": "xdg-open https://www.coinbase.com/price/bitcoin",
