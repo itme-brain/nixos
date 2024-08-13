@@ -97,6 +97,14 @@ cmp.setup({
 	},
 })
 
+require('lualine').setup {
+  options = {
+    theme = 'iceberg_dark',
+    component_separators = { left = '>', right = '|' },
+    section_separators = ''
+  }
+}
+
 --local dap = require("dap")
 --dap.adapters.haskell = {
 --	type = "executable",
