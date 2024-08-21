@@ -23,6 +23,11 @@ return {
 
         hi TelescopeSelection guibg=Gray guifg=Green gui=bold ctermbg=Black ctermfg=Green cterm=bold
         hi TelescopePreviewMatch ctermbg=Yellow ctermfg=Black guibg=Yellow guifg=Black
+
+        hi TreesitterContext guibg=NONE ctermbg=NONE
+
+        hi LazyProp guibg=NONE ctermbg=NONE
+        hi IblScope guibg=NONE guifg=Yellow ctermbg=NONE ctermfg=Yellow
 			]])
 
       vim.api.nvim_create_autocmd("TextYankPost", {

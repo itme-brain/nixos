@@ -21,7 +21,6 @@ return {
     },
     config = function()
       -- Custom Telescope command to grep from Git root
-      vim.api.nvim_set_keymap('n', '<leader>lg', "<cmd>lua require('telescope.builtin').live_grep({ cwd = git_root() })<CR>", { noremap = true, silent = true })
       require("which-key").add({
         { "<leader>/", function()
             require('telescope.builtin').live_grep({ cwd = git_root() })
@@ -38,7 +37,7 @@ return {
         { "<leader>gi", ":Telescope lsp_implementations<CR>", desc = "Go to Implementations" },
         { "<leader>gt", ":Telescope lsp_type_definitions<CR>", desc = "Go to Type Definition" },
         { "<leader>cv", ":Telescope treesitter<CR>", desc = "List function names & variables" },
-        { "<leader>ca", ":Telescope diagnostics<CR>", desc = "Code diagnostics" },
+        { "<leader>cd", ":Telescope diagnostics<CR>", desc = "Code diagnostics" },
 
         -- Git
         { "<leader>Gt", ":Telescope git_branches<CR>", desc = "Git Branches" },

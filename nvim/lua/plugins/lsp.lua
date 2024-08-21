@@ -27,7 +27,6 @@ return {
         },
         auto_install = true,
         sync_install = true,
-        ignore_install = {},
       }
     end
   },
@@ -49,15 +48,14 @@ return {
 				zindex = 20, -- The Z-index of the context window
 				on_attach = nil, -- (fun(buf: integer): boolean) rurn false to disable attaching
 			})
-      vim.cmd([[
-        hi TreesitterContext guibg=NONE ctermbg=NONE
-      ]])
 		end,
 	},
 
   {
     "neovim/nvim-lspconfig",
     config = function()
+      local lsp = require('lspconfig')
+      lsp.lua_ls.setup{}
       require("which-key").add({
         { "<leader>cl", ":LspInfo<CR>", desc = "LSP Info" },
       })
@@ -66,7 +64,16 @@ return {
 
   {
     "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup{}
+    end
+  },
+
+  {
     "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require("mason-lspconfig").setup{}
+    end
   },
 
   {
