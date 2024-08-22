@@ -19,6 +19,9 @@ return {
         { "<leader>bd", ":bd<CR>", desc = "Delete Buffer" },
         { "<leader>bD", "execute 'close'<CR> | <cmd>execute 'bd!'", desc = "Delete Window & Buffer" },
 
+        { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+        { "<leader>cr", vim.lsp.buf.rename, desc = "Rename Variable" },
+
         { "<leader>G", group = "Git"},
         { "<leader>f", group = "Files"},
         { "<leader>c", group = "Code"},

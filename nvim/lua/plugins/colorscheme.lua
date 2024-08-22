@@ -4,7 +4,7 @@ return {
 		config = function()
 			vim.cmd("colorscheme base16-onedark")
 			vim.cmd([[
-				hi Normal guibg=NONE ctermbg=NONE
+				hi Normal guibg=NONE ctermbg=NONE guifg=#FFFFFF
 				hi NonText guibg=NONE ctermbg=NONE
 				hi LineNr guibg=NONE ctermbg=NONE
 				hi CursorLine guibg=NONE ctermbg=NONE

@@ -19,3 +19,5 @@ vim.keymap.set('n', '<S-l>', ':bnext<CR>', { noremap = true, silent = true })
 
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
+
+vim.keymap.set("n", "<Esc>", ':nohlsearch<Bar>let @/=""<CR>', { noremap = true, silent = true})

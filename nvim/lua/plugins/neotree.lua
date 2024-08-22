@@ -8,6 +8,7 @@ return {
 		},
 		config = function()
 			require("neo-tree").setup({
+        enable_diagnostics = false,
 				window = {
 					position = "left",
 					width = 20,
@@ -19,7 +20,6 @@ return {
 
 			local function toggle_neotree()
 				local api = vim.api
-				local win = api.nvim_get_current_win()
 				local bufs = api.nvim_list_bufs()
 
 				for _, buf in ipairs(bufs) do
@@ -37,14 +37,14 @@ return {
         { "<leader>e", toggle_neotree, desc = "File Explorer" }
       })
 
-      vim.fn.sign_define("DiagnosticSignError",
-        {text = " ", texthl = "DiagnosticSignError"})
-      vim.fn.sign_define("DiagnosticSignWarn",
-        {text = " ", texthl = "DiagnosticSignWarn"})
-      vim.fn.sign_define("DiagnosticSignInfo",
-        {text = " ", texthl = "DiagnosticSignInfo"})
-      vim.fn.sign_define("DiagnosticSignHint",
-        {text = "󰌵", texthl = "DiagnosticSignHint"})
+      --vim.fn.sign_define("DiagnosticSignError",
+      --  {text = " ", texthl = "DiagnosticSignError"})
+      --vim.fn.sign_define("DiagnosticSignWarn",
+      --  {text = " ", texthl = "DiagnosticSignWarn"})
+      --vim.fn.sign_define("DiagnosticSignInfo",
+      --  {text = " ", texthl = "DiagnosticSignInfo"})
+      --vim.fn.sign_define("DiagnosticSignHint",
+      --  {text = "󰌵", texthl = "DiagnosticSignHint"})
 		end,
 	},
 }

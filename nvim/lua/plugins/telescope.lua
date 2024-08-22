@@ -34,10 +34,11 @@ return {
 
         -- Code
         { "<leader>gd", ":Telescope lsp_definitions<CR>", desc = "Go to Definition" },
+        { "<leader>gr", ":Telescope lsp_references", desc = "Goto References" },
         { "<leader>gi", ":Telescope lsp_implementations<CR>", desc = "Go to Implementations" },
         { "<leader>gt", ":Telescope lsp_type_definitions<CR>", desc = "Go to Type Definition" },
-        { "<leader>cv", ":Telescope treesitter<CR>", desc = "List function names & variables" },
-        { "<leader>cd", ":Telescope diagnostics<CR>", desc = "Code diagnostics" },
+        { "<leader>cv", ":Telescope treesitter<CR>", desc = "Function Names & Variables" },
+        { "<leader>cd", ":Telescope diagnostics<CR>", desc = "Code Diagnostics" },
 
         -- Git
         { "<leader>Gt", ":Telescope git_branches<CR>", desc = "Git Branches" },
