@@ -64,6 +64,11 @@ set expandtab
 
 set statusline=%{anzu#search_status()}
 
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pd :PlugUpgrade<CR>
+nnoremap <leader>ps :PlugStatus<CR>
+nnoremap <leader>ps :PlugInstall<CR>
+
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
