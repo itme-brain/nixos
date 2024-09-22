@@ -1,3 +1,19 @@
+local servers = {
+	"tsserver",
+	"pyright",
+	"nil_ls",
+	"cssls",
+	"html",
+	"lua_ls",
+	"marksman",
+	"tailwindcss",
+	"bashls",
+  "clangd",
+  "jsonls",
+  "vuels"
+  --"arduino-language-server"
+}
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -55,18 +71,23 @@ return {
 	--	end,
 	--},
 
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup{}
-    end
-  },
+	{
+		"VonHeikemen/lsp-zero.nvim",
+		branch = "v2.x",
+		dependencies = {
+			{ "neovim/nvim-lspconfig" },
 
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup{}
+			{ "hrsh7th/nvim-cmp" },
+			{ "hrsh7th/cmp-buffer" },
+			{ "hrsh7th/cmp-path" },
+			{ "hrsh7th/cmp-nvim-lsp" },
+
+			{ "L3MON4D3/LuaSnip" },
+		},
+    config = function ()
+      local lsp = require('lsp-zero').preset({})
+      lsp.setup_servers(servers)
+      lsp.setup()
     end
   },
 
@@ -129,7 +150,6 @@ return {
       local lsp = require('lspconfig')
       local navic = require('nvim-navic')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local servers = require('mason-lspconfig').get_installed_servers()
 
       for _, server in ipairs(servers) do
         lsp[server].setup {
