@@ -94,7 +94,7 @@ in
           kb_layout = "us";
           follow_mouse = 1;
           accel_profile = "flat";
-          sensitivity = 0.65;
+          sensitivity = 0;
         };
 
         env = [
