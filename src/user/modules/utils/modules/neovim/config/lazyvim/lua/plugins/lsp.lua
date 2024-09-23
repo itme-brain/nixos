@@ -50,6 +50,13 @@ return {
     end
   },
 
+  {
+    "m4xshen/autoclose.nvim",
+    config = function ()
+      require("autoclose").setup()
+    end
+  },
+
 	--{
 	--	"nvim-treesitter/nvim-treesitter-context",
   --  dependencies = { "nvim-treesitter/nvim-treesitter" },
