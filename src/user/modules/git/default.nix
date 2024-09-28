@@ -20,7 +20,12 @@ in
             };
           };
           merge = { tool = "vimdiff"; };
-          safe = { directory = "/etc/nixos"; };
+          safe = { 
+            directory = [
+              "/etc/nixos"
+              "/boot"
+            ];
+          };
         };
         ignores = [
           "node_modules"
