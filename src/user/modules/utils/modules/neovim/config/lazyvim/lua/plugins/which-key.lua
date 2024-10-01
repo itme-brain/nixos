@@ -5,7 +5,15 @@ return {
     opts = {
       spec = {
         { "<leader>l", ":Lazy<CR>", desc = "Lazy" },
-        { "<leader>t", "<cmd>:botright new | setlocal nonumber norelativenumber | resize 10 | terminal<CR>", mode = "n", desc = "Open Terminal" },
+
+        { "<leader>t",
+          function()
+            vim.cmd("botright new | setlocal nonumber norelativenumber | resize 10 | terminal")
+            vim.cmd("startinsert")
+          end,
+          mode = "n",
+          desc = "Open Terminal"
+        },
 
         --{ "<leader>wd", "<cmd>execute 'bd' | execute 'close'<CR>", desc = "Delete window & buffer" },
         -- Window & Buffer Management
