@@ -33,6 +33,7 @@ return {
         { "<leader>cm", ":Telescope man_pages<CR>", desc = "Manpages" },
 
         -- Code
+        { "gd", ":Telescope lsp_definitions<CR>", desc = "Go to Definition" },
         { "<leader>gd", ":Telescope lsp_definitions<CR>", desc = "Go to Definition" },
         { "<leader>gr", ":Telescope lsp_references", desc = "Goto References" },
         { "<leader>gi", ":Telescope lsp_implementations<CR>", desc = "Go to Implementations" },
