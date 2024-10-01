@@ -9,42 +9,42 @@ in
 ''
 check_ssh() {
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    ssh_PS1="\n\[\033[01;37m\]\u@\h:\[\033[00m\]"
+    ssh_PS1="\n\[\033[01;37m\]\u@\h:\[\033[00m\]\n"
     return 0
   fi
 }
 
 ${optionalString git.enable ''
-add_icon() {
-  local icon=$1
-  if [[ ! $venv_icons =~ $icon ]]; then
-    venv_icons+="$icon "
-  fi
-}
-
-remove_icon() {
-  local icon=$1
-  venv_icons=''${venv_icons//$icon/}
-}
-
-py="py"
-js="js"
-nix="nix"
-
-${if gui.enable then ''
-if [ -n "$DISPLAY" ]; then
-  py=""
-  js="󰌞"
-  nix=""
-fi
-'' else ''
-''}
-
-python_icon="\[\033[01;33m\]$py\[\033[00m\]"
-node_icon="\[\033[01;93m\]$js\[\033[00m\]"
-nix_icon="\[\033[01;34m\]$nix\[\033[00m\]"
-
 check_venv() {
+  add_icon() {
+    local icon=$1
+    if [[ ! $venv_icons =~ $icon ]]; then
+      venv_icons+="$icon "
+    fi
+  }
+
+  remove_icon() {
+    local icon=$1
+    venv_icons=''${venv_icons//$icon/}
+  }
+
+  py="py"
+  js="js"
+  nix="nix"
+
+  ${if gui.enable then ''
+  if [ -n "$DISPLAY" ]; then
+    py=""
+    js="󰌞"
+    nix=""
+  fi
+  '' else ''
+  ''}
+
+  python_icon="\[\033[01;33m\]$py\[\033[00m\]"
+  node_icon="\[\033[01;93m\]$js\[\033[00m\]"
+  nix_icon="\[\033[01;34m\]$nix\[\033[00m\]"
+
   if [ -n "$IN_NIX_SHELL" ]; then
     add_icon "$nix_icon"
   else
@@ -125,6 +125,7 @@ check_project() {
   fi
 }
 ''}
+
 function set_prompt() {
   local green_arrow="\[\033[01;32m\]>> "
   local white_text="\[\033[00m\]"
@@ -143,9 +144,9 @@ function set_prompt() {
 
   ${if git.enable
     then
-      ''PS1="$ssh_PS1\n$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"''
+      ''PS1="$ssh_PS1$working_dir\n$venv_icons$green_arrow$git_branch_PS1$white_text"''
     else
-      ''PS1="$ssh_PS1\n$working_dir\n$green_arrow$white_text"''
+      ''PS1="$ssh_PS1$working_dir\n$green_arrow$white_text"''
   }
   return 0
 }
