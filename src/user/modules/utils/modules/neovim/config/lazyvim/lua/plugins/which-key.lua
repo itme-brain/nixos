@@ -5,7 +5,6 @@ return {
     opts = {
       spec = {
         { "<leader>l", ":Lazy<CR>", desc = "Lazy" },
-
         { "<leader>t",
           function()
             vim.cmd("botright new | setlocal nonumber norelativenumber | resize 10 | terminal")
