@@ -44,7 +44,7 @@ in
 
           search = {
             force = true;
-            default = "Startpage";
+            default = "Google";
             engines = {
               "Startpage" = {
                 urls = [{
