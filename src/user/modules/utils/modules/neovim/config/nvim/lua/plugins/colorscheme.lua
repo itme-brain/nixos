@@ -5,7 +5,7 @@ return {
 			vim.cmd("colorscheme base16-onedark")
 			vim.cmd([[
 				hi Normal guibg=NONE ctermbg=NONE guifg=#FFFFFF
-        hi Visual ctermbg=Gray guibg=Gray
+        hi Visual ctermbg=Gray ctermfg=Black guibg=Gray guifg=Black
 				hi NonText guibg=NONE ctermbg=NONE
 				hi LineNr guibg=NONE ctermbg=NONE
 				hi CursorLine guibg=NONE ctermbg=NONE
@@ -33,7 +33,8 @@ return {
 
       vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function()
-          vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+          vim.cmd("highlight YankHighlight ctermbg=yellow ctermfg=black guibg=yellow guifg=black")
+          vim.highlight.on_yank({ higroup = "YankHighlight", timeout = 150 })
         end,
       })
 		end,
