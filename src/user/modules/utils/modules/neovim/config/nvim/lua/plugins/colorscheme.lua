@@ -5,13 +5,14 @@ return {
 			vim.cmd("colorscheme base16-onedark")
 			vim.cmd([[
 				hi Normal guibg=NONE ctermbg=NONE guifg=#FFFFFF
+        hi Visual ctermbg=Gray guibg=Gray
 				hi NonText guibg=NONE ctermbg=NONE
 				hi LineNr guibg=NONE ctermbg=NONE
 				hi CursorLine guibg=NONE ctermbg=NONE
 				hi CursorLineNr guibg=NONE ctermbg=NONE guifg=#E5C07B ctermfg=Yellow cterm=bold
         hi Search ctermfg=Black guifg=#000000 ctermbg=Gray guibg=#FFCC66
-        hi Pmenu ctermbg=Gray ctermfg=Black cterm=NONE guibg=Gray guifg=Black gui=NONE
-        hi PmenuSel ctermbg=Black ctermfg=Green cterm=NONE guibg=Black guifg=Green gui=NONE
+        hi Pmenu ctermbg=Black ctermfg=White cterm=NONE guibg=Black guifg=White gui=NONE
+        hi PmenuSel ctermbg=Green ctermfg=Black cterm=NONE guibg=Green guifg=Black gui=NONE
         hi PmenuThumb ctermbg=Green guibg=Green
         hi PmenuSbar ctermbg=Black guibg=Black
         hi WinSeparator guibg=NONE ctermbg=NONE
@@ -26,7 +27,7 @@ return {
 
         hi TreesitterContext guibg=NONE ctermbg=NONE
 
-        hi LazyProp guibg=NONE ctermbg=NONE
+        hi LazyH1 ctermbg=Green ctermfg=Black guibg=Black guifg=Green
         hi IblScope guibg=NONE guifg=Yellow ctermbg=NONE ctermfg=Yellow
 			]])
 

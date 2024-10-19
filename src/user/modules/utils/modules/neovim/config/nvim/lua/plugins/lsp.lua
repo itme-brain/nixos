@@ -1,5 +1,5 @@
 local servers = {
-	"tsserver",
+	"ts_ls",
 	"pyright",
 	"nil_ls",
 	"cssls",

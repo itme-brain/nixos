@@ -16,7 +16,7 @@ in
     };
 
     home.file.".config/nvim" = {
-      source = ./config/lazyvim;
+      source = ./config/nvim;
       recursive = true;
     };
   };
