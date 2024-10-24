@@ -10,6 +10,7 @@ in
     programs = {
       git = {
         enable = true;
+        package = pkgs.gitSVN;
         extraConfig = {
           init = { defaultBranch = "master"; };
           #format = { pretty = "oneline"; };
