@@ -5,7 +5,7 @@ let
   cfg = config.modules.user.bash;
 
 in
-{ options.modules.user.bash = { enable = mkEnableOption "user.bash"; };
+{ options.modules.user.bash = { enable = mkEnableOption "Enable BASH shell module"; };
   config = mkIf cfg.enable {
     programs.bash = {
       enable = true;

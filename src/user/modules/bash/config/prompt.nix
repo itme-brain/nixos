@@ -2,7 +2,7 @@
 
 with lib;
 let
-  git = config.modules.user.git;
+  git = config.modules.user.dev.git;
   gui = config.modules.user.gui.alacritty;
 
 in

@@ -18,7 +18,14 @@
     modules = {
       user = {
         bash.enable = true;
-        git.enable = true;
+
+        dev = {
+          git.enable = true;
+          neovim = {
+            lazy.enable = true;
+          };
+          vim.enable = true;
+        };
 
         security = {
           enable = true;
@@ -27,10 +34,8 @@
 
         utils = {
           enable = true;
-          dev.enable = true;
           email.enable = true;
           irc.enable = true;
-          vim.enable = true;
         };
       };
     };

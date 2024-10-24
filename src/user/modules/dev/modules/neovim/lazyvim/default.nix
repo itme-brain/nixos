@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.user.utils.neovim;
+  cfg = config.modules.user.dev.neovim.lazyvim;
 
 in
-{ options.modules.user.utils.neovim = { enable = mkEnableOption "user.utils.neovim"; };
+{ options.modules.user.dev.neovim.lazyvim = { enable = mkEnableOption "Enable LazyVIM module"; };
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;

@@ -5,7 +5,7 @@ let
   cfg = config.modules.user.utils.irc;
 
 in
-{ options.modules.user.utils.irc = { enable = mkEnableOption "user.utils.irc"; };
+{ options.modules.user.utils.irc = { enable = mkEnableOption "Enable IRC module"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       weechat

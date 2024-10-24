@@ -16,7 +16,11 @@
     modules = {
       user = {
         bash.enable = true;
-        git.enable = true;
+
+        dev = {
+            git.enable = true;
+            vim.enable = true;
+        };
 
         security = {
           gpg.enable = true;
@@ -24,7 +28,6 @@
 
         utils = {
           enable = true;
-          vim.enable = true;
         };
       };
     };

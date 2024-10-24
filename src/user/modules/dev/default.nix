@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.user.utils.dev;
+  cfg = config.modules.user.dev;
 
 in
-{ options.modules.user.utils.dev = { enable = mkEnableOption "user.utils.dev"; };
+{ options.modules.user.dev = { enable = mkEnableOption "Enable development module"; };
   imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

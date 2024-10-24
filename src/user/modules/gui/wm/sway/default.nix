@@ -5,7 +5,7 @@ let
   cfg = config.modules.user.gui.wm.sway;
 
 in
-{ options.modules.user.gui.wm.sway = { enable = mkEnableOption "user.gui.wm.sway"; };
+{ options.modules.user.gui.wm.sway = { enable = mkEnableOption "Enable Sway WM"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = import ./config/sway.nix { inherit pkgs config lib; };
     programs.rofi = import ./config/rofi { inherit pkgs config lib; };

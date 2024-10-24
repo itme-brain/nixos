@@ -14,7 +14,7 @@ userConfigs = rec {
 
   groups = [ "wheel" "networkmanager" "home-manager" "input" ];
 
-  gitConfig = optionalAttrs modules.git.enable {
+  gitConfig = optionalAttrs modules.dev.git.enable {
     userName = "Bryan Ramos";
     userEmail = email;
     signing = optionalAttrs modules.security.gpg.enable {

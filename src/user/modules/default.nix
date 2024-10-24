@@ -1,7 +1,7 @@
 {
   imports = [
     ./bash
-    ./git
+    ./dev
     ./gui
     ./security
     ./tmux
