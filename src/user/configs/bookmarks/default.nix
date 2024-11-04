@@ -60,34 +60,21 @@
         ];
       }
       {
-        name = "Outlook";
-        url = "https://outlook.office365.com";
-        tags = [ "work" "email" "microsoft" ];
-        keyword = "work";
-      }
-      {
-        name = "Teams";
-        url = "https://teams.microsoft.com";
-        tags = [ "work" "microsoft" ];
-        keyword = "teams";
-      }
-      {
-        name = "Twitter";
-        url = "https://x.com";
-        tags = [ "social" "forum" ];
-        keyword = "x";
-      }
-      {
-        name = "Reddit";
-        url = "https://reddit.com";
-        tags = [ "social" "forum" ];
-        keyword = "reddit";
-      }
-      {
-        name = "Substack";
-        url = "https://substack.com";
-        tags = [ "social" "blogging" "personal" ];
-        keyword = "blog";
+        name = "Work";
+        bookmarks = [
+          {
+            name = "Outlook";
+            url = "https://outlook.office365.com";
+            tags = [ "work" "email" "microsoft" ];
+            keyword = "work";
+          }
+          {
+            name = "Teams";
+            url = "https://teams.microsoft.com";
+            tags = [ "work" "microsoft" ];
+            keyword = "teams";
+          }
+        ];
       }
       {
         name = "Youtube";
@@ -96,10 +83,10 @@
         keyword = "youtube";
       }
       {
-        name = "Twitch";
-        url = "https://twitch.com";
-        tags = [ "social" "entertainment" "amazon" ];
-        keyword = "twitch";
+        name = "Substack";
+        url = "https://substack.com";
+        tags = [ "social" "blogging" "personal" ];
+        keyword = "blog";
       }
       {
         name = "Amazon";
@@ -108,10 +95,33 @@
         keyword = "amazon";
       }
       {
-        name = "Nostr";
-        url = "https://primal.net";
-        tags = [ "social" "nostr" "bitcoin" ];
-        keyword = "nostr";
+        name = "Social";
+        bookmarks = [
+          {
+            name = "Twitter";
+            url = "https://x.com";
+            tags = [ "social" "forum" ];
+            keyword = "x";
+          }
+          {
+            name = "Reddit";
+            url = "https://reddit.com";
+            tags = [ "social" "forum" ];
+            keyword = "reddit";
+          }
+          {
+            name = "Twitch";
+            url = "https://twitch.com";
+            tags = [ "social" "entertainment" "amazon" ];
+            keyword = "twitch";
+          }
+          {
+            name = "Nostr";
+            url = "https://primal.net";
+            tags = [ "social" "nostr" "bitcoin" ];
+            keyword = "nostr";
+          }
+        ];
       }
       {
         name = "ChatGPT";
@@ -143,18 +153,75 @@
             name = "Learning";
             bookmarks = [
               {
-                name = "Leetcode";
-                url = "https://leetcode.com";
+                name = "Coding";
+                bookmarks = [
+                  {
+                    name = "Leetcode";
+                    url = "https://leetcode.com";
+                  }
+                  {
+                    name = "CodeWars";
+                    url = "https://codewars.com";
+                  }
+                ];
               }
               {
-                name = "CodeWars";
-                url = "https://codewars.com";
+                name = "Projects";
+                bookmarks = [
+                  {
+                    name = "Linux From Scratch";
+                    url = "https://linuxfromscratch.org/lfs/view/stable/index.html";
+                  }
+                ];
+              }
+            ];
+          }
+          {
+            name = "Documentation";
+            bookmarks = [
+              {
+                name = "MDN";
+                url = "https://developer.mozilla.org";
+                tags = [ "dev" "docs" ];
+                keyword = "mdn";
+              }
+              {
+                name = "DevDocs";
+                url = "https://devdocs.io";
+                tags = [ "dev" "docs" ];
+                keyword = "docs";
+              }
+              {
+                name = "Linux Kernel";
+                url = "https://docs.kernel.org";
+              }
+              {
+                name = "References";
+                bookmarks = [
+                  {
+                    name = "ASCII Table";
+                    url = "https://asciitable.com";
+                    tags = [ "dev" ];
+                    keyword = "ascii";
+                  }
+                  {
+                    name = "Regex Cheat Sheet";
+                    url = "https://rexegg.com/regex-quickstart.php";
+                    tags = [ "dev" ];
+                    keyword = "regex";
+                  }
+                ];
               }
             ];
           }
           {
             name = "Tools";
             bookmarks = [
+              {
+                name = "GitBook";
+                url = "https://gitbook.com";
+                tags = [ "dev" "docs" ];
+              }
               {
                 name = "Namecheap";
                 url = "https://namecheap.com";
@@ -166,34 +233,37 @@
                 tags = [ "dev" "hosting" ];
               }
               {
-                name = "Documentation";
+                name = "Hosting";
                 bookmarks = [
                   {
-                    name = "MDN";
-                    url = "https://developer.mozilla.org";
-                    tags = [ "dev" "docs" ];
-                    keyword = "mdn";
+                    name = "DigitalOcean";
+                    url = "https://digitalocean.com";
+                    tags = [ "dev" "hosting" ];
                   }
                   {
-                    name = "DevDocs";
-                    url = "https://devdocs.io";
-                    tags = [ "dev" "docs" ];
-                    keyword = "docs";
+                    name = "Supabase";
+                    url = "https://supabase.com";
+                    tags = [ "dev" "hosting" ];
                   }
                   {
-                    name = "Linux Kernel";
-                    url = "https://docs.kernel.org";
+                    name = "Vercel";
+                    url = "https://vercel.com";
+                    tags = [ "dev" "hosting" ];
                   }
                   {
-                    name = "References";
-                    bookmarks = [
-                      {
-                        name = "ASCII Table";
-                        url = "https://asciitable.com";
-                        tags = [ "dev" ];
-                        keyword = "ascii";
-                      }
-                    ];
+                    name = "AWS";
+                    url = "https://aws.amazon.com";
+                    tags = [ "dev" "hosting" ];
+                  }
+                  {
+                    name = "Azure";
+                    url = "https://azure.microsoft.com";
+                    tags = [ "dev" "hosting" ];
+                  }
+                  {
+                    name = "Firebase";
+                    url = "https://firebase.google.com";
+                    tags = [ "dev" "hosting" ];
                   }
                 ];
               }
