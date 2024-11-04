@@ -17,7 +17,6 @@ in
         keys = import ./keys;
 
         groups = [ "wheel" "networkmanager" "home-manager" "input" ];
-
         gitConfig = optionalAttrs modules.git.enable {
           userName = "Bryan Ramos";
           userEmail = email;
