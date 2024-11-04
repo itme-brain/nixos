@@ -35,7 +35,6 @@
     timeout = null;
     grub = {
       enable = true;
-      useOSProber = true;
       devices = [ "nodev" ];
       efiSupport = true;
       configurationLimit = 3;
