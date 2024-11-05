@@ -9,9 +9,6 @@ userConfigs = rec {
   email = "bryan@ramos.codes";
   shell = pkgs.bash;
 
-  # From wallpapers directory
-  wallpaper = "targon.jpg";
-
   groups = [ "wheel" "networkmanager" "home-manager" "input" ];
 
   gitConfig = optionalAttrs modules.git.enable {

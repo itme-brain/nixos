@@ -3,10 +3,10 @@
 with lib;
 let
   cfg = config.modules.user.gui.wm.hyprland;
-
-  wallpapers = builtins.path {
-    path = ./config/wallpapers;
-    name = "wallpapers";
+  
+  wallpaper = builtins.fetchurl {
+    url = "https://images6.alphacoders.com/117/1174033.png";
+    sha256 = "1ph5m9s57076jx6042iipqx2ifzadmd5z4lf5l49wgq4jb92mp16";
   };
 
 in
@@ -169,10 +169,10 @@ in
         splash_offset = 2.0;
 
         preload =
-          [ "${wallpapers}/${config.user.wallpaper}" ];
+          [ "${wallpaper}" ];
 
         wallpaper = [
-          ",${wallpapers}/${config.user.wallpaper}"
+          ",${wallpaper}"
         ];
       };
     };
