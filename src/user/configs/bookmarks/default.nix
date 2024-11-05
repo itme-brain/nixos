@@ -18,13 +18,24 @@
             keyword = "pkgs";
           }
           {
-            name = "Home Manager Options";
-            url = "https://nix-community.github.io/home-manager/options.xhtml";
-            tags = [ "nix" "dev" "linux" ];
-            keyword = "hm";
+            name = "Home Manager";
+            bookmarks = [
+              {
+                name = "Home Manager Option Docs";
+                url = "https://nix-community.github.io/home-manager/options.xhtml";
+                tags = [ "nix" "dev" "linux" ];
+                keyword = "hm";
+              }
+              {
+                name = "Home Manager Option Search";
+                url = "https://home-manager-options.extranix.com";
+                tags = [ "nix" "dev" "linux" ];
+                keyword = "hm";
+              }
+            ];
           }
           {
-            name = "Nix";
+            name = "Nix Docs";
             bookmarks = [
               {
                 name = "nix.dev";

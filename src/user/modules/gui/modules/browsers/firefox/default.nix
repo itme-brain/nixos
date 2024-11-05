@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.modules.user.gui.browser.firefox;
-  passff = {
+  passffHost= {
     home.packages = with pkgs; [
       passff-host
     ];
@@ -35,11 +35,12 @@ let
 in
 {
   options.modules.user.gui.browser.firefox = { enable = mkEnableOption "Enable Firefox browser"; };
-  config = mkIf cfg.enable (passff // {
+  config = mkIf cfg.enable (passffHost // {
     programs.firefox = {
       enable = true;
       profiles = {
-        "default" = {
+        "${config.user.name}" = {
+          isDefault = true;
           bookmarks = config.user.bookmarks;
 
           search = {
@@ -307,6 +308,7 @@ in
             #darkreader
             greasemonkey
             clearurls
+            passff
           ];
         };
       };
