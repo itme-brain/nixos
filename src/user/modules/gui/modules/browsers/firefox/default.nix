@@ -300,6 +300,14 @@ in
 
             "media.videocontrols.picture-in-picture.enabled" = false;
           };
+
+          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+            ublock-origin
+            vimium
+            #darkreader
+            greasemonkey
+            clearurls
+          ];
         };
       };
     };

@@ -3,6 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nur = {
+      url = "github:nix-community/NUR";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +20,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, disko }:
+  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -25,6 +28,9 @@
       config = {
         allowUnfree = true;
       };
+      overlays = [
+        nur.overlay
+      ];
     };
 
   in
