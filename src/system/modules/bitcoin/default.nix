@@ -5,11 +5,14 @@ let
   cfg = config.modules.system.bitcoin;
 
   home = "/var/lib/bitcoind";
-  conf = pkgs.writeText "bitcoin.conf" (import ./config);
 
+  bitcoinConf = pkgs.writeTextFile {
+    name = "bitcoin.conf";
+    text = builtins.readFile ./config/bitcoin.conf;
+  };
 
 in
-{ options.modules.system.bitcoin = { enable = mkEnableOption "system.bitcoin"; };
+{ options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
   imports = [ ./modules ];
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
@@ -38,7 +41,6 @@ in
         "bitcoin" = {
           members = [
             "btc"
-            "electrs"
           ];
         };
       };
@@ -55,7 +57,7 @@ in
         enable = true;
         user = "btc";
         group = "bitcoin";
-        configFile = conf;
+        configFile = bitcoinConf;
         dataDir = home;
         pidFile = "${home}/bitcoind.pid";
       };

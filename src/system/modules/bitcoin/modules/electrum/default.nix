@@ -7,24 +7,27 @@ let
 
   btc = config.modules.system.bitcoin;
 
-  conf = pkgs.writeText "config.toml" (import ./config);
+  electrsConfig = pkgs.writeTextFile {
+    name = "config.toml";
+    text = builtins.readFile ./config/config.toml;
+  };
 
 in
-{ options.modules.system.bitcoin.electrum = { enable = mkEnableOption "system.bitcoin.electrum"; };
-  config = mkIf cfg.enable {
-    #nixpkgs.overlays = [
-    #  (final: prev: {
-    #    electrs = prev.electrs.overrideAttrs (old: rec {
-    #      version = "0.10.4";
-    #      src = fetchFromGithub {
-    #        rev = "${version}";
-    #        hash = ''
-    #          sha256-0xw2532nmaxx9bjdpnnby03b83wc9zs8bv1wdfgv9q1phccqbkz1
-    #        '';
-    #      };
-    #    });
-    #  })
-    #];
+{ options.modules.system.bitcoin.electrum = { enable = mkEnableOption "Electrs Server"; };
+  config = mkIf (cfg.enable && btc.enable) {
+    nixpkgs.overlays = [
+      (final: prev: {
+        electrs = prev.electrs.overrideAttrs (old: rec {
+          version = "0.10.4";
+          src = pkgs.fetchFromGitHub {
+            owner = "romanz";
+            repo = "electrs";
+            rev = "${version}";
+            hash = "sha256-4c+FGYM34LSfazzshfRPjA+0BvDL2tvkSr2rasUognc=";
+          };
+        });
+      })
+    ];
 
     environment.systemPackages = with pkgs; [
       electrs
@@ -34,10 +37,17 @@ in
       users = {
         "electrs" = {
           inherit home;
-          description = "electrs system user";
+          description = "Electrs system user";
           isSystemUser = true;
           group = "bitcoin";
           createHome = true;
+        };
+      };
+      groups = {
+        "bitcoin" = {
+          members = mkAfter [
+            "electrs"
+          ];
         };
       };
     };
@@ -47,7 +57,7 @@ in
       description = "Electrs Bitcoin Indexer";
 
       script = "${pkgs.electrs}/bin/electrs";
-      scriptArgs = "--conf=${conf}";
+      scriptArgs = "--conf=${electrsConfig}";
 
       after = [
         "bitcoind-btc.service"

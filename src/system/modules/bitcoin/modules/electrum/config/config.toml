@@ -1,0 +1,14 @@
+network = "bitcoin"
+
+electrum_rpc_addr = "127.0.0.1:50001"
+
+cookie-file = "/var/lib/bitcoind/.cookie"
+
+db_dir = "/var/lib/electrs"
+
+log_filters = "INFO"
+timestamp = true
+
+daemon-rpc-addr = "127.0.0.1:8332"
+daemon-p2p-addr = "127.0.0.1:8333"
+daemon-dir = "/var/lib/bitcoind"
