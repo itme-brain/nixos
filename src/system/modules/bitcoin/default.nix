@@ -15,16 +15,22 @@ in
 { options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
   imports = [ ./modules ];
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        bitcoind = prev.bitcoind.overrideAttrs (old: rec {
-          version = "27.0";
-          src = fetchTarball {
-            url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
-            sha256 = "sha256-U2tR3WySD3EssA3a14wUtA3e0t/5go0isqNZSSma7m4=";
-          };
-        });
-      })
+    #nixpkgs.overlays = [
+    #  (final: prev: {
+    #    bitcoind = prev.bitcoind.overrideAttrs (old: rec {
+    #      version = "v28.0";
+    #      src = pkgs.fetchFromGitHub {
+    #        owner = "bitcoin";
+    #        repo = "bitcoin";
+    #        rev = "${version}";
+    #        sha256 = "sha256-LLtw6pMyqIJ3IWHiK4P3XoifLojB9yMNMo+MGNFGuRY=";
+    #      };
+    #    });
+    #  })
+    #];
+
+    environment.systemPackages = with pkgs; [
+      bitcoind
     ];
 
     users = {

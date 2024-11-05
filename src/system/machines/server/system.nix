@@ -9,6 +9,10 @@
       bitcoin = {
         enable = true;
         electrum.enable = true;
+        clightning = {
+          enable = true;
+          rest.enable = true;
+        };
       };
     };
   };
