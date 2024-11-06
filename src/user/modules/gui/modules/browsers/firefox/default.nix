@@ -58,35 +58,40 @@ in
 
           containersForce = true;
           containers = {
-            Personal = {
-              color = "blue";
-              icon = "fingerprint";
+            Banking = {
+              color = "green";
+              icon = "dollar";
               id = 1;
+            };
+            Personal = {
+              color = "orange";
+              icon = "fingerprint";
+              id = 2;
             };
             Work = {
               color = "yellow";
               icon = "briefcase";
-              id = 2;
-            };
-            Banking = {
-              color = "green";
-              icon = "dollar";
               id = 3;
+            };
+            Personal_Work = {
+              color = "turquoise";
+              icon = "briefcase";
+              id = 4;
             };
             Social = {
               color = "red";
               icon = "chill";
-              id = 4;
+              id = 5;
             };
             Shopping = {
               color = "purple";
               icon = "cart";
-              id = 5;
+              id = 6;
             };
             Google = {
-              color = "orange";
+              color = "pink";
               icon = "vacation";
-              id = 6;
+              id = 7;
             };
           };
 
@@ -304,11 +309,12 @@ in
 
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             ublock-origin
-            vimium
+            tridactyl
             #darkreader
-            greasemonkey
+            tampermonkey
             clearurls
             passff
+            multi-account-containers
           ];
         };
       };
