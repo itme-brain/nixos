@@ -6,7 +6,6 @@ let
 
 in
 { options.modules.user.utils.dev = { enable = mkEnableOption "user.utils.dev"; };
-  imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nix-init
