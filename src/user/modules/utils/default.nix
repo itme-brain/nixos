@@ -6,7 +6,6 @@ let
 
 in
 { options.modules.user.utils = { enable = mkEnableOption "user.utils"; };
-  imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       wget curl fastfetch

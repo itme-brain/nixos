@@ -12,7 +12,6 @@ let
 
 in
 { options.modules.user.security = { enable = mkEnableOption "Enable security module"; };
-  imports = [ ./modules ];
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       pass

@@ -244,6 +244,11 @@
                 tags = [ "dev" "hosting" ];
               }
               {
+                name = "Gitea";
+                url = "https://gitea.com";
+                tags = [ "dev" "hosting" ];
+              }
+              {
                 name = "Hosting";
                 bookmarks = [
                   {

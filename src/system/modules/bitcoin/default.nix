@@ -13,7 +13,6 @@ let
 
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
-  imports = [ ./modules ];
   config = mkIf cfg.enable {
     #nixpkgs.overlays = [
     #  (final: prev: {
