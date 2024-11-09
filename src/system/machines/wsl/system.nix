@@ -1,30 +1,36 @@
 { pkgs, lib, config, ... }:
 
-{ system.stateVersion = "23.11";
+{
+  system.stateVersion = "23.11";
+  boot.isContainer = true;
 
 # Users
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
-      openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
+      openssh.authorizedKeys.keys = [ 
+        "${config.user.keys.ssh.primary}" 
+        "${config.user.keys.ssh.windows}" 
+      ];
     };
   };
-  boot.isContainer = true;
 
 # Nix
   nix = {
     channel.enable = false;
     package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "${config.user.name}" ];
     };
     gc = {
       automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
+      dates = "daily";
+      options = "--delete-older-than 7d";
     };
   };
 
@@ -34,27 +40,9 @@
     execWheelOnly = true;
   };
 
-# System Services
-  services = {
-    cron = {
-      enable = true;
-      systemCronJobs = [];
-    };
-  };
-
 # Locale
   time = {
     timeZone = "America/New_York";
-  };
-
-  services.timesyncd = lib.mkDefault {
-    enable = true;
-    servers = [
-      "0.pool.ntp.org"
-      "1.pool.ntp.org"
-      "2.pool.ntp.org"
-      "3.pool.ntp.org"
-    ];
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -66,6 +54,7 @@
 
 # Networking
   networking = {
+    hostName = "wsl";
     useDHCP = lib.mkDefault true;
     firewall = {
       enable = true;
@@ -73,12 +62,21 @@
     };
   };
 
-  services.openssh = {
-    enable = true;
-    startWhenNeeded = true;
-    settings = {
-      X11Forwarding = false;
-      PasswordAuthentication = false;
+# System Services
+  services = {
+    openssh = {
+      enable = true;
+      startWhenNeeded = true;
+      settings = {
+        X11Forwarding = false;
+        PasswordAuthentication = false;
+      };
+    };
+    timesyncd = lib.mkDefault {
+      enable = true;
+      servers = [
+        "time.windows.com"
+      ];
     };
   };
 }

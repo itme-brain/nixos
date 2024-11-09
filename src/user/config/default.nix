@@ -2,7 +2,7 @@
 
 with lib;
 let
-modules = config.modules.user;
+  modules = config.modules.user;
 
 in
 {
@@ -10,10 +10,10 @@ in
     user = mkOption {
       description = "User Configurations";
       type = types.attrs;
-      default = rec {
+      default = with pkgs; rec {
         name = "bryan";
         email = "bryan@ramos.codes";
-        shell = pkgs.bash;
+        shell = bash;
         keys = import ./keys;
 
         groups = [ "wheel" "networkmanager" "home-manager" "input" ];
@@ -25,7 +25,6 @@ in
             signByDefault = true;
           };
         };
-
         bookmarks = import ./bookmarks;
       };
     };

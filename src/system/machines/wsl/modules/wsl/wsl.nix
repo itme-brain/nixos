@@ -1,19 +1,18 @@
 { config, lib, ... }:
 
 {
-  imports = [
-    ../../../user
-  ];
+  imports = [ ../../../../../user/config ];
 
-  wsl = {
+  wsl = rec {
     enable = true;
     defaultUser = lib.mkDefault config.user.name;
     nativeSystemd = true;
 
     wslConf = {
+      user.default = lib.mkDefault defaultUser;
       boot.command = "cd";
       network = {
-        hostname = "wsl";
+        hostname = "${config.networking.hostName}";
         generateHosts = true;
       };
     };

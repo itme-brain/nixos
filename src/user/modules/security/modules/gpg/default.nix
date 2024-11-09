@@ -18,6 +18,10 @@ in
           text = "${config.user.keys.pgp.primary}";
           trust = 5;
         }
+        {
+          text = "${config.user.keys.pgp.windows}";
+          trust = 5;
+        }
       ];
     };
 
