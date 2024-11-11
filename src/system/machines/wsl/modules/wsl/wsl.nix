@@ -7,6 +7,7 @@
     enable = true;
     defaultUser = lib.mkDefault config.user.name;
     nativeSystemd = true;
+    useWindowsDriver = true;
 
     wslConf = {
       user.default = lib.mkDefault defaultUser;

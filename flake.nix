@@ -1,7 +1,8 @@
 {
   description = "My Nix Configs";
 
-  inputs = {
+  inputs = 
+  {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nur = {
       url = "github:nix-community/NUR";
@@ -11,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/2311.5.3";
+      url = "github:nix-community/NixOS-WSL/2405.5.4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
