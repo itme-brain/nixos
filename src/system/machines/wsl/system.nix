@@ -4,7 +4,6 @@
   system.stateVersion = "23.11";
   boot.isContainer = true;
 
-# Users
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
@@ -16,7 +15,6 @@
     };
   };
 
-# Nix
   nix = {
     channel.enable = false;
     package = pkgs.nixFlakes;
@@ -34,13 +32,11 @@
     };
   };
 
-# Sudo Options
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
   };
 
-# Locale
   time = {
     timeZone = "America/New_York";
   };
@@ -52,7 +48,6 @@
     useXkbConfig = true;
   };
 
-# Networking
   networking = {
     hostName = "wsl";
     useDHCP = lib.mkDefault true;
@@ -62,7 +57,6 @@
     };
   };
 
-# System Services
   services = {
     openssh = {
       enable = true;
