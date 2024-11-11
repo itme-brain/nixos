@@ -43,6 +43,16 @@ in
           isDefault = true;
           bookmarks = config.user.bookmarks;
 
+          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+            ublock-origin
+            tridactyl
+            #darkreader
+            tampermonkey
+            clearurls
+            passff
+            multi-account-containers
+          ];
+
           search = {
             force = true;
             default = "Google";
@@ -306,16 +316,6 @@ in
 
             "media.videocontrols.picture-in-picture.enabled" = false;
           };
-
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-            tridactyl
-            #darkreader
-            tampermonkey
-            clearurls
-            passff
-            multi-account-containers
-          ];
         };
       };
     };
