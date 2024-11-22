@@ -33,12 +33,16 @@
 
   boot.loader = {
     timeout = null;
-    grub = {
+    #grub = {
+    #  enable = true;
+    #  devices = [ "nodev" ];
+    #  efiSupport = true;
+    #  configurationLimit = 3;
+    #  splashImage = null;
+    #};
+
+    systemd-boot = {
       enable = true;
-      devices = [ "nodev" ];
-      efiSupport = true;
-      configurationLimit = 3;
-      splashImage = null;
     };
 
     efi = {

@@ -1,62 +1,41 @@
-{ disks ? [ "/dev/nvme0n1" "/dev/sdb" ], ... }:
+let
+  dev = "/dev/disk/by-id/ata-CT2000MX500SSD1_2137E5D2D47D";
 
+in
 {
   disko.devices = {
     disk = {
       one = {
         type = "disk";
-        device = builtins.elemAt disks 0;
+        device = dev;
         content = {
           type = "table";
           format = "gpt";
-          partitions = [
-            {
-              name = "boot";
-              start = "0";
-              end = "200M";
-              fs-type = "fat32";
-              bootable = true;
+          partitions = {
+            boot = {
+              size = "1G";
+              type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
               };
-            }
-            {
-              start = "200M";
-              end = "100%FREE";
+            };
+            primary = {
+              size = "100%";
               content = {
                 type = "lvm_pv";
-                vg = "stick";
+                vg = "nix";
               };
-            }
-          ];
-        };
-      };
-    };
-    disk = {
-      two = {
-        type = "disk";
-        device = builtins.elemAt disks 1;
-        content = {
-          type = "table";
-          format = "gpt";
-          partitions = [
-            {
-              start = "0";
-              end = "100%FREE";
-              content = {
-                type = "lvm_pv";
-                vg = "ssd";
-              };
-            }
-          ];
+            };
+          };
         };
       };
     };
 
     lvm_vg = {
-      stick = {
+      nix = {
         type = "lvm_vg";
         lvs = {
           aaa = {
@@ -66,9 +45,9 @@
             size = "1M";
           };
           root = {
-            size = "100%";
+            size = "252G";
             content = {
-              name = "NixOS";
+              name = "root";
               type = "filesystem";
               format = "ext4";
               mountpoint = "/";
@@ -77,21 +56,8 @@
               ];
             };
           };
-        };
-      };
-    };
-    lvm_vg = {
-      ssd = {
-        type = "lvm_vg";
-        lvs = {
-          aaa = {
-            size = "1M";
-          };
-          zzz = {
-            size = "1M";
-          };
           home = {
-            size = "200G";
+            size = "100%FREE";
             content = {
               name = "home";
               type = "filesystem";
