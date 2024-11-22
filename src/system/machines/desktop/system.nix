@@ -32,22 +32,16 @@
   };
 
   boot.loader = {
-    timeout = null;
-    #grub = {
-    #  enable = true;
-    #  devices = [ "nodev" ];
-    #  efiSupport = true;
-    #  configurationLimit = 3;
-    #  splashImage = null;
-    #};
-
     systemd-boot = {
       enable = true;
+      configurationLimit = 5;
+      memtest86.enable = true;
     };
 
     efi = {
       canTouchEfiVariables = true;
     };
+    timeout = null;
   };
 
   environment.systemPackages = with pkgs; [
