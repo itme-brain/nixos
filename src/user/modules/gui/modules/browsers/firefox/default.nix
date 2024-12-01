@@ -41,7 +41,7 @@ in
       profiles = {
         "${config.user.name}" = {
           isDefault = true;
-          bookmarks = config.user.bookmarks;
+          #bookmarks = config.user.bookmarks;
 
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             ublock-origin
