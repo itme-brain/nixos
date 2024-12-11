@@ -10,7 +10,7 @@
   "custom/logo": {
     "format": "",
     "tooltip": false,
-    "on-click": "alacritty -e neofetch"
+    "on-click": "alacritty --class sys-specs -e bash -c 'fastfetch; read -n 1'"
   },
 
   "hyprland/workspaces": {

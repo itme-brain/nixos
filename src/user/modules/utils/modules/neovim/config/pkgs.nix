@@ -6,6 +6,7 @@ let
     marksman
     sumneko-lua-language-server stylua
     nodePackages."@tailwindcss/language-server"
+    pyright
     clang-tools
     #arduino-language-server
   ];
@@ -14,7 +15,6 @@ let
     typescript-language-server
     vscode-langservers-extracted
     bash-language-server
-    pyright
     vls
   ];
 

@@ -28,6 +28,7 @@ in
 
         exec-once = [
           "waybar"
+          "hyprctl setcursor Vanilla-DMZ 24"
         ];
 
         bind = [
@@ -47,9 +48,9 @@ in
           "$mod, F, fullscreen"
 
           ", Print, exec, grim ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
-          "SHIFT, Print, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
+          "$mod&SHIFT, Print, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png"
           "$mod&SHIFT, F, exec, alacritty -e sh -c 'EDITOR=nvim ranger'"
-          #''$mod&SHIFT, Print, exec, sh -c 'grim -g "$(swaymsg -t get_tree | jq -j '"'"'.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"'"'"')" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png'"''
+          ''SHIFT, Print, exec, grim -g "$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')" ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png''
 
           "$mod, D, exec, $menu"
           "$mod&SHIFT, D, exec, rofi -modi emoji -show emoji"
@@ -74,6 +75,7 @@ in
         windowrulev2 = [
           "float, title:(Android Emulator)"
           "float, title: Extension: (PassFF)"
+          "float, size 400 600, stayfocused, class:sys-specs"
         ];
 
         general = {
@@ -98,8 +100,9 @@ in
         };
 
         env = [
-          "HYPRCURSOR_SIZE, 24"
-          "GTK_THEME, Juno-ocean"
+          "HYPRCURSOR_THEME,Vanilla-DMZ"
+          "HYPRCURSOR_SIZE,24"
+          "GTK_THEME,Juno"
 
           "LIBVA_DRIVER_NAME,nvidia"
           "XDG_SESSION_TYPE,wayland"
@@ -148,7 +151,7 @@ in
 
         terminus-nerdfont
         noto-fonts
-        noto-fonts-cjk
+        noto-fonts-cjk-sans
         noto-fonts-emoji
       ];
 
@@ -180,12 +183,16 @@ in
     gtk = {
       enable = true;
       theme = {
-        name = "Juno-ocean";
+        name = "Juno";
         package = pkgs.juno-theme;
       };
       iconTheme = {
         name = "Qogir";
         package = pkgs.qogir-icon-theme;
+      };
+      cursorTheme = {
+        package = pkgs.vanilla-dmz;
+        name = "Vanilla-DMZ";
       };
       gtk3.extraConfig = {
         gtk-application-prefer-dark-theme = 1;
@@ -198,7 +205,7 @@ in
     qt = {
       enable = true;
       style = {
-        name = "juno-ocean";
+        name = "juno";
         package = pkgs.juno-theme;
       };
       platformTheme.name = "gtk";
