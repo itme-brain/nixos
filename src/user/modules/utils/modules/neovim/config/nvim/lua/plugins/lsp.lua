@@ -1,3 +1,4 @@
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 local servers = {
 	"ts_ls",
 	"pyright",
@@ -10,7 +11,8 @@ local servers = {
 	"bashls",
   "clangd",
   "jsonls",
-  "vuels"
+  "vuels",
+  "rust_analyzer"
   --"arduino-language-server"
 }
 

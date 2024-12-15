@@ -8,6 +8,7 @@ let
     nodePackages."@tailwindcss/language-server"
     pyright
     clang-tools
+    rust-analyzer
     #arduino-language-server
   ];
 

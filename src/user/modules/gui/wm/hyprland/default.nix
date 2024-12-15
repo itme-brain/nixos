@@ -135,7 +135,7 @@ in
       };
 
       packages = with pkgs; [
-        pavucontrol
+        pulsemixer
         xdg-utils
         wl-clipboard
         cliphist
