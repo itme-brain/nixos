@@ -184,4 +184,11 @@ return {
       })
     end
   },
+  {
+    "taproot-wizards/bitcoin-script-hints.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("bitcoin-script-hints").setup()
+    end
+  }
 }
