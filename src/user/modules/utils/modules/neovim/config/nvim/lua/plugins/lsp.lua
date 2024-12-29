@@ -1,14 +1,14 @@
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 local servers = {
-	"ts_ls",
-	"pyright",
-	"nil_ls",
-	"cssls",
-	"html",
-	"lua_ls",
-	"marksman",
-	"tailwindcss",
-	"bashls",
+  "ts_ls",
+  "pyright",
+  "nil_ls",
+  "cssls",
+  "html",
+  "lua_ls",
+  "marksman",
+  "tailwindcss",
+  "bashls",
   "clangd",
   "jsonls",
   "vuels",
@@ -21,7 +21,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-      require('nvim-treesitter.configs').setup ({
+      require('nvim-treesitter.configs').setup({
         ensure_installed = {
           "lua",
           "c",
@@ -54,46 +54,46 @@ return {
 
   {
     "m4xshen/autoclose.nvim",
-    config = function ()
+    config = function()
       require("autoclose").setup()
     end
   },
 
-	--{
-	--	"nvim-treesitter/nvim-treesitter-context",
+  --{
+  --  "nvim-treesitter/nvim-treesitter-context",
   --  dependencies = { "nvim-treesitter/nvim-treesitter" },
-	--	config = function()
-	--		require("treesitter-context").setup({
-	--			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-	--			max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
-	--			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-	--			line_numbers = false,
-	--			multiline_threshold = 20, -- Maximum number of lines to collapse for a single context line
-	--			trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-	--			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-	--			-- Separator between context and content. Should be a single character string, like '-'.
-	--			-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-	--			separator = "=",
-	--			zindex = 20, -- The Z-index of the context window
-	--			on_attach = nil, -- (fun(buf: integer): boolean) rurn false to disable attaching
-	--		})
-	--	end,
-	--},
+  --  config = function()
+  --    require("treesitter-context").setup({
+  --      enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
+  --      max_lines = 3,        -- How many lines the window should span. Values <= 0 mean no limit.
+  --      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  --      line_numbers = false,
+  --      multiline_threshold = 20, -- Maximum number of lines to collapse for a single context line
+  --      trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  --      mode = "cursor",      -- Line used to calculate context. Choices: 'cursor', 'topline'
+  --      -- Separator between context and content. Should be a single character string, like '-'.
+  --      -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+  --      separator = "x",
+  --      zindex = 20, -- The Z-index of the context window
+  --      on_attach = nil, -- (fun(buf: integer): boolean) rurn false to disable attaching
+  --    })
+  --  end,
+  --},
 
-	{
-		"VonHeikemen/lsp-zero.nvim",
-		branch = "v2.x",
-		dependencies = {
-			{ "neovim/nvim-lspconfig" },
+  {
+    "VonHeikemen/lsp-zero.nvim",
+    branch = "v2.x",
+    dependencies = {
+      { "neovim/nvim-lspconfig" },
 
-			{ "hrsh7th/nvim-cmp" },
-			{ "hrsh7th/cmp-buffer" },
-			{ "hrsh7th/cmp-path" },
-			{ "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/nvim-cmp" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-path" },
+      { "hrsh7th/cmp-nvim-lsp" },
 
-			{ "L3MON4D3/LuaSnip" },
-		},
-    config = function ()
+      { "L3MON4D3/LuaSnip" },
+    },
+    config = function()
       local lsp = require('lsp-zero').preset({})
       lsp.setup_servers(servers)
       lsp.setup()
@@ -127,7 +127,6 @@ return {
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body)
-
           end
         },
 
@@ -162,15 +161,17 @@ return {
 
       for _, server in ipairs(servers) do
         lsp[server].setup {
+          -- Prevent LSP from autostarting
+          autostart = false,
           capabilities = capabilities,
           on_attach = function(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
-              navic.attach(client,bufnr)
+              navic.attach(client, bufnr)
             end
           end,
         }
       end
-      lsp.lua_ls.setup{
+      lsp.lua_ls.setup {
         settings = {
           Lua = {
             diagnostics = {
@@ -180,7 +181,13 @@ return {
         }
       }
       require("which-key").add({
-        { "<leader>cl", ":LspInfo<CR>", desc = "LSP Info" },
+        { "<leader>cs",  group = "LSP Commands" },
+        { "<leader>cf",  ":LspFormat<CR>",      desc = "Code Format" },
+        { "<leader>csi", ":LspInfo<CR>",        desc = "LSP Info" },
+        { "<leader>csl", ":LspLog<CR>",         desc = "LSP Log" },
+        { "<leader>csr", ":LspRestart<CR>",     desc = "LSP Restart" },
+        { "<leader>css", ":LspStart<CR>",       desc = "LSP Start" },
+        { "<leader>csx", ":LspStop<CR>",        desc = "LSP Stop" },
       })
     end
   },

@@ -19,8 +19,12 @@ in
             vimdiff = {
               trustExitCode = true;
             };
+            keepBackup = false;
           };
-          merge = { tool = "vimdiff"; };
+          merge = { 
+            tool = "vimdiff"; 
+
+          };
           safe = { 
             directory = [
               "/etc/nixos"

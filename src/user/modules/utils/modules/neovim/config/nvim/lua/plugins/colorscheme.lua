@@ -29,6 +29,14 @@ return {
 
         hi LazyH1 ctermbg=Green ctermfg=Black guibg=Black guifg=Green
         hi IblScope guibg=NONE guifg=Yellow ctermbg=NONE ctermfg=Yellow
+        
+        hi ConflictMarker ctermfg=red guifg=red
+        match ConflictMarker /<<<<<<< HEAD\|=======\|>>>>>>> .\+/
+
+        hi DiffAdd ctermbg=none guibg=none
+        hi DiffChange ctermbg=none guibg=none
+        hi DiffDelete ctermbg=none guibg=none
+        hi DiffText ctermbg=none guibg=none
 			]])
 
       vim.api.nvim_create_autocmd("TextYankPost", {
