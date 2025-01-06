@@ -318,6 +318,13 @@ in
           };
         };
       };
+      policies = {
+        WebsiteFilter = {
+          Block = [
+            "*://*.pokemonshowdown.com/*"
+          ];
+        };
+      };
     };
   });
 }
