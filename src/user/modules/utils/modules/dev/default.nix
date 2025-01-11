@@ -20,9 +20,9 @@ in
     ];
 
     programs = {
-      bash = {
-        initExtra = import ./config/penpot.nix;
-      };
+      #bash = {
+      #  initExtra = import ./config/penpot.nix;
+      #};
       direnv = {
         enable = true;
         enableBashIntegration = true;
