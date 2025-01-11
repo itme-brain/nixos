@@ -6,6 +6,8 @@
 
   modules = {
     system = {
+      nginx.enable = true;
+      forgejo.enable = true;
       bitcoin = {
         enable = true;
         electrum.enable = true;

@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin;
+  nginx = config.modules.system.nginx;
 
   home = "/var/lib/bitcoind";
 
@@ -35,6 +36,11 @@ in
           group = "bitcoin";
           createHome = true;
         };
+        "nginx" = {
+          extraGroups = mkIf nginx.enable [
+            "bitcoin"
+          ];
+        };
       };
       groups = {
         "bitcoin" = {
@@ -48,8 +54,6 @@ in
     programs.bash.shellAliases = {
       btc = "bitcoind";
     };
-
-    networking.firewall.allowedTCPPorts = [ 8333 ];
 
     services.bitcoind = {
       "btc" = {
