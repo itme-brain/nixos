@@ -18,10 +18,10 @@ in
     nixpkgs.overlays = [
       (final: prev: {
         bitcoind = prev.bitcoind.overrideAttrs (old: rec {
-          version = "27.0";
+          version = "28.0";
           src = fetchTarball {
             url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
-            sha256 = "sha256-U2tR3WySD3EssA3a14wUtA3e0t/5go0isqNZSSma7m4=";
+            sha256 = "sha256-LLtw6pMyqIJ3IWHiK4P3XoifLojB9yMNMo+MGNFGuRY=";
           };
         });
       })

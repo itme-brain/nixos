@@ -15,19 +15,19 @@ let
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "Electrs Server"; };
   config = mkIf (cfg.enable && btc.enable) {
-    nixpkgs.overlays = [
-      (final: prev: {
-        electrs = prev.electrs.overrideAttrs (old: rec {
-          version = "0.10.4";
-          src = pkgs.fetchFromGitHub {
-            owner = "romanz";
-            repo = "electrs";
-            rev = "${version}";
-            hash = "sha256-4c+FGYM34LSfazzshfRPjA+0BvDL2tvkSr2rasUognc=";
-          };
-        });
-      })
-    ];
+    #nixpkgs.overlays = [
+    #  (final: prev: {
+    #    electrs = prev.electrs.overrideAttrs (old: rec {
+    #      version = "0.10.4";
+    #      src = pkgs.fetchFromGitHub {
+    #        owner = "romanz";
+
+    #        rev = "${version}";
+    #        hash = "sha256-4c+FGYM34LSfazzshfRPjA+0BvDL2tvkSr2rasUognc=";
+    #      };
+    #    });
+    #  })
+    #];
 
     environment.systemPackages = with pkgs; [
       electrs

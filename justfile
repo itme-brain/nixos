@@ -11,13 +11,13 @@ clean:
   echo "Cleaning build artifacts"
   if [ -d result ]; then
     echo "Removing result directory..."
-    rm ./result;
+    rm ./result
   fi
   if ls *.qcow2 1> /dev/null 2>&1; then
     echo "Removing virtual disk..."
-    rm ./*.qcow2;
+    rm ./*.qcow2
   fi
-  echo "All clean!"
+  echo "Done"
 
 # Output what derivations will be built
 out TYPE SYSTEM="desktop":
