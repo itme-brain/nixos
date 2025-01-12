@@ -15,16 +15,24 @@ let
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "Electrs Server"; };
   config = mkIf (cfg.enable && btc.enable) {
+    #TODO: Fix the failing overlay due to `cargoHash/cargoSha256`
     #nixpkgs.overlays = [
     #  (final: prev: {
     #    electrs = prev.electrs.overrideAttrs (old: rec {
-    #      version = "0.10.4";
+    #      pname = "electrs";
+    #      version = "0.10.8";
     #      src = pkgs.fetchFromGitHub {
     #        owner = "romanz";
-
-    #        rev = "${version}";
-    #        hash = "sha256-4c+FGYM34LSfazzshfRPjA+0BvDL2tvkSr2rasUognc=";
+    #        repo = pname;
+    #        rev = "v${version}";
+    #        hash = "sha256-L26jzAn8vwnw9kFd6ciyYS/OLEFTbN8doNKy3P8qKRE=";
     #      };
+    #      #cargoDeps = old.cargoDeps.overrideAttrs (const {
+    #      #  name = "electrs-${version}.tar.gz";
+    #      #  inherit src;
+    #      #  sha256 = "";
+    #      #});
+    #      cargoHash = "sha256-lBRcq73ri0HR3duo6Z8PdSjnC8okqmG5yWeHxH/LmcU=";
     #    });
     #  })
     #];

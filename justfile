@@ -36,13 +36,15 @@ out TYPE SYSTEM="desktop":
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
         exit 0
       else
-        echo "Error: Unknown argument - '{{SYSTEM}}'"
-        echo "Use one of:"
-        echo "  desktop"
-        echo "  server"
-        echo "  laptop"
-        echo "  wsl"
-        echo "  vm"
+        cat <<EOF
+  Error: Unknown argument - '{{SYSTEM}}'
+  Use one of:
+    desktop
+    server
+    laptop
+    vm
+    wsl
+  EOF
         exit 1
       fi
       ;;
@@ -52,10 +54,12 @@ out TYPE SYSTEM="desktop":
       exit 0
       ;;
     *)
-      echo "Invalid usage: {{TYPE}}.";
-      echo "Use one of:"
-      echo "  nix"
-      echo "  home"
+      cat<<EOF
+  Error: Invalid usage: {{TYPE}}
+  Use one of:
+    nix
+    home
+  EOF
       exit 1
       ;;
   esac
@@ -77,13 +81,15 @@ test TYPE SYSTEM="desktop":
         sudo nixos-rebuild test --flake .#{{SYSTEM}}
         exit 0
       else
-        echo "Error: Unknown argument - '{{SYSTEM}}'"
-        echo "Use one of:"
-        echo "  desktop"
-        echo "  server"
-        echo "  laptop"
-        echo "  wsl"
-        echo "  vm"
+        cat <<EOF
+  Error: Unknown argument - '{{SYSTEM}}'
+  Use one of:
+    desktop
+    server
+    laptop
+    vm
+    wsl
+  EOF
         exit 1
       fi
       ;;
@@ -93,16 +99,18 @@ test TYPE SYSTEM="desktop":
       exit 0
       ;;
     *)
-      echo "Invalid usage: {{TYPE}}.";
-      echo "Use one of:"
-      echo "  nix"
-      echo "  home"
+      cat<<EOF
+  Error: Invalid usage: {{TYPE}}
+  Use one of:
+    nix
+    home
+  EOF
       exit 1
       ;;
   esac
 
 # Build the nix expression and hydrate the results directory
-make TYPE SYSTEM="desktop":
+build TYPE SYSTEM="desktop":
   #!/usr/bin/env bash
   set -euo pipefail
   case "{{TYPE}}" in
@@ -114,17 +122,20 @@ make TYPE SYSTEM="desktop":
         [ "{{SYSTEM}}" = "vm" ] || \
         [ "{{SYSTEM}}" = "laptop" ]
       then
-        echo "Hydrating resulting NixOS configuration for {{SYSTEM}}..."
+        echo "Building resulting NixOS configuration for {{SYSTEM}}..."
         nix build .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
+        echo "result directory hydrated"
         exit 0
       else
-        echo "Error: Unknown argument - '{{SYSTEM}}'"
-        echo "Use one of:"
-        echo "  desktop"
-        echo "  server"
-        echo "  laptop"
-        echo "  wsl"
-        echo "  vm"
+        cat <<EOF
+  Error: Unknown argument - '{{SYSTEM}}'
+  Use one of:
+    desktop
+    server
+    laptop
+    vm
+    wsl
+  EOF
         exit 1
       fi
       ;;
@@ -134,10 +145,12 @@ make TYPE SYSTEM="desktop":
       exit 0
       ;;
     *)
-      echo "Invalid usage: {{TYPE}}."
-      echo "Use one of:"
-      echo "  nix"
-      echo "  home"
+      cat<<EOF
+  Error: Invalid usage: {{TYPE}}
+  Use one of:
+    nix
+    home
+  EOF
       exit 1
       ;;
   esac
@@ -155,16 +168,24 @@ vm SYSTEM:
   then
     echo "Building VM for {{SYSTEM}}..."
     nixos-rebuild build-vm --flake .#{{SYSTEM}}
-    result/bin/run-{{SYSTEM}}-vm
+
+    if [[ -f result/bin/run-{{SYSTEM}}-vm ]]; then
+      result/bin/run-{{SYSTEM}}-vm
+    else
+      echo "Error: VM Build failed!"
+      exit 1
+    fi
     exit 0
   else
-    echo "Error: Unknown argument - '{{SYSTEM}}'"
-    echo "Use one of:"
-    echo "  desktop"
-    echo "  server"
-    echo "  laptop"
-    echo "  vm"
-    echo "  wsl"
+    cat <<EOF
+  Error: Unknown argument - '{{SYSTEM}}'
+  Use one of:
+    desktop
+    server
+    laptop
+    vm
+    wsl
+  EOF
     exit 1
   fi
 
@@ -207,17 +228,17 @@ gh COMMIT_MESSAGE:
   git commit -m "{{COMMIT_MESSAGE}}"
   git push
 
-#Fetch resources and compute sha256 hash
+# Fetch resources and compute sha256 hash
 hash URL:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  if echo "{{URL}}" | grep -E '\.(tar\.gz|tgz|zip)$'; then
-    CONTENTS=$(nix-prefetch-url --unpack {{URL}} | tail -n 1)
+  if [[ "{{URL}}" =~ \.(tar(\.gz)?|tgz|gz|zip)$ ]]; then
+    CONTENTS=$(nix-prefetch-url --unpack {{URL}})
   else
-    CONTENTS=$(nix-prefetch-url {{URL}} | tail -n 1)
+    CONTENTS=$(nix-prefetch-url {{URL}})
   fi
 
-  HASH=$(nix hash to-sri --type sha256 "$CONTENTS")
+  HASH=$(nix hash convert --hash-algo sha256 "$CONTENTS")
 
   echo -e "\033[32m$HASH\033[0m"

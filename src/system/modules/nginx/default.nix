@@ -76,8 +76,11 @@ in
             };
           };
         };
-        #"btc.ramos.codes" = mkIf module.bitcoin.enable {
+        #"btc.ramos.codes" = mkIf module.bitcoin.electrum.enable {
         #  locations = {
+        #   "/" = {
+        #     proxyPass = "";
+        #   };
         #  };
         #};
       };
