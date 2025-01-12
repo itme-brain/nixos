@@ -14,7 +14,7 @@ clean:
     rm ./result
   fi
   if ls *.qcow2 1> /dev/null 2>&1; then
-    echo "Removing virtual disk..."
+    echo "Removing virtual disks..."
     rm ./*.qcow2
   fi
   echo "Done"
@@ -32,7 +32,7 @@ out TYPE SYSTEM="desktop":
         [ "{{SYSTEM}}" = "vm" ] || \
         [ "{{SYSTEM}}" = "laptop" ]
       then
-        echo "Testing NixOS configuration for {{SYSTEM}}..."
+        echo "Outputting derivations to be built for NixOS config - {{SYSTEM}}..."
         nix build --dry-run .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
         exit 0
       else
@@ -77,7 +77,7 @@ test TYPE SYSTEM="desktop":
         [ "{{SYSTEM}}" = "vm" ] || \
         [ "{{SYSTEM}}" = "laptop" ]
       then
-        echo "Testing next NixOS generation for {{SYSTEM}}..."
+        echo "Testing switching to next NixOS generation for {{SYSTEM}}..."
         sudo nixos-rebuild test --flake .#{{SYSTEM}}
         exit 0
       else
@@ -124,7 +124,8 @@ build TYPE SYSTEM="desktop":
       then
         echo "Building resulting NixOS configuration for {{SYSTEM}}..."
         nix build .#nixosConfigurations."{{SYSTEM}}".config.system.build.toplevel -L
-        echo "result directory hydrated"
+        echo -e "\033[34mresult directory hydrated...\033[0m"
+        echo -e "\033[32m!! Build success !!\033[0m"
         exit 0
       else
         cat <<EOF
