@@ -102,7 +102,7 @@ in
       };
 
       extraConfig = ''
-        exec_always ${pkgs.autotiling}/bin/autotiling --limit 2
+        exec_always ${pkgs.autotiling}/bin/autotiling -sr "1.61"
       '';
     };
 

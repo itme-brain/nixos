@@ -3,9 +3,9 @@
 with lib;
 let
   cfg = config.modules.user.security.gpg;
-  gui = config.modules.user.gui.wm;
-  wm = {
-    enable = builtins.any (mod: mod.enable or false) (builtins.attrValues gui);
+  wm = config.modules.user.gui.wm;
+  gui = {
+    enable = builtins.any (mod: mod.enable or false) (builtins.attrValues wm);
   };
 
 in
@@ -22,7 +22,16 @@ in
           text = "${config.user.keys.pgp.windows}";
           trust = 5;
         }
-      ];
+      ] ++ (if wm.sway.enable then [
+        {
+          text = "${config.user.keys.pgp.work}";
+          trust = 5;
+        }
+        {
+          text = "${config.user.keys.pgp.ccur}";
+          trust = 5;
+        }
+      ] else []);
     };
 
     services.gpg-agent = {
@@ -32,7 +41,7 @@ in
       enableScDaemon = true;
 
       pinentryPackage =
-      if wm.enable then
+      if gui.enable then
         pkgs.pinentry-gnome3
       else
         pkgs.pinentry-curses;
