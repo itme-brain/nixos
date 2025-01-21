@@ -22,8 +22,9 @@ in
         "$menu" = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
 
         monitor = [
-          "HDMI-A-1, 1920x1080, 0x0, 1"
-          "DP-1, 1920x1080, 1920x0, 1"
+	   "DP-2, 3440x1440, 0x0, 1"
+          #"HDMI-A-1, 1920x1080, 0x0, 1"
+          #"DP-1, 1920x1080, 1920x0, 1"
         ];
 
         exec-once = [

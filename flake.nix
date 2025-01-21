@@ -44,8 +44,15 @@
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/desktop/modules/home-manager)
-          #disko.nixosModules.disko
-          #  (import ./src/system/machines/desktop/modules/disko)
+        ];
+      };
+
+      workstation = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          ./src/system/machines/workstation
+          home-manager.nixosModules.home-manager
+            (import ./src/system/machines/workstation/modules/home-manager)
         ];
       };
 
@@ -79,11 +86,6 @@
             (import ./src/system/machines/vm/modules/disko)
         ];
       };
-    };
-
-    homeConfigurations."work" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = [ ./src/system/machines/workstation ];
     };
 
     devShells.${system}.default = mkShell {
