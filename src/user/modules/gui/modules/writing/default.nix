@@ -12,6 +12,7 @@ in
       texlive.combined.scheme-tetex
       pandoc
       asciidoctor
+      evince
     ];
   };
 }

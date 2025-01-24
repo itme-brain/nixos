@@ -17,12 +17,12 @@
   environment.systemPackages = with pkgs; [
     linuxHeaders
 
-#    vulkan-headers
-#    vulkan-loader
-#    vulkan-tools
-#    vulkan-extension-layer
-#    glxinfo
-#    mesa
+    vulkan-headers
+    vulkan-loader
+    vulkan-tools
+    vulkan-extension-layer
+    glxinfo
+    mesa
 
     #cudaPackages.cudatoolkit
     #cudaPackages.cudnn
