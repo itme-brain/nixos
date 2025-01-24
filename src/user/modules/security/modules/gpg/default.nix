@@ -22,7 +22,6 @@ in
           text = "${config.user.keys.pgp.windows}";
           trust = 5;
         }
-      ] ++ (if wm.sway.enable then [
         {
           text = "${config.user.keys.pgp.work}";
           trust = 5;
@@ -31,7 +30,7 @@ in
           text = "${config.user.keys.pgp.ccur}";
           trust = 5;
         }
-      ] else []);
+      ];
     };
 
     services.gpg-agent = {
