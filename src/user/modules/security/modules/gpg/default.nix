@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, osConfig, ... }:
 
 with lib;
 let
@@ -18,10 +18,12 @@ in
           text = "${config.user.keys.pgp.primary}";
           trust = 5;
         }
+      ] ++ optionals (osConfig.networking.hostName == "desktop") [
         {
           text = "${config.user.keys.pgp.windows}";
           trust = 5;
         }
+      ] ++ optionals (osConfig.networking.hostName == "workstation") [
         {
           text = "${config.user.keys.pgp.work}";
           trust = 5;

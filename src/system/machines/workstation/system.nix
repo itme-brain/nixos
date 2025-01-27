@@ -1,5 +1,6 @@
 { pkgs, lib, config, ... }:
 
+with lib;
 { system.stateVersion = "23.11";
 
   users.users = {
@@ -9,7 +10,7 @@
         ++ [ "video" "audio" "kvm" "libvirtd" "dialout" ];
       openssh.authorizedKeys.keys = [ 
         "${config.user.keys.ssh.primary}" 
-        "${config.user.keys.ssh.ccur}" 
+        "${config.user.keys.ssh.work}" 
       ];
     };
   };
@@ -98,6 +99,7 @@
         "3.pool.ntp.org"
       ];
     };
+
     pipewire = {
       enable = true;
       audio.enable = true;
@@ -109,6 +111,7 @@
       alsa.enable = true;
       alsa.support32Bit = true;
     };
+
     openssh = {
       enable = true;
       startWhenNeeded = false;

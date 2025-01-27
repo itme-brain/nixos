@@ -15,13 +15,13 @@
       url = "github:nix-community/NixOS-WSL/2405.5.4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    disko = {
-      url = "github:nix-community/disko";
+    NixVirt = {
+      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko }:
+  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, NixVirt }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -53,6 +53,8 @@
           ./src/system/machines/workstation
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/workstation/modules/home-manager)
+          NixVirt.nixosModules.default
+            (import ./src/system/VMs)
         ];
       };
 
@@ -82,8 +84,6 @@
           ./src/system/machines/vm
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/vm/modules/home-manager)
-          disko.nixosModules.disko
-            (import ./src/system/machines/vm/modules/disko)
         ];
       };
     };

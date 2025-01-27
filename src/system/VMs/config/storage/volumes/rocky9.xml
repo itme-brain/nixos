@@ -1,0 +1,28 @@
+<volume type='file'>
+  <name>rocky9.qcow2</name>
+  <key>/var/lib/libvirt/images/rocky9.qcow2</key>
+  <capacity unit='bytes'>107374182400</capacity>
+  <allocation unit='bytes'>10468622336</allocation>
+  <physical unit='bytes'>107390828544</physical>
+  <target>
+    <path>/var/lib/libvirt/images/rocky9.qcow2</path>
+    <format type='qcow2'/>
+    <permissions>
+      <mode>0600</mode>
+      <owner>0</owner>
+      <group>0</group>
+    </permissions>
+    <timestamps>
+      <atime>1738001245.563436511</atime>
+      <mtime>1738001224.380580475</mtime>
+      <ctime>1738001224.667578536</ctime>
+      <btime>0</btime>
+    </timestamps>
+    <compat>1.1</compat>
+    <clusterSize unit='B'>65536</clusterSize>
+    <features>
+      <lazy_refcounts/>
+    </features>
+  </target>
+</volume>
+

@@ -32,13 +32,12 @@ check_venv() {
   js="js"
   nix="nix"
 
-  ${if gui.enable then ''
+  ${optionalString gui.enable ''
   if [ -n "$DISPLAY" ]; then
     py=""
     js="󰌞"
     nix=""
   fi
-  '' else ''
   ''}
 
   python_icon="\[\033[01;33m\]$py\[\033[00m\]"

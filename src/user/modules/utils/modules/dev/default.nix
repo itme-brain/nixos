@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, osConfig, ... }:
 
 with lib;
 let
@@ -16,6 +16,7 @@ in
       qrencode
 
       docker
+    ] ++ optionals (osConfig.virtualisation.libvirt.enable) [
       virt-manager
     ];
 

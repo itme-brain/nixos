@@ -27,6 +27,7 @@ out TYPE SYSTEM="desktop":
     "nix")
       if
         [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "workstation" ] || \
         [ "{{SYSTEM}}" = "server" ] || \
         [ "{{SYSTEM}}" = "wsl" ] || \
         [ "{{SYSTEM}}" = "vm" ] || \
@@ -40,6 +41,7 @@ out TYPE SYSTEM="desktop":
   Error: Unknown argument - '{{SYSTEM}}'
   Use one of:
     desktop
+    workstation
     server
     laptop
     vm
@@ -72,6 +74,7 @@ test TYPE SYSTEM="desktop":
     "nix")
       if
         [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "workstation" ] || \
         [ "{{SYSTEM}}" = "server" ] || \
         [ "{{SYSTEM}}" = "wsl" ] || \
         [ "{{SYSTEM}}" = "vm" ] || \
@@ -85,6 +88,7 @@ test TYPE SYSTEM="desktop":
   Error: Unknown argument - '{{SYSTEM}}'
   Use one of:
     desktop
+    workstation
     server
     laptop
     vm
@@ -117,6 +121,7 @@ build TYPE SYSTEM="desktop":
     "nix")
       if
         [ "{{SYSTEM}}" = "desktop" ] || \
+        [ "{{SYSTEM}}" = "workstation" ] || \
         [ "{{SYSTEM}}" = "server" ] || \
         [ "{{SYSTEM}}" = "wsl" ] || \
         [ "{{SYSTEM}}" = "vm" ] || \
@@ -132,6 +137,7 @@ build TYPE SYSTEM="desktop":
   Error: Unknown argument - '{{SYSTEM}}'
   Use one of:
     desktop
+    workstation
     server
     laptop
     vm
@@ -162,6 +168,7 @@ vm SYSTEM:
   set -euo pipefail
   if
     [ "{{SYSTEM}}" = "desktop" ] || \
+    [ "{{SYSTEM}}" = "workstation" ] || \
     [ "{{SYSTEM}}" = "server" ] || \
     [ "{{SYSTEM}}" = "wsl" ] || \
     [ "{{SYSTEM}}" = "vm" ] || \
@@ -182,6 +189,7 @@ vm SYSTEM:
   Error: Unknown argument - '{{SYSTEM}}'
   Use one of:
     desktop
+    workstation
     server
     laptop
     vm
