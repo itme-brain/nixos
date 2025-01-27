@@ -77,15 +77,6 @@
             (import ./src/system/machines/wsl/modules/home-manager)
         ];
       };
-
-      vm = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          ./src/system/machines/vm
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/vm/modules/home-manager)
-        ];
-      };
     };
 
     devShells.${system}.default = mkShell {
