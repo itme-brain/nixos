@@ -10,7 +10,7 @@ let
   };
 
 in
-{ options.modules.user.gui.wm.hyprland = { enable = mkEnableOption "Enable hyprland module"; };
+{ options.modules.user.gui.wm.hyprland = { enable = mkEnableOption "Enable Hyprland WM"; };
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;

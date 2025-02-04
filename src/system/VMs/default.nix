@@ -8,17 +8,17 @@
     connections."qemu:///system" = {
       domains = [
         {
-          definition = ./config/machines/Test_Bench1.xml;
+          definition = ./machines/Test_Bench1.xml;
         }
       ];
 
       pools = [
         {
-          definition = ./config/storage/pools/default.xml;
+          definition = ./storage/pools/default.xml;
           active = true;
           volumes = [
             {
-              definition = ./config/storage/volumes/rocky9.xml;
+              definition = ./storage/volumes/rocky9.xml;
             }
           ];
         }
@@ -26,7 +26,7 @@
 
       networks = [
         {
-          definition = ./config/networks/virbr0.xml;
+          definition = ./networks/virbr0.xml;
           active = true;
         }
       ];

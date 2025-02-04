@@ -10,8 +10,15 @@ let
     sha256 = "1ph5m9s57076jx6042iipqx2ifzadmd5z4lf5l49wgq4jb92mp16";
   };
 
+  barStatus = pkgs.writeShellScript "status.sh" ''
+    #!/usr/bin/env bash
+    while :; do 
+      echo "$(ip -4 addr show eno1 | awk '/inet / {print $2}' | cut -d'/' -f1) | $(free -h | awk '/^Mem/ {print $3}') | $(date +'%I:%M:%S %p') | $(date +'%m-%d-%Y')"; sleep 1; 
+    done
+  '';
+
 in
-{ options.modules.user.gui.wm.sway = { enable = mkEnableOption "user.gui.wm.sway"; };
+{ options.modules.user.gui.wm.sway = { enable = mkEnableOption "Enable Sway WM"; };
   config = mkIf cfg.enable {
     wayland.windowManager.sway = { 
       enable = true;
@@ -30,11 +37,6 @@ in
         };
 
         output = {
-          #HDMI-A-1 = {
-          #  resolution = "1920x1080";
-          #  position = "0,0";
-          #  bg = "${wallpaper} fill";
-          #};
           DP-2 = {
             resolution = "3440x1440@59.973Hz";
             position = "0,0";
@@ -59,7 +61,7 @@ in
         bars = [
           {
             position = "top";
-            statusCommand = ''while :; do echo "$(free -h | awk '/^Mem/ {print $3}') '|' $(date +'%I:%M:%S %p') '|' $(date +'%m-%d-%Y')"; sleep 1; done'';
+            statusCommand = "${barStatus}";
             fonts = {
               names = [ "Terminus" ];
               size = 12.0;

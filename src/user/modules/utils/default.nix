@@ -11,6 +11,11 @@ in
       wget curl fastfetch
       unzip fping calc fd pciutils
       rsync zip lshw wireshark
+      calcurse
     ];
+
+    programs.bash.shellAliases = {
+      calendar = "${pkgs.calcurse}/bin/calcurse";
+    };
   };
 }
