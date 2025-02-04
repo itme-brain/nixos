@@ -22,9 +22,8 @@ in
         "$menu" = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
 
         monitor = [
-	   "DP-2, 3440x1440, 0x0, 1"
-          #"HDMI-A-1, 1920x1080, 0x0, 1"
-          #"DP-1, 1920x1080, 1920x0, 1"
+          "HDMI-A-1, 1920x1080, 0x0, 1"
+          "DP-1, 1920x1080, 1920x0, 1"
         ];
 
         exec-once = [
@@ -97,7 +96,7 @@ in
           kb_layout = "us";
           follow_mouse = 1;
           accel_profile = "flat";
-          sensitivity = 0.45;
+          sensitivity = 0.35;
         };
 
         env = [
