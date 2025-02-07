@@ -39,7 +39,7 @@
           wm.sway.enable = true;
 
           browser = {
-            firefox.enable = true;
+            chromium.enable = true;
           };
 
           alacritty.enable = true;

@@ -90,6 +90,8 @@ with lib;
   };
 
   services = {
+    teamviewer.enable = true;
+
     timesyncd = lib.mkDefault {
       enable = true;
       servers = [
