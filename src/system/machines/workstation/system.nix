@@ -124,19 +124,4 @@ with lib;
       };
     };
   };
-} // attrsets.optionalAttrs (
-       config.virtualisation ? libvirt && config.virtualisation.libvirt.enable ||
-       config.virtualisation.libvirtd.enable) 
-{
-  systemd.tmpfiles.rules = [
-    "d /home/VMs 0755 root root" 
-  ];
-
-  fileSystems = {
-    "/var/lib/libvirt/images" = {
-      device = "/home/VMs";
-      fstype = "none";
-      options = [ "bind" ];
-    };
-  };
 }

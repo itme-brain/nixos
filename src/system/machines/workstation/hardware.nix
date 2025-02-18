@@ -43,7 +43,17 @@
       device = "/dev/disk/by-uuid/61E7-6E56";
       fsType = "vfat";
     };
+
+    "/var/lib/libvirt/images" = {
+      device = "/home/VMs";
+      options = [ "bind" ];
+    };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /home/VMs 0755 root root" 
+  ];
+
 
   hardware = {
     cpu = {
