@@ -1,0 +1,28 @@
+<volume type='file'>
+  <name>rtHub.qcow2</name>
+  <key>/var/lib/libvirt/images/rtHub.qcow2</key>
+  <capacity unit='bytes'>536870912000</capacity>
+  <allocation unit='bytes'>536953098240</allocation>
+  <physical unit='bytes'>536953094144</physical>
+  <target>
+    <path>/var/lib/libvirt/images/rtHub.qcow2</path>
+    <format type='qcow2'/>
+    <permissions>
+      <mode>0600</mode>
+      <owner>0</owner>
+      <group>0</group>
+    </permissions>
+    <timestamps>
+      <atime>1739896304.319898704</atime>
+      <mtime>1739889095.814742881</mtime>
+      <ctime>1739895648.059488448</ctime>
+      <btime>0</btime>
+    </timestamps>
+    <compat>1.1</compat>
+    <clusterSize unit='B'>65536</clusterSize>
+    <features>
+      <lazy_refcounts/>
+    </features>
+  </target>
+</volume>
+
