@@ -23,10 +23,11 @@ in
     wayland.windowManager.sway = { 
       enable = true;
       xwayland = true;
-      #wrapperFeatures.gtk = true;
+      wrapperFeatures.gtk = true;
 
       extraSessionCommands = ''
         export _JAVA_AWT_WM_NONREPARENTING=1
+        export GTK_THEME=Adwaita-Dark
       '';
 
       config = {
