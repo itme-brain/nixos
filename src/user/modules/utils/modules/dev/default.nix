@@ -16,7 +16,7 @@ in
       qrencode
 
       docker
-    ] ++ optionals (osConfig.virtualisation ? libvirt &&
+    ] ++ optionals (osConfig.virtualisation ? libvirt && osConfig.virtualisation.libvirt.enable ||
                     osConfig.virtualisation.libvirt.enable) [
       virt-manager
     ];

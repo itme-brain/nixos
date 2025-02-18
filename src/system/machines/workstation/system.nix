@@ -1,7 +1,8 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-{ system.stateVersion = "23.11";
+{ 
+  system.stateVersion = "23.11";
 
   users.users = {
     ${config.user.name} = {
@@ -121,6 +122,21 @@ with lib;
         X11Forwarding = false;
         PasswordAuthentication = true;
       };
+    };
+  };
+} // attrsets.optionalAttrs (
+       config.virtualisation ? libvirt && config.virtualisation.libvirt.enable ||
+       config.virtualisation.libvirtd.enable) 
+{
+  systemd.tmpfiles.rules = [
+    "d /home/VMs 0755 root root" 
+  ];
+
+  fileSystems = {
+    "/var/lib/libvirt/images" = {
+      device = "/home/VMs";
+      fstype = "none";
+      options = [ "bind" ];
     };
   };
 }
