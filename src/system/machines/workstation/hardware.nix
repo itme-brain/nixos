@@ -10,7 +10,7 @@
     };
     extraModulePackages = [ ];
     kernelParams = [ "intel_iommu=off" ];
-    kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
+    kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" "amdgpu" ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -20,8 +20,14 @@
     vulkan-loader
     vulkan-tools
     vulkan-extension-layer
-    glxinfo
+
     mesa
+    mesa-demos
+
+    libGL
+
+    glxinfo
+    clinfo
   ];
 
   fileSystems = {
@@ -59,17 +65,14 @@
   };
 
   hardware = {
-    cpu = {
-      intel = {
-        updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-      };
-    };
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amdgpu = {
       initrd.enable = true;
-      amdvlk.enable = true;
       opencl.enable = true;
     };
   };
+
+  services.xserver.videoDrivers = [ "amdgpu" ];
   
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
