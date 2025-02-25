@@ -9,7 +9,7 @@
       kernelModules = [ "dm-snapshot" ];
     };
     extraModulePackages = [ ];
-    kernelParams = [ "intel_iommu=on" ];
+    kernelParams = [ "intel_iommu=off" ];
     kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
   };
 
