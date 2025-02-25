@@ -54,6 +54,13 @@
     "d /home/VMs 0755 root root" 
   ];
 
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      runAsRoot = true;
+      ovmf.enable = true;
+    };
+  };
 
   hardware = {
     cpu = {
