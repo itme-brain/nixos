@@ -30,7 +30,7 @@
           dev = {
             enable = true;
           };
-          irc.enable = true;
+          email.enable = true;
           neovim.enable = true;
           vim.enable = false;
         };
@@ -43,7 +43,6 @@
           };
 
           alacritty.enable = true;
-          fun.enable = true;
           utils.enable = true;
           writing.enable = true;
         };
