@@ -32,7 +32,7 @@
           };
           email.enable = true;
           neovim.enable = true;
-          vim.enable = false;
+          vim.enable = true;
         };
 
         gui = {
