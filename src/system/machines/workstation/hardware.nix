@@ -22,9 +22,6 @@
     vulkan-extension-layer
     glxinfo
     mesa
-
-    #cudaPackages.cudatoolkit
-    #cudaPackages.cudnn
   ];
 
   fileSystems = {
@@ -67,12 +64,10 @@
         updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       };
     };
-    nvidia = {
-      open = true;
-      modesetting.enable = true;
-    };
-    graphics = {
-      enable = true;
+    amdgpu = {
+      initrd.enable = true;
+      amdvlk.enable = true;
+      opencl.enable = true;
     };
   };
   
