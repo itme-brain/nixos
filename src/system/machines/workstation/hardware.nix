@@ -9,7 +9,7 @@
       kernelModules = [ "dm-snapshot" ];
     };
     extraModulePackages = [ ];
-    kernelParams = [ "intel_iommu=off" ];
+    kernelParams = [ "intel_iommu=on" ];
     kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" "amdgpu" ];
   };
 
@@ -65,15 +65,11 @@
   };
 
   hardware = {
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amdgpu = {
       initrd.enable = true;
       opencl.enable = true;
     };
   };
 
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
 }

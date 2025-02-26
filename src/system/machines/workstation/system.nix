@@ -42,10 +42,6 @@ with lib;
       configurationLimit = 5;
       memtest86.enable = true;
     };
-
-    efi = {
-      canTouchEfiVariables = true;
-    };
     timeout = null;
   };
 
