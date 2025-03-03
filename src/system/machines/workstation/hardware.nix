@@ -10,10 +10,23 @@
     };
     extraModulePackages = [ ];
     kernelParams = [ "intel_iommu=on" ];
-    kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" "amdgpu" ];
+    kernelModules = [ 
+      "kvm-intel" 
+      "virtio" 
+      "vfio-pci" 
+      "coretemp" 
+      "amdgpu" 
+      "ipmi_devintf"
+      "ipmi_si"
+    ];
   };
 
   environment.systemPackages = with pkgs; [
+    ipmitool
+    ipmicfg
+    ipmiutil
+    ipmiview
+
     linuxHeaders
 
     vulkan-headers
