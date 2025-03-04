@@ -15,7 +15,7 @@
       "virtio" 
       "vfio-pci" 
       "coretemp" 
-      "amdgpu" 
+
       "ipmi_devintf"
       "ipmi_si"
     ];
@@ -40,7 +40,6 @@
     libGL
 
     glxinfo
-    clinfo
   ];
 
   fileSystems = {
@@ -77,12 +76,23 @@
     };
   };
 
+  services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
+
   hardware = {
-    amdgpu = {
-      initrd.enable = true;
-      opencl.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+    nvidia = {
+      open = false;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      modesetting.enable = true;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

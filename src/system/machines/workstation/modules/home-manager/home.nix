@@ -36,7 +36,7 @@
         };
 
         gui = {
-          wm.sway.enable = true;
+          wm.i3.enable = true;
 
           browser = {
             chromium.enable = true;

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, home-manager, ... }:
 
 with lib;
 { 
@@ -86,7 +86,15 @@ with lib;
     };
   };
 
+  programs.i3lock = {
+    enable = true;
+    package = pkgs.i3lock-fancy;
+  };
+
   services = {
+    xserver.enable = true;
+    displayManager.ly.enable = true;
+
     teamviewer.enable = true;
 
     timesyncd = lib.mkDefault {
