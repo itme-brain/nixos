@@ -83,13 +83,19 @@
       enable = true;
       enable32Bit = true;
     };
+
     nvidia = {
       open = false;
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       modesetting.enable = true;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+	version = "550.120";
+	sha256_64bit = "sha256-gBkoJ0dTzM52JwmOoHjMNwcN2uBN46oIRZHAX8cDVpc=";
+	settingsSha256 = "sha256-fPfIPwpIijoUpNlAUt9C8EeXR5In633qnlelL+btGbU=";
+	persistencedSha256 = lib.fakeSha256;
+      };
     };
   };
 

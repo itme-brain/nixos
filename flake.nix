@@ -24,6 +24,7 @@
       inherit system;
       config = {
         allowUnfree = true;
+	nvidia.acceptLicense = true;
       };
       overlays = [
         nur.overlays.default
