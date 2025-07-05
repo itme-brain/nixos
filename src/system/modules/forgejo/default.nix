@@ -10,24 +10,24 @@ in
   config = mkIf cfg.enable {
     users = {
       users = {
-        "git" = {
+        "${config.services.forgejo.user}" = {
           description = "Git server system user";
           isSystemUser = true;
-          group = "git";
+          group = "${config.services.forgejo.user}";
           extraGroups = mkIf nginx.enable [
             "web"
           ];
         };
-        "nginx" = {
+        "${config.services.nginx.user}" = {
           extraGroups = mkIf nginx.enable [
-            "git"
+            "${config.services.forgejo.group}"
           ];
         };
       };
       groups = {
-        "git" = {
+        "${config.services.forgejo.group}" = {
           members = [
-            "git"
+            "${config.services.forgejo.user}"
           ];
         };
       };
@@ -36,7 +36,7 @@ in
     services.forgejo = rec {
       enable = true;
       user = "git";
-      group = "git";
+      group = user;
       stateDir = "/var/lib/forgejo";
       
       settings = {

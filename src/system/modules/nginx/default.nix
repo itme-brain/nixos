@@ -10,26 +10,26 @@ in
   config = mkIf cfg.enable {
     users = {
       users = {
-        "nginx" = {
+        "${config.services.nginx.user}" = {
           description = "Web server system user";
           isSystemUser = true;
-          group = mkForce "web";
+          group = mkForce "${config.services.nginx.group}";
         };
         "btc" = {
           extraGroups = mkIf module.bitcoin.enable [
-            "web"
+            "${config.services.nginx.group}"
           ];
         };
-        "git" = {
+        "${config.services.forgejo.user}" = {
           extraGroups = mkIf module.forgejo.enable [
-            "web"
+            "${config.services.nginx.group}"
           ];
         };
       };
       groups = {
-        "web" = {
+        "${config.services.nginx.group}" = {
           members = [
-            "nginx"
+            "${config.services.nginx.user}"
           ];
         };
       };
@@ -56,6 +56,9 @@ in
 
     services.nginx = {
       enable = true;
+      user = "nginx";
+      group = "web";
+
       virtualHosts = 
       let
         certPath = config.security.acme.certs."ramos.codes".directory;
@@ -66,7 +69,6 @@ in
           inherit sslCertificate sslCertificateKey;
           forceSSL = true;
         }) hosts;
-
       in withSSL
       {
         "git.ramos.codes" = mkIf module.forgejo.enable {
