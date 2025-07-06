@@ -52,7 +52,7 @@ in
   };
 
   font = {
-    size = 12;
+    size = 14;
     normal = {
       family = "Terminess Nerd Font Mono";
       style = "Regular";
