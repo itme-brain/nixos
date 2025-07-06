@@ -8,7 +8,6 @@ let
         builtins.pathExists path &&
         builtins.readFileType path == "directory" &&
         builtins.baseNameOf path != "config";
-
       isModule = file: file == "default.nix";
       isNix = file: builtins.match ".*\\.nix" file != null && file != "default.nix";
 

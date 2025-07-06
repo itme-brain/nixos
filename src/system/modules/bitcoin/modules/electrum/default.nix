@@ -3,8 +3,6 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin.electrum;
-  home = "/var/lib/electrs";
-
   btc = config.modules.system.bitcoin;
 
   electrsConfig = pkgs.writeTextFile {
@@ -15,27 +13,24 @@ let
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "Electrs Server"; };
   config = mkIf (cfg.enable && btc.enable) {
-    #TODO: Fix the failing overlay due to `cargoHash/cargoSha256`
-    #nixpkgs.overlays = [
-    #  (final: prev: {
-    #    electrs = prev.electrs.overrideAttrs (old: rec {
-    #      pname = "electrs";
-    #      version = "0.10.8";
-    #      src = pkgs.fetchFromGitHub {
-    #        owner = "romanz";
-    #        repo = pname;
-    #        rev = "v${version}";
-    #        hash = "sha256-L26jzAn8vwnw9kFd6ciyYS/OLEFTbN8doNKy3P8qKRE=";
-    #      };
-    #      #cargoDeps = old.cargoDeps.overrideAttrs (const {
-    #      #  name = "electrs-${version}.tar.gz";
-    #      #  inherit src;
-    #      #  sha256 = "";
-    #      #});
-    #      cargoHash = "sha256-lBRcq73ri0HR3duo6Z8PdSjnC8okqmG5yWeHxH/LmcU=";
-    #    });
-    #  })
-    #];
+    nixpkgs.overlays = [
+      (final: prev: {
+        electrs = prev.electrs.overrideAttrs (old: rec {
+          version = "0.10.6";
+          src = pkgs.fetchFromGitHub {
+            owner = "romanz";
+            repo = "electrs";
+            rev = "v${version}";
+            hash = "sha256-yp9fKD7zH9Ne2+WQUupaxvUx39RWE8RdY4U6lHuDGSc=";
+          };
+          cargoDeps = old.cargoDeps.overrideAttrs (lib.const {
+            name = "electrs-vendor.tar.gz";
+            inherit src;
+            outputHash = "sha256-qQKAQHOAeYWQ5YVtx12hIAjNA7Aj1MW1m+WimlBWPv0=";
+          });
+        });
+      })
+    ];
 
     environment.systemPackages = with pkgs; [
       electrs
@@ -44,7 +39,7 @@ in
     users = {
       users = {
         "electrs" = {
-          inherit home;
+          home = "/var/lib/electrs";
           description = "Electrs system user";
           isSystemUser = true;
           group = "bitcoin";
