@@ -39,18 +39,18 @@ in
 
     users = {
       users = {
-        "clightning" = {
-          home = "/var/lib/clightning";
+        "cln" = {
+          home = "/var/lib/lightningd";
           description = "Core Lightning system user";
           isSystemUser = true;
-          group = "bitcoin";
+          group = "btc";
           createHome = true;
         };
       };
       groups = {
-        "bitcoin" = {
-          members = mkAfter [
-            "clightning"
+        "btc" = {
+          members = [
+            "cln"
           ];
         };
       };
@@ -62,31 +62,29 @@ in
 
     systemd.services.lightningd = {
       description = "Core Lightning Daemon";
-
-      script = "${pkgs.clightning}/bin/lightningd";
-      scriptArgs = ''
-        --conf=${clnConfig}
-      '';
-
-      after = [
-        "bitcoind-btc.service"
-      ];
-
       serviceConfig = {
+        User = "cln";
+        Group = "btc";
 
-        User = "clightning";
-        Group = "bitcoin";
+        StateDirectory = "lightningd";
+        WorkingDirectory = "%S/lightningd";
+
+        ExecStart = "${pkgs.clightning}/bin/lightningd --conf=${clnConfig}";
 
         Type = "simple";
         KillMode = "process";
         TimeoutSec = 60;
         Restart = "always";
-        RestartSec = 60;
+        RestartSec = 2;
       };
-      requisite = [
+
+      after = [
         "bitcoind-btc.service"
         "network.target"
       ];
+      requires = [ "bitcoind-btc.service" ];
+      partOf = [ "bitcoind-btc.service" ];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

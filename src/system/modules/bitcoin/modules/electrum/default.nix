@@ -42,13 +42,13 @@ in
           home = "/var/lib/electrs";
           description = "Electrs system user";
           isSystemUser = true;
-          group = "bitcoin";
+          group = "btc";
           createHome = true;
         };
       };
       groups = {
-        "bitcoin" = {
-          members = mkAfter [
+        "btc" = {
+          members = [
             "electrs"
           ];
         };
@@ -58,29 +58,28 @@ in
 
     systemd.services.electrs = {
       description = "Electrs Bitcoin Indexer";
-
-      script = "${pkgs.electrs}/bin/electrs";
-      scriptArgs = "--conf=${electrsConfig}";
-
-      after = [
-        "bitcoind-btc.service"
-      ];
-
       serviceConfig = {
-
         User = "electrs";
-        Group = "bitcoin";
+        Group = "btc";
+
+        StateDirectory   = "electrs";
+        WorkingDirectory = "%S/electrs";
+
+        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${electrsConfig}";
 
         Type = "simple";
         KillMode = "process";
         TimeoutSec = 60;
-        Restart = "always";
-        RestartSec = 60;
+        Restart = "on-failure";
+        RestartSec = 2;
       };
-      requisite = [
-        "bitcoind-btc.service"
+      after = [
         "network.target"
+        "bitcoind-btc.service"
       ];
+      requires = [ "bitcoind-btc.service" ];
+      partOf = [ "bitcoind-btc.service" ];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

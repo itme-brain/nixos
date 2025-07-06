@@ -11,22 +11,19 @@
       bitcoin = {
         enable = true;
         electrum.enable = true;
-        clightning = {
-          enable = true;
-          rest.enable = true;
-        };
+        #clightning = {
+        #  enable = true;
+        #  rest.enable = true;
+        #};
       };
     };
   };
-
-  users.mutableUsers = false;
 
   users.users = {
     "${config.user.name}" = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
-      password = "123";
     };
   };
 

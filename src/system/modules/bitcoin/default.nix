@@ -28,17 +28,17 @@ in
           inherit home;
           description = "Bitcoin Core system user";
           isSystemUser = true;
-          group = "bitcoin";
+          group = "btc";
           createHome = true;
         };
         "${config.services.nginx.user}" = {
           extraGroups = mkIf nginx.enable [
-            "bitcoin"
+            "btc"
           ];
         };
       };
       groups = {
-        "bitcoin" = {
+        "btc" = {
           members = [
             "btc"
           ];
@@ -54,11 +54,16 @@ in
       "btc" = {
         enable = true;
         user = "btc";
-        group = "bitcoin";
+        group = "btc";
         configFile = ./config/bitcoin.conf;
         dataDir = home;
         pidFile = "${home}/bitcoind.pid";
       };
+    };
+
+    services.tor = {
+      enable = true;
+      client.enable = true;
     };
   };
 }

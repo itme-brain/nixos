@@ -39,8 +39,7 @@ in
       };
     };
 
-    security.acme = 
-    {
+    security.acme = {
       acceptTerms = true;
       defaults = {
         email = "${config.user.email}";
@@ -49,30 +48,33 @@ in
       };
       certs = {
         "ramos.codes" = {
-          extraDomainNames = attrNames config.services.nginx.virtualHosts;
+          extraDomainNames = [
+            "git.ramos.codes"
+            "btc.ramos.codes"
+          ];
         };
       };
     };
 
-    services.nginx = {
+    services.nginx = 
+    let
+      certPath = config.security.acme.certs."ramos.codes".directory;
+      sslCertificate = "${certPath}/fullchain.pem";
+      sslCertificateKey = "${certPath}/key.pem";
+
+      withSSL = hosts: mapAttrs (name: hostConfig: hostConfig // {
+        inherit sslCertificate sslCertificateKey;
+        forceSSL = true;
+      }) hosts;
+    in
+    {
       enable = true;
       user = "nginx";
       group = "web";
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
 
-      virtualHosts = 
-      let
-        certPath = config.security.acme.certs."ramos.codes".directory;
-        sslCertificate = "${certPath}/fullchain.pem";
-        sslCertificateKey = "${certPath}/key.pem";
-
-        withSSL = hosts: mapAttrs (name: hostConfig: hostConfig // {
-          inherit sslCertificate sslCertificateKey;
-          forceSSL = true;
-        }) hosts;
-      in withSSL
-      {
+      virtualHosts = withSSL {
         "git.ramos.codes" = mkIf module.forgejo.enable {
           locations = {
             "/" = {
@@ -80,14 +82,22 @@ in
             };
           };
         };
-        #"btc.ramos.codes" = mkIf module.bitcoin.electrum.enable {
-        #  locations = {
-        #   "/" = {
-        #     proxyPass = "";
-        #   };
-        #  };
-        #};
       };
+
+      streamConfig = ''
+        ${lib.optionalString module.bitcoin.electrum.enable ''
+          server {
+            listen 0.0.0.0:50002 ssl;
+            proxy_pass 127.0.0.1:50001;
+
+            ssl_certificate ${sslCertificate};
+            ssl_certificate_key ${sslCertificateKey};
+          }
+        ''}
+      '';
     };
+    networking.firewall.allowedTCPPorts = [
+      50002
+    ];
   };
 }
