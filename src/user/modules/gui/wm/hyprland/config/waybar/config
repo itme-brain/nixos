@@ -75,7 +75,7 @@
 
   "cpu": {
     "interval": 1,
-    "format": "<span color='#ffd808'> </span><span color='#ffffff'>{usage}%</span>",
+    "format": "<span color='#ffd808'> </span><span color='#ffffff'> {usage}%</span>",
     "min-length": 6,
     "max-length": 6,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],

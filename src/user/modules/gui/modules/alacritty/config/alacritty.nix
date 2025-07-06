@@ -52,24 +52,24 @@ in
   };
 
   font = {
-    size = 14;
+    size = 12;
     normal = {
-      family = "Terminess Nerd Font Mono";
+      family = "Terminess Nerd Font Propo";
       style = "Regular";
     };
 
     bold = {
-      family = "Terminess Nerd Font Mono";
+      family = "Terminess Nerd Font Propo";
       style = "Bold";
     };
 
     italic = {
-      family = "Terminess Nerd Font Mono";
+      family = "Terminess Nerd Font Propo";
       style = "Italic";
     };
 
     bold_italic = {
-      family = "Terminess Nerd Font Mono";
+      family = "Terminess Nerd Font Propo";
       style = "Bold Italic";
     };
   };
