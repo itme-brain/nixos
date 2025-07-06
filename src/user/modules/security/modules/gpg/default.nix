@@ -41,7 +41,7 @@ in
       enableBashIntegration = true;
       enableScDaemon = true;
 
-      pinentryPackage =
+      pinentry.package =
       if gui.enable then
         pkgs.pinentry-gnome3
       else

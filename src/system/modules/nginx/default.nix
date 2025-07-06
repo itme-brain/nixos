@@ -45,11 +45,11 @@ in
       defaults = {
         email = "${config.user.email}";
         validMinDays = 90;
+        listenHTTP = ":80";
       };
       certs = {
         "ramos.codes" = {
           extraDomainNames = attrNames config.services.nginx.virtualHosts;
-          listenHTTP = ":80";
         };
       };
     };
