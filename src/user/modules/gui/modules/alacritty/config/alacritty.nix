@@ -54,22 +54,22 @@ in
   font = {
     size = 12;
     normal = {
-      family = "Terminus";
+      family = "Terminess Nerd Font Mono";
       style = "Regular";
     };
 
     bold = {
-      family = "Terminus";
+      family = "Terminess Nerd Font Mono";
       style = "Bold";
     };
 
     italic = {
-      family = "Terminus";
+      family = "Terminess Nerd Font Mono";
       style = "Italic";
     };
 
     bold_italic = {
-      family = "Terminus";
+      family = "Terminess Nerd Font Mono";
       style = "Bold Italic";
     };
   };

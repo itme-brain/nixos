@@ -68,7 +68,8 @@
   ];
 
   fonts.packages = with pkgs; [
-    nerd-fonts.terminess-ttf
+    terminus_font
+    nerd-fonts.terminess-ttf  
   ];
 
   security.sudo = {
