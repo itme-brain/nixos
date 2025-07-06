@@ -7,11 +7,6 @@ let
 
   home = "/var/lib/bitcoind";
 
-  bitcoinConf = pkgs.writeTextFile {
-    name = "bitcoin.conf";
-    text = builtins.readFile ./config/bitcoin.conf;
-  };
-
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
   config = mkIf cfg.enable {
@@ -36,7 +31,7 @@ in
           group = "bitcoin";
           createHome = true;
         };
-        "nginx" = {
+        "${config.services.nginx.user}" = {
           extraGroups = mkIf nginx.enable [
             "bitcoin"
           ];
@@ -60,7 +55,7 @@ in
         enable = true;
         user = "btc";
         group = "bitcoin";
-        configFile = bitcoinConf;
+        configFile = ./config/bitcoin.conf;
         dataDir = home;
         pidFile = "${home}/bitcoind.pid";
       };

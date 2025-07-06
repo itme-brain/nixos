@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.modules.system.nginx;
   module = config.modules.system;
+  forgejo = config.services.forgejo;
 
 in
 { options.modules.system.nginx = { enable = mkEnableOption "Nginx Reverse Proxy"; };
@@ -14,13 +15,16 @@ in
           description = "Web server system user";
           isSystemUser = true;
           group = mkForce "${config.services.nginx.group}";
+          extraGroups = [
+            "${config.security.acme.defaults.group}"
+          ];
         };
         "btc" = {
           extraGroups = mkIf module.bitcoin.enable [
             "${config.services.nginx.group}"
           ];
         };
-        "${config.services.forgejo.user}" = {
+        "${forgejo.user}" = {
           extraGroups = mkIf module.forgejo.enable [
             "${config.services.nginx.group}"
           ];
@@ -36,18 +40,14 @@ in
     };
 
     security.acme = 
-    let
-      acmeDir = "/var/lib/acme";
-    in
     {
       acceptTerms = true;
+      defaults = {
+        email = "${config.user.email}";
+        validMinDays = 90;
+      };
       certs = {
         "ramos.codes" = {
-          #webroot = "${acmeDir}/acme-challenge";
-          directory = "${acmeDir}/ramos.codes";
-          email = config.user.email;
-          group = "web";
-          validMinDays = 90;
           extraDomainNames = attrNames config.services.nginx.virtualHosts;
           listenHTTP = ":80";
         };
@@ -58,6 +58,8 @@ in
       enable = true;
       user = "nginx";
       group = "web";
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
 
       virtualHosts = 
       let
@@ -74,7 +76,7 @@ in
         "git.ramos.codes" = mkIf module.forgejo.enable {
           locations = {
             "/" = {
-              proxyPass = "http://unix:${config.services.forgejo.settings.server.HTTP_ADDR}";
+              proxyPass = "http://unix:${forgejo.settings.server.HTTP_ADDR}";
             };
           };
         };

@@ -37,7 +37,7 @@ in
     services.forgejo = rec {
       enable = true;
       user = "git";
-      group = user;
+      group = "git";
       stateDir = "/var/lib/forgejo";
       
       settings = {
@@ -45,14 +45,23 @@ in
           PROTOCOL = "http+unix";
           DOMAIN = "127.0.0.1";
           HTTP_ADDR = "/run/forgejo/forgejo.sock";
+          ROOT_URL = "https://git.ramos.codes";
         };
       };
 
       database = {
+        name = "git";
         inherit user;
         type = "sqlite3";
         path = "${stateDir}/data/forgejo.db";
         createDatabase = true;
+      };
+      
+      dump = {
+        enable = true;
+        file = "git.bkup";
+        type = "tar.gz";
+        interval = "weekly";
       };
     };
   };
