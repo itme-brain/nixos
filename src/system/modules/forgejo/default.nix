@@ -12,6 +12,7 @@ in
       users = {
         "${config.services.forgejo.user}" = {
           description = "Git server system user";
+          home = config.services.forgejo.stateDir;
           isSystemUser = true;
           group = "${config.services.forgejo.user}";
           extraGroups = mkIf nginx.enable [
@@ -54,5 +55,7 @@ in
         createDatabase = true;
       };
     };
+    
+    networking.firewall.allowedTCPPorts = [ 8333 ];
   };
 }
