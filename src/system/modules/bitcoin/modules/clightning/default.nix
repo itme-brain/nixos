@@ -88,7 +88,5 @@ in
         "network.target"
       ];
     };
-
-    networking.firewall.allowedTCPPorts = [ 9735 ];
   };
 }

@@ -55,7 +55,5 @@ in
         createDatabase = true;
       };
     };
-    
-    networking.firewall.allowedTCPPorts = [ 8333 ];
   };
 }
