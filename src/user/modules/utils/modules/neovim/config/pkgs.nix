@@ -16,7 +16,7 @@ let
     typescript-language-server
     vscode-langservers-extracted
     bash-language-server
-    vls
+    #vls
   ];
 
   extraPackages = with pkgs; [

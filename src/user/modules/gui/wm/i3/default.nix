@@ -129,7 +129,7 @@ in
       ranger
       highlight
 
-      terminus-nerdfont
+      nerd-fonts.terminess-ttf
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji

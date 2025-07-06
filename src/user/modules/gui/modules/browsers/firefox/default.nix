@@ -22,7 +22,7 @@ let
     };
     assertions =
     let
-      pinentry = config.services.gpg-agent.pinentryPackage;
+      pinentry = config.services.gpg-agent.pinentry.package;
     in
     [
       {
@@ -43,25 +43,27 @@ in
           isDefault = true;
           #bookmarks = config.user.bookmarks;
 
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-            tridactyl
-            #darkreader
-            tampermonkey
-            clearurls
-            passff
-            multi-account-containers
-          ];
+          extensions = {
+            packages = with pkgs.nur.repos.rycee.firefox-addons; [
+              ublock-origin
+              tridactyl
+              #darkreader
+              tampermonkey
+              clearurls
+              passff
+              multi-account-containers
+            ];
+          };
 
           search = {
             force = true;
-            default = "Google";
+            default = "google";
             engines = {
               "Startpage" = {
                 urls = [{
                   template = "https://www.startpage.com/sp/search?q={searchTerms}";
                 }];
-                iconUpdateURL = "https://www.startpage.com/sp/cdn/favicons/favicon--default.ico";
+                icon = "https://www.startpage.com/sp/cdn/favicons/favicon--default.ico";
               };
             };
           };
