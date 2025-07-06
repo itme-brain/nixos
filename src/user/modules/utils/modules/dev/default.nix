@@ -31,8 +31,18 @@ in
       };
     };
 
-    home.sessionVariables = {
-      DIRENV_LOG_FORMAT = "";
+    home = {
+      sessionVariables = {
+        DIRENV_LOG_FORMAT = "";
+      };
+
+      # Workaround for direnv_log bug 
+      # https://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
+      file.".config/direnv/direnv.toml" = {
+        enable = true;
+        force = true;
+        text = "";
+      };
     };
   };
 }
