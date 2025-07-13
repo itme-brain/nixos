@@ -99,6 +99,14 @@ in
           sensitivity = 0.35;
         };
 
+        cursor = {
+          inactive_timeout = 0;
+          no_hardware_cursors = true;
+          hide_on_touch = false;
+          use_cpu_buffer = 0;
+          enable_hyprcursor = false;
+        };
+
         env = [
           "HYPRCURSOR_THEME,Vanilla-DMZ"
           "HYPRCURSOR_SIZE,24"
