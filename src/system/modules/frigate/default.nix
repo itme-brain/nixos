@@ -20,7 +20,7 @@ in
           "Doorbell" = {
             ffpmeg.inputs = [
               {
-                path = "rtsp://admin:th3bigbl4ck@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                path = "rtsp://$(cat /run/secrets/camera_user):$(cat /run/secrets/camera_pass)@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
                 roles = [ "detect" "record" ];
               }
             ];

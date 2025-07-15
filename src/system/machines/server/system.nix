@@ -19,11 +19,13 @@
     };
   };
 
+  users.mutableUsers = false;
   users.users = {
     "${config.user.name}" = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
+      password = "123";
     };
   };
 
@@ -112,6 +114,19 @@
     settings = {
       X11Forwarding = false;
       PasswordAuthentication = false;
+    };
+  };
+
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+    secrets = {
+      camera_user = {};
+      camera_pass = {};
     };
   };
 }

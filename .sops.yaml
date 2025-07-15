@@ -4,9 +4,9 @@ keys:
   - &hosts:
     - &server age1jvqcc984v5xr8yhwm72arsy2hx6rm9gvsr7zeeasvcl0k2l9efmsgys3eg
 creation_rules:
-  - path_regex: src/system/machines/server/secrets.ya?ml$
+  - path_regex: src/system/modules/frigate/secrets.ya?ml$
     key_groups:
-      age:
+      - age:
         - *server
-      pgp:
+      - pgp:
         - *bryan
