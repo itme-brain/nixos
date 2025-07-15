@@ -1,0 +1,12 @@
+keys:
+  - &users:
+    - &bryan F1F3466458452B2DF351F1E864D12BA95ACE1F2D
+  - &hosts:
+    - &server age1jvqcc984v5xr8yhwm72arsy2hx6rm9gvsr7zeeasvcl0k2l9efmsgys3eg
+creation_rules:
+  - path_regex: src/system/machines/server/secrets.ya?ml$
+    key_groups:
+      age:
+        - *server
+      pgp:
+        - *bryan

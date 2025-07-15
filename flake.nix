@@ -15,9 +15,13 @@
       url = "github:nix-community/NixOS-WSL/2411.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl }:
+  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, sops-nix }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -56,6 +60,7 @@
         inherit system pkgs;
         modules = [
           ./src/system/machines/server
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/server/modules/home-manager)
         ];
@@ -77,6 +82,7 @@
       name = "devShell";
       packages = [
         just
+        age
       ];
     };
   };
