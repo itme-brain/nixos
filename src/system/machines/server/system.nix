@@ -8,6 +8,7 @@
     system = {
       nginx.enable = true;
       forgejo.enable = true;
+      frigate.enable = true;
       bitcoin = {
         enable = true;
         electrum.enable = true;
@@ -123,10 +124,6 @@
     age = {
       keyFile = "/var/lib/sops-nix/key.txt";
       generateKey = true;
-    };
-    secrets = {
-      camera_user = {};
-      camera_pass = {};
     };
   };
 }

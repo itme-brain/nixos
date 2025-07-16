@@ -8,6 +8,13 @@ let
 in
 { options.modules.system.frigate = { enable = mkEnableOption "Enable Frigate NVR"; };
   config = mkIf cfg.enable {
+    sops = {
+      secrets = {
+        camera_user = {};
+        camera_pass = {};
+      };
+    };
+
     services.frigate = {
       enable = true;
       hostname = "frigate";
@@ -18,48 +25,74 @@ in
         };
         cameras = {
           "Doorbell" = {
-            ffpmeg.inputs = [
-              {
-                path = "rtsp://$(cat /run/secrets/camera_user):$(cat /run/secrets/camera_pass)@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
-                roles = [ "detect" "record" ];
-              }
-            ];
+            ffmpeg = {
+              inputs = [
+                {
+                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
           };
-
           "Living Room" = {
-            ffpmeg.inputs = [
-              {
-                path = "rtsp://admin:th3bigbl4ck@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
-                roles = [ "detect" "record" ];
-              }
-            ];
+            ffmpeg = {
+              inputs = [
+                {
+                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=1&subtype=1";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
           };
-
           "Kitchen" = {
-            ffpmeg.inputs = [
-              {
-                path = "rtsp://admin:th3bigbl4ck@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
-                roles = [ "detect" "record" ];
-              }
-            ];
+            ffmpeg = {
+              inputs = [
+                {
+                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
           };
-
           "Parking Lot" = {
-            ffpmeg.inputs = [
-              {
-                path = "rtsp://admin:th3bigbl4ck@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
-                roles = [ "detect" "record" ];
-              }
-            ];
+            ffmpeg = {
+              inputs = [
+                {
+                  path = "rtsp://user:password@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://user:password@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
           };
-
           "Porch" = {
-            ffpmeg.inputs = [
-              {
-                path = "rtsp://admin:th3bigbl4ck@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
-                roles = [ "detect" "record" ];
-              }
-            ];
+            ffmpeg = {
+              inputs = [
+                {
+                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
           };
         };
       };
