@@ -109,21 +109,19 @@
     };
   };
 
+
+  virtualisation.vmVariant = {
+    virtualisation.forwardPorts = [
+      { from = "host"; host.port = 5000; guest.port = 5000; }
+    ];
+  };
+
   services.openssh = {
     enable = true;
     startWhenNeeded = true;
     settings = {
       X11Forwarding = false;
       PasswordAuthentication = false;
-    };
-  };
-
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age = {
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
     };
   };
 }

@@ -8,17 +8,14 @@ let
 in
 { options.modules.system.frigate = { enable = mkEnableOption "Enable Frigate NVR"; };
   config = mkIf cfg.enable {
-    sops = {
-      secrets = {
-        camera_user = {};
-        camera_pass = {};
-      };
-    };
-
     services.frigate = {
       enable = true;
       hostname = "frigate";
       settings = {
+        web = {
+          bind_address = "0.0.0.0";
+          port = "5000";
+        };
         mqtt = {
           enabled = true;
           host = "localhost";
@@ -28,11 +25,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -42,11 +39,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -56,11 +53,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://user:password@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -70,11 +67,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://user:password@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.60/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://user:password@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.60/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -84,11 +81,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://user:password@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -97,5 +94,7 @@ in
         };
       };
     };
+
+    networking.firewall.allowedTCPPorts = [ 5000 ];
   };
 }
