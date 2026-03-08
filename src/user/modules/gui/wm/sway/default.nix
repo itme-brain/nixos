@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, monitors ? [], ... }:
 
 with lib;
 let
@@ -12,15 +12,30 @@ let
 
   barStatus = pkgs.writeShellScript "status.sh" ''
     #!/usr/bin/env bash
-    while :; do 
-      echo "$(ip -4 addr show eno1 | awk '/inet / {print $2}' | cut -d'/' -f1) | $(free -h | awk '/^Mem/ {print $3}') | $(date +'%I:%M:%S %p') | $(date +'%m-%d-%Y')"; sleep 1; 
+    while :; do
+      echo "$(ip -4 addr show eno1 | awk '/inet / {print $2}' | cut -d'/' -f1) | $(free -h | awk '/^Mem/ {print $3}') | $(date +'%I:%M:%S %p') | $(date +'%m-%d-%Y')"; sleep 1;
     done
   '';
+
+  toSwayOutput = m: {
+    "${m.name}" = {
+      resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}Hz";
+      position = "${toString m.x} ${toString m.y}";
+      scale = toString m.scale;
+      bg = "${wallpaper} fill";
+    };
+  };
+
+  outputConfig = if monitors != []
+    then lib.mkMerge (map toSwayOutput monitors)
+    else {
+      "*" = { bg = "${wallpaper} fill"; };
+    };
 
 in
 { options.modules.user.gui.wm.sway = { enable = mkEnableOption "Enable Sway WM"; };
   config = mkIf cfg.enable {
-    wayland.windowManager.sway = { 
+    wayland.windowManager.sway = {
       enable = true;
       xwayland = true;
       wrapperFeatures.gtk = true;
@@ -37,13 +52,7 @@ in
           names = [ "Terminus" ];
         };
 
-        output = {
-          DP-2 = {
-            resolution = "3440x1440@59.973Hz";
-            position = "0,0";
-            bg = "${wallpaper} fill";
-          };
-        };
+        output = outputConfig;
         modifier = "Mod1";
         menu = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
         terminal = "${pkgs.alacritty}/bin/alacritty";

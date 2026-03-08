@@ -1,76 +1,100 @@
 { config, lib, pkgs, modulesPath, ... }:
 
+with lib;
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot = {
-    initrd = {
-      availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-      kernelModules = [ "dm-snapshot" ];
-    };
-    extraModulePackages = [ ];
-    kernelPackages = pkgs.linuxPackages_zen;
-    kernelParams = [ "intel_iommu=on" ];
-    kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
+  options.monitors = mkOption {
+    type = types.listOf (types.submodule {
+      options = {
+        name = mkOption { type = types.str; example = "HDMI-A-1"; };
+        width = mkOption { type = types.int; };
+        height = mkOption { type = types.int; };
+        x = mkOption { type = types.int; };
+        y = mkOption { type = types.int; };
+        scale = mkOption { type = types.float; };
+        refreshRate = mkOption { type = types.int; };
+      };
+    });
+    default = [];
+    description = "System monitor configuration";
   };
 
-  environment.systemPackages = with pkgs; [
-    linuxHeaders
+  config = {
+    monitors = [
+      { name = "HDMI-A-1"; width = 1920; height = 1080; x = 0;    y = 0; scale = 1.0; refreshRate = 60; }
+      { name = "DP-1";     width = 1920; height = 1080; x = 1920; y = 0; scale = 1.0; refreshRate = 60; }
+    ];
 
-    vulkan-headers
-    vulkan-loader
-    vulkan-tools
-    vulkan-extension-layer
-
-    mesa
-    mesa-demos
-
-    cudaPackages.cudatoolkit
-    cudaPackages.cudnn
-  ];
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/495f5e7b-d9e4-4663-88c5-7021e7292535";
-      fsType = "ext4";
+    boot = {
+      initrd = {
+        availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+        kernelModules = [ "dm-snapshot" ];
+      };
+      extraModulePackages = [ ];
+      kernelPackages = pkgs.linuxPackages_zen;
+      kernelParams = [ "intel_iommu=on" ];
+      kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
     };
 
-    "/home" = {
-      device = "/dev/disk/by-uuid/cd0e5c29-716d-47f2-92f4-46ee9fca5af3";
-      fsType = "ext4";
-    };
+    environment.systemPackages = with pkgs; [
+      linuxHeaders
 
-    "/boot" = {
-      device = "/dev/disk/by-uuid/C061-EE77";
-      fsType = "vfat";
-    };
-  };
+      vulkan-headers
+      vulkan-loader
+      vulkan-tools
+      vulkan-extension-layer
 
-  hardware = {
-    cpu = {
-      intel = {
-        updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      mesa
+      mesa-demos
+
+      cudaPackages.cudatoolkit
+      cudaPackages.cudnn
+    ];
+
+    fileSystems = {
+      "/" = {
+        device = "/dev/disk/by-uuid/495f5e7b-d9e4-4663-88c5-7021e7292535";
+        fsType = "ext4";
+      };
+
+      "/home" = {
+        device = "/dev/disk/by-uuid/cd0e5c29-716d-47f2-92f4-46ee9fca5af3";
+        fsType = "ext4";
+      };
+
+      "/boot" = {
+        device = "/dev/disk/by-uuid/C061-EE77";
+        fsType = "vfat";
       };
     };
-    nvidia = {
-      open = true;
-      modesetting.enable = true;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    hardware = {
+      cpu = {
+        intel = {
+          updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+        };
+      };
+      nvidia = {
+        open = true;
+        modesetting.enable = true;
+        nvidiaSettings = true;
+        package = config.boot.kernelPackages.nvidiaPackages.stable;
+      };
+      graphics = {
+        enable = true;
+        enable32Bit = true;
+      };
     };
-    graphics = {
+
+    virtualisation.libvirtd = {
       enable = true;
-      enable32Bit = true;
+      qemu = {
+        runAsRoot = true;
+      };
     };
-  };
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      runAsRoot = true;
-    };
+    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+    powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   };
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
 }

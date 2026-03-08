@@ -1,13 +1,16 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, monitors ? [], ... }:
 
 with lib;
 let
   cfg = config.modules.user.gui.wm.hyprland;
-  
+
   wallpaper = builtins.fetchurl {
     url = "https://images6.alphacoders.com/117/1174033.png";
     sha256 = "1ph5m9s57076jx6042iipqx2ifzadmd5z4lf5l49wgq4jb92mp16";
   };
+
+  toHyprlandMonitor = m:
+    "${m.name}, ${toString m.width}x${toString m.height}@${toString m.refreshRate}, ${toString m.x}x${toString m.y}, ${toString m.scale}";
 
 in
 { options.modules.user.gui.wm.hyprland = { enable = mkEnableOption "Enable Hyprland WM"; };
@@ -21,10 +24,9 @@ in
         "$terminal" = "${pkgs.alacritty}/bin/alacritty";
         "$menu" = "rofi -show drun -show-icons -drun-icon-theme Qogir -font 'Noto Sans 14'";
 
-        monitor = [
-          "HDMI-A-1, 1920x1080, 0x0, 1"
-          "DP-1, 1920x1080, 1920x0, 1"
-        ];
+        monitor = if monitors != []
+          then map toHyprlandMonitor monitors
+          else [ ", preferred, auto, 1" ];
 
         exec-once = [
           "waybar"

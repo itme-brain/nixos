@@ -3,6 +3,9 @@
 {
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
+  home-manager.extraSpecialArgs = {
+    monitors = config.monitors;
+  };
   home-manager.users.${config.user.name} = {
     imports = [ ../../../../../user ];
 
