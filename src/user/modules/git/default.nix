@@ -11,7 +11,7 @@ in
       git = {
         enable = true;
         package = pkgs.gitSVN;
-        extraConfig = {
+        settings = {
           init = { defaultBranch = "master"; };
           #format = { pretty = "oneline"; };
           #log = { abbrevCommit = true; };

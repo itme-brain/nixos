@@ -44,11 +44,17 @@
     #timeout = null;
   };
 
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-    usbutils
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      vim
+      git
+      usbutils
+    ];
+    pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
+  };
 
   fonts.packages = with pkgs; [
     nerd-fonts.terminess-ttf

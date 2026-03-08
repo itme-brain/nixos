@@ -4,7 +4,7 @@ let
   lsp = with pkgs; [
     nil
     marksman
-    sumneko-lua-language-server stylua
+    lua-language-server stylua
     nodePackages."@tailwindcss/language-server"
     pyright
     clang-tools

@@ -5,7 +5,7 @@ let
 in
 {
   enable = true;
-  package = pkgs.rofi-wayland;
+  package = pkgs.rofi;
   location = "center";
   terminal = "\${pkgs.alacritty}/bin/alacritty";
   plugins = with pkgs; [

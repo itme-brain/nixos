@@ -21,8 +21,9 @@
     vulkan-loader
     vulkan-tools
     vulkan-extension-layer
-    glxinfo
+
     mesa
+    mesa-demos
 
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
@@ -67,7 +68,6 @@
     enable = true;
     qemu = {
       runAsRoot = true;
-      ovmf.enable = true;
     };
   };
 

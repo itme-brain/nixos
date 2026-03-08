@@ -122,7 +122,7 @@ in
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi;
       location = "center";
       terminal = "alacritty";
       plugins = with pkgs; [
@@ -159,7 +159,7 @@ in
 
         noto-fonts
         noto-fonts-cjk-sans
-        noto-fonts-emoji
+        noto-fonts-color-emoji
       ];
 
       sessionVariables = {

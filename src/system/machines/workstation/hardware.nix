@@ -38,8 +38,6 @@
     mesa-demos
 
     libGL
-
-    glxinfo
   ];
 
   fileSystems = {
@@ -72,7 +70,6 @@
     enable = true;
     qemu = {
       runAsRoot = true;
-      ovmf.enable = true;
     };
   };
 
