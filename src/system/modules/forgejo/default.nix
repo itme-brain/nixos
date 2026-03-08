@@ -10,25 +10,24 @@ in
   config = mkIf cfg.enable {
     users = {
       users = {
-        "${config.services.forgejo.user}" = {
+        "git" = {
           description = "Git server system user";
-          home = config.services.forgejo.stateDir;
           isSystemUser = true;
-          group = "${config.services.forgejo.user}";
+          group = "git";
           extraGroups = mkIf nginx.enable [
             "web"
           ];
         };
-        "${config.services.nginx.user}" = {
+        "nginx" = {
           extraGroups = mkIf nginx.enable [
-            "${config.services.forgejo.group}"
+            "git"
           ];
         };
       };
       groups = {
-        "${config.services.forgejo.group}" = {
+        "git" = {
           members = [
-            "${config.services.forgejo.user}"
+            "git"
           ];
         };
       };
@@ -45,23 +44,14 @@ in
           PROTOCOL = "http+unix";
           DOMAIN = "127.0.0.1";
           HTTP_ADDR = "/run/forgejo/forgejo.sock";
-          ROOT_URL = "https://git.ramos.codes";
         };
       };
 
       database = {
-        name = "git";
         inherit user;
         type = "sqlite3";
         path = "${stateDir}/data/forgejo.db";
         createDatabase = true;
-      };
-      
-      dump = {
-        enable = true;
-        file = "git.bkup";
-        type = "tar.gz";
-        interval = "weekly";
       };
     };
   };

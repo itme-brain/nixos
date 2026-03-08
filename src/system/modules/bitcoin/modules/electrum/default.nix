@@ -3,6 +3,8 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin.electrum;
+  home = "/var/lib/electrs";
+
   btc = config.modules.system.bitcoin;
 
   electrsConfig = pkgs.writeTextFile {
@@ -13,21 +15,24 @@ let
 in
 { options.modules.system.bitcoin.electrum = { enable = mkEnableOption "Electrs Server"; };
   config = mkIf (cfg.enable && btc.enable) {
+    #TODO: Fix the failing overlay due to `cargoHash/cargoSha256`
     #nixpkgs.overlays = [
     #  (final: prev: {
     #    electrs = prev.electrs.overrideAttrs (old: rec {
-    #      version = "0.10.6";
+    #      pname = "electrs";
+    #      version = "0.10.8";
     #      src = pkgs.fetchFromGitHub {
     #        owner = "romanz";
-    #        repo = "electrs";
+    #        repo = pname;
     #        rev = "v${version}";
-    #        hash = "sha256-yp9fKD7zH9Ne2+WQUupaxvUx39RWE8RdY4U6lHuDGSc=";
+    #        hash = "sha256-L26jzAn8vwnw9kFd6ciyYS/OLEFTbN8doNKy3P8qKRE=";
     #      };
-    #      cargoDeps = old.cargoDeps.overrideAttrs (lib.const {
-    #        name = "electrs-vendor.tar.gz";
-    #        inherit src;
-    #        outputHash = "sha256-qQKAQHOAeYWQ5YVtx12hIAjNA7Aj1MW1m+WimlBWPv0=";
-    #      });
+    #      #cargoDeps = old.cargoDeps.overrideAttrs (const {
+    #      #  name = "electrs-${version}.tar.gz";
+    #      #  inherit src;
+    #      #  sha256 = "";
+    #      #});
+    #      cargoHash = "sha256-lBRcq73ri0HR3duo6Z8PdSjnC8okqmG5yWeHxH/LmcU=";
     #    });
     #  })
     #];
@@ -39,16 +44,16 @@ in
     users = {
       users = {
         "electrs" = {
-          home = "/var/lib/electrs";
+          inherit home;
           description = "Electrs system user";
           isSystemUser = true;
-          group = "btc";
+          group = "bitcoin";
           createHome = true;
         };
       };
       groups = {
-        "btc" = {
-          members = [
+        "bitcoin" = {
+          members = mkAfter [
             "electrs"
           ];
         };
@@ -58,28 +63,29 @@ in
 
     systemd.services.electrs = {
       description = "Electrs Bitcoin Indexer";
+
+      script = "${pkgs.electrs}/bin/electrs";
+      scriptArgs = "--conf=${electrsConfig}";
+
+      after = [
+        "bitcoind-btc.service"
+      ];
+
       serviceConfig = {
+
         User = "electrs";
-        Group = "btc";
-
-        StateDirectory   = "electrs";
-        WorkingDirectory = "%S/electrs";
-
-        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${electrsConfig}";
+        Group = "bitcoin";
 
         Type = "simple";
         KillMode = "process";
         TimeoutSec = 60;
-        Restart = "on-failure";
-        RestartSec = 2;
+        Restart = "always";
+        RestartSec = 60;
       };
-      after = [
-        "network.target"
+      requisite = [
         "bitcoind-btc.service"
+        "network.target"
       ];
-      requires = [ "bitcoind-btc.service" ];
-      partOf = [ "bitcoind-btc.service" ];
-      wantedBy = [ "multi-user.target" ];
     };
   };
 }

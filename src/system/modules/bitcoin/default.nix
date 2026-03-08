@@ -7,16 +7,21 @@ let
 
   home = "/var/lib/bitcoind";
 
+  bitcoinConf = pkgs.writeTextFile {
+    name = "bitcoin.conf";
+    text = builtins.readFile ./config/bitcoin.conf;
+  };
+
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
         bitcoind = prev.bitcoind.overrideAttrs (old: rec {
-          version = "29.0";
+          version = "28.0";
           src = fetchTarball {
             url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
-            sha256 = "sha256-XvoqYA5RYXbOjeidxV4Wxb8DhYv6Hz510XNMhmWkV1Y=";
+            sha256 = "sha256-LLtw6pMyqIJ3IWHiK4P3XoifLojB9yMNMo+MGNFGuRY=";
           };
         });
       })
@@ -28,17 +33,17 @@ in
           inherit home;
           description = "Bitcoin Core system user";
           isSystemUser = true;
-          group = "btc";
+          group = "bitcoin";
           createHome = true;
         };
-        "${config.services.nginx.user}" = {
+        "nginx" = {
           extraGroups = mkIf nginx.enable [
-            "btc"
+            "bitcoin"
           ];
         };
       };
       groups = {
-        "btc" = {
+        "bitcoin" = {
           members = [
             "btc"
           ];
@@ -54,16 +59,11 @@ in
       "btc" = {
         enable = true;
         user = "btc";
-        group = "btc";
-        configFile = ./config/bitcoin.conf;
+        group = "bitcoin";
+        configFile = bitcoinConf;
         dataDir = home;
         pidFile = "${home}/bitcoind.pid";
       };
-    };
-
-    services.tor = {
-      enable = true;
-      client.enable = true;
     };
   };
 }

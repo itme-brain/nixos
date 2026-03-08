@@ -8,25 +8,18 @@
     system = {
       nginx.enable = true;
       forgejo.enable = true;
-      frigate.enable = true;
       bitcoin = {
         enable = true;
         electrum.enable = true;
-        #clightning = {
-        #  enable = true;
-        #  rest.enable = true;
-        #};
       };
     };
   };
 
-  users.mutableUsers = false;
   users.users = {
-    "${config.user.name}" = {
+    ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
-      password = "123";
     };
   };
 
@@ -69,7 +62,7 @@
 
   fonts.packages = with pkgs; [
     terminus_font
-    nerd-fonts.terminess-ttf  
+    terminus-nerdfont
   ];
 
   security.sudo = {
@@ -107,13 +100,6 @@
       enable = true;
       allowedTCPPorts = [ 22 80 443 ];
     };
-  };
-
-
-  virtualisation.vmVariant = {
-    virtualisation.forwardPorts = [
-      { from = "host"; host.port = 5000; guest.port = 5000; }
-    ];
   };
 
   services.openssh = {

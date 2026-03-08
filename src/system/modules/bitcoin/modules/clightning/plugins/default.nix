@@ -1,5 +1,0 @@
-{
-  imports = [
-    ./c-lightning-REST
-  ];
-}
