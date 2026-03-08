@@ -9,7 +9,6 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       mdbook
-      texlive.combined.scheme-tetex
       pandoc
       asciidoctor
       evince
