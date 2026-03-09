@@ -39,7 +39,7 @@ Invoke `just` in order to view an available list of project scripts
 
 ## Submodules
 
-This repo uses git submodules for portable configurations.
+This repo uses git submodules for portable cross-platform configurations.
 
 ### Neovim Config
 The Neovim configuration is a separate repo for portability across non-NixOS systems.
@@ -61,14 +61,12 @@ cd src/user/modules/utils/modules/neovim/config/nvim
 git add . && git commit -m "your changes" && git push
 
 # Update reference in nixos repo:
-cd ~/nixos
 git add src/user/modules/utils/modules/neovim/config/nvim
 git commit -m "Update nvim submodule" && git push
 ```
 
 #### Pulling nvim updates from remote
 ```bash
-cd ~/nixos
 git submodule update --remote
 git add src/user/modules/utils/modules/neovim/config/nvim
 git commit -m "Update nvim submodule" && git push
