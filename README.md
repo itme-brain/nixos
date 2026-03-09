@@ -1,83 +1,54 @@
 # My Nix Configurations 💻
 
-My modular Nix configs🔥
+My modular Nix configs 🔥
 
-## Requirements ⚙️  
+## Requirements ⚙️
+
 - [Nix 2.0 & Flakes enabled](https://nixos.wiki/wiki/Flakes#Enable_flakes_permanently_in_NixOS)
+- [NixOS](https://www.nixos.org/) for system configurations
+- [Nix Home-Manager](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone) for user configurations
 
-### NixOS Configurations  
-- [NixOS](https://www.nixos.org/)  
-### Home-Manager Configuration  
-- [Nix Home-Manager](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone)
+## Flake Endpoints ❄️
 
-# Flake End-Points Exposed ❄️  
-NixOS Configurations:
-  - desktop
-  - wsl
-  - server (wip)
-  - vm
+NixOS Configurations: `desktop` · `workstation` · `server` (wip) · `vm` · `wsl`
 
-Home-Manager Configurations:
-  - workstation
+## Getting Started 🔧
 
-Fork this repo, take inspiration, borrow ideas and create your own NixOS configs & modules
+```bash
+git clone --recurse-submodules git@github.com:itme-brain/nixos.git
+```
 
-## Developing & Customizing 🔧
-If you need a list of available packages and options:
+Enter the dev shell with `nix develop`, then run `just` to see available project scripts.
+
+Useful resources:
 - [nixpkgs Packages](https://search.nixos.org/packages) 📦️
 - [nixpkgs Options](https://search.nixos.org/options?) 🔍️
 - [Home-Manager Options](https://mipmip.github.io/home-manager-option-search/) ☕️
 
-Invoke `nix develop` to enter a development shell powered by [`just`](https://github.com/casey/just)  
-Invoke `just` in order to view an available list of project scripts
+⚠️ Be sure to tailor any hardware settings to your own — replace the `hardware.nix` in `src/system/machines/<machine>` with output from `nixos-generate-config`
 
-`user.configs.nix` is a symlink to conveniently access centrally defined common user variables from the repo root
+## Submodules 🔗
 
-⚠️ Be sure to tailor any hardware settings to your own
-⚠️ Replace the `hardware.nix` found in the `src/system/machines/<machine>` directory
-⚠️ Run `nixos-generate-config` to generate a `hardware-configuration.nix` for your current system
+Standalone portable configurations maintained as separate repos. Each can be cloned independently on any system — NixOS or not.
 
-## Submodules
+| Submodule | Purpose | Repo | Standalone Install |
+|-----------|---------|------|--------------------|
+| **nvim** | Full IDE (LSP, treesitter, telescope) | [itme-brain/nvim](https://github.com/itme-brain/nvim) | `git clone git@github.com:itme-brain/nvim.git ~/.config/nvim` |
+| **vim** | Lightweight editor for headless servers | [itme-brain/vim](https://github.com/itme-brain/vim) | `git clone git@github.com:itme-brain/vim.git ~/.vim` |
 
-This repo uses git submodules for portable cross-platform configurations.
-
-### Neovim Config
-The Neovim configuration is a separate repo for portability across non-NixOS systems.
-
-**Location:** `src/user/modules/utils/modules/neovim/config/nvim`
-**Repo:** [github.com/itme-brain/nvim](https://github.com/itme-brain/nvim)
-
-#### Cloning with submodules
 ```bash
-git clone --recurse-submodules git@github.com:itme-brain/nixos.git
-# Or after cloning:
-git submodule update --init
-```
-
-#### Updating nvim config
-```bash
-# Edit files in the submodule, then:
-cd src/user/modules/utils/modules/neovim/config/nvim
+# Update a submodule
+cd <submodule-path>
 git add . && git commit -m "your changes" && git push
+cd /path/to/nixos
+git add <submodule-path> && git commit -m "Update <name> submodule"
 
-# Update reference in nixos repo:
-git add src/user/modules/utils/modules/neovim/config/nvim
-git commit -m "Update nvim submodule" && git push
-```
-
-#### Pulling nvim updates from remote
-```bash
+# Pull submodule updates from remote
 git submodule update --remote
-git add src/user/modules/utils/modules/neovim/config/nvim
-git commit -m "Update nvim submodule" && git push
+git add <submodule-path> && git commit -m "Update <name> submodule"
 ```
 
-#### Standalone nvim install (non-NixOS)
-```bash
-git clone git@github.com:itme-brain/nvim.git ~/.config/nvim
-```
-
-## Directory Structure
+## Directory Structure 🗂️
 
 ```
 .
@@ -115,7 +86,8 @@ git clone git@github.com:itme-brain/nvim.git ~/.config/nvim
         │   ├── keys/                  #   Public keys
         │   │   ├── pgp/               #     PGP public keys
         │   │   └── ssh/               #     SSH public keys
-        │   └── nvim                   #   Symlink to neovim submodule config
+        │   ├── nvim                   #   Symlink to neovim submodule config
+        │   └── vim                    #   Symlink to vim submodule config
         └── modules/                   # Home-manager modules
             ├── bash/                  # Shell config (aliases, prompt, bashrc)
             ├── git/                   # Git config + helper scripts
@@ -127,7 +99,7 @@ git clone git@github.com:itme-brain/nvim.git ~/.config/nvim
             │       ├── email/         #   Email client (aerc)
             │       ├── irc/           #   IRC client
             │       ├── neovim/        #   Neovim (config is a git submodule)
-            │       └── vim/           #   Vim fallback
+            │       └── vim/           #   Vim lightweight (config is a git submodule)
             └── gui/                   # GUI applications
                 ├── modules/
                 │   ├── alacritty/     #   Terminal emulator
@@ -145,10 +117,10 @@ git clone git@github.com:itme-brain/nvim.git ~/.config/nvim
 
 ### How it works
 
-The **flake.nix** is the entrypoint. It defines NixOS configurations (desktop, workstation, server, wsl) that each reference a machine under `src/system/machines/`. Each machine's `default.nix` pulls in its own `hardware.nix`, `system.nix`, and per-machine modules (disko, home-manager).
+**flake.nix** defines NixOS configurations (desktop, workstation, server, wsl) that each reference a machine under `src/system/machines/`. Each machine's `default.nix` pulls in its own `hardware.nix`, `system.nix`, and per-machine modules (disko, home-manager).
 
-The **system layer** (`src/system/`) handles NixOS-level concerns: hardware, bootloader, networking, and system services. Shared system-level modules in `src/system/modules/` can be imported by any machine.
+The **system layer** (`src/system/`) handles NixOS-level concerns: hardware, bootloader, networking, and system services. Shared modules in `src/system/modules/` can be imported by any machine.
 
 The **user layer** (`src/user/`) handles home-manager configuration. `src/user/config/` defines user identity (name, email, keys), while `src/user/modules/` contains modular home-manager configs for individual tools. Each machine's `home-manager/home.nix` selects which user modules to enable.
 
-Root symlinks `system.configs` and `user.configs` provide convenient access to machine definitions and user config from the repo root.
+Root symlinks `system.configs` and `user.configs` provide quick access to machine definitions and user config from the repo root.

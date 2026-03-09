@@ -1,3 +1,6 @@
 [submodule "nvim"]
 	path = src/user/modules/utils/modules/neovim/config/nvim
 	url = https://github.com/itme-brain/nvim.git
+[submodule "vim"]
+	path = src/user/modules/utils/modules/vim/config
+	url = https://github.com/itme-brain/vim.git
