@@ -1,8 +1,9 @@
 {
   description = "My Nix Configs";
 
-  inputs = 
+  inputs =
   {
+    self.submodules = true;
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nur = {
       url = "github:nix-community/NUR";
