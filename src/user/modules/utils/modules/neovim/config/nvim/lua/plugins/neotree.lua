@@ -13,9 +13,16 @@ return {
 					position = "left",
 					width = 20,
 				},
-				--filesystem = {
-				--  hijack_netrw_behavior = "disabled",
-				--},
+				event_handlers = {
+					{
+						event = "neo_tree_window_after_open",
+						handler = function()
+							local win = vim.api.nvim_get_current_win()
+							vim.wo[win].winfixwidth = true
+							vim.wo[win].winfixbuf = true
+						end
+					},
+				},
 			})
 
 			local function toggle_neotree()

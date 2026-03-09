@@ -1,19 +1,16 @@
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-local servers = {
-  "ts_ls",
-  "pyright",
-  "nil_ls",
-  "cssls",
-  "html",
-  "lua_ls",
-  "marksman",
-  "tailwindcss",
-  "bashls",
-  "clangd",
-  "jsonls",
-  "vuels",
-  "rust_analyzer"
-  --"arduino-language-server"
+-- Neovim 0.11+ LSP configuration
+-- Uses nvim-lspconfig for server definitions + vim.lsp.enable() API
+
+-- Detect NixOS (Mason doesn't work on NixOS due to FHS issues)
+local is_nixos = vim.fn.filereadable("/etc/NIXOS") == 1
+
+-- Servers to ensure are installed via Mason (non-NixOS only)
+-- On NixOS, install these via extraPackages or per-project devShells
+local mason_ensure_installed = {
+  "lua_ls",       -- Neovim config
+  "nil_ls",       -- Nix
+  "bashls",       -- Shell scripts
+  "jsonls",       -- JSON configs
 }
 
 return {
@@ -56,47 +53,6 @@ return {
     "m4xshen/autoclose.nvim",
     config = function()
       require("autoclose").setup()
-    end
-  },
-
-  --{
-  --  "nvim-treesitter/nvim-treesitter-context",
-  --  dependencies = { "nvim-treesitter/nvim-treesitter" },
-  --  config = function()
-  --    require("treesitter-context").setup({
-  --      enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
-  --      max_lines = 3,        -- How many lines the window should span. Values <= 0 mean no limit.
-  --      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-  --      line_numbers = false,
-  --      multiline_threshold = 20, -- Maximum number of lines to collapse for a single context line
-  --      trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-  --      mode = "cursor",      -- Line used to calculate context. Choices: 'cursor', 'topline'
-  --      -- Separator between context and content. Should be a single character string, like '-'.
-  --      -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-  --      separator = "x",
-  --      zindex = 20, -- The Z-index of the context window
-  --      on_attach = nil, -- (fun(buf: integer): boolean) rurn false to disable attaching
-  --    })
-  --  end,
-  --},
-
-  {
-    "VonHeikemen/lsp-zero.nvim",
-    branch = "v2.x",
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-
-      { "hrsh7th/nvim-cmp" },
-      { "hrsh7th/cmp-buffer" },
-      { "hrsh7th/cmp-path" },
-      { "hrsh7th/cmp-nvim-lsp" },
-
-      { "L3MON4D3/LuaSnip" },
-    },
-    config = function()
-      local lsp = require('lsp-zero').preset({})
-      lsp.setup_servers(servers)
-      lsp.setup()
     end
   },
 
@@ -152,26 +108,64 @@ return {
     end
   },
 
+  -- Mason: portable LSP installer (disabled on NixOS where it doesn't work)
+  {
+    "williamboman/mason.nvim",
+    enabled = not is_nixos,
+    config = function()
+      require("mason").setup()
+    end
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    enabled = not is_nixos,
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = mason_ensure_installed,
+        automatic_installation = false,  -- Only install what's in ensure_installed
+      })
+    end
+  },
+
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+    },
     config = function()
-      local lsp = require('lspconfig')
-      local navic = require('nvim-navic')
+      local lspconfig = require('lspconfig')
+
+      -- Get all known server names by scanning lspconfig's lsp directory
+      local function get_all_servers()
+        local servers = {}
+        local lsp_path = vim.fn.stdpath('data') .. '/lazy/nvim-lspconfig/lsp'
+        local files = vim.fn.globpath(lsp_path, '*.lua', false, true)
+        for _, file in ipairs(files) do
+          local server = vim.fn.fnamemodify(file, ':t:r')
+          table.insert(servers, server)
+        end
+        return servers
+      end
+
+      local all_servers = get_all_servers()
+
+      -- local navic = require('nvim-navic')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      for _, server in ipairs(servers) do
-        lsp[server].setup {
-          -- Prevent LSP from autostarting
-          autostart = false,
-          capabilities = capabilities,
-          on_attach = function(client, bufnr)
-            if client.server_capabilities.documentSymbolProvider then
-              navic.attach(client, bufnr)
-            end
-          end,
-        }
-      end
-      lsp.lua_ls.setup {
+      -- Global config applied to all servers
+      vim.lsp.config('*', {
+        autostart = false,  -- Don't auto-attach, use <leader>css to start manually
+        capabilities = capabilities,
+        -- on_attach = function(client, bufnr)
+        --   if client.server_capabilities.documentSymbolProvider then
+        --     navic.attach(client, bufnr)
+        --   end
+        -- end,
+      })
+
+      -- Server-specific settings (merged with lspconfig defaults)
+      vim.lsp.config.lua_ls = {
         settings = {
           Lua = {
             diagnostics = {
@@ -180,17 +174,70 @@ return {
           }
         }
       }
+
+      -- Check if server binary is available
+      local function is_server_installed(config)
+        if config.default_config and config.default_config.cmd then
+          local cmd = config.default_config.cmd[1]
+          return vim.fn.executable(cmd) == 1
+        end
+        return false
+      end
+
+      -- Find and start LSP server(s) for current filetype
+      local function lsp_start_smart()
+        local ft = vim.bo.filetype
+        if ft == '' then
+          vim.notify("No filetype detected", vim.log.levels.WARN)
+          return
+        end
+
+        -- Find all matching servers (filetype match + binary installed)
+        local matching = {}
+        for _, server in ipairs(all_servers) do
+          local ok, config = pcall(require, 'lspconfig.configs.' .. server)
+          if ok and config.default_config and config.default_config.filetypes then
+            if vim.tbl_contains(config.default_config.filetypes, ft) and is_server_installed(config) then
+              table.insert(matching, server)
+            end
+          end
+        end
+
+        -- Sort for consistent ordering
+        table.sort(matching)
+
+        local function start_server(server)
+          vim.lsp.enable(server)  -- Register on-demand
+          vim.cmd('LspStart ' .. server)
+        end
+
+        if #matching == 0 then
+          vim.notify("No LSP server installed for filetype: " .. ft, vim.log.levels.WARN)
+        elseif #matching == 1 then
+          start_server(matching[1])
+        else
+          vim.ui.select(matching, {
+            prompt = "Select LSP server:",
+          }, function(choice)
+            if choice then
+              start_server(choice)
+            end
+          end)
+        end
+      end
+
+      -- LSP keybindings
       require("which-key").add({
         { "<leader>cs",  group = "LSP Commands" },
-        { "<leader>cf",  ":LspFormat<CR>",      desc = "Code Format" },
-        { "<leader>csi", ":LspInfo<CR>",        desc = "LSP Info" },
-        { "<leader>csl", ":LspLog<CR>",         desc = "LSP Log" },
-        { "<leader>csr", ":LspRestart<CR>",     desc = "LSP Restart" },
-        { "<leader>css", ":LspStart<CR>",       desc = "LSP Start" },
-        { "<leader>csx", ":LspStop<CR>",        desc = "LSP Stop" },
+        { "<leader>cf",  function() vim.lsp.buf.format() end, desc = "Code Format" },
+        { "<leader>csi", ":checkhealth vim.lsp<CR>",          desc = "LSP Info" },
+        { "<leader>csr", ":LspRestart<CR>",                   desc = "LSP Restart" },
+        { "<leader>css", lsp_start_smart,                     desc = "LSP Start" },
+        { "<leader>csx", ":LspStop<CR>",                      desc = "LSP Stop" },
       })
     end
   },
+
   {
     "taproot-wizards/bitcoin-script-hints.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter" },

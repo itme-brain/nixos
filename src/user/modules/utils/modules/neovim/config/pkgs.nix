@@ -1,22 +1,18 @@
 { pkgs, ... }:
 
 let
+  # Essential LSPs for config files (project-specific LSPs go in devShells)
   lsp = with pkgs; [
-    nil
+    nixd
+    lua-language-server
     marksman
-    lua-language-server stylua
-    nodePackages."@tailwindcss/language-server"
-    pyright
-    clang-tools
-    rust-analyzer
-    #arduino-language-server
+    taplo  # TOML
   ];
 
   lsp' = with pkgs.nodePackages; [
-    typescript-language-server
-    vscode-langservers-extracted
+    vscode-langservers-extracted  # jsonls, html, cssls
     bash-language-server
-    #vls
+    yaml-language-server
   ];
 
   extraPackages = with pkgs; [

@@ -10,7 +10,7 @@ end
 return {
   {
     "nvim-telescope/telescope.nvim",
-    brach = '0.1.x',
+    branch = '0.1.x',
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
       { 'nvim-tree/nvim-web-devicons' }
@@ -31,7 +31,7 @@ return {
         -- Code
         { "gd",
           function()
-            local attached = vim.lsp.buf_get_clients(0)
+            local attached = vim.lsp.get_clients({ bufnr = 0 })
             if next(attached) ~= nil then
               require('telescope.builtin').lsp_definitions()
             else

@@ -37,6 +37,23 @@ return {
         hi DiffChange ctermbg=none guibg=none
         hi DiffDelete ctermbg=none guibg=none
         hi DiffText ctermbg=none guibg=none
+
+        " Bufferline - dark background, readable text
+        hi BufferLineFill guibg=NONE ctermbg=NONE
+        hi BufferLineBackground guibg=NONE ctermbg=NONE guifg=#5c6370 ctermfg=Gray
+        hi BufferLineBuffer guibg=NONE ctermbg=NONE guifg=#5c6370 ctermfg=Gray
+        hi BufferLineBufferSelected guibg=NONE ctermbg=NONE guifg=#FFFFFF ctermfg=White gui=bold cterm=bold
+        hi BufferLineBufferVisible guibg=NONE ctermbg=NONE guifg=#abb2bf ctermfg=White
+        hi BufferLineCloseButton guibg=NONE ctermbg=NONE guifg=#5c6370 ctermfg=Gray
+        hi BufferLineCloseButtonSelected guibg=NONE ctermbg=NONE guifg=#e06c75 ctermfg=Red
+        hi BufferLineCloseButtonVisible guibg=NONE ctermbg=NONE guifg=#5c6370 ctermfg=Gray
+        hi BufferLineModified guibg=NONE ctermbg=NONE guifg=#e5c07b ctermfg=Yellow
+        hi BufferLineModifiedSelected guibg=NONE ctermbg=NONE guifg=#e5c07b ctermfg=Yellow
+        hi BufferLineModifiedVisible guibg=NONE ctermbg=NONE guifg=#e5c07b ctermfg=Yellow
+        hi BufferLineSeparator guibg=NONE ctermbg=NONE guifg=#3e4452 ctermfg=DarkGray
+        hi BufferLineSeparatorSelected guibg=NONE ctermbg=NONE guifg=#3e4452 ctermfg=DarkGray
+        hi BufferLineSeparatorVisible guibg=NONE ctermbg=NONE guifg=#3e4452 ctermfg=DarkGray
+        hi BufferLineIndicatorSelected guibg=NONE ctermbg=NONE guifg=#61afef ctermfg=Blue
 			]])
 
       vim.api.nvim_create_autocmd("TextYankPost", {
