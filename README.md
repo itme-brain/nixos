@@ -76,3 +76,79 @@ git commit -m "Update nvim submodule" && git push
 ```bash
 git clone git@github.com:itme-brain/nvim.git ~/.config/nvim
 ```
+
+## Directory Structure
+
+```
+.
+├── flake.nix                          # Flake entrypoint - defines all NixOS configurations
+├── flake.lock
+├── justfile                           # Project scripts (via `just`)
+├── system.configs -> src/system/machines/   # Symlink for quick access
+├── user.configs -> src/user/config/         # Symlink for quick access
+└── src/
+    ├── system/                        # System-level (NixOS) configuration
+    │   ├── machines/                  # Per-machine NixOS configurations
+    │   │   ├── desktop/               # Desktop config (flake: nixosConfigurations.desktop)
+    │   │   │   ├── default.nix        #   Machine entry point
+    │   │   │   ├── hardware.nix       #   Machine-specific hardware config
+    │   │   │   ├── system.nix         #   System-level settings
+    │   │   │   └── modules/
+    │   │   │       ├── disko/         #   Disk partitioning (disko)
+    │   │   │       └── home-manager/  #   Home-manager integration + home.nix
+    │   │   ├── workstation/           # Workstation config (same structure as desktop)
+    │   │   ├── server/                # Server config (no disko)
+    │   │   ├── vm/                    # VM config
+    │   │   ├── wsl/                   # WSL config (includes wsl module)
+    │   │   └── laptop/                # Laptop config (stub)
+    │   └── modules/                   # Shared system modules (imported by machines)
+    │       ├── default.nix
+    │       ├── bitcoin/               # Bitcoin node + electrum server
+    │       ├── forgejo/               # Self-hosted Forgejo
+    │       └── nginx/                 # Nginx reverse proxy
+    │
+    └── user/                          # User-level (home-manager) configuration
+        ├── default.nix                # User module entry point
+        ├── config/                    # User identity & settings
+        │   ├── default.nix            #   Common user variables (username, email, etc.)
+        │   ├── bookmarks/             #   Browser bookmarks
+        │   ├── keys/                  #   Public keys
+        │   │   ├── pgp/               #     PGP public keys
+        │   │   └── ssh/               #     SSH public keys
+        │   └── nvim                   #   Symlink to neovim submodule config
+        └── modules/                   # Home-manager modules
+            ├── bash/                  # Shell config (aliases, prompt, bashrc)
+            ├── git/                   # Git config + helper scripts
+            ├── tmux/                  # Tmux config
+            ├── security/              # Security tools (GPG)
+            ├── utils/                 # CLI utilities
+            │   └── modules/
+            │       ├── dev/           #   Dev tools (penpot, PCB design)
+            │       ├── email/         #   Email client (aerc)
+            │       ├── irc/           #   IRC client
+            │       ├── neovim/        #   Neovim (config is a git submodule)
+            │       └── vim/           #   Vim fallback
+            └── gui/                   # GUI applications
+                ├── modules/
+                │   ├── alacritty/     #   Terminal emulator
+                │   ├── browsers/      #   Firefox & Chromium
+                │   ├── corn/          #   Corn app
+                │   ├── fun/           #   Discord, etc.
+                │   ├── utils/         #   GUI utilities
+                │   └── writing/       #   Writing tools
+                └── wm/                # Window managers
+                    ├── hyprland/      #   Hyprland (Wayland) + waybar, rofi
+                    ├── sway/          #   Sway (Wayland) + rofi
+                    ├── i3/            #   i3 (X11) + rofi
+                    └── shared/        #   Shared WM config (mimeapps)
+```
+
+### How it works
+
+The **flake.nix** is the entrypoint. It defines NixOS configurations (desktop, workstation, server, wsl) that each reference a machine under `src/system/machines/`. Each machine's `default.nix` pulls in its own `hardware.nix`, `system.nix`, and per-machine modules (disko, home-manager).
+
+The **system layer** (`src/system/`) handles NixOS-level concerns: hardware, bootloader, networking, and system services. Shared system-level modules in `src/system/modules/` can be imported by any machine.
+
+The **user layer** (`src/user/`) handles home-manager configuration. `src/user/config/` defines user identity (name, email, keys), while `src/user/modules/` contains modular home-manager configs for individual tools. Each machine's `home-manager/home.nix` selects which user modules to enable.
+
+Root symlinks `system.configs` and `user.configs` provide convenient access to machine definitions and user config from the repo root.
