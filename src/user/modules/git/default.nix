@@ -10,48 +10,23 @@ in
     programs = {
       git = {
         enable = true;
-        package = pkgs.gitSVN;
-        settings = {
-          init = { defaultBranch = "master"; };
-          #format = { pretty = "oneline"; };
-          #log = { abbrevCommit = true; };
-          mergetool = {
-            vimdiff = {
-              trustExitCode = true;
-            };
-            keepBackup = false;
-          };
-          merge = { 
-            tool = "vimdiff"; 
-
-          };
-          safe = { 
-            directory = [
-              "/etc/nixos"
-              "/boot"
-            ];
-          };
-        };
-        ignores = [
-          "node_modules"
-          ".direnv"
-          "dist-newstyle"
-          ".nuxt/"
-          ".output/"
-          "dist"
-          "result"
-        ];
-      } // config.user.gitConfig;
+      };
       gh = {
         enable = true;
         settings.git_protocol = "ssh";
       };
     };
 
-    home.packages = with pkgs; [
-      git-crypt
-    ];
+    home = {
+      packages = with pkgs; [
+        git-crypt
+      ];
+      file.".config/git" = {
+        source = ./config;
+        recursive = true;
+      };
+    };
 
-    programs.bash.initExtra = import ./config/bashScripts/cdg.nix;
+    programs.bash.initExtra = import ./scripts/cdg.nix;
   };
 }

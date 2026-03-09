@@ -4,3 +4,6 @@
 [submodule "vim"]
 	path = src/user/modules/utils/modules/vim/config
 	url = https://github.com/itme-brain/vim.git
+[submodule "git"]
+	path = src/user/modules/git/config
+	url = https://github.com/itme-brain/git.git

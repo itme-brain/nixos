@@ -17,14 +17,6 @@ in
         keys = import ./keys;
 
         groups = [ "wheel" "networkmanager" "home-manager" "input" ];
-        gitConfig = optionalAttrs modules.git.enable {
-          userName = "Bryan Ramos";
-          userEmail = email;
-          signing = optionalAttrs modules.security.gpg.enable {
-            key = "F1F3466458452B2DF351F1E864D12BA95ACE1F2D";
-            signByDefault = true;
-          };
-        };
         bookmarks = import ./bookmarks;
       };
     };
