@@ -20,6 +20,7 @@
       user = {
         bash.enable = true;
         git.enable = true;
+        sops.enable = true;
 
         security = {
           enable = true;

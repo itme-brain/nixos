@@ -13,6 +13,11 @@ in
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
+      scdaemonSettings = mkIf osConfig.services.pcscd.enable {
+        # Use pcscd instead of direct CCID access
+        # Avoids conflicts with age-plugin-yubikey
+        disable-ccid = true;
+      };
       publicKeys = [
         {
           text = "${config.user.keys.pgp.primary}";

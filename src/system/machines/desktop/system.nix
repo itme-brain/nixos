@@ -1,6 +1,22 @@
 { pkgs, lib, config, ... }:
 
-{ system.stateVersion = "23.11";
+{ imports = [ ../../modules ];
+
+  system.stateVersion = "23.11";
+
+  modules.system.sops.enable = true;
+
+  # WiFi secrets
+  sops.secrets = let wifi = { sopsFile = ../../../../secrets/system/wifi.yaml; }; in {
+    "WIFI_HOME_SSID" = wifi;
+    "WIFI_HOME_PSK" = wifi;
+  };
+
+  # Template to create env file for NetworkManager
+  sops.templates."wifi-env".content = ''
+    WIFI_HOME_SSID=${config.sops.placeholder."WIFI_HOME_SSID"}
+    WIFI_HOME_PSK=${config.sops.placeholder."WIFI_HOME_PSK"}
+  '';
 
   users.users = {
     ${config.user.name} = {
@@ -83,7 +99,63 @@
   networking = {
     hostName = "desktop";
     useDHCP = lib.mkDefault true;
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      dispatcherScripts = [{
+        # Only connect to WiFi when ethernet is down
+        source = pkgs.writeText "wifi-fallback" ''
+          IFACE=$1
+          ACTION=$2
+
+          if [ "$IFACE" = "enp2s0" ]; then
+            case "$ACTION" in
+              up)
+                nmcli radio wifi off
+                ;;
+              down)
+                nmcli radio wifi on
+                ;;
+            esac
+          fi
+        '';
+        type = "basic";
+      }];
+      ensureProfiles = {
+        environmentFiles = [ config.sops.templates."wifi-env".path ];
+        profiles = {
+          ethernet = {
+            connection = {
+              id = "Wired";
+              type = "ethernet";
+              interface-name = "enp2s0";
+              autoconnect = true;
+              autoconnect-priority = 100;
+            };
+            ipv4.method = "auto";
+            ipv6.method = "auto";
+          };
+          wifi = {
+            connection = {
+              id = "$WIFI_HOME_SSID";
+              type = "wifi";
+              interface-name = "wlo1";
+              autoconnect = true;
+              autoconnect-priority = 10;
+            };
+            wifi = {
+              ssid = "$WIFI_HOME_SSID";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_HOME_PSK";
+            };
+            ipv4.method = "auto";
+            ipv6.method = "auto";
+          };
+        };
+      };
+    };
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 80 443 ];

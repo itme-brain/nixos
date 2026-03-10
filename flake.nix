@@ -20,9 +20,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko }:
+  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko, sops-nix }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -43,8 +47,14 @@
         inherit system pkgs;
         modules = [
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
+          {
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
+          }
             (import ./src/system/machines/desktop/modules/home-manager)
         ];
       };
@@ -52,8 +62,14 @@
       workstation = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          sops-nix.nixosModules.sops
           ./src/system/machines/workstation
           home-manager.nixosModules.home-manager
+          {
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
+          }
             (import ./src/system/machines/workstation/modules/home-manager)
         ];
       };
@@ -61,8 +77,14 @@
       server = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          sops-nix.nixosModules.sops
           ./src/system/machines/server
           home-manager.nixosModules.home-manager
+          {
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
+          }
             (import ./src/system/machines/server/modules/home-manager)
         ];
       };
@@ -70,10 +92,16 @@
       wsl = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          sops-nix.nixosModules.sops
           ./src/system/machines/wsl
           nixos-wsl.nixosModules.wsl
             (import ./src/system/machines/wsl/modules/wsl)
           home-manager.nixosModules.home-manager
+          {
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
+          }
             (import ./src/system/machines/wsl/modules/home-manager)
         ];
       };

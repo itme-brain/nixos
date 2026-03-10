@@ -1,0 +1,14 @@
+# sops-nix configuration
+# See secrets/README.md for usage instructions
+#
+# Keys are stored in src/user/config/keys/age/
+# Add public keys below (age1... lines)
+
+keys:
+  - &primary age17pe4vr84qtsvg0r5cm2fqn4c03nj9e6umhy87skzsc56uz62z5useja3dp
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *primary
