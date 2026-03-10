@@ -99,9 +99,9 @@ boot:
   @echo -e "\033[34m->> Reboot to new generation ->>\033[0m"
   @sudo nixos-rebuild boot --flake .#{{SYSTEM}}
 
-# Install NixOS from live USB (interactive disk selection)
+# Partition disk only (interactive disk selection)
 [group('nixos')]
-install SYSTEM:
+partition SYSTEM:
   #!/usr/bin/env bash
   set -euo pipefail
 
@@ -109,7 +109,6 @@ install SYSTEM:
 
   if [[ ! -f "$DISKO_CONFIG" ]]; then
     echo "Error: No disko config for '{{SYSTEM}}'"
-    echo "Available: desktop, workstation, vm"
     exit 1
   fi
 
@@ -119,11 +118,9 @@ install SYSTEM:
 
   for id in /dev/disk/by-id/*; do
     name=$(basename "$id")
-    # Skip partitions and non-disk entries
     [[ "$name" =~ part ]] && continue
     [[ ! "$name" =~ ^(ata|nvme|scsi)- ]] && continue
 
-    # Resolve to device and get info
     dev=$(readlink -f "$id")
     dev_name=$(basename "$dev")
     size=$(lsblk -dn -o SIZE "$dev" 2>/dev/null) || continue
@@ -157,16 +154,82 @@ install SYSTEM:
     *) echo "Aborted."; exit 1 ;;
   esac
 
+  echo "Writing disk '$DISK' to disko config..."
+  sed -i "s|device = \"/dev/disk/by-id/[^\"]*\";|device = \"$DISK\";|" "$DISKO_CONFIG"
+
   echo "Partitioning $DISK..."
   sudo nix \
     --extra-experimental-features "nix-command flakes" \
     run github:nix-community/disko -- \
-    --mode disko \
-    --arg disk "\"$DISK\"" \
+    --mode destroy,format,mount \
     "$DISKO_CONFIG"
 
-  echo "Installing NixOS..."
-  sudo nixos-install --flake .#{{SYSTEM}} --no-root-passwd
+  echo -e "\033[32mPartitioning complete. Disk mounted at /mnt.\033[0m"
+
+# Install NixOS (partition + install in one shot)
+[group('nixos')]
+install SYSTEM:
+  #!/usr/bin/env bash
+  set -euo pipefail
+
+  DISKO_CONFIG="./src/system/machines/{{SYSTEM}}/modules/disko/default.nix"
+
+  if [[ ! -f "$DISKO_CONFIG" ]]; then
+    echo "Error: No disko config for '{{SYSTEM}}'"
+    exit 1
+  fi
+
+  # Build array of disk options with readable info
+  declare -a DISK_IDS
+  declare -a DISK_OPTIONS
+
+  for id in /dev/disk/by-id/*; do
+    name=$(basename "$id")
+    [[ "$name" =~ part ]] && continue
+    [[ ! "$name" =~ ^(ata|nvme|scsi)- ]] && continue
+
+    dev=$(readlink -f "$id")
+    dev_name=$(basename "$dev")
+    size=$(lsblk -dn -o SIZE "$dev" 2>/dev/null) || continue
+    model=$(lsblk -dn -o MODEL "$dev" 2>/dev/null | xargs) || model=""
+
+    DISK_IDS+=("$id")
+    DISK_OPTIONS+=("$dev_name  $size  $model")
+  done
+
+  if [[ ${#DISK_IDS[@]} -eq 0 ]]; then
+    echo "No disks found!"
+    exit 1
+  fi
+
+  echo "Select a disk:"
+  select opt in "${DISK_OPTIONS[@]}"; do
+    if [[ -n "$opt" ]]; then
+      idx=$((REPLY - 1))
+      DISK="${DISK_IDS[$idx]}"
+      break
+    else
+      echo "Invalid selection"
+    fi
+  done
+
+  echo ""
+  echo -e "\033[31m!! WARNING: This will DESTROY all data on $DISK !!\033[0m"
+  read -p "Continue? [y/N]: " confirm
+  case "${confirm,,}" in
+    y|yes) ;;
+    *) echo "Aborted."; exit 1 ;;
+  esac
+
+  echo "Writing disk '$DISK' to disko config..."
+  sed -i "s|device = \"/dev/disk/by-id/[^\"]*\";|device = \"$DISK\";|" "$DISKO_CONFIG"
+
+  echo "Partitioning and installing NixOS..."
+  sudo nix \
+    --extra-experimental-features "nix-command flakes" \
+    run github:nix-community/disko/latest#disko-install -- \
+    --flake .#{{SYSTEM}} \
+    --disk main "$DISK"
 
   echo -e "\033[32mDone! Reboot to start NixOS.\033[0m"
 

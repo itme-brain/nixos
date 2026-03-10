@@ -16,9 +16,13 @@
       url = "github:nix-community/NixOS-WSL/2411.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl }:
+  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -38,6 +42,7 @@
       desktop = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          disko.nixosModules.disko
           ./src/system/machines/desktop
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/desktop/modules/home-manager)

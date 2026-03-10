@@ -52,23 +52,6 @@ with lib;
       cudaPackages.cudnn
     ];
 
-    fileSystems = {
-      "/" = {
-        device = "/dev/disk/by-uuid/495f5e7b-d9e4-4663-88c5-7021e7292535";
-        fsType = "ext4";
-      };
-
-      "/home" = {
-        device = "/dev/disk/by-uuid/cd0e5c29-716d-47f2-92f4-46ee9fca5af3";
-        fsType = "ext4";
-      };
-
-      "/boot" = {
-        device = "/dev/disk/by-uuid/C061-EE77";
-        fsType = "vfat";
-      };
-    };
-
     hardware = {
       cpu = {
         intel = {

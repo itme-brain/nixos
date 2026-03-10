@@ -1,10 +1,9 @@
-{ disk }:
 {
   disko.devices = {
     disk = {
-      one = {
+      main = {
         type = "disk";
-        device = disk;
+        device = "/dev/disk/by-id/ata-CT2000MX500SSD1_2137E5D2D47D";
         content = {
           type = "gpt";
           partitions = {
