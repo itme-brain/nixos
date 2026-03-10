@@ -22,7 +22,7 @@ in
         git-crypt
       ];
       file.".config/git" = {
-        source = ./config;
+        source = ./git;
         recursive = true;
       };
     };

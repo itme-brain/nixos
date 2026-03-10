@@ -4,10 +4,15 @@ let
       entries = builtins.readDir dir;
       names = builtins.attrNames entries;
       
-      isModuleDir = path: 
+      excludedDirs = [ "config" "scripts" ];
+      isSubmodule = path:
+        builtins.pathExists "${path}/.git" &&
+        builtins.readFileType "${path}/.git" == "regular";
+      isModuleDir = path:
         builtins.pathExists path &&
         builtins.readFileType path == "directory" &&
-        builtins.baseNameOf path != "config";
+        !(builtins.elem (builtins.baseNameOf path) excludedDirs) &&
+        !(isSubmodule path);
       isModule = file: file == "default.nix";
       isNix = file: builtins.match ".*\\.nix" file != null && file != "default.nix";
 

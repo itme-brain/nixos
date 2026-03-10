@@ -16,7 +16,7 @@ in
         vim
        ];
       file.".vim" = {
-        source = ./config;
+        source = ./vim;
         recursive = true;
       };
     };

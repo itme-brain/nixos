@@ -1,11 +1,10 @@
-{ disks ? [ "/dev/vda" ], ... }:
-
+{ disk ? "/dev/vda" }:
 {
   disko.devices = {
     disk = {
       one = {
-        device = builtins.elemAt disks 0;
         type = "disk";
+        device = disk;
         content = {
           type = "gpt";
           partitions = {
@@ -17,8 +16,6 @@
                 format = "vfat";
                 mountpoint = "/boot";
               };
-              bootable = true;
-              priority = 1;
             };
             primary = {
               size = "100%";
@@ -36,12 +33,6 @@
       vm = {
         type = "lvm_vg";
         lvs = {
-          aaa = {
-            size = "1M";
-          };
-          zzz = {
-            size = "1M";
-          };
           root = {
             size = "100%";
             content = {

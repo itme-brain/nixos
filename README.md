@@ -12,6 +12,25 @@ My modular Nix configs 🔥
 
 NixOS Configurations: `desktop` · `workstation` · `server` (wip) · `vm` · `wsl`
 
+## Fresh Install 🚀
+
+From the NixOS live installer:
+
+```bash
+# Enable flakes (not enabled by default on installer)
+echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
+
+# Clone repo
+nix run nixpkgs#git -- clone --recurse-submodules https://github.com/itme-brain/nixos.git
+cd nixos
+
+# Enter dev shell and install
+nix develop
+just install desktop
+```
+
+Replace `desktop` with `workstation` or `vm` as needed.
+
 ## Getting Started 🔧
 
 ```bash

@@ -9,12 +9,14 @@ in
   config = mkIf cfg.enable {
     programs.bash = {
       enable = true;
-      enableCompletion = true;
-
-      initExtra = import ./config/prompt.nix { inherit lib config; };
-      bashrcExtra = import ./config/bashrc.nix;
-      shellAliases = import ./config/alias.nix { inherit lib config; };
+      initExtra = "source ~/.config/bash/bashrc";
       profileExtra = import ./config/shellHook.nix { inherit lib config; };
+    };
+    
+    # .bashrc
+    home.file.".config/bash" = {
+      source = ./config/bash;
+      recursive = true;
     };
 
     programs = {
