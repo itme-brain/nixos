@@ -22,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, nixos-wsl, disko }:
+  outputs = { nixpkgs, nur, home-manager, nixos-wsl, disko, ... }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
