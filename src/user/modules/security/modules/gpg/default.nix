@@ -13,6 +13,9 @@ in
   config = mkIf cfg.enable {
     programs.gpg = {
       enable = true;
+      scdaemonSettings = {
+        disable-ccid = true;
+      };
       publicKeys = [
         {
           text = "${config.user.keys.pgp.primary}";

@@ -1,5 +1,11 @@
 { pkgs, lib, config, ... }:
 
+let
+  gpgEnabled = lib.any
+    (user: user.modules.user.security.gpg.enable or false)
+    (lib.attrValues config.home-manager.users);
+
+in
 { system.stateVersion = "23.11";
 
   users.users = {
@@ -91,6 +97,7 @@
   };
 
   services = {
+    pcscd.enable = gpgEnabled;
     timesyncd = lib.mkDefault {
       enable = true;
       servers = [

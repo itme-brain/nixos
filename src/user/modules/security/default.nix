@@ -17,6 +17,7 @@ in
       pass
       wireguard-tools
       ipscan
+      yubikey-manager
     ];
   };
 }
