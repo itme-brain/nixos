@@ -116,6 +116,7 @@
     settings = {
       X11Forwarding = false;
       PasswordAuthentication = false;
+      PermitRootLogin = "no";
     };
   };
 }
