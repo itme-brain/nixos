@@ -39,14 +39,28 @@ in
       group = "git";
       stateDir = "/var/lib/forgejo";
 
-      settings.server = {
-        DOMAIN = "git.${domain}";
-        ROOT_URL = "https://git.${domain}/";
-        PROTOCOL = "http+unix";
-        HTTP_ADDR = socketPath;
-        SSH_DOMAIN = "git.${domain}";
-        SSH_PORT = 22;
-        START_SSH_SERVER = false;
+      settings = {
+        DEFAULT = {
+          APP_NAME = "Git Server";
+          APP_SLOGAN = "";
+        };
+
+        server = {
+          DOMAIN = "git.${domain}";
+          ROOT_URL = "https://git.${domain}/";
+          PROTOCOL = "http+unix";
+          HTTP_ADDR = socketPath;
+          SSH_DOMAIN = "git.${domain}";
+          SSH_PORT = 22;
+          START_SSH_SERVER = false;
+          LANDING_PAGE = "explore";
+        };
+
+        service = {
+          REGISTER_MANUAL_CONFIRM = true;
+          DISABLE_REGISTRATION = false;
+          DISABLE_ORGANIZATIONS = true;
+        };
       };
 
       database = {
