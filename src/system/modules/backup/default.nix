@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.modules.system.backup;
 
-  recipientArgs = concatMapStrings (r: "-r '${r}' ") cfg.recipients;
+  recipientArgs = concatMapStrings (r: "-r '${lib.strings.trim r}' ") cfg.recipients;
 
   # Convert absolute paths to relative for tar, preserving structure
   # e.g., /var/lib/forgejo -> var/lib/forgejo
