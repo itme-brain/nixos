@@ -8,6 +8,7 @@
     nginx.enable = true;
     forgejo.enable = true;
     frigate.enable = false;
+    immich.enable = true;
 
     backup = {
       enable = true;
@@ -15,8 +16,9 @@
        "${config.user.keys.age.yubikey}"
        "${config.machines.keys.desktop.ssh}"
       ];
+      paths = [ "/root/.config/rclone" ];
       destination = "gdrive:backups/server";
-      schedule = "weekly";
+      schedule = "daily";
       keepLast = 2;
     };
   };
