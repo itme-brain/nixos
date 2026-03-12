@@ -19,7 +19,7 @@ in
       isSystemUser = true;
       group = "git";
       home = "/var/lib/forgejo";
-      shell = "${pkgs.shadow}/bin/nologin";
+      shell = "${pkgs.bash}/bin/bash";
     };
 
     users.users.nginx = mkIf nginx.enable {
