@@ -21,9 +21,16 @@ in
       home = "/var/lib/forgejo";
       shell = "${pkgs.git}/bin/git-shell";
     };
+
     users.users.nginx = mkIf nginx.enable {
       extraGroups = [ "git" ];
     };
+
+    systemd.tmpfiles.rules = [
+      "d /var/lib/forgejo 0750 git git -"
+      "d /var/lib/forgejo/custom 0750 git git -"
+      "d /var/lib/forgejo/data 0750 git git -"
+    ];
 
     services.forgejo = {
       enable = true;
