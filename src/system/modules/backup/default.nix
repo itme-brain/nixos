@@ -21,6 +21,7 @@ let
     echo "Starting backup: $BACKUP_NAME"
     echo "Paths: ${concatStringsSep " " cfg.paths}"
 
+    export PATH="${pkgs.age-plugin-yubikey}/bin:$PATH"
     ${pkgs.gnutar}/bin/tar -C / -cf - ${concatStringsSep " " tarPaths} | \
       ${pkgs.age}/bin/age ${recipientArgs} -o "$TEMP_DIR/$BACKUP_NAME"
 
