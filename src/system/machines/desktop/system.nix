@@ -94,20 +94,7 @@ in
       enable = true;
       allowedTCPPorts = [ 22 80 443 ];
     };
-    nameservers = [ "127.0.0.1" ];
-  };
-
-  services.dnsmasq = {
-    enable = true;
-    settings = {
-      # Only specific subdomains go to local server
-      address = [
-        "/git.ramos.codes/192.168.0.154"
-        "/frigate.ramos.codes/192.168.0.154"
-        "/test.ramos.codes/192.168.0.154"
-      ];
-      server = [ "1.1.1.1" "8.8.8.8" ];
-    };
+    nameservers = [ "192.168.0.154" ];
   };
 
   services = {

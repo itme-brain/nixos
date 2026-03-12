@@ -109,6 +109,23 @@
     };
   };
 
+  services.dnsmasq = {
+    enable = true;
+    settings = {
+      # All *.ramos.codes subdomains -> local server
+      address = "/.ramos.codes/192.168.0.154";
+      # Except www -> forward to upstream
+      server = [
+        "/www.ramos.codes/1.1.1.1"
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
+      cache-size = 1000;
+    };
+  };
+
+  networking.firewall.allowedUDPPorts = [ 53 ];
+
   services.fail2ban = {
     enable = true;
     maxretry = 5;
