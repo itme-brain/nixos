@@ -35,13 +35,16 @@ in
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
 
-      # Catch-all default - reject unknown hosts instead of falling back
+      # Catch-all default - friendly error for unknown subdomains
       virtualHosts."_" = {
         default = true;
         useACMEHost = domain;
         forceSSL = true;
         locations."/" = {
-          return = "444";  # Close connection without response
+          return = "404 'Not Found: This subdomain does not exist.'";
+          extraConfig = ''
+            add_header Content-Type text/plain;
+          '';
         };
       };
 
