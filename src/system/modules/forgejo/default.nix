@@ -19,7 +19,7 @@ in
       isSystemUser = true;
       group = "git";
       home = "/var/lib/forgejo";
-      shell = "${pkgs.git}/bin/git-shell";
+      shell = "${pkgs.shadow}/bin/nologin";
     };
 
     users.users.nginx = mkIf nginx.enable {
@@ -28,6 +28,7 @@ in
 
     systemd.tmpfiles.rules = [
       "d /var/lib/forgejo 0750 git git -"
+      "d /var/lib/forgejo/.ssh 0700 git git -"
       "d /var/lib/forgejo/custom 0750 git git -"
       "d /var/lib/forgejo/data 0750 git git -"
     ];
