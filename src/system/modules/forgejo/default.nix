@@ -73,6 +73,10 @@ in
       };
     };
 
+    modules.system.backup.paths = [
+      "/var/lib/forgejo"
+    ];
+
     services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
       forceSSL = true;

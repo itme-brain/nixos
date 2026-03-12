@@ -21,11 +21,6 @@ in
           text = "${config.user.keys.pgp.primary}";
           trust = 5;
         }
-      ] ++ optionals (osConfig.networking.hostName == "desktop") [
-        {
-          text = "${config.user.keys.pgp.windows}";
-          trust = 5;
-        }
       ] ++ optionals (osConfig.networking.hostName == "workstation") [
         {
           text = "${config.user.keys.pgp.work}";

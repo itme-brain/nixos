@@ -8,6 +8,18 @@
     nginx.enable = true;
     forgejo.enable = true;
     frigate.enable = false;
+
+    backup = {
+      enable = true;
+      recipients = [
+        # TODO: Add your age recipients
+        # "${config.user.keys.age.yubikey}"
+        # "${config.user.keys.ssh.desktop}"
+      ];
+      destination = "gdrive:backups/server"; # TODO: configure rclone remote
+      schedule = "daily";
+      keepLast = 7;
+    };
   };
 
   users.users = {
