@@ -3,86 +3,44 @@
 with lib;
 let
   cfg = config.modules.system.nginx;
-  module = config.modules.system;
+  domain = "ramos.codes";
 
 in
-{ options.modules.system.nginx = { enable = mkEnableOption "Nginx Reverse Proxy"; };
-  config = mkIf cfg.enable {
-    users = {
-      users = {
-        "nginx" = {
-          description = "Web server system user";
-          isSystemUser = true;
-          group = mkForce "web";
-        };
-        "btc" = {
-          extraGroups = mkIf module.bitcoin.enable [
-            "web"
-          ];
-        };
-        "git" = {
-          extraGroups = mkIf module.forgejo.enable [
-            "web"
-          ];
-        };
-      };
-      groups = {
-        "web" = {
-          members = [
-            "nginx"
-          ];
-        };
-      };
-    };
+{
+  options.modules.system.nginx = {
+    enable = mkEnableOption "Nginx Reverse Proxy";
+  };
 
-    security.acme = 
-    let
-      acmeDir = "/var/lib/acme";
-    in
-    {
-      acceptTerms = true;
-      certs = {
-        "ramos.codes" = {
-          #webroot = "${acmeDir}/acme-challenge";
-          directory = "${acmeDir}/ramos.codes";
-          email = config.user.email;
-          group = "web";
-          validMinDays = 90;
-          extraDomainNames = attrNames config.services.nginx.virtualHosts;
-          listenHTTP = ":80";
-        };
-      };
-    };
+  config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ 80 /* 443 */ ];
+
+    # security.acme = {
+    #   acceptTerms = true;
+    #   defaults.email = config.user.email;
+    #
+    #   certs."${domain}" = {
+    #     domain = "*.${domain}";
+    #     dnsProvider = "namecheap";
+    #     environmentFile = "/var/lib/acme/namecheap.env";
+    #     group = "nginx";
+    #   };
+    # };
 
     services.nginx = {
       enable = true;
-      virtualHosts = 
-      let
-        certPath = config.security.acme.certs."ramos.codes".directory;
-        sslCertificate = "${certPath}/fullchain.pem";
-        sslCertificateKey = "${certPath}/key.pem";
+      # recommendedTlsSettings = true;
+      recommendedOptimisation = true;
+      recommendedGzipSettings = true;
 
-        withSSL = hosts: mapAttrs (name: hostConfig: hostConfig // {
-          inherit sslCertificate sslCertificateKey;
-          forceSSL = true;
-        }) hosts;
-
-      in withSSL
-      {
-        "git.ramos.codes" = mkIf module.forgejo.enable {
-          locations = {
-            "/" = {
-              proxyPass = "http://unix:${config.services.forgejo.settings.server.HTTP_ADDR}";
-            };
-          };
+      virtualHosts."test.${domain}" = {
+        # useACMEHost = domain;
+        # forceSSL = true;
+        locations."/" = {
+          return = "200 'nginx is working'";
+          extraConfig = ''
+            add_header Content-Type text/plain;
+          '';
         };
-        #"btc.ramos.codes" = mkIf module.bitcoin.electrum.enable {
-        #  locations = {
-        #   "/" = {
-        #     proxyPass = "";
-        #   };
-        #  };
-        #};
       };
     };
   };

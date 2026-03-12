@@ -4,17 +4,9 @@
 
   imports = [ ../../modules ];
 
-  # Modules disabled for base install
-  # modules = {
-  #   system = {
-  #     nginx.enable = true;
-  #     forgejo.enable = true;
-  #     bitcoin = {
-  #       enable = true;
-  #       electrum.enable = true;
-  #     };
-  #   };
-  # };
+  modules.system = {
+    nginx.enable = true;
+  };
 
   users.users = {
     ${config.user.name} = {
