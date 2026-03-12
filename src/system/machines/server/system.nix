@@ -1,25 +1,28 @@
 { pkgs, lib, config, ... }:
 
-{ system.stateVersion = "23.11";
+{ system.stateVersion = "25.11";
 
   imports = [ ../../modules ];
 
-  modules = {
-    system = {
-      nginx.enable = true;
-      forgejo.enable = true;
-      bitcoin = {
-        enable = true;
-        electrum.enable = true;
-      };
-    };
-  };
+  # Modules disabled for base install
+  # modules = {
+  #   system = {
+  #     nginx.enable = true;
+  #     forgejo.enable = true;
+  #     bitcoin = {
+  #       enable = true;
+  #       electrum.enable = true;
+  #     };
+  #   };
+  # };
 
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
       extraGroups = config.user.groups;
-      openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.primary}" ];
+      openssh.authorizedKeys.keys = [
+        "${config.user.keys.ssh.desktop}"
+      ];
     };
   };
 
@@ -39,10 +42,9 @@
   };
 
   boot.loader = {
-    timeout = null;
+    timeout = 3;
     grub = {
       enable = true;
-      useOSProber = true;
       devices = [ "nodev" ];
       efiSupport = true;
       configurationLimit = 5;
@@ -58,11 +60,7 @@
     wget
     git
     vim
-  ];
-
-  fonts.packages = with pkgs; [
-    terminus_font
-    terminus-nerdfont
+    htop
   ];
 
   security.sudo = {
@@ -87,19 +85,29 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  console = {
-    font = "Lat2-Terminus16";
-    useXkbConfig = true;
-  };
+  console.font = "Lat2-Terminus16";
 
   networking = {
     hostName = "server";
-    useDHCP = lib.mkDefault true;
-    networkmanager.enable = true;
+    useDHCP = false;
+    interfaces.eno1 = {
+      ipv4.addresses = [{
+        address = "192.168.0.154";
+        prefixLength = 24;
+      }];
+    };
+    defaultGateway = "192.168.0.1";
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 80 443 ];
+      allowedTCPPorts = [ 22 ];
     };
+  };
+
+  services.fail2ban = {
+    enable = true;
+    maxretry = 5;
+    bantime = "1h";
   };
 
   services.openssh = {
@@ -108,6 +116,7 @@
     settings = {
       X11Forwarding = false;
       PasswordAuthentication = false;
+      PermitRootLogin = "no";
     };
   };
 }

@@ -29,7 +29,7 @@ case $- in
     fi
     ''}
     ${optionalString tmux.enable ''
-    if [ -z "$DISPLAY" ] && [ -z "$TMUX" ]; then
+    if [ -z "$DISPLAY" ] && [ -z "$TMUX" ] && [ -z "$SSH_TTY" ]; then
       exec tmux
     fi
     ''}
