@@ -12,29 +12,29 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ 80 /* 443 */ ];
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
 
-    # security.acme = {
-    #   acceptTerms = true;
-    #   defaults.email = config.user.email;
-    #
-    #   certs."${domain}" = {
-    #     domain = "*.${domain}";
-    #     dnsProvider = "namecheap";
-    #     environmentFile = "/var/lib/acme/namecheap.env";
-    #     group = "nginx";
-    #   };
-    # };
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = config.user.email;
+
+      certs."${domain}" = {
+        domain = "*.${domain}";
+        dnsProvider = "namecheap";
+        environmentFile = "/var/lib/acme/namecheap.env";
+        group = "nginx";
+      };
+    };
 
     services.nginx = {
       enable = true;
-      # recommendedTlsSettings = true;
+      recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
 
       virtualHosts."test.${domain}" = {
-        # useACMEHost = domain;
-        # forceSSL = true;
+        useACMEHost = domain;
+        forceSSL = true;
         locations."/" = {
           return = "200 'nginx is working'";
           extraConfig = ''
