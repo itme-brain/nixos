@@ -100,7 +100,12 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
-      address = "/.ramos.codes/192.168.0.154";
+      # Only specific subdomains go to local server
+      address = [
+        "/git.ramos.codes/192.168.0.154"
+        "/frigate.ramos.codes/192.168.0.154"
+        "/test.ramos.codes/192.168.0.154"
+      ];
       server = [ "1.1.1.1" "8.8.8.8" ];
     };
   };

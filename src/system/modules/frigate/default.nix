@@ -19,73 +19,41 @@ in
       settings = {
         mqtt.enabled = false;
         cameras = {
-          # "doorbell" = {
-          #   ffmpeg = {
-          #     inputs = [
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
-          #         roles = [ "record" ];
-          #       }
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=1";
-          #         roles = [ "detect" ];
-          #       }
-          #     ];
-          #   };
-          # };
-          "living_room" = {
+          doorbell = {
             detect.enabled = false;
-            ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
-                  roles = [ "record" ];
-                }
-              ];
-            };
+            ffmpeg.inputs = [{
+              path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
+              roles = [ "record" ];
+            }];
           };
-          # "kitchen" = {
-          #   ffmpeg = {
-          #     inputs = [
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
-          #         roles = [ "record" ];
-          #       }
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
-          #         roles = [ "detect" ];
-          #       }
-          #     ];
-          #   };
-          # };
-          # "parking_lot" = {
-          #   ffmpeg = {
-          #     inputs = [
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
-          #         roles = [ "record" ];
-          #       }
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
-          #         roles = [ "detect" ];
-          #       }
-          #     ];
-          #   };
-          # };
-          # "porch" = {
-          #   ffmpeg = {
-          #     inputs = [
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
-          #         roles = [ "record" ];
-          #       }
-          #       {
-          #         path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=1";
-          #         roles = [ "detect" ];
-          #       }
-          #     ];
-          #   };
-          # };
+          living_room = {
+            detect.enabled = false;
+            ffmpeg.inputs = [{
+              path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
+              roles = [ "record" ];
+            }];
+          };
+          kitchen = {
+            detect.enabled = false;
+            ffmpeg.inputs = [{
+              path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
+              roles = [ "record" ];
+            }];
+          };
+          parking_lot = {
+            detect.enabled = false;
+            ffmpeg.inputs = [{
+              path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
+              roles = [ "record" ];
+            }];
+          };
+          porch = {
+            detect.enabled = false;
+            ffmpeg.inputs = [{
+              path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+              roles = [ "record" ];
+            }];
+          };
         };
       };
     };
@@ -95,5 +63,6 @@ in
       useACMEHost = domain;
       forceSSL = true;
     };
+
   };
 }
