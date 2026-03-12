@@ -42,7 +42,7 @@
   };
 
   boot.loader = {
-    timeout = null;
+    timeout = 3;
     grub = {
       enable = true;
       devices = [ "nodev" ];
