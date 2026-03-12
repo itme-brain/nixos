@@ -6,6 +6,7 @@
 
   modules.system = {
     nginx.enable = true;
+    forgejo.enable = true;
   };
 
   users.users = {

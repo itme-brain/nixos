@@ -4,54 +4,46 @@ with lib;
 let
   cfg = config.modules.system.forgejo;
   nginx = config.modules.system.nginx;
+  domain = "ramos.codes";
+  socketPath = "/run/forgejo/forgejo.sock";
 
 in
-{ options.modules.system.forgejo = { enable = mkEnableOption "Forgejo Server"; };
+{
+  options.modules.system.forgejo = {
+    enable = mkEnableOption "Forgejo Server";
+  };
+
   config = mkIf cfg.enable {
-    users = {
-      users = {
-        "git" = {
-          description = "Git server system user";
-          isSystemUser = true;
-          group = "git";
-          extraGroups = mkIf nginx.enable [
-            "web"
-          ];
-        };
-        "nginx" = {
-          extraGroups = mkIf nginx.enable [
-            "git"
-          ];
-        };
-      };
-      groups = {
-        "git" = {
-          members = [
-            "git"
-          ];
-        };
-      };
+    users.users.nginx = mkIf nginx.enable {
+      extraGroups = [ "git" ];
     };
 
-    services.forgejo = rec {
+    services.forgejo = {
       enable = true;
       user = "git";
       group = "git";
-      stateDir = "/var/lib/forgejo";
-      
-      settings = {
-        server = {
-          PROTOCOL = "http+unix";
-          DOMAIN = "127.0.0.1";
-          HTTP_ADDR = "/run/forgejo/forgejo.sock";
-        };
+
+      settings.server = {
+        DOMAIN = "git.${domain}";
+        ROOT_URL = "https://git.${domain}/";
+        PROTOCOL = "http+unix";
+        HTTP_ADDR = socketPath;
+        SSH_DOMAIN = "git.${domain}";
+        SSH_PORT = 22;
+        START_SSH_SERVER = false;
       };
 
       database = {
-        inherit user;
         type = "sqlite3";
-        path = "${stateDir}/data/forgejo.db";
-        createDatabase = true;
+        path = "/var/lib/forgejo/data/forgejo.db";
+      };
+    };
+
+    services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
+      useACMEHost = domain;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://unix:${socketPath}";
       };
     };
   };
