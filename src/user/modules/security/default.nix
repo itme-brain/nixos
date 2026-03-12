@@ -7,7 +7,7 @@ let
     pass-audit
     pass-otp
     pass-update
-    pass-tomb
+    #pass-tomb
   ]);
 
 in
