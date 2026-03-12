@@ -25,14 +25,14 @@ let
     ${pkgs.gnutar}/bin/tar -C / -cf - ${concatStringsSep " " tarPaths} | \
       ${pkgs.age}/bin/age ${recipientArgs} -o "$TEMP_DIR/$BACKUP_NAME"
 
-    ${pkgs.rclone}/bin/rclone copy "$TEMP_DIR/$BACKUP_NAME" "${cfg.destination}"
+    ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf copy "$TEMP_DIR/$BACKUP_NAME" "${cfg.destination}"
 
     # Prune old backups
-    ${pkgs.rclone}/bin/rclone lsf "${cfg.destination}" | \
+    ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf lsf "${cfg.destination}" | \
       sort -r | \
       tail -n +$((${toString cfg.keepLast} + 1)) | \
       while read -r old; do
-        ${pkgs.rclone}/bin/rclone delete "${cfg.destination}/$old"
+        ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf delete "${cfg.destination}/$old"
       done
 
     echo "Backup complete"
