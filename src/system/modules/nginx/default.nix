@@ -14,6 +14,8 @@ in
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+    systemd.services.nginx.serviceConfig.LimitNOFILE = 65536;
+
     security.acme = {
       acceptTerms = true;
       defaults.email = config.user.email;
