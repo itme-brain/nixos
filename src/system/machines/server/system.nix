@@ -15,8 +15,8 @@
        "${config.user.keys.age.yubikey}"
        "${config.machines.keys.desktop.ssh}"
       ];
-      destination = "gdrive:backups/server"; # TODO: configure rclone remote
-      schedule = "daily";
+      destination = "gdrive:backups/server";
+      schedule = "weekly";
       keepLast = 2;
     };
   };
