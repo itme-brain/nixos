@@ -90,6 +90,10 @@ in
       };
     };
 
-    # NixOS frigate module creates nginx virtualHost automatically via hostname option
+    # Add SSL to frigate's nginx virtualHost
+    services.nginx.virtualHosts."frigate.${domain}" = mkIf nginx.enable {
+      useACMEHost = domain;
+      forceSSL = true;
+    };
   };
 }
