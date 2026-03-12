@@ -19,20 +19,20 @@ in
       settings = {
         mqtt.enabled = false;
         cameras = {
-          "doorbell" = {
-            ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
-                  roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=1";
-                  roles = [ "detect" ];
-                }
-              ];
-            };
-          };
+          # "doorbell" = {
+          #   ffmpeg = {
+          #     inputs = [
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
+          #         roles = [ "record" ];
+          #       }
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=1";
+          #         roles = [ "detect" ];
+          #       }
+          #     ];
+          #   };
+          # };
           "living_room" = {
             ffmpeg = {
               inputs = [
@@ -47,48 +47,48 @@ in
               ];
             };
           };
-          "kitchen" = {
-            ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
-                  roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
-                  roles = [ "detect" ];
-                }
-              ];
-            };
-          };
-          "parking_lot" = {
-            ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
-                  roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
-                  roles = [ "detect" ];
-                }
-              ];
-            };
-          };
-          "porch" = {
-            ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
-                  roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=1";
-                  roles = [ "detect" ];
-                }
-              ];
-            };
-          };
+          # "kitchen" = {
+          #   ffmpeg = {
+          #     inputs = [
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
+          #         roles = [ "record" ];
+          #       }
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=1";
+          #         roles = [ "detect" ];
+          #       }
+          #     ];
+          #   };
+          # };
+          # "parking_lot" = {
+          #   ffmpeg = {
+          #     inputs = [
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
+          #         roles = [ "record" ];
+          #       }
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
+          #         roles = [ "detect" ];
+          #       }
+          #     ];
+          #   };
+          # };
+          # "porch" = {
+          #   ffmpeg = {
+          #     inputs = [
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+          #         roles = [ "record" ];
+          #       }
+          #       {
+          #         path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=1";
+          #         roles = [ "detect" ];
+          #       }
+          #     ];
+          #   };
+          # };
         };
       };
     };

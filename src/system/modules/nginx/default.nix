@@ -31,6 +31,7 @@ in
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
+      eventsConfig = "worker_connections 4096;";
 
       virtualHosts."test.${domain}" = {
         useACMEHost = domain;
