@@ -18,7 +18,7 @@ in
       };
       publicKeys = [
         {
-          text = "${config.user.keys.pgp.primary}";
+          text = "${config.user.keys.pgp.yubikey}";
           trust = 5;
         }
       ] ++ optionals (osConfig.networking.hostName == "workstation") [

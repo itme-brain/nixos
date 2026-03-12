@@ -14,7 +14,7 @@ in
         name = "bryan";
         email = "bryan@ramos.codes";
         shell = bash;
-        keys = import ./keys;
+        keys = import ./keys { inherit lib; };
 
         groups = [ "wheel" "networkmanager" "home-manager" "input" ];
         bookmarks = import ./bookmarks;

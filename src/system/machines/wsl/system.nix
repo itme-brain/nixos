@@ -9,8 +9,7 @@
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [ 
-        "${config.user.keys.ssh.primary}" 
-        "${config.user.keys.ssh.windows}" 
+        "${config.user.keys.ssh.yubikey}" 
       ];
     };
   };

@@ -12,13 +12,12 @@
     backup = {
       enable = true;
       recipients = [
-        # TODO: Add your age recipients
-        # "${config.user.keys.age.yubikey}"
-        # "${config.user.keys.ssh.desktop}"
+       "${config.user.keys.age.yubikey}"
+       "${config.machines.keys.desktop.ssh}"
       ];
       destination = "gdrive:backups/server"; # TODO: configure rclone remote
       schedule = "daily";
-      keepLast = 7;
+      keepLast = 2;
     };
   };
 
@@ -27,7 +26,7 @@
       isNormalUser = true;
       extraGroups = config.user.groups;
       openssh.authorizedKeys.keys = [
-        "${config.user.keys.ssh.desktop}"
+        "${config.machines.keys.desktop.ssh}"
       ];
     };
   };
