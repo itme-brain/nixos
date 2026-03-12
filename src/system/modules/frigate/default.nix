@@ -19,7 +19,7 @@ in
       settings = {
         mqtt.enabled = false;
         cameras = {
-          "Doorbell" = {
+          "doorbell" = {
             ffmpeg = {
               inputs = [
                 {
@@ -33,7 +33,7 @@ in
               ];
             };
           };
-          "Living Room" = {
+          "living_room" = {
             ffmpeg = {
               inputs = [
                 {
@@ -47,7 +47,7 @@ in
               ];
             };
           };
-          "Kitchen" = {
+          "kitchen" = {
             ffmpeg = {
               inputs = [
                 {
@@ -61,7 +61,7 @@ in
               ];
             };
           };
-          "Parking Lot" = {
+          "parking_lot" = {
             ffmpeg = {
               inputs = [
                 {
@@ -75,7 +75,7 @@ in
               ];
             };
           };
-          "Porch" = {
+          "porch" = {
             ffmpeg = {
               inputs = [
                 {
