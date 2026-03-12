@@ -59,7 +59,11 @@ in
         service = {
           REGISTER_MANUAL_CONFIRM = true;
           DISABLE_REGISTRATION = false;
-          DISABLE_ORGANIZATIONS = true;
+          DEFAULT_ALLOW_CREATE_ORGANIZATION = false;
+        };
+
+        admin = {
+          DISABLE_REGULAR_ORG_CREATION = true;
         };
       };
 
