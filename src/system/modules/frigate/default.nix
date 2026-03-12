@@ -34,15 +34,12 @@ in
           #   };
           # };
           "living_room" = {
+            detect.enabled = false;
             ffmpeg = {
               inputs = [
                 {
                   path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=1";
-                  roles = [ "detect" ];
                 }
               ];
             };
