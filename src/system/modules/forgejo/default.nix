@@ -29,6 +29,7 @@ in
       enable = true;
       user = "git";
       group = "git";
+      stateDir = "/var/lib/forgejo";
 
       settings.server = {
         DOMAIN = "git.${domain}";
