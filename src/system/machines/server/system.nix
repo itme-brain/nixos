@@ -7,7 +7,7 @@
   modules.system = {
     nginx.enable = true;
     forgejo.enable = true;
-    frigate.enable = true;
+    frigate.enable = false;
   };
 
   users.users = {
