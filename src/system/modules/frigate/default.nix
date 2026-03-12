@@ -17,10 +17,6 @@ in
       enable = true;
       hostname = "frigate.${domain}";
       settings = {
-        web = {
-          bind_address = "127.0.0.1";
-          port = 5000;
-        };
         mqtt.enabled = false;
         cameras = {
           "Doorbell" = {
