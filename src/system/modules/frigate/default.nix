@@ -90,13 +90,6 @@ in
       };
     };
 
-    services.nginx.virtualHosts."frigate.${domain}" = mkIf nginx.enable {
-      useACMEHost = domain;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:5000";
-        proxyWebsockets = true;
-      };
-    };
+    # NixOS frigate module creates nginx virtualHost automatically via hostname option
   };
 }
