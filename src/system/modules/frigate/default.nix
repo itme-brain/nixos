@@ -65,11 +65,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.60/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.60/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
@@ -79,11 +79,11 @@ in
             ffmpeg = {
               inputs = [
                 {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.108/cam/realmonitor?channel=1&subtype=0";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
                   roles = [ "record" ];
                 }
                 {
-                  path = "rtsp://admin:ocu?u3Su@192.168.0.108/cam/realmonitor?channel=1&subtype=1";
+                  path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=1";
                   roles = [ "detect" ];
                 }
               ];
