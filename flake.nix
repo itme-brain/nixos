@@ -61,6 +61,7 @@
       server = nixpkgs.lib.nixosSystem {
         inherit system pkgs;
         modules = [
+          disko.nixosModules.disko
           ./src/system/machines/server
           home-manager.nixosModules.home-manager
             (import ./src/system/machines/server/modules/home-manager)

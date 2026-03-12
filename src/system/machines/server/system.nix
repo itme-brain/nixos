@@ -1,19 +1,20 @@
 { pkgs, lib, config, ... }:
 
-{ system.stateVersion = "23.11";
+{ system.stateVersion = "25.11";
 
   imports = [ ../../modules ];
 
-  modules = {
-    system = {
-      nginx.enable = true;
-      forgejo.enable = true;
-      bitcoin = {
-        enable = true;
-        electrum.enable = true;
-      };
-    };
-  };
+  # Modules disabled for base install
+  # modules = {
+  #   system = {
+  #     nginx.enable = true;
+  #     forgejo.enable = true;
+  #     bitcoin = {
+  #       enable = true;
+  #       electrum.enable = true;
+  #     };
+  #   };
+  # };
 
   users.users = {
     ${config.user.name} = {
@@ -98,7 +99,7 @@
     networkmanager.enable = true;
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 80 443 ];
+      allowedTCPPorts = [ 22 ];
     };
   };
 
