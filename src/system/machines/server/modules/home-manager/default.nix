@@ -8,7 +8,7 @@
 
     programs.home-manager.enable = true;
 
-    home.stateVersion = "23.11";
+    home.stateVersion = "25.11";
 
     home.username = "${config.user.name}";
     home.homeDirectory = "/home/${config.user.name}";
@@ -17,6 +17,7 @@
       user = {
         bash.enable = true;
         git.enable = true;
+        tmux.enable = true;
 
         security = {
           gpg.enable = true;
