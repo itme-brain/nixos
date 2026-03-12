@@ -66,7 +66,7 @@ in
           DISABLE_REGULAR_ORG_CREATION = true;
         };
 
-        "auth" = {
+        auth = {
           ENABLE_BASIC_AUTHENTICATION = true;
         };
       };
