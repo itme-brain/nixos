@@ -29,7 +29,6 @@ in
     services.nginx.virtualHosts."photos.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
       forceSSL = true;
-      clientMaxBodySize = "50G";
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString port}";
         proxyWebsockets = true;
