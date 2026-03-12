@@ -35,6 +35,16 @@ in
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
 
+      # Catch-all default - reject unknown hosts instead of falling back
+      virtualHosts."_" = {
+        default = true;
+        useACMEHost = domain;
+        forceSSL = true;
+        locations."/" = {
+          return = "444";  # Close connection without response
+        };
+      };
+
       virtualHosts."test.${domain}" = {
         useACMEHost = domain;
         forceSSL = true;
