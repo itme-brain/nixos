@@ -114,9 +114,12 @@
     settings = {
       # All *.ramos.codes subdomains -> local server
       address = "/.ramos.codes/192.168.0.154";
-      # Except www -> forward to upstream
+      # Except www, http, https and bare domain -> forward to upstream
       server = [
         "/www.ramos.codes/1.1.1.1"
+        "/http.ramos.codes/1.1.1.1"
+        "/https.ramos.codes/1.1.1.1"
+        "/ramos.codes/1.1.1.1"
         "1.1.1.1"
         "8.8.8.8"
       ];
