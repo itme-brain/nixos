@@ -14,6 +14,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    users.groups.git = {};
+    users.users.git = {
+      isSystemUser = true;
+      group = "git";
+      home = "/var/lib/forgejo";
+      shell = "${pkgs.git}/bin/git-shell";
+    };
     users.users.nginx = mkIf nginx.enable {
       extraGroups = [ "git" ];
     };
