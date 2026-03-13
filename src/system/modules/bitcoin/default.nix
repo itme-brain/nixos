@@ -69,6 +69,7 @@ in
     systemd.services.bitcoind-mainnet = {
       wants = [ "tor.service" ];
       after = [ "tor.service" ];
+      serviceConfig.ExecStartPre = "+${pkgs.coreutils}/bin/chmod 750 /var/lib/tor";
     };
 
     modules.system.backup.paths = [

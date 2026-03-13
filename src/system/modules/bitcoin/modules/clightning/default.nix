@@ -59,6 +59,7 @@ in
       ];
 
       serviceConfig = {
+        ExecStartPre = "+${pkgs.coreutils}/bin/chmod 750 /var/lib/bitcoin /var/lib/tor";
         ExecStart = "${pkgs.clightning}/bin/lightningd --conf=${clnConfig}";
         User = "clightning";
         Group = "bitcoin";

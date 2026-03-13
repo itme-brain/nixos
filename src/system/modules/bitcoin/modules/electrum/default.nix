@@ -74,6 +74,7 @@ in
       ];
 
       serviceConfig = {
+        ExecStartPre = "+${pkgs.coreutils}/bin/chmod 750 /var/lib/bitcoin";
         ExecStart = "${pkgs.electrs}/bin/electrs --conf=${electrsConfig}";
         User = "electrs";
         Group = "bitcoin";
