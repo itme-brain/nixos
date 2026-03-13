@@ -10,7 +10,10 @@ let
 
   clnConfig = pkgs.writeTextFile {
     name = "lightning.conf";
-    text = builtins.readFile ./config/lightning.conf;
+    text = ''
+      ${builtins.readFile ./config/lightning.conf}
+      bitcoin-cli=${pkgs.bitcoind}/bin/bitcoin-cli
+    '';
   };
 
 in
