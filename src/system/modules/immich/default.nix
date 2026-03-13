@@ -42,6 +42,7 @@ in
 
     modules.system.backup.paths = [
       "/var/lib/immich"
+      "/var/lib/postgresql"
     ];
 
     services.nginx.virtualHosts."photos.${domain}" = mkIf nginx.enable {

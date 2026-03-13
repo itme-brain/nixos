@@ -11,6 +11,21 @@
 
     programs.home-manager.enable = true;
 
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks = {
+        "*" = {
+          serverAliveInterval = 60;
+          serverAliveCountMax = 3;
+        };
+        "server" = {
+          hostname = "192.168.0.154";
+          user = "bryan";
+        };
+      };
+    };
+
     home.stateVersion = "23.11";
 
     home.username = "${config.user.name}";

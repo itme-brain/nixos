@@ -98,6 +98,7 @@ in
 
     modules.system.backup.paths = [
       "${home}/bitcoin/hsm_secret"
+      "${home}/bitcoin/emergency.recover"
     ];
 
     services.nginx.virtualHosts."ln.${domain}" = mkIf nginx.enable {
