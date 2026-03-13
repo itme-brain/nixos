@@ -61,6 +61,11 @@ in
       };
     };
 
+    # Make data dir group-accessible so electrs/clightning can read cookie
+    systemd.tmpfiles.rules = [
+      "d ${home} 0750 btc bitcoin -"
+    ];
+
     systemd.services.bitcoind-mainnet = {
       wants = [ "tor.service" ];
       after = [ "tor.service" ];
