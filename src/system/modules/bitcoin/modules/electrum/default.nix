@@ -65,9 +65,6 @@ in
       description = "Electrs Bitcoin Indexer";
       wantedBy = [ "multi-user.target" ];
 
-      script = "${pkgs.electrs}/bin/electrs";
-      scriptArgs = "--conf=${electrsConfig}";
-
       wants = [ "bitcoind-mainnet.service" ];
       after = [
         "bitcoind-mainnet.service"
@@ -75,6 +72,7 @@ in
       ];
 
       serviceConfig = {
+        ExecStart = "${pkgs.electrs}/bin/electrs --conf=${electrsConfig}";
         User = "electrs";
         Group = "bitcoin";
 
@@ -85,5 +83,10 @@ in
         RestartSec = 60;
       };
     };
+
+    # Ensure db directory exists with correct permissions
+    systemd.tmpfiles.rules = [
+      "d ${home} 0750 electrs bitcoin -"
+    ];
   };
 }
