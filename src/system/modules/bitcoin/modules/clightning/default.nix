@@ -47,11 +47,6 @@ in
       cln = "lightning-cli";
     };
 
-    # Symlink for CLI access - allows `lightning-cli` without --lightning-dir
-    systemd.tmpfiles.rules = mkAfter [
-      "L+ /home/${config.user.name}/.lightning - - - - ${home}"
-    ];
-
     systemd.services.lightningd = {
       description = "Core Lightning Daemon";
       wantedBy = [ "multi-user.target" ];
@@ -82,6 +77,8 @@ in
     systemd.tmpfiles.rules = [
       "d ${home} 0750 clightning bitcoin -"
       "d ${home}/plugins 0750 clightning bitcoin -"
+    ] ++ mkAfter [
+      "L+ /home/${config.user.name}/.lightning - - - - ${home}"
     ];
 
     modules.system.backup.paths = [
