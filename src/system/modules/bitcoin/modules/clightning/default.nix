@@ -8,37 +8,7 @@ let
   home = "/var/lib/clightning";
   domain = "ramos.codes";
 
-  clnrest = pkgs.rustPlatform.buildRustPackage rec {
-    pname = "clnrest";
-    version = "25.02.2";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "ElementsProject";
-      repo = "lightning";
-      rev = "v${version}";
-      hash = "sha256-SiPYB463l9279+zawsxmql1Ui/dTdah5KgJgmrWsR2A=";
-    };
-
-    cargoLock.lockFile = "${src}/Cargo.lock";
-
-    cargoBuildFlags = [ "-p" "clnrest" ];
-    cargoTestFlags = [ "-p" "clnrest" ];
-
-    nativeBuildInputs = with pkgs; [ pkg-config protobuf ];
-    buildInputs = [ pkgs.openssl ];
-
-    postInstall = ''
-      mkdir -p $out/libexec/c-lightning/plugins
-      mv $out/bin/clnrest $out/libexec/c-lightning/plugins/
-      rmdir $out/bin
-    '';
-
-    meta = with lib; {
-      description = "REST API plugin for Core Lightning";
-      homepage = "https://github.com/ElementsProject/lightning/tree/master/plugins/rest-plugin";
-      license = licenses.mit;
-    };
-  };
+  clnrest = pkgs.callPackage ./plugins/clnrest.nix { };
 
   clnConfig = pkgs.writeTextFile {
     name = "lightning.conf";
