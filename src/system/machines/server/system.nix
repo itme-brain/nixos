@@ -9,6 +9,7 @@
     forgejo.enable = true;
     frigate.enable = false;
     immich.enable = true;
+    bitcoin.enable = true;
 
     backup = {
       enable = true;
