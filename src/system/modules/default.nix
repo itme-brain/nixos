@@ -4,10 +4,11 @@ let
       entries = builtins.readDir dir;
       names = builtins.attrNames entries;
       
-      isModuleDir = path: 
+      isModuleDir = path:
         builtins.pathExists path &&
         builtins.readFileType path == "directory" &&
-        builtins.baseNameOf path != "config";
+        builtins.baseNameOf path != "config" &&
+        builtins.baseNameOf path != "plugins";
       isModule = file: file == "default.nix";
       isNix = file: builtins.match ".*\\.nix" file != null && file != "default.nix";
 
