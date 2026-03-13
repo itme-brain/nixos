@@ -41,13 +41,14 @@ in
         "bitcoin" = {
           members = [
             "btc"
+            config.user.name
           ];
         };
       };
     };
 
     programs.bash.shellAliases = {
-      btc = "bitcoind";
+      btc = "bitcoin-cli";
     };
 
     services.bitcoind = {

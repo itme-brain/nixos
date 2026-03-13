@@ -47,6 +47,11 @@ in
       cln = "lightning-cli";
     };
 
+    # Symlink for CLI access - allows `lightning-cli` without --lightning-dir
+    systemd.tmpfiles.rules = mkAfter [
+      "L+ /home/${config.user.name}/.lightning - - - - ${home}"
+    ];
+
     systemd.services.lightningd = {
       description = "Core Lightning Daemon";
       wantedBy = [ "multi-user.target" ];
@@ -59,7 +64,7 @@ in
       ];
 
       serviceConfig = {
-        ExecStartPre = "+${pkgs.coreutils}/bin/chmod 750 /var/lib/bitcoin /var/lib/tor";
+        ExecStartPre = "+${pkgs.coreutils}/bin/chmod 750 /var/lib/bitcoin /var/lib/tor ${home} ${home}/bitcoin";
         ExecStart = "${pkgs.clightning}/bin/lightningd --conf=${clnConfig}";
         User = "clightning";
         Group = "bitcoin";
