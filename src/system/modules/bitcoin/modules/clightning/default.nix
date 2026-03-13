@@ -8,11 +8,48 @@ let
   home = "/var/lib/clightning";
   domain = "ramos.codes";
 
+  clnrest = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "clnrest";
+    version = "25.02.2";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "ElementsProject";
+      repo = "lightning";
+      rev = "v${version}";
+      hash = "sha256-SiPYB463l9279+zawsxmql1Ui/dTdah5KgJgmrWsR2A=";
+    };
+
+    cargoLock.lockFile = "${src}/Cargo.lock";
+
+    cargoBuildFlags = [ "-p" "clnrest" ];
+    cargoTestFlags = [ "-p" "clnrest" ];
+
+    nativeBuildInputs = with pkgs; [ pkg-config protobuf ];
+    buildInputs = [ pkgs.openssl ];
+
+    postInstall = ''
+      mkdir -p $out/libexec/c-lightning/plugins
+      mv $out/bin/clnrest $out/libexec/c-lightning/plugins/
+      rmdir $out/bin
+    '';
+
+    meta = with lib; {
+      description = "REST API plugin for Core Lightning";
+      homepage = "https://github.com/ElementsProject/lightning/tree/master/plugins/rest-plugin";
+      license = licenses.mit;
+    };
+  };
+
   clnConfig = pkgs.writeTextFile {
     name = "lightning.conf";
     text = ''
       ${builtins.readFile ./config/lightning.conf}
       bitcoin-cli=${pkgs.bitcoind}/bin/bitcoin-cli
+
+      # CLNRest configuration
+      clnrest-port=3010
+      clnrest-host=127.0.0.1
+      clnrest-protocol=https
     '';
   };
 
@@ -78,23 +115,22 @@ in
       "d ${home} 0750 clightning bitcoin -"
       "d ${home}/plugins 0750 clightning bitcoin -"
       "L+ /home/${config.user.name}/.lightning - - - - ${home}"
+      "L+ ${home}/plugins/clnrest - - - - ${clnrest}/libexec/c-lightning/plugins/clnrest"
     ];
 
     modules.system.backup.paths = [
       "${home}/bitcoin/hsm_secret"
     ];
 
-    # TODO: CLNRest not included in nixpkgs clightning build
-    # Need to package it separately or use an overlay
-    # services.nginx.virtualHosts."ln.${domain}" = mkIf nginx.enable {
-    #   useACMEHost = domain;
-    #   forceSSL = true;
-    #   locations."/" = {
-    #     proxyPass = "https://127.0.0.1:3010";
-    #     extraConfig = ''
-    #       proxy_ssl_verify off;
-    #     '';
-    #   };
-    # };
+    services.nginx.virtualHosts."ln.${domain}" = mkIf nginx.enable {
+      useACMEHost = domain;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "https://127.0.0.1:3010";
+        extraConfig = ''
+          proxy_ssl_verify off;
+        '';
+      };
+    };
   };
 }
