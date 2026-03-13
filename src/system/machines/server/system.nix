@@ -102,7 +102,7 @@
   networking = {
     hostName = "server";
     useDHCP = false;
-    interfaces.eno1 = {
+    interfaces.enp2s0f0 = {
       ipv4.addresses = [{
         address = "192.168.0.154";
         prefixLength = 24;
