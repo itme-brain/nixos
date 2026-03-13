@@ -74,10 +74,9 @@ in
     };
 
     # Ensure data directory exists with correct permissions
-    systemd.tmpfiles.rules = [
+    systemd.tmpfiles.rules = mkAfter [
       "d ${home} 0750 clightning bitcoin -"
       "d ${home}/plugins 0750 clightning bitcoin -"
-    ] ++ mkAfter [
       "L+ /home/${config.user.name}/.lightning - - - - ${home}"
     ];
 
