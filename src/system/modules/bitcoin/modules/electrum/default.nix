@@ -68,7 +68,7 @@ in
       scriptArgs = "--conf=${electrsConfig}";
 
       after = [
-        "bitcoind-btc.service"
+        "bitcoind-mainnet.service"
       ];
 
       serviceConfig = {
@@ -83,7 +83,7 @@ in
         RestartSec = 60;
       };
       requisite = [
-        "bitcoind-btc.service"
+        "bitcoind-mainnet.service"
         "network.target"
       ];
     };

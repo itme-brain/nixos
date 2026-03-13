@@ -5,7 +5,7 @@ let
   cfg = config.modules.system.bitcoin;
   nginx = config.modules.system.nginx;
 
-  home = "/var/lib/bitcoind";
+  home = "/var/lib/bitcoin";
 
   bitcoinConf = pkgs.writeTextFile {
     name = "bitcoin.conf";
@@ -15,16 +15,10 @@ let
 in
 { options.modules.system.bitcoin = { enable = mkEnableOption "Bitcoin Server"; };
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        bitcoind = prev.bitcoind.overrideAttrs (old: rec {
-          version = "28.0";
-          src = fetchTarball {
-            url = "https://github.com/bitcoin/bitcoin/archive/refs/tags/v${version}.tar.gz";
-            sha256 = "sha256-LLtw6pMyqIJ3IWHiK4P3XoifLojB9yMNMo+MGNFGuRY=";
-          };
-        });
-      })
+    modules.system.tor.enable = true;
+
+    environment.systemPackages = with pkgs; [
+      bitcoind
     ];
 
     users = {
@@ -34,6 +28,7 @@ in
           description = "Bitcoin Core system user";
           isSystemUser = true;
           group = "bitcoin";
+          extraGroups = [ "tor" ];
           createHome = true;
         };
         "nginx" = {
@@ -56,7 +51,7 @@ in
     };
 
     services.bitcoind = {
-      "btc" = {
+      "mainnet" = {
         enable = true;
         user = "btc";
         group = "bitcoin";
@@ -65,5 +60,14 @@ in
         pidFile = "${home}/bitcoind.pid";
       };
     };
+
+    systemd.services.bitcoind-mainnet = {
+      wants = [ "tor.service" ];
+      after = [ "tor.service" ];
+    };
+
+    modules.system.backup.paths = [
+      "${home}/wallets"
+    ];
   };
 }
