@@ -12,6 +12,7 @@
     bitcoin = {
       enable = true;
       electrum.enable = true;
+      clightning.enable = true;
     };
 
     backup = {
