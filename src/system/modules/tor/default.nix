@@ -23,6 +23,7 @@ in
         ControlPort = 9051;
         CookieAuthentication = true;
         CookieAuthFileGroupReadable = true;
+        DataDirectoryGroupReadable = true;
       };
     };
   };
