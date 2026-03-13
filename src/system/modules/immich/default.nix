@@ -14,6 +14,24 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Bind mount from /data
+    systemd.tmpfiles.rules = [
+      "d /data/immich 0750 immich immich -"
+      "d /data/postgresql 0750 postgres postgres -"
+    ];
+
+    fileSystems."/var/lib/immich" = {
+      device = "/data/immich";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/lib/postgresql" = {
+      device = "/data/postgresql";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
     services.immich = {
       enable = true;
       port = port;

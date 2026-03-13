@@ -80,10 +80,18 @@ in
       };
     };
 
+    # Bind mount from /data
+    fileSystems.${home} = {
+      device = "/data/clightning";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
     # Ensure data directory exists with correct permissions
     systemd.tmpfiles.rules = mkAfter [
-      "d ${home} 0750 clightning bitcoin -"
-      "d ${home}/plugins 0750 clightning bitcoin -"
+      "d /data/clightning 0750 clightning bitcoin -"
+      "d /data/clightning/bitcoin 0750 clightning bitcoin -"
+      "d /data/clightning/plugins 0750 clightning bitcoin -"
       "L+ /home/${config.user.name}/.lightning - - - - ${home}"
       "L+ ${home}/plugins/clnrest - - - - ${clnrest}/libexec/c-lightning/plugins/clnrest"
     ];

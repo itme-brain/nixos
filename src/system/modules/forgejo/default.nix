@@ -26,11 +26,18 @@ in
       extraGroups = [ "git" ];
     };
 
+    # Bind mount from /data
+    fileSystems."/var/lib/forgejo" = {
+      device = "/data/forgejo";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
     systemd.tmpfiles.rules = [
-      "d /var/lib/forgejo 0750 git git -"
-      "d /var/lib/forgejo/.ssh 0700 git git -"
-      "d /var/lib/forgejo/custom 0750 git git -"
-      "d /var/lib/forgejo/data 0750 git git -"
+      "d /data/forgejo 0750 git git -"
+      "d /data/forgejo/.ssh 0700 git git -"
+      "d /data/forgejo/custom 0750 git git -"
+      "d /data/forgejo/data 0750 git git -"
     ];
 
     services.forgejo = {

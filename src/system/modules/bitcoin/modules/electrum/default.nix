@@ -88,9 +88,16 @@ in
       };
     };
 
+    # Bind mount from /data
+    fileSystems.${home} = {
+      device = "/data/electrs";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
     # Ensure db directory exists with correct permissions
     systemd.tmpfiles.rules = [
-      "d ${home} 0750 electrs bitcoin -"
+      "d /data/electrs 0750 electrs bitcoin -"
     ];
 
     # Nginx SSL proxy for Electrum protocol (TCP)
