@@ -28,6 +28,17 @@ in
       };
     };
 
+    services.sslh = {
+      enable = true;
+      settings = {
+        listen = [{ host = "0.0.0.0"; port = 443; }];
+        protocols = [
+          { name = "ssh"; host = "127.0.0.1"; port = 22; probe = "builtin"; }
+          { name = "tls"; host = "127.0.0.1"; port = 4443; probe = "builtin"; }
+        ];
+      };
+    };
+
     services.nginx = {
       enable = true;
       recommendedTlsSettings = true;

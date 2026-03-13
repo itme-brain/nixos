@@ -52,6 +52,7 @@ in
           APP_SLOGAN = "";
         };
 
+        service.REQUIRE_SIGNIN_VIEW = false;
         server = {
           DOMAIN = "git.${domain}";
           ROOT_URL = "https://git.${domain}/";
