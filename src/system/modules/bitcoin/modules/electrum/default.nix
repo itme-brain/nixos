@@ -3,9 +3,11 @@
 with lib;
 let
   cfg = config.modules.system.bitcoin.electrum;
+  nginx = config.modules.system.nginx;
   home = "/var/lib/electrs";
 
   btc = config.modules.system.bitcoin;
+  domain = "ramos.codes";
 
   electrsConfig = pkgs.writeTextFile {
     name = "config.toml";
@@ -89,5 +91,24 @@ in
     systemd.tmpfiles.rules = [
       "d ${home} 0750 electrs bitcoin -"
     ];
+
+    # Nginx SSL proxy for Electrum protocol (TCP)
+    networking.firewall.allowedTCPPorts = mkIf nginx.enable [ 50002 ];
+
+    services.nginx.streamConfig = mkIf nginx.enable ''
+      map $ssl_preread_server_name $electrs_backend {
+        electrum.${domain}  127.0.0.1:50001;
+        default             "";
+      }
+
+      server {
+        listen 50002 ssl;
+        ssl_preread on;
+        proxy_pass $electrs_backend;
+
+        ssl_certificate /var/lib/acme/${domain}/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/${domain}/key.pem;
+      }
+    '';
   };
 }
