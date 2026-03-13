@@ -75,6 +75,7 @@ in
         ExecStart = "${pkgs.electrs}/bin/electrs --conf=${electrsConfig}";
         User = "electrs";
         Group = "bitcoin";
+        WorkingDirectory = home;
 
         Type = "simple";
         KillMode = "process";
