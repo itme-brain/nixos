@@ -79,16 +79,17 @@ in
       "${home}/bitcoin/hsm_secret"
     ];
 
-    # Nginx reverse proxy for CLNRest API (Zeus, RTL, etc.)
-    services.nginx.virtualHosts."ln.${domain}" = mkIf nginx.enable {
-      useACMEHost = domain;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "https://127.0.0.1:3010";
-        extraConfig = ''
-          proxy_ssl_verify off;
-        '';
-      };
-    };
+    # TODO: CLNRest not included in nixpkgs clightning build
+    # Need to package it separately or use an overlay
+    # services.nginx.virtualHosts."ln.${domain}" = mkIf nginx.enable {
+    #   useACMEHost = domain;
+    #   forceSSL = true;
+    #   locations."/" = {
+    #     proxyPass = "https://127.0.0.1:3010";
+    #     extraConfig = ''
+    #       proxy_ssl_verify off;
+    #     '';
+    #   };
+    # };
   };
 }
