@@ -40,10 +40,14 @@ in
       stateDir = "/var/lib/forgejo";
       
       settings = {
+        service.REQUIRE_SIGNIN_VIEW = false;
         server = {
           PROTOCOL = "http+unix";
-          DOMAIN = "127.0.0.1";
+          DOMAIN = "git.ramos.codes";
           HTTP_ADDR = "/run/forgejo/forgejo.sock";
+          SSH_DOMAIN = "git.ramos.codes";
+          SSH_PORT = 443;
+          START_SSH_SERVER = false;
         };
       };
 

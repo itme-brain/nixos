@@ -54,9 +54,20 @@ in
       };
     };
 
+    services.sslh = {
+      enable = true;
+      settings = {
+        listen = [{ host = "0.0.0.0"; port = 443; }];
+        protocols = [
+          { name = "ssh"; host = "127.0.0.1"; port = 22; probe = "builtin"; }
+          { name = "tls"; host = "127.0.0.1"; port = 4443; probe = "builtin"; }
+        ];
+      };
+    };
+
     services.nginx = {
       enable = true;
-      virtualHosts = 
+      virtualHosts =
       let
         certPath = config.security.acme.certs."ramos.codes".directory;
         sslCertificate = "${certPath}/fullchain.pem";
@@ -64,6 +75,10 @@ in
 
         withSSL = hosts: mapAttrs (name: hostConfig: hostConfig // {
           inherit sslCertificate sslCertificateKey;
+          listen = [
+            { addr = "127.0.0.1"; port = 4443; ssl = true; }
+            { addr = "0.0.0.0"; port = 80; }
+          ];
           forceSSL = true;
         }) hosts;
 
