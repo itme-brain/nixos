@@ -9,11 +9,11 @@
     forgejo.enable = true;
     frigate.enable = true;
     immich.enable = true;
-    bitcoin = {
-      enable = true;
-      electrum.enable = true;
-      clightning.enable = true;
-    };
+    # bitcoin = {
+    #   enable = true;
+    #   electrum.enable = true;
+    #   clightning.enable = true;
+    # };
 
     backup = {
       enable = true;
