@@ -19,11 +19,11 @@ in
         rtsp.listen = ":8554";
         webrtc.listen = ":8555";
         streams = {
-          doorbell = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
-          living_room = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
-          kitchen = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
-          parking_lot = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
-          porch = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+          doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+          living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+          porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
         };
       };
     };
