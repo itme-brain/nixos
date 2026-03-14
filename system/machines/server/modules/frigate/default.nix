@@ -34,10 +34,7 @@ in
       # vaapiDriver = "i965";  # Haswell only supports H.264, not HEVC
       settings = {
         mqtt.enabled = false;
-        ffmpeg = {
-          hwaccel_args = "preset-cpu";  # Haswell can't decode HEVC
-          input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
-        };
+        ffmpeg.input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
 
         record = {
           enabled = true;
