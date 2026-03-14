@@ -43,7 +43,7 @@ in
           parking_lot = {
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.0.59/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
               roles = [ "record" ];
             }];
           };

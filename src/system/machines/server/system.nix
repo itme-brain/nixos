@@ -7,7 +7,7 @@
   modules.system = {
     nginx.enable = true;
     forgejo.enable = true;
-    frigate.enable = false;
+    frigate.enable = true;
     immich.enable = true;
     bitcoin = {
       enable = true;
@@ -144,6 +144,11 @@
       interface = "enp2s0f1";
       bind-interfaces = true;
       dhcp-range = "192.168.1.100,192.168.1.200,24h";
+
+      # Static DHCP reservations for cameras
+      dhcp-host = [
+        "00:1f:54:c2:d1:b1,192.168.1.194,parking_lot"
+      ];
     };
   };
 
