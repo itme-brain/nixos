@@ -120,6 +120,7 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
+      allowedUDPPorts = [ 53 67 ];  # DNS + DHCP
     };
   };
 
@@ -145,8 +146,6 @@
       dhcp-range = "192.168.1.100,192.168.1.200,24h";
     };
   };
-
-  networking.firewall.allowedUDPPorts = [ 53 ];
 
   services.fail2ban = {
     enable = true;
