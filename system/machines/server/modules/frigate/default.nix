@@ -76,7 +76,6 @@ in
             detect.enabled = false;  # No motion detection for indoor
             audio = {
               enabled = true;
-              listen = [ "bark" "fire_alarm" "scream" "speech" "yell" ];
             };
             ffmpeg.inputs = [
               {
@@ -90,7 +89,6 @@ in
             detect.enabled = false;  # No motion detection for indoor
             audio = {
               enabled = true;
-              listen = [ "bark" "fire_alarm" "scream" "speech" "yell" ];
             };
             ffmpeg.inputs = [
               {
