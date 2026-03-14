@@ -23,6 +23,7 @@ in
           living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
           kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
           parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+          parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
           #porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
         };
       };
@@ -31,11 +32,11 @@ in
     services.frigate = {
       enable = true;
       hostname = "frigate.${domain}";
-      # vaapiDriver = "i965";  # Haswell only supports H.264, not HEVC
+      vaapiDriver = "i965";  # Haswell iGPU for H.264 decode
       settings = {
         mqtt.enabled = false;
         ffmpeg = {
-          hwaccel_args = [];  # Disable hwaccel - Haswell can't decode HEVC
+          hwaccel_args = "preset-vaapi";  # VAAPI for H.264 substream detection
           input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
         };
 
@@ -74,11 +75,21 @@ in
           };
           parking_lot = {
             enabled = true;
-            detect.enabled = false;
-            ffmpeg.inputs = [{
-              path = "rtsp://127.0.0.1:8554/parking_lot";
-              roles = [ "record" ];
-            }];
+            detect = {
+              enabled = true;
+              width = 640;
+              height = 480;
+            };
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/parking_lot";
+                roles = [ "record" ];
+              }
+              {
+                path = "rtsp://127.0.0.1:8554/parking_lot_sub";
+                roles = [ "detect" ];
+              }
+            ];
           };
           porch = {
             enabled = false;
