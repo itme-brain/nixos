@@ -9,6 +9,7 @@ let
   # Convert absolute paths to relative for tar, preserving structure
   # e.g., /var/lib/forgejo -> var/lib/forgejo
   tarPaths = map (p: removePrefix "/" p) cfg.paths;
+  excludeArgs = concatMapStrings (e: "--exclude='${e}' ") cfg.exclude;
 
   backupScript = pkgs.writeShellScript "backup" ''
     set -euo pipefail
@@ -22,7 +23,7 @@ let
     echo "Paths: ${concatStringsSep " " cfg.paths}"
 
     export PATH="${pkgs.age-plugin-yubikey}/bin:$PATH"
-    ${pkgs.gnutar}/bin/tar -C / -cf - ${concatStringsSep " " tarPaths} | \
+    ${pkgs.gnutar}/bin/tar -C / ${excludeArgs}-cf - ${concatStringsSep " " tarPaths} | \
       ${pkgs.age}/bin/age ${recipientArgs} -o "$TEMP_DIR/$BACKUP_NAME"
 
     ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf copy "$TEMP_DIR/$BACKUP_NAME" "${cfg.destination}"
@@ -47,6 +48,12 @@ in
       type = types.listOf types.str;
       default = [];
       description = "Absolute paths to include in backup (structure preserved)";
+    };
+
+    exclude = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Patterns to exclude (passed to tar --exclude)";
     };
 
     recipients = mkOption {

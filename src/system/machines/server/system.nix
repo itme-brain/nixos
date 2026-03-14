@@ -121,6 +121,14 @@
       enable = true;
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ 53 67 ];  # DNS + DHCP
+      extraCommands = ''
+        # Block specific camera MACs from forwarding (instant DROP, no timeouts)
+        # Add each camera MAC here as you set them up
+        iptables -A FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP  # parking_lot
+      '';
+      extraStopCommands = ''
+        iptables -D FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP || true
+      '';
     };
   };
 

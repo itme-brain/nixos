@@ -71,5 +71,34 @@ in
       forceSSL = true;
     };
 
+    # Store frigate data on /data instead of root
+    systemd.tmpfiles.rules = [
+      "d /data/frigate 0750 frigate frigate -"
+      "d /data/frigate/lib 0750 frigate frigate -"
+      "d /data/frigate/cache 0750 frigate frigate -"
+      "d /data/frigate/nginx-cache 0750 nginx nginx -"
+    ];
+
+    fileSystems."/var/lib/frigate" = {
+      device = "/data/frigate/lib";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/cache/frigate" = {
+      device = "/data/frigate/cache";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/cache/nginx/frigate" = {
+      device = "/data/frigate/nginx-cache";
+      options = [ "bind" ];
+    };
+
+    # Backup recordings/database, exclude caches
+    modules.system.backup = {
+      paths = [ "/data/frigate" ];
+      exclude = [ "*/cache" "*/nginx-cache" ];
+    };
+
   };
 }
