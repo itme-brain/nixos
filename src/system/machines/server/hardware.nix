@@ -1,4 +1,4 @@
-{ config, lib, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 
 {
   imports = [
@@ -18,7 +18,12 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Enable VAAPI for hardware video acceleration
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-vaapi-driver  # i965 driver for Haswell
+    ];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
