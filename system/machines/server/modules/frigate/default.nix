@@ -44,6 +44,8 @@ in
           input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
         };
 
+        detect.enabled = true;
+
         record = {
           enabled = true;
           # 24/7 recording - needs better hardware
@@ -75,6 +77,7 @@ in
             enabled = true;
             detect.enabled = false;  # Disable in GUI
             audio.enabled = true;
+            motion.mask = [ "0.969,0.078,0.846,0.075,0.845,0.034,0.97,0.037" ];
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/living_room";
@@ -90,6 +93,7 @@ in
             enabled = true;
             detect.enabled = false;  # Disable in GUI
             audio.enabled = true;
+            motion.mask = [ "0.847,0.072,0.846,0.029,0.969,0.032,0.969,0.072" ];
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/kitchen";
@@ -107,6 +111,11 @@ in
               enabled = true;
               width = 640;
               height = 480;
+            };
+            motion.mask = [ "0.811,0.109,0.954,0.111,0.959,0.065,0.811,0.055" ];
+            zones.Car = {
+              coordinates = "0.299,0.438,0.191,0.951,0.453,0.964,0.453,0.437";
+              loitering_time = 5;
             };
             ffmpeg.inputs = [
               {
@@ -143,6 +152,14 @@ in
     systemd.tmpfiles.rules = [
       # Set ownership after tmpfs mount
       "d /var/cache/frigate 0750 frigate frigate -"
+      # Create log directories for Frigate API (NixOS uses journald, but API expects these)
+      "d /dev/shm/logs 0755 frigate frigate -"
+      "d /dev/shm/logs/frigate 0755 frigate frigate -"
+      "d /dev/shm/logs/nginx 0755 frigate frigate -"
+      "d /dev/shm/logs/go2rtc 0755 frigate frigate -"
+      "f /dev/shm/logs/frigate/current 0644 frigate frigate -"
+      "f /dev/shm/logs/nginx/current 0644 frigate frigate -"
+      "f /dev/shm/logs/go2rtc/current 0644 frigate frigate -"
     ];
 
     # Backup recordings/database
