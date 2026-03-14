@@ -16,8 +16,10 @@ in
     services.frigate = {
       enable = true;
       hostname = "frigate.${domain}";
+      vaapiDriver = "i965";  # Haswell (4th gen Intel)
       settings = {
         mqtt.enabled = false;
+        ffmpeg.hwaccel_args = "preset-vaapi";
         cameras = {
           doorbell = {
             enabled = false;
