@@ -143,7 +143,6 @@
       interface = "enp2s0f1";
       bind-interfaces = true;
       dhcp-range = "192.168.1.100,192.168.1.200,24h";
-      # No gateway option = cameras can't route to internet
     };
   };
 
