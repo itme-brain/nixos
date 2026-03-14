@@ -34,7 +34,10 @@ in
       # vaapiDriver = "i965";  # Haswell only supports H.264, not HEVC
       settings = {
         mqtt.enabled = false;
-        ffmpeg.input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
+        ffmpeg = {
+          hwaccel_args = [];  # Disable hwaccel - Haswell can't decode HEVC
+          input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
+        };
 
         record = {
           enabled = true;
@@ -87,6 +90,12 @@ in
           };
         };
       };
+    };
+
+    # Ensure frigate starts after go2rtc
+    systemd.services.frigate = {
+      after = [ "go2rtc.service" ];
+      requires = [ "go2rtc.service" ];
     };
 
     # Add SSL to frigate's nginx virtualHost
