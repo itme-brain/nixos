@@ -70,6 +70,9 @@ with lib;
       };
     };
 
+    # Despite confusing name, this configures userspace nvidia libraries
+    services.xserver.videoDrivers = [ "nvidia" ];
+
     virtualisation.libvirtd = {
       enable = true;
       qemu = {
