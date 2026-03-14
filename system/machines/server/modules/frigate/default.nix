@@ -73,7 +73,7 @@ in
           };
           living_room = {
             enabled = true;
-            detect.enabled = false;  # No motion detection for indoor
+            detect.enabled = false;  # Disable in GUI
             audio.enabled = true;
             ffmpeg.inputs = [
               {
@@ -82,13 +82,13 @@ in
               }
               {
                 path = "rtsp://127.0.0.1:8554/living_room_sub";
-                roles = [ "audio" ];
+                roles = [ "detect" "audio" ];
               }
             ];
           };
           kitchen = {
             enabled = true;
-            detect.enabled = false;  # No motion detection for indoor
+            detect.enabled = false;  # Disable in GUI
             audio.enabled = true;
             ffmpeg.inputs = [
               {
@@ -97,7 +97,7 @@ in
               }
               {
                 path = "rtsp://127.0.0.1:8554/kitchen_sub";
-                roles = [ "audio" ];
+                roles = [ "detect" "audio" ];
               }
             ];
           };
