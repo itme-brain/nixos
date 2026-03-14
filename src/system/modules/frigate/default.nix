@@ -31,7 +31,7 @@ in
             }];
           };
           living_room = {
-            enabled = true;
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
@@ -39,7 +39,7 @@ in
             }];
           };
           kitchen = {
-            enabled = true;
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
