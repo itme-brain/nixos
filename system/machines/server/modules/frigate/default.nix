@@ -83,7 +83,7 @@ in
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/parking_lot";
-                roles = [ "record" ];
+                roles = [ "record" "live" ];
               }
               {
                 path = "rtsp://127.0.0.1:8554/parking_lot_sub";
@@ -115,26 +115,21 @@ in
       forceSSL = true;
     };
 
-    # Bind mount caches into the 3TB frigate LVM volume
+    # Frigate segment cache in RAM (reduces disk writes)
+    fileSystems."/var/cache/frigate" = {
+      device = "tmpfs";
+      fsType = "tmpfs";
+      options = [ "size=512M" "mode=0755" ];
+    };
+
     systemd.tmpfiles.rules = [
-      "d /var/lib/frigate/cache 0750 frigate frigate -"
-      "d /var/lib/frigate/nginx-cache 0750 nginx nginx -"
+      # Set ownership after tmpfs mount
+      "d /var/cache/frigate 0750 frigate frigate -"
     ];
 
-    fileSystems."/var/cache/frigate" = {
-      device = "/var/lib/frigate/cache";
-      options = [ "bind" ];
-    };
-
-    fileSystems."/var/cache/nginx/frigate" = {
-      device = "/var/lib/frigate/nginx-cache";
-      options = [ "bind" ];
-    };
-
-    # Backup recordings/database, exclude caches
+    # Backup recordings/database
     modules.system.backup = {
       paths = [ "/var/lib/frigate" ];
-      exclude = [ "*/cache" "*/nginx-cache" ];
     };
 
   };
