@@ -13,21 +13,22 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.go2rtc = {
-      enable = true;
-      settings = {
-        rtsp.listen = ":8554";
-        webrtc.listen = ":8555";
-        streams = {
-          #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
-          living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
-          kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
-          parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
-          parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
-          #porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
-        };
-      };
-    };
+    # Standalone go2rtc service (commented out - using Frigate's built-in go2rtc)
+    # services.go2rtc = {
+    #   enable = true;
+    #   settings = {
+    #     rtsp.listen = ":8554";
+    #     webrtc.listen = ":8555";
+    #     streams = {
+    #       #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+    #       living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+    #       kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+    #       parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+    #       parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
+    #       #porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+    #     };
+    #   };
+    # };
 
     services.frigate = {
       enable = true;
@@ -35,6 +36,17 @@ in
       vaapiDriver = "i965";  # Haswell iGPU for H.264 decode
       settings = {
         mqtt.enabled = false;
+
+        # go2rtc streams (managed by Frigate)
+        go2rtc.streams = {
+          #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+          living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+          parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
+          #porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+        };
+
         ffmpeg = {
           hwaccel_args = "preset-vaapi";  # VAAPI for H.264 substream detection
           input_args = "preset-rtsp-restream";  # TCP transport for go2rtc
@@ -83,7 +95,7 @@ in
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/parking_lot";
-                roles = [ "record" "live" ];
+                roles = [ "record" ];
               }
               {
                 path = "rtsp://127.0.0.1:8554/parking_lot_sub";
@@ -101,12 +113,6 @@ in
           };
         };
       };
-    };
-
-    # Ensure frigate starts after go2rtc
-    systemd.services.frigate = {
-      after = [ "go2rtc.service" ];
-      requires = [ "go2rtc.service" ];
     };
 
     # Add SSL to frigate's nginx virtualHost
