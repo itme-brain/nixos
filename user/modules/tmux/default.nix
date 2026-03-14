@@ -36,7 +36,7 @@ in
 
     # Auto-start tmux only on local TTY (not SSH, not in tmux already)
     programs.bash.profileExtra = mkIf (!wm.enable) ''
-      if [[ $- == *i* ]] && [ -z "$DISPLAY" ] && [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -z "$SSH_CONNECTION" ]; then
+      if [ -t 0 ] && [[ $- == *i* ]] && [ -z "$DISPLAY" ] && [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -z "$SSH_CONNECTION" ]; then
         exec tmux
       fi
     '';
