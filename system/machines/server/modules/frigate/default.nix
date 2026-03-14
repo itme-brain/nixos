@@ -21,11 +21,13 @@ in
         webrtc.listen = ":8555";
         streams = {
           #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+          #doorbell_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=1";
           living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          living_room_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=1";
           kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          kitchen_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=1";
           parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
           parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
-          #porch = "rtsp://admin:ocu%3Fu3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
         };
       };
     };
@@ -60,20 +62,40 @@ in
             }];
           };
           living_room = {
-            enabled = false;
-            detect.enabled = false;
-            ffmpeg.inputs = [{
-              path = "rtsp://127.0.0.1:8554/living_room";
-              roles = [ "record" ];
-            }];
+            enabled = true;
+            detect = {
+              enabled = true;
+              width = 640;
+              height = 480;
+            };
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/living_room";
+                roles = [ "record" ];
+              }
+              {
+                path = "rtsp://127.0.0.1:8554/living_room_sub";
+                roles = [ "detect" ];
+              }
+            ];
           };
           kitchen = {
-            enabled = false;
-            detect.enabled = false;
-            ffmpeg.inputs = [{
-              path = "rtsp://127.0.0.1:8554/kitchen";
-              roles = [ "record" ];
-            }];
+            enabled = true;
+            detect = {
+              enabled = true;
+              width = 640;
+              height = 480;
+            };
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/kitchen";
+                roles = [ "record" ];
+              }
+              {
+                path = "rtsp://127.0.0.1:8554/kitchen_sub";
+                roles = [ "detect" ];
+              }
+            ];
           };
           parking_lot = {
             enabled = true;
@@ -92,19 +114,6 @@ in
                 roles = [ "detect" ];
               }
             ];
-            # Live view stream selector (dropdown in UI)
-            live.streams = {
-              "HD (HEVC)" = "parking_lot";
-              "SD (H.264)" = "parking_lot_sub";
-            };
-          };
-          porch = {
-            enabled = false;
-            detect.enabled = false;
-            ffmpeg.inputs = [{
-              path = "rtsp://127.0.0.1:8554/porch";
-              roles = [ "record" ];
-            }];
           };
         };
       };
