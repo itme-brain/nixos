@@ -99,14 +99,18 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
-      address = "/.ramos.codes/192.168.0.154";
-      server = [
-        "/www.ramos.codes/192.168.0.1"
-        "/http.ramos.codes/192.168.0.1"
-        "/https.ramos.codes/192.168.0.1"
-        "/ramos.codes/192.168.0.1"
-        "192.168.0.1"
+      # Explicit subdomains -> local server
+      address = [
+        "/git.ramos.codes/192.168.0.154"
+        "/ln.ramos.codes/192.168.0.154"
+        "/photos.ramos.codes/192.168.0.154"
+        "/test.ramos.codes/192.168.0.154"
+        "/electrum.ramos.codes/192.168.0.154"
+        "/immich.ramos.codes/192.168.0.154"
+        "/forgejo.ramos.codes/192.168.0.154"
+        "/frigate.ramos.codes/192.168.0.154"
       ];
+      server = [ "192.168.0.1" ];
     };
   };
 
