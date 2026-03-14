@@ -108,6 +108,13 @@
         prefixLength = 24;
       }];
     };
+    # Camera network - isolated, no gateway
+    interfaces.enp2s0f1 = {
+      ipv4.addresses = [{
+        address = "192.168.1.1";
+        prefixLength = 24;
+      }];
+    };
     defaultGateway = "192.168.0.1";
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
     firewall = {
@@ -131,6 +138,12 @@
         "8.8.8.8"
       ];
       cache-size = 1000;
+
+      # Camera network DHCP (isolated - no gateway = no internet)
+      interface = "enp2s0f1";
+      bind-interfaces = true;
+      dhcp-range = "192.168.1.100,192.168.1.200,24h";
+      # No gateway option = cameras can't route to internet
     };
   };
 
