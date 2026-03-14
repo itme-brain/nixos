@@ -20,12 +20,13 @@ in
       settings = {
         mqtt.enabled = false;
         # ffmpeg.hwaccel_args = "preset-vaapi";  # Disabled - camera uses HEVC which Haswell can't decode
+        record.enabled = true;
         cameras = {
           doorbell = {
-            enabled = false;
+            enabled = true;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
               roles = [ "record" ];
             }];
           };

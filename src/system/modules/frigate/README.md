@@ -5,7 +5,7 @@
 | Camera | Model | MAC | IP |
 |--------|-------|-----|-----|
 | parking_lot | W461ASC | 00:1f:54:c2:d1:b1 | 192.168.1.194 |
-| doorbell | B463AJ | | |
+| doorbell | B463AJ | 00:1f:54:a9:81:d1 | 192.168.1.167 |
 | living_room | W463AQ (ch1) | 00:1f:54:b2:9b:1d | 192.168.1.147 |
 | kitchen | W463AQ (ch2) | 00:1f:54:b2:9b:1d | 192.168.1.147 |
 | porch | SL300 | | | |

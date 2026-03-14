@@ -126,10 +126,12 @@
         # Add each camera MAC here as you set them up
         iptables -A FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP  # parking_lot
         iptables -A FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP  # living_room/kitchen
+        iptables -A FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP  # doorbell
       '';
       extraStopCommands = ''
         iptables -D FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP || true
         iptables -D FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP || true
+        iptables -D FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP || true
       '';
     };
   };
@@ -159,6 +161,7 @@
       dhcp-host = [
         "00:1f:54:c2:d1:b1,192.168.1.194,parking_lot"
         "00:1f:54:b2:9b:1d,192.168.1.147,living_room_kitchen"
+        "00:1f:54:a9:81:d1,192.168.1.167,doorbell"
       ];
     };
   };
