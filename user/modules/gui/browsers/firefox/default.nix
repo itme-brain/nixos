@@ -317,6 +317,12 @@ in
             "extensions.quarantinedDomains.enabled" = true;
 
             "media.videocontrols.picture-in-picture.enabled" = false;
+
+            # VA-API hardware video acceleration (NVIDIA)
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.rdd-ffmpeg.enabled" = true;
+            "media.av1.enabled" = false; # GTX 1650 doesn't support AV1 decode
+            "gfx.x11-egl.force-enabled" = true;
           };
         };
       };

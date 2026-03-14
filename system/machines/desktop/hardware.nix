@@ -50,6 +50,8 @@ with lib;
 
       cudaPackages.cudatoolkit
       cudaPackages.cudnn
+
+      nvidia-vaapi-driver
     ];
 
     hardware = {
