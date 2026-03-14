@@ -22,66 +22,36 @@
     };
   };
 
-  outputs = { nixpkgs, nur, home-manager, nixos-wsl, disko, ... }:
+  outputs = { nixpkgs, nur, ... }@inputs:
   let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
+    mkPkgs = system: import nixpkgs {
       inherit system;
       config = {
         allowUnfree = true;
-	nvidia.acceptLicense = true;
+        nvidia.acceptLicense = true;
       };
       overlays = [
         nur.overlays.default
       ];
     };
 
+    mkSystem = { path, system ? "x86_64-linux" }:
+      let pkgs = mkPkgs system;
+      in nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        specialArgs = { inherit inputs; };
+        modules = [ path ];
+      };
+
   in
-  with pkgs;
   {
     nixosConfigurations = {
-      desktop = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          disko.nixosModules.disko
-          ./src/system/machines/desktop
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/desktop/modules/home-manager)
-        ];
-      };
-
-      workstation = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          ./src/system/machines/workstation
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/workstation/modules/home-manager)
-        ];
-      };
-
-      server = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          disko.nixosModules.disko
-          ./src/system/machines/server
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/server/modules/home-manager)
-        ];
-      };
-
-      wsl = nixpkgs.lib.nixosSystem {
-        inherit system pkgs;
-        modules = [
-          ./src/system/machines/wsl
-          nixos-wsl.nixosModules.wsl
-            (import ./src/system/machines/wsl/modules/wsl)
-          home-manager.nixosModules.home-manager
-            (import ./src/system/machines/wsl/modules/home-manager)
-        ];
-      };
+      desktop = mkSystem { path = ./system/machines/desktop; };
+      server  = mkSystem { path = ./system/machines/server; };
+      wsl     = mkSystem { path = ./system/machines/wsl; };
     };
 
-    devShells.${system}.default = mkShell {
+    devShells.x86_64-linux.default = with mkPkgs "x86_64-linux"; mkShell {
       name = "devShell";
       packages = [
         just

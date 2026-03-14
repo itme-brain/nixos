@@ -1,5 +1,5 @@
 SYSTEM := "$(echo $HOSTNAME)"
-VALID_SYSTEMS := "desktop workstation server wsl vm laptop"
+VALID_SYSTEMS := "desktop server wsl"
 
 # Print this list
 default:
@@ -10,7 +10,7 @@ default:
 _validate SYSTEM:
   #!/usr/bin/env bash
   case "{{SYSTEM}}" in
-    desktop|workstation|server|wsl|vm|laptop) ;;
+    desktop|server|wsl) ;;
     *) echo "Error: Unknown system '{{SYSTEM}}'. Use one of: {{VALID_SYSTEMS}}"; exit 1 ;;
   esac
 
@@ -105,7 +105,7 @@ partition SYSTEM:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  DISKO_CONFIG="./src/system/machines/{{SYSTEM}}/modules/disko/default.nix"
+  DISKO_CONFIG="./system/machines/{{SYSTEM}}/modules/disko/default.nix"
 
   if [[ ! -f "$DISKO_CONFIG" ]]; then
     echo "Error: No disko config for '{{SYSTEM}}'"
@@ -172,7 +172,7 @@ install SYSTEM:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  DISKO_CONFIG="./src/system/machines/{{SYSTEM}}/modules/disko/default.nix"
+  DISKO_CONFIG="./system/machines/{{SYSTEM}}/modules/disko/default.nix"
 
   if [[ ! -f "$DISKO_CONFIG" ]]; then
     echo "Error: No disko config for '{{SYSTEM}}'"
