@@ -16,10 +16,10 @@ in
     services.frigate = {
       enable = true;
       hostname = "frigate.${domain}";
-      vaapiDriver = "i965";  # Haswell (4th gen Intel)
+      # vaapiDriver = "i965";  # Haswell only supports H.264, not HEVC
       settings = {
         mqtt.enabled = false;
-        ffmpeg.hwaccel_args = "preset-vaapi";
+        # ffmpeg.hwaccel_args = "preset-vaapi";  # Disabled - camera uses HEVC which Haswell can't decode
         cameras = {
           doorbell = {
             enabled = false;
