@@ -20,6 +20,15 @@ in
       settings = {
         mqtt.enabled = false;
         # ffmpeg.hwaccel_args = "preset-vaapi";  # Disabled - camera uses HEVC which Haswell can't decode
+
+        go2rtc.streams = {
+          doorbell = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+          living_room = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          kitchen = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          parking_lot = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+          porch = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+        };
+
         record = {
           enabled = true;
           # 24/7 recording - needs better hardware
@@ -33,7 +42,7 @@ in
             enabled = true;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://127.0.0.1:8554/doorbell";
               roles = [ "record" ];
             }];
           };
@@ -41,7 +50,7 @@ in
             enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://127.0.0.1:8554/living_room";
               roles = [ "record" ];
             }];
           };
@@ -49,7 +58,7 @@ in
             enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+              path = "rtsp://127.0.0.1:8554/kitchen";
               roles = [ "record" ];
             }];
           };
@@ -57,7 +66,7 @@ in
             enabled = true;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://127.0.0.1:8554/parking_lot";
               roles = [ "record" ];
             }];
           };
@@ -65,7 +74,7 @@ in
             enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
-              path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+              path = "rtsp://127.0.0.1:8554/porch";
               roles = [ "record" ];
             }];
           };
