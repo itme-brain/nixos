@@ -46,6 +46,7 @@ in
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
+      defaultSSLListenPort = 4443;
 
       # Catch-all default - friendly error for unknown subdomains
       virtualHosts."_" = {
