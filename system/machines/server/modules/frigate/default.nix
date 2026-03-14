@@ -13,6 +13,21 @@ in
   };
 
   config = mkIf cfg.enable {
+    services.go2rtc = {
+      enable = true;
+      settings = {
+        rtsp.listen = ":8554";
+        webrtc.listen = ":8555";
+        streams = {
+          doorbell = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
+          living_room = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          kitchen = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          parking_lot = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
+          porch = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
+        };
+      };
+    };
+
     services.frigate = {
       enable = true;
       hostname = "frigate.${domain}";
@@ -20,14 +35,6 @@ in
       settings = {
         mqtt.enabled = false;
         # ffmpeg.hwaccel_args = "preset-vaapi";  # Disabled - camera uses HEVC which Haswell can't decode
-
-        go2rtc.streams = {
-          doorbell = "rtsp://admin:ocu?u3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
-          living_room = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
-          kitchen = "rtsp://admin:ocu?u3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
-          parking_lot = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
-          porch = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
-        };
 
         record = {
           enabled = true;
