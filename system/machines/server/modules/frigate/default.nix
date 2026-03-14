@@ -20,8 +20,8 @@ in
         rtsp.listen = ":8554";
         webrtc.listen = ":8555";
         streams = {
-          #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
-          #doorbell_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=1";
+          doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0#backchannel=1";
+          doorbell_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=1";
           living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0#backchannel=1";
           living_room_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=1";
           kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0#backchannel=1";
@@ -54,12 +54,22 @@ in
         };
         cameras = {
           doorbell = {
-            enabled = false;  # Camera offline
-            detect.enabled = false;
-            ffmpeg.inputs = [{
-              path = "rtsp://127.0.0.1:8554/doorbell";
-              roles = [ "record" ];
-            }];
+            enabled = true;
+            detect = {
+              enabled = true;
+              width = 640;
+              height = 480;
+            };
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/doorbell";
+                roles = [ "record" ];
+              }
+              {
+                path = "rtsp://127.0.0.1:8554/doorbell_sub";
+                roles = [ "detect" ];
+              }
+            ];
           };
           living_room = {
             enabled = true;
