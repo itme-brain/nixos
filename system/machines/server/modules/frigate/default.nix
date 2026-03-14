@@ -73,37 +73,29 @@ in
           };
           living_room = {
             enabled = true;
-            detect = {
+            detect.enabled = false;  # No motion detection for indoor
+            audio = {
               enabled = true;
-              width = 640;
-              height = 480;
+              listen = [ "bark" "fire_alarm" "scream" "speech" "yell" ];
             };
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/living_room";
-                roles = [ "record" ];
-              }
-              {
-                path = "rtsp://127.0.0.1:8554/living_room_sub";
-                roles = [ "detect" ];
+                roles = [ "record" "audio" ];
               }
             ];
           };
           kitchen = {
             enabled = true;
-            detect = {
+            detect.enabled = false;  # No motion detection for indoor
+            audio = {
               enabled = true;
-              width = 640;
-              height = 480;
+              listen = [ "bark" "fire_alarm" "scream" "speech" "yell" ];
             };
             ffmpeg.inputs = [
               {
                 path = "rtsp://127.0.0.1:8554/kitchen";
-                roles = [ "record" ];
-              }
-              {
-                path = "rtsp://127.0.0.1:8554/kitchen_sub";
-                roles = [ "detect" ];
+                roles = [ "record" "audio" ];
               }
             ];
           };
