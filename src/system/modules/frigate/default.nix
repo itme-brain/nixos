@@ -20,6 +20,7 @@ in
         mqtt.enabled = false;
         cameras = {
           doorbell = {
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.0.134/cam/realmonitor?channel=1&subtype=0";
@@ -27,6 +28,7 @@ in
             }];
           };
           living_room = {
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=1&subtype=0";
@@ -34,6 +36,7 @@ in
             }];
           };
           kitchen = {
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.0.181/cam/realmonitor?channel=2&subtype=0";
@@ -41,6 +44,7 @@ in
             }];
           };
           parking_lot = {
+            enabled = true;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
@@ -48,6 +52,7 @@ in
             }];
           };
           porch = {
+            enabled = false;
             detect.enabled = false;
             ffmpeg.inputs = [{
               path = "rtsp://admin:ocu?u3Su@192.168.0.43/cam/realmonitor?channel=1&subtype=0";
