@@ -22,9 +22,9 @@ in
         streams = {
           #doorbell = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=0";
           #doorbell_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.167/cam/realmonitor?channel=1&subtype=1";
-          living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0";
+          living_room = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=0#backchannel=1";
           living_room_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=1&subtype=1";
-          kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0";
+          kitchen = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=0#backchannel=1";
           kitchen_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.147/cam/realmonitor?channel=2&subtype=1";
           parking_lot = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=0";
           parking_lot_sub = "rtsp://admin:ocu%3Fu3Su@192.168.1.194/cam/realmonitor?channel=1&subtype=1";
@@ -123,6 +123,10 @@ in
     services.nginx.virtualHosts."frigate.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
       forceSSL = true;
+      locations."/go2rtc/" = {
+        proxyPass = "http://127.0.0.1:1984/";
+        proxyWebsockets = true;
+      };
     };
 
     # Frigate segment cache in RAM (reduces disk writes)

@@ -42,7 +42,7 @@ out SYSTEM="desktop": (_validate SYSTEM)
 
 # Test switch into the next generation
 [group('nixos')]
-test SYSTEM="desktop": (_validate SYSTEM)
+test SYSTEM=SYSTEM: (_validate SYSTEM)
   @echo "Testing switching to next NixOS generation for {{SYSTEM}}..."
   @sudo nixos-rebuild test --flake .#{{SYSTEM}}
 
