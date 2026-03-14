@@ -157,10 +157,27 @@ in
       "d /dev/shm/logs/frigate 0755 frigate frigate -"
       "d /dev/shm/logs/nginx 0755 frigate frigate -"
       "d /dev/shm/logs/go2rtc 0755 frigate frigate -"
-      "f /dev/shm/logs/frigate/current 0644 frigate frigate -"
-      "f /dev/shm/logs/nginx/current 0644 frigate frigate -"
-      "f /dev/shm/logs/go2rtc/current 0644 frigate frigate -"
     ];
+
+    # Pipe journald logs to files for Frigate GUI
+    systemd.services.frigate-log-pipe = {
+      description = "Pipe logs to /dev/shm for Frigate GUI";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "frigate.service" "go2rtc.service" "nginx.service" ];
+      serviceConfig = {
+        Type = "simple";
+        User = "frigate";
+        Restart = "always";
+        ExecStart = pkgs.writeShellScript "frigate-log-pipe" ''
+          while true; do
+            ${pkgs.systemd}/bin/journalctl -u frigate -n 500 -o cat > /dev/shm/logs/frigate/current 2>/dev/null
+            ${pkgs.systemd}/bin/journalctl -u go2rtc -n 500 -o cat > /dev/shm/logs/go2rtc/current 2>/dev/null
+            ${pkgs.systemd}/bin/journalctl -u nginx -n 500 -o cat > /dev/shm/logs/nginx/current 2>/dev/null
+            sleep 5
+          done
+        '';
+      };
+    };
 
     # Backup recordings/database
     modules.system.backup = {
