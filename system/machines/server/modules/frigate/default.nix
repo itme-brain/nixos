@@ -166,13 +166,13 @@ in
       after = [ "frigate.service" "go2rtc.service" "nginx.service" ];
       serviceConfig = {
         Type = "simple";
-        User = "frigate";
         Restart = "always";
         ExecStart = pkgs.writeShellScript "frigate-log-pipe" ''
           while true; do
             ${pkgs.systemd}/bin/journalctl -u frigate -n 500 -o cat > /dev/shm/logs/frigate/current 2>/dev/null
             ${pkgs.systemd}/bin/journalctl -u go2rtc -n 500 -o cat > /dev/shm/logs/go2rtc/current 2>/dev/null
             ${pkgs.systemd}/bin/journalctl -u nginx -n 500 -o cat > /dev/shm/logs/nginx/current 2>/dev/null
+            chown frigate:frigate /dev/shm/logs/*/current
             sleep 5
           done
         '';
