@@ -72,6 +72,9 @@
         just
         age
         sops
+        git
+        git-crypt
+        gnupg
       ];
     };
   };
