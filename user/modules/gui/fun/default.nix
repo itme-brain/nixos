@@ -18,8 +18,9 @@ in
 
     home.packages = with pkgs; [
       ytmdesktop
-      discordo
-      webcord
+      #discordo
+      #webcord
+      discord
     ];
   };
 }

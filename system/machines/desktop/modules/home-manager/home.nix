@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   home-manager.useGlobalPkgs = true;
@@ -14,6 +14,25 @@
     ];
 
     home.stateVersion = "23.11";
+
+    home.packages = [ pkgs.sshfs ];
+
+    systemd.user.services.nvr-mount = {
+      Unit = {
+        Description = "Mount Frigate recordings via SSHFS";
+        After = [ "network-online.target" ];
+      };
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Media/nvr";
+        ExecStart = "${pkgs.sshfs}/bin/sshfs -o reconnect,ServerAliveInterval=15 server:/var/lib/frigate %h/Media/nvr";
+        ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/Media/nvr";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
 
     programs.ssh = {
       enable = true;
