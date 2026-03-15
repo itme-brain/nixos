@@ -26,7 +26,7 @@
         Type = "oneshot";
         RemainAfterExit = true;
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Media/nvr";
-        ExecStart = "${pkgs.sshfs}/bin/sshfs -o reconnect,ServerAliveInterval=15 server:/var/lib/frigate %h/Media/nvr";
+        ExecStart = "${pkgs.sshfs}/bin/sshfs -o reconnect,ServerAliveInterval=15 server:/var/lib/frigate/recordings %h/Media/nvr";
         ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/Media/nvr";
       };
       Install = {

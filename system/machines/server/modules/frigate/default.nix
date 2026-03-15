@@ -153,6 +153,8 @@ in
     };
 
     systemd.tmpfiles.rules = [
+      # Allow group write access for SSHFS mounts
+      "d /var/lib/frigate/recordings 0770 frigate frigate -"
       # Set ownership after tmpfs mount
       "d /var/cache/frigate 0750 frigate frigate -"
       # Create log directories for Frigate API (NixOS uses journald, but API expects these)
