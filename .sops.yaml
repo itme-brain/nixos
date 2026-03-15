@@ -1,0 +1,19 @@
+# sops-nix configuration
+# Per-machine age keys - add new machines here to grant access
+
+keys:
+  # Machines
+  - &desktop age17ejyzyk52unr6eyaa9rpunxpmf7u9726v6sx7me3ww3mdu5xzgjqsgj9gl
+  - &server age198jg29ryg3c0qj3yg6y9ha4ce2ue4hjdaa9kalf49fxju74dhchsquvjzp
+
+creation_rules:
+  # Desktop secrets
+  - path_regex: secrets/system/wifi\.yaml$ # Home WIFI Credentials
+    key_groups:
+      - age:
+          - *desktop
+  # Server secrets (cameras)
+  - path_regex: secrets/system/cameras\.yaml$ # RTSP Feed
+    key_groups:
+      - age:
+          - *server

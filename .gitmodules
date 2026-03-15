@@ -1,0 +1,15 @@
+[submodule "nvim"]
+	path = user/modules/neovim/nvim
+	url = https://github.com/itme-brain/nvim.git
+
+[submodule "vim"]
+	path = user/modules/vim/vim
+	url = https://github.com/itme-brain/vim.git
+
+[submodule "git"]
+	path = user/modules/git/git
+	url = https://github.com/itme-brain/git.git
+
+[submodule "bash"]
+	path = user/modules/bash/bash
+	url = https://github.com/itme-brain/bash.git
