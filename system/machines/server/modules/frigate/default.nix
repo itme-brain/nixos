@@ -13,9 +13,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Group for SSHFS access to recordings only
-    users.groups.frigate-recordings = {};
-    users.users.${config.user.name}.extraGroups = [ "frigate-recordings" ];
+    # Allow user to access frigate recordings via SSHFS
+    users.users.${config.user.name}.extraGroups = [ "frigate" ];
 
     # go2rtc service (required - NixOS frigate doesn't bundle it)
     services.go2rtc = {
@@ -154,8 +153,6 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      # Allow SSHFS access to recordings only
-      "d /var/lib/frigate/recordings 0770 frigate frigate-recordings -"
       # Set ownership after tmpfs mount
       "d /var/cache/frigate 0750 frigate frigate -"
       # Create log directories for Frigate API (NixOS uses journald, but API expects these)
