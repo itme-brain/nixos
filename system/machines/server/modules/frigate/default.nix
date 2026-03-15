@@ -13,6 +13,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Allow user to access frigate recordings via SSHFS
+    users.users.${config.user.name}.extraGroups = [ "frigate" ];
+
     # go2rtc service (required - NixOS frigate doesn't bundle it)
     services.go2rtc = {
       enable = true;
