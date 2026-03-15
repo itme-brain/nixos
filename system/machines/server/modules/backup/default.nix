@@ -15,7 +15,7 @@ let
     set -euo pipefail
 
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-    BACKUP_NAME="backup-$TIMESTAMP.tar.age"
+    BACKUP_NAME="backup-$TIMESTAMP.tar.gz.age"
     TEMP_DIR=$(mktemp -d)
     trap "rm -rf $TEMP_DIR" EXIT
 
@@ -23,7 +23,7 @@ let
     echo "Paths: ${concatStringsSep " " cfg.paths}"
 
     export PATH="${pkgs.age-plugin-yubikey}/bin:$PATH"
-    ${pkgs.gnutar}/bin/tar -C / ${excludeArgs}-cf - ${concatStringsSep " " tarPaths} | \
+    ${pkgs.gnutar}/bin/tar -C / ${excludeArgs}-czf - ${concatStringsSep " " tarPaths} | \
       ${pkgs.age}/bin/age ${recipientArgs} -o "$TEMP_DIR/$BACKUP_NAME"
 
     ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf copy "$TEMP_DIR/$BACKUP_NAME" "${cfg.destination}"

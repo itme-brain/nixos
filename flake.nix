@@ -70,11 +70,18 @@
       name = "devShell";
       packages = [
         just
+        rclone
+
         age
         sops
+        ssh-to-age
+
         git
         git-crypt
         gnupg
+
+        yubikey-manager
+        age-plugin-yubikey
       ];
     };
   };
