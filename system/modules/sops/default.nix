@@ -7,7 +7,6 @@ let
 in
 {
   options.modules.system.sops = { enable = mkEnableOption "Enable sops-nix"; };
-
   config = mkIf cfg.enable {
     # Smartcard daemon for Yubikey (GPG, etc.)
     services.pcscd.enable = true;

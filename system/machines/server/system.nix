@@ -108,9 +108,16 @@
 
   console.font = "Lat2-Terminus16";
 
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
   networking = {
     hostName = "server";
     useDHCP = false;
+    nat = {
+      enable = true;
+      internalInterfaces = [ "enp2s0f1" ];
+      externalInterface = "enp2s0f0";
+    };
     interfaces.enp2s0f0 = {
       ipv4.addresses = [{
         address = "192.168.0.154";
@@ -130,17 +137,17 @@
       enable = true;
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ 53 67 ];  # DNS + DHCP
-      extraCommands = ''
-        # Block camera MACs from forwarding (instant DROP, no timeouts)
-        iptables -A FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP  # cam4
-        iptables -A FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP  # cam2/cam3
-        iptables -A FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP  # cam1
-      '';
-      extraStopCommands = ''
-        iptables -D FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP || true
-        iptables -D FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP || true
-        iptables -D FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP || true
-      '';
+      # extraCommands = ''
+      #   # Block camera MACs from forwarding (instant DROP, no timeouts)
+      #   iptables -A FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP  # cam4
+      #   iptables -A FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP  # cam2/cam3
+      #   iptables -A FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP  # cam1
+      # '';
+      # extraStopCommands = ''
+      #   iptables -D FORWARD -m mac --mac-source 00:1f:54:c2:d1:b1 -j DROP || true
+      #   iptables -D FORWARD -m mac --mac-source 00:1f:54:b2:9b:1d -j DROP || true
+      #   iptables -D FORWARD -m mac --mac-source 00:1f:54:a9:81:d1 -j DROP || true
+      # '';
     };
   };
 

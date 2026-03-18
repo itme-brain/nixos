@@ -5,10 +5,13 @@ let
     (user: user.modules.user.security.gpg.enable or false)
     (lib.attrValues config.home-manager.users);
 
+  sysModules = config.modules.system;
+
 in
 { system.stateVersion = "23.11";
 
   modules.system.sops.enable = true;
+  modules.system.docker.enable = true;
 
   # WiFi secrets
   sops.secrets = let wifi = { sopsFile = ../../../secrets/system/wifi.yaml; }; in {

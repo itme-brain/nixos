@@ -10,6 +10,7 @@
     ../../../user
     ../../keys
     ../../modules/sops
+    ../../modules/docker
     ./hardware.nix
     ./system.nix
   ];

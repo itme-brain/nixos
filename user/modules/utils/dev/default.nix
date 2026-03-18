@@ -17,8 +17,6 @@ in
       pkg-config
       qrencode
 
-      docker
-
       # Network/system tools
       fping
       wireguard-tools
