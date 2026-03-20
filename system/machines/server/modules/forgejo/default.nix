@@ -62,6 +62,11 @@ in
           SSH_PORT = 22;
           START_SSH_SERVER = false;
           LANDING_PAGE = "explore";
+          LFS_MAX_FILE_SIZE = 0;
+        };
+
+        "repository.upload" = {
+          FILE_MAX_SIZE = 0;
         };
 
         service = {
@@ -92,6 +97,7 @@ in
     services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
       forceSSL = true;
+      extraConfig = "client_max_body_size 0;";
       locations."/" = {
         proxyPass = "http://unix:${socketPath}";
       };
