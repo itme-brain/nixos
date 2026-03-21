@@ -95,11 +95,7 @@ in
           ];
         };
 
-        audio_transcription = {
-          enabled = true;
-          model_size = "small";
-          language = "en";
-        };
+        audio_transcription.enabled = false;
 
         record = {
           enabled = true;
