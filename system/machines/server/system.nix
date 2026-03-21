@@ -68,12 +68,14 @@
       enable = true;
       devices = [ "nodev" ];
       efiSupport = true;
+      efiInstallAsRemovable = true;  # HP Z230 UEFI ignores custom boot entries
       configurationLimit = 5;
       splashImage = null;
     };
 
     efi = {
-      canTouchEfiVariables = true;
+      canTouchEfiVariables = false;  # Not needed with efiInstallAsRemovable
+      efiSysMountPoint = "/boot";
     };
   };
 
@@ -82,6 +84,7 @@
     git
     vim
     htop
+    dmidecode
   ];
 
   security.sudo = {
