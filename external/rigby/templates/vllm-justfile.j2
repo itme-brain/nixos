@@ -1,0 +1,58 @@
+{% raw %}# List available recipes
+[private]
+default:
+    @just --list
+
+# Show currently running vLLM server
+status:
+    @pgrep -a -f "vllm serve" || echo "No vLLM server running"
+
+# Tail the vLLM log
+logs:
+    @tail -f {% endraw %}{{ vllm_home }}/vllm.log{% raw %}
+
+# Stop any running vLLM server and wait for VRAM to free
+stop:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if pgrep -f "vllm serve" > /dev/null; then
+        echo "Stopping vLLM..."
+        pkill -TERM -f "vllm serve" || true
+        sleep 2
+        pkill -KILL -f "vllm serve" 2>/dev/null || true
+    fi
+    echo "Waiting for VRAM to release..."
+    for i in $(seq 1 30); do
+        used=$(rocm-smi --showmeminfo vram 2>/dev/null | awk '/VRAM Total Used Memory/ {print $NF}')
+        total=$(rocm-smi --showmeminfo vram 2>/dev/null | awk '/VRAM Total Memory \(B\)/ {print $NF}')
+        if [ -n "$used" ] && [ -n "$total" ] && [ "$total" -gt 0 ]; then
+            pct=$(( used * 100 / total ))
+            echo "  VRAM: ${pct}%"
+            if [ "$pct" -lt 10 ]; then
+                echo "VRAM free."
+                exit 0
+            fi
+        fi
+        sleep 2
+    done
+    echo "Warning: VRAM did not fully release after 60s"
+{% endraw %}
+{% for model in vllm_models_list %}
+# Serve {{ model.name }}
+{{ model.recipe }}: stop
+    #!/usr/bin/env bash
+    source {{ vllm_home }}/.bashrc
+    nohup {{ vllm_home }}/vllm-venv/bin/vllm serve {{ vllm_models }}/{{ model.dir }} \
+        --served-model-name {{ model.name }} \
+        --host 0.0.0.0 \
+        --port {{ vllm_port }} \
+        --api-key ${VLLM_API_KEY} \
+        --dtype auto \
+        --max-model-len {{ model.max_model_len }} \
+        --gpu-memory-utilization {{ vllm_gpu_memory_utilization }}{% if model.tool_call_parser is defined %} \
+        --enable-auto-tool-choice \
+        --tool-call-parser {{ model.tool_call_parser }}{% endif %} \
+        > {{ vllm_home }}/vllm.log 2>&1 &
+    echo "Started {{ model.name }} (pid $!). Run 'just logs' to follow."
+
+{% endfor %}

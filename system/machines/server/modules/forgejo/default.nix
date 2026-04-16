@@ -1,0 +1,106 @@
+{ pkgs, lib, config, ... }:
+
+with lib;
+let
+  cfg = config.modules.system.forgejo;
+  nginx = config.modules.system.nginx;
+  domain = "ramos.codes";
+  socketPath = "/run/forgejo/forgejo.sock";
+
+in
+{
+  options.modules.system.forgejo = {
+    enable = mkEnableOption "Forgejo Server";
+  };
+
+  config = mkIf cfg.enable {
+    users.groups.git = {};
+    users.users.git = {
+      isSystemUser = true;
+      group = "git";
+      home = "/var/lib/forgejo";
+      shell = "${pkgs.bash}/bin/bash";
+    };
+
+    users.users.nginx = mkIf nginx.enable {
+      extraGroups = [ "git" ];
+    };
+
+    # Bind mount from /data
+    fileSystems."/var/lib/forgejo" = {
+      device = "/data/forgejo";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    systemd.tmpfiles.rules = [
+      "d /data/forgejo 0750 git git -"
+      "d /data/forgejo/.ssh 0700 git git -"
+      "d /data/forgejo/custom 0750 git git -"
+      "d /data/forgejo/data 0750 git git -"
+    ];
+
+    services.forgejo = {
+      enable = true;
+      user = "git";
+      group = "git";
+      stateDir = "/var/lib/forgejo";
+
+      settings = {
+        DEFAULT = {
+          APP_NAME = "Git Server";
+          APP_SLOGAN = "";
+        };
+
+        service.REQUIRE_SIGNIN_VIEW = false;
+        server = {
+          DOMAIN = "git.${domain}";
+          ROOT_URL = "https://git.${domain}/";
+          PROTOCOL = "http+unix";
+          HTTP_ADDR = socketPath;
+          SSH_DOMAIN = "git.${domain}";
+          SSH_PORT = 22;
+          START_SSH_SERVER = false;
+          LANDING_PAGE = "explore";
+          LFS_MAX_FILE_SIZE = 0;
+        };
+
+        "repository.upload" = {
+          FILE_MAX_SIZE = 0;
+        };
+
+        service = {
+          REGISTER_MANUAL_CONFIRM = true;
+          DISABLE_REGISTRATION = false;
+          DEFAULT_ALLOW_CREATE_ORGANIZATION = false;
+        };
+
+        admin = {
+          DISABLE_REGULAR_ORG_CREATION = true;
+        };
+
+        auth = {
+          ENABLE_BASIC_AUTHENTICATION = true;
+        };
+      };
+
+      database = {
+        type = "sqlite3";
+        path = "/var/lib/forgejo/data/forgejo.db";
+      };
+    };
+
+    modules.system.backup.paths = [
+      "/var/lib/forgejo"
+    ];
+
+    services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
+      useACMEHost = domain;
+      forceSSL = true;
+      extraConfig = "client_max_body_size 0;";
+      locations."/" = {
+        proxyPass = "http://unix:${socketPath}";
+      };
+    };
+  };
+}

@@ -1,0 +1,14 @@
+# JavaScript / Node
+node_modules
+
+# Nix
+.direnv
+result
+
+# Haskell
+dist-newstyle
+
+# Nuxt
+.nuxt/
+.output/
+dist

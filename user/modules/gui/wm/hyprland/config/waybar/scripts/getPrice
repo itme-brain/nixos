@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+response=$(curl -s "https://api.coinbase.com/v2/prices/BTC-USD/spot")
+price=$(echo "$response" | jq -r .data.amount | awk -F. '{print $1}')
+
+if [ -z "$price" ]; then
+  echo -e "\033[31mErr\033[0m"
+  exit 1
+fi
+
+echo "$price"
+exit 0

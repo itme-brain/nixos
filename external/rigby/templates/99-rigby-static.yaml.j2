@@ -1,0 +1,16 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    {{ rigby_interface }}:
+      dhcp4: false
+      addresses:
+        - {{ rigby_static_ip }}
+      routes:
+        - to: default
+          via: {{ rigby_gateway }}
+      nameservers:
+        addresses:
+{% for dns in rigby_dns %}
+          - {{ dns }}
+{% endfor %}

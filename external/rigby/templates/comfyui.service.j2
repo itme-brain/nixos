@@ -1,0 +1,22 @@
+[Unit]
+Description=ComfyUI
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ comfy_user }}
+Group={{ comfy_group }}
+UMask=0002
+WorkingDirectory={{ comfy_root }}
+Environment=HOME={{ comfy_home }}
+Environment=COMFYUI_PATH={{ comfy_root }}
+Environment=PATH={{ comfy_home }}/.local/bin:{{ comfy_venv }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart={{ comfy_venv }}/bin/python {{ comfy_root }}/main.py --highvram --enable-manager --listen 0.0.0.0 --port {{ comfy_port }} --disable-auto-launch
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+# Navigation
+alias cd='cd -L'
+
+# Colors
+eval "$(dircolors -b)"
+alias ls='ls --color=auto'
+
+# Search
+alias grep='grep --color=auto'
+
+# Tree (uses eza if available)
+if command -v eza >/dev/null 2>&1; then
+  alias tree='eza --tree --icons=never'
+fi
+
+# Open (graphical environment only)
+if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+  alias open='xdg-open'
+fi
+
+if command -v nvim >/dev/null 2>&1; then
+  alias vim='nvim'
+fi
+
+alias cdg='cd "$(git rev-parse --show-toplevel 2>/dev/null)"'

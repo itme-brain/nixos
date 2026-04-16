@@ -1,0 +1,179 @@
+# Detect graphical environment once at source time
+if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+  _gfx=1
+  _py_sym=$'\ue73c'
+  _js_sym=$'\ue781'
+  _nix_sym=$'\ue843'
+  _proj_sym=$'\ueb45 '
+  _branch_sym=$'\uf418'
+else
+  _gfx=""
+  _py_sym="py"
+  _js_sym="js"
+  _nix_sym="nix"
+  _proj_sym="../"
+  _branch_sym="git"
+fi
+
+# Pre-compute colored icons
+_python_icon="\[\033[01;33m\]$_py_sym\[\033[00m\]"
+_node_icon="\[\033[01;93m\]$_js_sym\[\033[00m\]"
+_nix_icon="\[\033[01;34m\]$_nix_sym\[\033[00m\]"
+
+# SSH check once at source time
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  _ssh_PS1="\n\[\033[01;37m\]\u@\h:\[\033[00m\]\n"
+else
+  _ssh_PS1=""
+fi
+
+# Static prompt parts
+_green_arrow="\[\033[01;32m\]>> "
+_white_text="\[\033[00m\]"
+
+# Cache: dir -> "git_root|superproject|" or "-" for non-git
+declare -A _dir_cache
+
+# Find git root by walking up (no git spawn)
+_find_git_root() {
+  local dir="$PWD"
+  while [ -n "$dir" ]; do
+    if [ -e "$dir/.git" ]; then
+      _git_root="$dir"
+      return 0
+    fi
+    dir="${dir%/*}"
+  done
+  return 1
+}
+
+# Find superproject by walking up from git root
+_find_superproject() {
+  local dir="${_git_root%/*}"
+  _superproject=""
+  while [ -n "$dir" ]; do
+    if [ -e "$dir/.git" ]; then
+      _superproject="$dir"
+      return 0
+    fi
+    dir="${dir%/*}"
+  done
+  return 1
+}
+
+# Read branch from .git/HEAD (no git spawn)
+_read_branch() {
+  local git_dir="$_git_root/.git"
+  local head_file
+
+  # Submodule: .git is a file with "gitdir: <path>"
+  if [ -f "$git_dir" ]; then
+    read -r _ head_file < "$git_dir"
+    head_file="$head_file/HEAD"
+  else
+    head_file="$git_dir/HEAD"
+  fi
+
+  [ -f "$head_file" ] || return 1
+
+  local head
+  read -r head < "$head_file"
+
+  if [[ "$head" == "ref: refs/heads/"* ]]; then
+    _git_branch="${head#ref: refs/heads/}"
+  else
+    # Detached HEAD - short hash
+    _git_branch="${head:0:7}"
+  fi
+}
+
+# Build venv icons (must run every prompt - env can change)
+_build_venv_icons() {
+  venv_icons=""
+  [ -n "$IN_NIX_SHELL" ] && venv_icons+="$_nix_icon "
+  [ -n "$VIRTUAL_ENV" ] && venv_icons+="$_python_icon "
+  [ -d "$_git_root/node_modules" ] && venv_icons+="$_node_icon "
+}
+
+# Main prompt logic
+_set_prompt() {
+  local cached="${_dir_cache[$PWD]}"
+
+  # Check cache
+  if [ -z "$cached" ]; then
+    if _find_git_root; then
+      _find_superproject
+      _dir_cache[$PWD]="$_git_root|$_superproject|"
+    else
+      _dir_cache[$PWD]="-"
+      cached="-"
+    fi
+  fi
+
+  # Non-git directory
+  if [ "$cached" = "-" ] || [ "${_dir_cache[$PWD]}" = "-" ]; then
+    venv_icons=""
+    [ -n "$IN_NIX_SHELL" ] && venv_icons+="$_nix_icon "
+    [ -n "$VIRTUAL_ENV" ] && venv_icons+="$_python_icon "
+    PS1="$_ssh_PS1\n\[\033[01;34m\]\w\[\033[00m\]\n$venv_icons$_green_arrow$_white_text"
+    return
+  fi
+
+  # Parse cache
+  [ -z "$cached" ] && cached="${_dir_cache[$PWD]}"
+  IFS='|' read -r _git_root _superproject _ <<< "$cached"
+
+  # Get branch (can change without cd) - if fails, git root is gone
+  if ! _read_branch; then
+    unset "_dir_cache[$PWD]"
+    _set_prompt
+    return
+  fi
+
+  # Build paths using bash string ops (no readlink spawn)
+  local git_curr_dir="${PWD#$_git_root}"
+  local git_root_dir="${_git_root##*/}"
+
+  # Build working_dir
+  local working_dir
+  if [ -n "$_superproject" ]; then
+    local super_name="${_superproject##*/}"
+    working_dir="\[\033[01;34m\]$_proj_sym$super_name/$git_root_dir$git_curr_dir\[\033[00m\]"
+  elif [ -z "$git_curr_dir" ]; then
+    working_dir="\[\033[01;34m\]$_proj_sym$git_root_dir\[\033[00m\]"
+  else
+    working_dir="\[\033[01;34m\]$_proj_sym$git_root_dir$git_curr_dir\[\033[00m\]"
+  fi
+
+  # Build branch PS1
+  local git_branch_PS1
+  if [ -n "$_gfx" ]; then
+    git_branch_PS1="\[\033[01;31m\]$_git_branch $_branch_sym:\[\033[00m\]"
+  else
+    git_branch_PS1="\[\033[01;31m\]$_git_branch:\[\033[00m\]"
+  fi
+
+  # Build venv icons
+  _build_venv_icons
+
+  PS1="$_ssh_PS1\n$working_dir\n$venv_icons$_green_arrow$git_branch_PS1$_white_text"
+}
+
+# Invalidate cache for current directory
+_prompt_cache_invalidate() {
+  unset "_dir_cache[$PWD]"
+}
+
+# Wrap git to invalidate cache on repo-creating commands
+git() {
+  command git "$@"
+  local ret=$?
+  [[ "$1" =~ ^(init|clone)$ ]] && _prompt_cache_invalidate
+  return $ret
+}
+
+if [ -n "$PROMPT_COMMAND" ]; then
+  PROMPT_COMMAND="_set_prompt;$PROMPT_COMMAND"
+else
+  PROMPT_COMMAND="_set_prompt"
+fi

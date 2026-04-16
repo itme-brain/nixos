@@ -1,0 +1,57 @@
+{ pkgs, lib, config, osConfig, ... }:
+
+with lib;
+let
+  cfg = config.modules.user.utils.dev;
+in
+{ options.modules.user.utils.dev = { enable = mkEnableOption "user.utils.dev"; };
+  config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      unstable.claude-code
+      unstable.codex
+      unstable.opencode
+
+      bubblewrap
+
+      nix-init
+      nix-prefetch-git
+      nurl
+
+      pkg-config
+      qrencode
+
+      # Network/system tools
+      fping
+      wireguard-tools
+      pciutils
+      lshw
+    ] ++ optionals (osConfig.virtualisation.libvirtd.enable) [
+      virt-manager
+    ];
+
+    programs = {
+      bash = {
+        initExtra = "export LLAMA_API_KEY=$(cat /run/secrets/LLAMA_API_KEY)";
+      };
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
+
+    home = {
+      sessionVariables = {
+        DIRENV_LOG_FORMAT = "";
+      };
+
+      # Workaround for direnv_log bug 
+      # https://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
+      file.".config/direnv/direnv.toml" = {
+        enable = true;
+        force = true;
+        text = "";
+      };
+    };
+  };
+}

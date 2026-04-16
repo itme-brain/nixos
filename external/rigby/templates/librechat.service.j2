@@ -1,0 +1,18 @@
+[Unit]
+Description=LibreChat
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User={{ rigby_user }}
+Group=docker
+WorkingDirectory={{ librechat_root }}
+ExecStart=/usr/bin/docker compose up
+ExecStop=/usr/bin/docker compose down
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

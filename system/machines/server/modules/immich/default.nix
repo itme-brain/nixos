@@ -1,0 +1,59 @@
+{ pkgs, lib, config, ... }:
+
+with lib;
+let
+  cfg = config.modules.system.immich;
+  nginx = config.modules.system.nginx;
+  domain = "ramos.codes";
+  port = 2283;
+  privateAccessRules = concatMapStringsSep "\n" (cidr: "allow ${cidr};") nginx.privateAllowCidrs + "\ndeny all;";
+
+in
+{
+  options.modules.system.immich = {
+    enable = mkEnableOption "Immich Photo Server";
+  };
+
+  config = mkIf cfg.enable {
+    # Bind mount from /data
+    systemd.tmpfiles.rules = [
+      "d /data/immich 0750 immich immich -"
+      "d /data/postgresql 0750 postgres postgres -"
+    ];
+
+    fileSystems."/var/lib/immich" = {
+      device = "/data/immich";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/lib/postgresql" = {
+      device = "/data/postgresql";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    services.immich = {
+      enable = true;
+      port = port;
+      host = "127.0.0.1";
+      mediaLocation = "/var/lib/immich";
+      machine-learning.enable = false;
+    };
+
+    modules.system.backup.paths = [
+      "/var/lib/immich"
+      "/var/lib/postgresql"
+    ];
+
+    services.nginx.virtualHosts."photos.${domain}" = mkIf nginx.enable {
+      useACMEHost = domain;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString port}";
+        proxyWebsockets = true;
+        extraConfig = privateAccessRules;
+      };
+    };
+  };
+}

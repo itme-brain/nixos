@@ -1,0 +1,9 @@
+[comfy-output]
+   path = {{ comfy_output_dir }}
+   browseable = yes
+   read only = no
+   guest ok = yes
+   force user = {{ comfy_user }}
+   force group = {{ comfy_group }}
+   create mask = 0664
+   directory mask = 2775

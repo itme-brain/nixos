@@ -1,0 +1,28 @@
+[init]
+	defaultBranch = master
+
+# Use vimdiff for diffs and merge conflicts
+[diff]
+	tool = vimdiff
+
+[merge]
+	tool = vimdiff
+
+[mergetool]
+	keepBackup = false
+
+[mergetool "vimdiff"]
+	trustExitCode = true
+
+[user]
+	name = Bryan Ramos
+	email = bryan@ramos.codes
+	signingKey = F1F3466458452B2DF351F1E864D12BA95ACE1F2D
+
+# Auto-set upstream on first push
+[push]
+	autoSetupRemote = true
+
+# Enable per-project with: git config --local commit.gpgSign true
+[commit]
+	gpgSign = false

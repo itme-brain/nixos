@@ -1,0 +1,442 @@
+---
+- name: Recover rigby AI rig
+  hosts: ai_rig
+  become: true
+  vars:
+    rigby_user: bryan
+    rigby_recovery_ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl4895aB9P5p/lp8Hq5rHun4clvhyTSHFi3U2d6OOBoW5Fm+VcQnW/xbjmCBsXk5BdiowsBxQhwnzdfz/KJL7J5RobomUEaVRwb9UwT88eJveLp14BG8j2J3SjfyhrCX+4jkPx0bPQk1HGcuYY+tPEXf1q/ps88Dhu0CARBIzYQOTYY6b1qWzxpDoFZGHjKG8g5iY6FIu65yKKvvVy1f8IgZ3l3IpwBWVamxgkTcYY0QYSrmzo1n7TXxwrWbvenAqBsQ0cBPs+gVa3uIr+1TJl0Az5SElBVGu3LvUdlk58trtPUj6TQR3YUkg7Vjll7WHOdqhux5ZQNhjkOsHerf0Tw86e6cEzgeTuIbQHIb0LcsUunwKcuh2+au7RO599cvHn0+xZE5MZBxloDDaJ3JsiliM8kyPP/U3ERj03cWLW7BqbT+sfjAOl21RCzk0iQxk1wt/8VmtCr9Adv7IyrtaYvf/bwRP+g+9ldmzKGt8Mdb605uVzZ70H/LLm17f40Te+QHaex5by/6p6cuwEEZtgIg53Wpglu0rA6UxrBfQEHKl/Jt3FLeE0mnEyYkkR2MnHNtyWRIXtuqYZMAm2Ub1pFHH7jQV1gGiDVTw6a2eIwK21a/hXtRjFUpFd1nB1n+KNfJBE4zT3wm3Ud7mKw/6rWnoRyhYZvGXkFdp+iEs49Q== itme-brain@github/78120816
+    rigby_static_network_enabled: true
+    rigby_interface: eno1
+    rigby_static_ip: 192.168.0.23/24
+    rigby_gateway: 192.168.0.1
+    rigby_dns:
+      - 192.168.0.1
+      - 1.1.1.1
+    comfy_user: comfy
+    comfy_group: comfy
+    comfy_home: /home/comfy
+    comfy_root: /home/comfy/ComfyUI
+    comfy_venv: /home/comfy/comfy-venv
+    comfy_python_version: "3.13"
+    comfy_port: 8188
+    comfy_output_dir: /home/comfy/ComfyUI/output
+    comfy_repo_url: https://github.com/comfy-org/ComfyUI
+    comfy_repo_version: a1344238901efc5ea199d8094cb16fca36ceb28b
+    comfy_manager_version: "4.1"
+    comfy_torch_index_url: https://download.pytorch.org/whl/rocm7.2
+    grub_cmdline_linux_default: "amdgpu.cwsr_enable=0"
+    amd_driver_deb: amdgpu-install_7.2.1.70201-1_all.deb
+    amd_driver_url: https://repo.radeon.com/amdgpu-install/7.2.1/ubuntu/noble/amdgpu-install_7.2.1.70201-1_all.deb
+    rigby_packages:
+      - curl
+      - git
+      - rsync
+      - software-properties-common
+      - python-is-python3
+      - python3.13
+      - python3.13-venv
+      - python3.13-dev
+      - build-essential
+      - linux-headers-{{ ansible_kernel }}
+      - linux-modules-extra-{{ ansible_kernel }}
+      - samba
+      - just
+      - python3.12
+      - python3.12-venv
+      - docker.io
+    vllm_user: vllm
+    vllm_home: /home/vllm
+    vllm_venv: /home/vllm/vllm-venv
+    vllm_models: /home/vllm/models
+    vllm_port: 8000
+    vllm_gpu_memory_utilization: "0.95"
+    vllm_rocm_wheels_url: https://wheels.vllm.ai/rocm/0.19.0/rocm721
+    vllm_models_list:
+      - name: Qwen2.5-Coder-14B
+        recipe: coder
+        dir: Qwen2.5-Coder-14B-Instruct
+        max_model_len: 4096
+      - name: Qwen2.5-7B-Instruct
+        recipe: qwen7b
+        dir: Qwen2.5-7B-Instruct
+        max_model_len: 8192
+        tool_call_parser: hermes
+    librechat_root: /home/bryan/LibreChat
+    librechat_repo_url: https://github.com/danny-avila/LibreChat
+  tasks:
+    - name: Ensure deadsnakes PPA is configured
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+        update_cache: true
+
+    - name: Install required Ubuntu packages
+      ansible.builtin.apt:
+        name: "{{ rigby_packages }}"
+        state: present
+        update_cache: true
+
+    - name: Ensure AMD installer package is present
+      ansible.builtin.get_url:
+        url: "{{ amd_driver_url }}"
+        dest: "/tmp/{{ amd_driver_deb }}"
+        mode: "0644"
+
+    - name: Install AMD installer package
+      ansible.builtin.apt:
+        deb: "/tmp/{{ amd_driver_deb }}"
+        state: present
+
+    - name: Install AMD GPU DKMS driver
+      ansible.builtin.apt:
+        name: amdgpu-dkms
+        state: present
+        update_cache: true
+
+    - name: Install ROCm stack
+      ansible.builtin.apt:
+        name: rocm
+        state: present
+
+    - name: Ensure required groups exist
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - render
+        - video
+        - "{{ comfy_group }}"
+
+    - name: Ensure comfy user exists
+      ansible.builtin.user:
+        name: "{{ comfy_user }}"
+        group: "{{ comfy_group }}"
+        groups:
+          - render
+          - video
+        append: true
+        create_home: true
+        shell: /bin/bash
+
+    - name: Ensure bryan is in required groups
+      ansible.builtin.user:
+        name: "{{ rigby_user }}"
+        groups:
+          - render
+          - video
+          - "{{ comfy_group }}"
+        append: true
+
+    - name: Ensure recovery SSH keys are present for bryan
+      ansible.posix.authorized_key:
+        user: "{{ rigby_user }}"
+        state: present
+        key: "{{ item }}"
+      loop: "{{ rigby_recovery_ssh_keys }}"
+
+    - name: Configure GRUB default kernel args
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ grub_cmdline_linux_default }}"'
+
+    - name: Ensure GRUB menu is shown
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^{{ item.key }}='
+        line: "{{ item.key }}={{ item.value }}"
+      loop:
+        - { key: GRUB_TIMEOUT_STYLE, value: "menu" }
+        - { key: GRUB_TIMEOUT, value: "5" }
+
+    - name: Regenerate grub config
+      ansible.builtin.command: update-grub
+      changed_when: true
+
+    - name: Ensure Comfy directories exist
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: "{{ comfy_user }}"
+        group: "{{ comfy_group }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: "{{ comfy_home }}", mode: "0775" }
+        - { path: "{{ comfy_root }}", mode: "0775" }
+        - { path: "{{ comfy_output_dir }}", mode: "2775" }
+        - { path: "{{ comfy_home }}/.local/bin", mode: "0775" }
+        - { path: "{{ comfy_home }}/piptmp", mode: "0775" }
+
+    - name: Ensure uv is installed for comfy
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      args:
+        creates: "{{ comfy_home }}/.local/bin/uv"
+      become_user: "{{ comfy_user }}"
+
+    - name: Ensure ComfyUI repo is present at pinned revision
+      ansible.builtin.git:
+        repo: "{{ comfy_repo_url }}"
+        dest: "{{ comfy_root }}"
+        version: "{{ comfy_repo_version }}"
+        update: true
+      become_user: "{{ comfy_user }}"
+
+    - name: Ensure ComfyUI venv exists
+      ansible.builtin.command:
+        argv:
+          - "{{ comfy_home }}/.local/bin/uv"
+          - venv
+          - --python
+          - "{{ comfy_python_version }}"
+          - "{{ comfy_venv }}"
+      args:
+        creates: "{{ comfy_venv }}/bin/python"
+      become_user: "{{ comfy_user }}"
+
+    - name: Install base Python packaging tools in Comfy venv
+      ansible.builtin.command:
+        argv:
+          - "{{ comfy_home }}/.local/bin/uv"
+          - pip
+          - install
+          - --python
+          - "{{ comfy_venv }}/bin/python"
+          - --upgrade
+          - pip
+          - setuptools
+          - wheel
+      become_user: "{{ comfy_user }}"
+
+    - name: Install ROCm PyTorch in Comfy venv
+      ansible.builtin.command:
+        argv:
+          - "{{ comfy_home }}/.local/bin/uv"
+          - pip
+          - install
+          - --python
+          - "{{ comfy_venv }}/bin/python"
+          - --index-url
+          - "{{ comfy_torch_index_url }}"
+          - torch
+          - torchvision
+          - torchaudio
+      environment:
+        TMPDIR: "{{ comfy_home }}/piptmp"
+      become_user: "{{ comfy_user }}"
+
+    - name: Install ComfyUI requirements in Comfy venv
+      ansible.builtin.command:
+        argv:
+          - "{{ comfy_home }}/.local/bin/uv"
+          - pip
+          - install
+          - --python
+          - "{{ comfy_venv }}/bin/python"
+          - -r
+          - "{{ comfy_root }}/requirements.txt"
+      environment:
+        TMPDIR: "{{ comfy_home }}/piptmp"
+      become_user: "{{ comfy_user }}"
+
+    - name: Install ComfyUI-Manager in Comfy venv
+      ansible.builtin.command:
+        argv:
+          - "{{ comfy_home }}/.local/bin/uv"
+          - pip
+          - install
+          - --python
+          - "{{ comfy_venv }}/bin/python"
+          - "comfyui-manager=={{ comfy_manager_version }}"
+      environment:
+        TMPDIR: "{{ comfy_home }}/piptmp"
+      become_user: "{{ comfy_user }}"
+
+    - name: Ensure output directories have group inheritance
+      ansible.builtin.shell: |
+        set -euo pipefail
+        find "{{ comfy_output_dir }}" -type d -exec chown {{ comfy_user }}:{{ comfy_group }} {} +
+        find "{{ comfy_output_dir }}" -type d -exec chmod 2775 {} +
+      changed_when: true
+
+    - name: Ensure output files are group writable
+      ansible.builtin.shell: |
+        set -euo pipefail
+        find "{{ comfy_output_dir }}" -type f -exec chown {{ comfy_user }}:{{ comfy_group }} {} +
+        find "{{ comfy_output_dir }}" -type f -exec chmod 0664 {} +
+      changed_when: true
+
+    - name: Install ComfyUI systemd unit
+      ansible.builtin.template:
+        src: ../templates/comfyui.service.j2
+        dest: /etc/systemd/system/comfyui.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Ensure Samba include directory exists
+      ansible.builtin.file:
+        path: /etc/samba/smb.conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Install Samba share config for Comfy outputs
+      ansible.builtin.template:
+        src: ../templates/comfy-output.conf.j2
+        dest: /etc/samba/smb.conf.d/comfy-output.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Ensure Samba includes conf.d snippets
+      ansible.builtin.blockinfile:
+        path: /etc/samba/smb.conf
+        marker: "; {mark} ANSIBLE MANAGED COMFY OUTPUT INCLUDE"
+        block: |
+          include = /etc/samba/smb.conf.d/comfy-output.conf
+
+    - name: Reload systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+    - name: Ensure ComfyUI service is installed but disabled
+      ansible.builtin.systemd_service:
+        name: comfyui.service
+        enabled: false
+
+    - name: Ensure Samba service is enabled and running
+      ansible.builtin.systemd_service:
+        name: smbd.service
+        enabled: true
+        state: started
+
+    - name: Install netplan static IP config for rigby
+      ansible.builtin.template:
+        src: ../templates/99-rigby-static.yaml.j2
+        dest: /etc/netplan/99-rigby-static.yaml
+        owner: root
+        group: root
+        mode: "0644"
+      when: rigby_static_network_enabled | bool
+
+    - name: Apply static netplan configuration as final step
+      ansible.builtin.command: netplan apply
+      when: rigby_static_network_enabled | bool
+      changed_when: true
+
+    # --- vLLM ---
+
+    - name: Ensure vllm user exists
+      ansible.builtin.user:
+        name: "{{ vllm_user }}"
+        groups:
+          - render
+          - video
+        append: true
+        create_home: true
+        shell: /bin/bash
+
+    - name: Ensure vllm models directory exists
+      ansible.builtin.file:
+        path: "{{ vllm_models }}"
+        state: directory
+        owner: "{{ vllm_user }}"
+        group: "{{ vllm_user }}"
+        mode: "0755"
+
+    - name: Ensure uv is installed for vllm user
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      args:
+        creates: "{{ vllm_home }}/.local/bin/uv"
+      become_user: "{{ vllm_user }}"
+
+    - name: Ensure vllm venv exists
+      ansible.builtin.command:
+        argv:
+          - "{{ vllm_home }}/.local/bin/uv"
+          - venv
+          - --python
+          - "3.12"
+          - "{{ vllm_venv }}"
+      args:
+        creates: "{{ vllm_venv }}/bin/python"
+      become_user: "{{ vllm_user }}"
+
+    - name: Install vLLM in venv
+      ansible.builtin.command:
+        argv:
+          - "{{ vllm_home }}/.local/bin/uv"
+          - pip
+          - install
+          - --python
+          - "{{ vllm_venv }}/bin/python"
+          - vllm
+          - --extra-index-url
+          - "{{ vllm_rocm_wheels_url }}"
+      args:
+        creates: "{{ vllm_venv }}/bin/vllm"
+      become_user: "{{ vllm_user }}"
+
+    - name: Install vllm justfile
+      ansible.builtin.template:
+        src: ../templates/vllm-justfile.j2
+        dest: "{{ vllm_home }}/justfile"
+        owner: "{{ vllm_user }}"
+        group: "{{ vllm_user }}"
+        mode: "0644"
+
+    - name: Ensure vllm bashrc sources api key from file
+      ansible.builtin.lineinfile:
+        path: "{{ vllm_home }}/.bashrc"
+        line: "export VLLM_API_KEY=$(cat {{ vllm_home }}/.api_key)"
+        state: present
+
+    # --- LibreChat ---
+
+    - name: Ensure Docker service is enabled and running
+      ansible.builtin.systemd_service:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Ensure bryan is in docker group
+      ansible.builtin.user:
+        name: "{{ rigby_user }}"
+        groups:
+          - docker
+        append: true
+
+    - name: Ensure LibreChat repo is present
+      ansible.builtin.git:
+        repo: "{{ librechat_repo_url }}"
+        dest: "{{ librechat_root }}"
+        update: false
+      become_user: "{{ rigby_user }}"
+
+    - name: Install librechat.yaml config
+      ansible.builtin.template:
+        src: ../templates/librechat.yaml.j2
+        dest: "{{ librechat_root }}/librechat.yaml"
+        owner: "{{ rigby_user }}"
+        group: "{{ rigby_user }}"
+        mode: "0644"
+
+    - name: Install librechat systemd unit
+      ansible.builtin.template:
+        src: ../templates/librechat.service.j2
+        dest: /etc/systemd/system/librechat.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Reload systemd and enable librechat service
+      ansible.builtin.systemd_service:
+        name: librechat.service
+        daemon_reload: true
+        enabled: true
