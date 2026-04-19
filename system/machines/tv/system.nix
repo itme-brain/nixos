@@ -40,6 +40,7 @@
     vim
     git
     htop
+    grim
   ];
 
   security.sudo = {
