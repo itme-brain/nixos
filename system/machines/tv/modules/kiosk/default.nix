@@ -73,6 +73,12 @@ in
     # Firefox runs on Wayland cleanly only with this env var.
     environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
 
+    # Pi 4 can't wake from a powered-off state via the remote (no standby
+    # circuit), so shutting down via the remote's power button strands the
+    # system until someone reaches the power cable. Ignore the key entirely
+    # and rely on the TV's own power to hide the display.
+    services.logind.settings.Login.HandlePowerKey = "ignore";
+
     # PipeWire for audio out over HDMI / 3.5mm
     services.pipewire = {
       enable = true;
