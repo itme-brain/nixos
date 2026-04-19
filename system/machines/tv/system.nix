@@ -8,7 +8,7 @@
   modules.system.kiosk = {
     enable = true;
     user = config.user.name;
-    url = "about:blank";
+    url = "https://www.cineby.sc";
   };
 
   users.users.${config.user.name} = {
