@@ -17,6 +17,7 @@
     extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" ];
     openssh.authorizedKeys.keys = [
       "${config.machines.keys.desktop.ssh}"
+      "${config.machines.keys.windows.ssh}"
     ];
   };
 
