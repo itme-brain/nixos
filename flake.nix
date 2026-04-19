@@ -25,6 +25,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nur, ... }@inputs:
@@ -64,6 +65,7 @@
       desktop = mkSystem { path = ./system/machines/desktop; };
       server  = mkSystem { path = ./system/machines/server; };
       wsl     = mkSystem { path = ./system/machines/wsl; };
+      tv      = mkSystem { path = ./system/machines/tv; system = "aarch64-linux"; };
     };
 
     devShells.x86_64-linux.default = with mkPkgs "x86_64-linux"; mkShell {
