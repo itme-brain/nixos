@@ -17,7 +17,6 @@
       neovim.enable = false;
       vim.enable = true;
       tmux.enable = false;
-      utils.dev.enable = true;
     };
   };
 }
