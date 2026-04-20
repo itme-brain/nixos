@@ -30,7 +30,7 @@
   fileSystems."/boot/firmware" = {
     device = "/dev/disk/by-uuid/2178-694E";
     fsType = "vfat";
-    options = [ "nofail" "noauto" ];
+    options = [ "nofail" ];
   };
 
   swapDevices = [ ];
