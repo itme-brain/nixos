@@ -139,8 +139,8 @@ in
         };
 
         # MCP servers (same-origin with the web UI to avoid CORS)
-        locations."/mcp/web-search" = {
-          proxyPass = "http://192.168.0.23:8002";
+        locations."= /mcp/web-search" = {
+          proxyPass = "http://192.168.0.23:8002/mcp";
           proxyWebsockets = true;
           extraConfig = ''
             include ${config.sops.templates."nginx-mcp-auth.conf".path};
