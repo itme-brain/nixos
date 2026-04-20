@@ -30,11 +30,6 @@
     apply-overlays-dtmerge.enable = true;
   };
 
-  hardware.deviceTree = {
-    enable = true;
-    filter = "*rpi-4-*.dtb";
-  };
-
   # UUIDs are baked into the Hydra SD image — identical on every Pi flashed
   # from that image. FIRMWARE (FAT) holds the Pi bootloader; NIXOS_SD (ext4)
   # is root. /boot/firmware must be mounted so nixos-rebuild can update
