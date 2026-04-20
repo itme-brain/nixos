@@ -18,6 +18,18 @@
     };
   };
 
+  # The nixos-hardware Pi 4 profile ships a base DTB with gpu/v3d/hdmi nodes
+  # all status="disabled". The `vc4-kms-v3d.dtbo` overlay flips them on — but
+  # U-Boot (NixOS's bootloader path on aarch64 Pi) bypasses the Pi firmware's
+  # config.txt dtoverlay mechanism. Apply the overlay at NixOS build time so
+  # it's baked into the DTB U-Boot hands to the kernel.
+  hardware.deviceTree.overlays = [
+    {
+      name = "vc4-kms-v3d";
+      dtboFile = "${config.boot.kernelPackages.kernel}/dtbs/overlays/vc4-kms-v3d.dtbo";
+    }
+  ];
+
   # UUIDs are baked into the Hydra SD image — identical on every Pi flashed
   # from that image. FIRMWARE (FAT) holds the Pi bootloader; NIXOS_SD (ext4)
   # is root. /boot/firmware must be mounted so nixos-rebuild can update
