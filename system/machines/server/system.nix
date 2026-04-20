@@ -40,7 +40,7 @@
     nginx = {
       enable = true;
     };
-    sandpack.enable = true;
+    sandpack.enable = false;
     forgejo.enable = true;
     frigate.enable = true;
     immich.enable = true;
