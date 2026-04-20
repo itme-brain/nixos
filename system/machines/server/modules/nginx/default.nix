@@ -137,8 +137,13 @@ in
           '';
         };
 
-        # MCP servers (namespaced, for llama.cpp web UI + direct access)
-        locations."/mcp/web_search/" = {
+      };
+
+      virtualHosts."mcp.${domain}" = {
+        useACMEHost = domain;
+        forceSSL = true;
+
+        locations."/web_search/" = {
           proxyPass = "http://192.168.0.23:8002/";
           proxyWebsockets = true;
           extraConfig = ''
