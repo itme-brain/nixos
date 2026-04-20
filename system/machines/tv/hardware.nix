@@ -16,6 +16,11 @@
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
     };
+
+    # vc4 needs a larger Contiguous Memory Allocator pool than the 64 MiB
+    # default. Without this, the GPU can't allocate framebuffers and spams
+    # "swiotlb buffer is full" — no video output.
+    kernelParams = [ "cma=256M" ];
   };
 
   # Pi 4 GPU acceleration. Per the NixOS wiki, two options are needed:
