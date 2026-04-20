@@ -78,13 +78,6 @@ in
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
 
-      # CORS origin allowlist for MCP servers
-      commonHttpConfig = ''
-        map $http_origin $mcp_cors_origin {
-          default "";
-          "https://ai.${domain}" "https://ai.${domain}";
-        }
-      '';
 
       # Catch-all default - friendly error for unknown subdomains
       virtualHosts."_" = {
@@ -145,34 +138,12 @@ in
           '';
         };
 
-      };
-
-      virtualHosts."mcp.${domain}" = {
-        useACMEHost = domain;
-        forceSSL = true;
-
-        locations."/web_search/" = {
+        # MCP servers (same-origin with the web UI to avoid CORS)
+        locations."/mcp/web_search/" = {
           proxyPass = "http://192.168.0.23:8002/";
           proxyWebsockets = true;
           extraConfig = ''
             include ${config.sops.templates."nginx-mcp-auth.conf".path};
-
-            # CORS — $mcp_cors_origin is set by the http-level map
-            # and is empty for disallowed origins
-            if ($request_method = OPTIONS) {
-              add_header Access-Control-Allow-Origin $mcp_cors_origin always;
-              add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
-              add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key" always;
-              add_header Access-Control-Allow-Credentials "true" always;
-              add_header Access-Control-Max-Age 86400 always;
-              return 204;
-            }
-
-            add_header Access-Control-Allow-Origin $mcp_cors_origin always;
-            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
-            add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key" always;
-            add_header Access-Control-Allow-Credentials "true" always;
-
             proxy_read_timeout 300s;
             proxy_send_timeout 300s;
           '';
