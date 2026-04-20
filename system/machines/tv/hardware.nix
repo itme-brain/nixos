@@ -18,17 +18,22 @@
     };
   };
 
-  # The nixos-hardware Pi 4 profile ships a base DTB with gpu/v3d/hdmi nodes
-  # all status="disabled". The `vc4-kms-v3d.dtbo` overlay flips them on — but
-  # U-Boot (NixOS's bootloader path on aarch64 Pi) bypasses the Pi firmware's
-  # config.txt dtoverlay mechanism. Apply the overlay at NixOS build time so
-  # it's baked into the DTB U-Boot hands to the kernel.
-  hardware.deviceTree.overlays = [
-    {
-      name = "vc4-kms-v3d";
-      dtboFile = "${config.boot.kernelPackages.kernel}/dtbs/overlays/vc4-kms-v3d.dtbo";
-    }
-  ];
+  # Pi 4 GPU acceleration. Per the NixOS wiki, two options are needed:
+  #   fkms-3d                -> enables the fake-KMS + V3D renderer overlay
+  #   apply-overlays-dtmerge -> activates the dtmerge-based overlay pipeline
+  # Without apply-overlays-dtmerge, hardware.deviceTree.overlays entries are
+  # silently ignored — they show up in the evaluated config but never get
+  # merged into the emitted DTB.
+  # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_4
+  hardware.raspberry-pi."4" = {
+    fkms-3d.enable = true;
+    apply-overlays-dtmerge.enable = true;
+  };
+
+  hardware.deviceTree = {
+    enable = true;
+    filter = "*rpi-4-*.dtb";
+  };
 
   # UUIDs are baked into the Hydra SD image — identical on every Pi flashed
   # from that image. FIRMWARE (FAT) holds the Pi bootloader; NIXOS_SD (ext4)
