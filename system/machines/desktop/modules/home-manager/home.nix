@@ -81,6 +81,8 @@
         writing.enable = true;
       };
 
+      pi.enable = true;
+
       gui = {
         wm.hyprland.enable = true;
         browser.firefox.enable = true;
