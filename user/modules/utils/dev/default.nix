@@ -9,7 +9,6 @@ in
     home.packages = with pkgs; [
       unstable.claude-code
       unstable.codex
-      unstable.opencode
 
       bubblewrap
 
