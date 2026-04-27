@@ -14,3 +14,6 @@
 	path = user/modules/bash/bash
 	url = https://github.com/itme-brain/bash.git
 	branch = master
+[submodule "user/modules/pi/agent"]
+	path = user/modules/pi/agent
+	url = git@github.com:itme-brain/pi.git
