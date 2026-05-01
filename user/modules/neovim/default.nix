@@ -12,6 +12,12 @@ in
       defaultEditor = true;
       vimAlias = true;
       vimdiffAlias = true;
+      extraWrapperArgs = [
+        "--suffix"
+        "PATH"
+        ":"
+        "${config.home.homeDirectory}/.npm-global/bin"
+      ];
       extraPackages = with pkgs; [
         gcc
         cargo
@@ -25,7 +31,7 @@ in
     };
 
     home.file.".config/nvim" = {
-      source = ./nvim;
+      source = config.lib.file.mkOutOfStoreSymlink ./nvim;
       recursive = true;
     };
   };

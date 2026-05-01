@@ -13,7 +13,7 @@ in
     };
 
     home.file.".config/bash" = {
-      source = ./bash;
+      source = config.lib.file.mkOutOfStoreSymlink ./bash;
       recursive = true;
     };
 
