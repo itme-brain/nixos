@@ -12,7 +12,12 @@ in
       defaultEditor = true;
       vimAlias = true;
       vimdiffAlias = true;
-      extraPackages = import ./pkgs.nix { inherit pkgs; };
+      extraPackages = with pkgs; [
+        lazygit
+        gcc
+        fzf
+        rg
+      ];
     };
 
     home.file.".config/nvim" = {

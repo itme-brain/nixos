@@ -66,6 +66,8 @@ in
     };
   };
 
+  programs.nix-ld.enable = true;
+
   boot.loader = {
     systemd-boot = {
       enable = true;
