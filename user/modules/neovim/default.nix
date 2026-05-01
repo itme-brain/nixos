@@ -13,12 +13,14 @@ in
       vimAlias = true;
       vimdiffAlias = true;
       extraPackages = with pkgs; [
-        lazygit
+        gcc
         cargo
         rustc
-        gcc
+
         fzf
+        fd
         ripgrep
+        bat
       ];
     };
 
