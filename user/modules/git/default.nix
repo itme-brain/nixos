@@ -8,9 +8,6 @@ in
 { options.modules.user.git = { enable = mkEnableOption "user.git"; };
   config = mkIf cfg.enable {
     programs = {
-      git = {
-        enable = true;
-      };
       gh = {
         enable = true;
         settings.git_protocol = "ssh";
@@ -19,6 +16,7 @@ in
 
     home = {
       packages = with pkgs; [
+        git
         git-crypt
       ];
       file.".config/git" = {

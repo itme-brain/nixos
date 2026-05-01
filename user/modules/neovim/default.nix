@@ -14,9 +14,11 @@ in
       vimdiffAlias = true;
       extraPackages = with pkgs; [
         lazygit
+        cargo
+        rustc
         gcc
         fzf
-        rg
+        ripgrep
       ];
     };
 
