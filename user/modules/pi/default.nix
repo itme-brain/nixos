@@ -25,7 +25,12 @@ in
     home.activation.installPiCodingAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       PATH="${pkgs.nodejs_20}/bin:$PATH"
       agentDir="${config.home.homeDirectory}/.pi/agent"
+      piPkgScope="${npmGlobal}/lib/node_modules/@mariozechner"
+      piPkgDir="${npmGlobal}/lib/node_modules/@mariozechner/pi-coding-agent"
+      piBin="${npmGlobal}/bin/pi"
       run mkdir -p ${npmGlobal}
+      run mkdir -p "${npmGlobal}/bin"
+      run mkdir -p "$piPkgScope"
       run mkdir -p "${config.home.homeDirectory}/.pi"
       run mkdir -p "$agentDir"
       if [ -e "$agentDir" ]; then
@@ -34,8 +39,29 @@ in
       fi
       run cp -R ${./agent}/. "$agentDir"/
       run chmod -R u+w "$agentDir"
+      run rm -f "$piBin"
+      run rm -f "${npmGlobal}/bin"/.pi-*
+      run rm -rf "$piPkgDir"
+      run rm -rf "$piPkgScope"/.pi-coding-agent-*
       if ! run ${pkgs.nodejs_20}/bin/npm install -g --prefix ${npmGlobal} @mariozechner/pi-coding-agent@${piVersion}; then
         warnEcho "pi-coding-agent install failed (offline or registry error)"
+      fi
+
+      if [ ! -f "$piPkgDir/package.json" ]; then
+        for candidate in "$piPkgScope"/.pi-coding-agent-*; do
+          if [ -f "$candidate/package.json" ]; then
+            run rm -rf "$piPkgDir"
+            run mv "$candidate" "$piPkgDir"
+            break
+          fi
+        done
+      fi
+
+      if [ -f "$piPkgDir/dist/cli.js" ]; then
+        run ln -sfn ../lib/node_modules/@mariozechner/pi-coding-agent/dist/cli.js "$piBin"
+        run chmod +x "$piPkgDir/dist/cli.js"
+      else
+        warnEcho "pi-coding-agent install did not produce dist/cli.js"
       fi
 
       for ext in "$agentDir"/extensions/*; do

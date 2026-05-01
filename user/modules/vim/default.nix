@@ -16,7 +16,7 @@ in
         vim
        ];
       file.".vim" = {
-        source = ./vim;
+        source = config.lib.file.mkOutOfStoreSymlink ./vim;
         recursive = true;
       };
     };
