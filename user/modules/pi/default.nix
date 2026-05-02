@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.modules.user.pi;
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
-  piVersion = "0.70.5";
+  piVersion = "0.72.0";
 
 in
 { options.modules.user.pi = { enable = mkEnableOption "user.pi"; };
