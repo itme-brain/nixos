@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.modules.user.neovim;
+  nvimConfigPath = "${config.home.homeDirectory}/nixos/user/modules/neovim/nvim";
 
 in
 { options.modules.user.neovim = { enable = mkEnableOption "user.neovim"; };
@@ -31,7 +32,9 @@ in
     };
 
     home.file.".config/nvim" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./nvim;
+      # Keep Neovim's config writable. In a flake, `./nvim` is copied into
+      # /nix/store before Home Manager can create an out-of-store symlink.
+      source = config.lib.file.mkOutOfStoreSymlink nvimConfigPath;
       recursive = true;
     };
   };
