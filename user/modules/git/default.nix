@@ -20,7 +20,7 @@ in
         git-crypt
       ];
       file.".config/git" = {
-        source = config.lib.file.mkOutOfStoreSymlink ./git;
+        source = ./git;
         recursive = true;
       };
     };
