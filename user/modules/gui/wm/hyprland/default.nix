@@ -201,13 +201,13 @@ in
       settings = {
         ipc = "on";
         splash = false;
-        splash_offset = 2.0;
-
-        preload =
-          [ "${wallpaper}" ];
-
+        splash_offset = 2;
         wallpaper = [
-          ",${wallpaper}"
+          {
+            monitor = "";
+            path = "${wallpaper}";
+            fit_mode = "cover";
+          }
         ];
       };
     };
