@@ -262,7 +262,7 @@ in
     # Auto-start Hyprland on tty1
     programs.bash.profileExtra = ''
       if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec Hyprland --config "$HOME/.config/hypr/hyprland.lua"
+        start-hyprland
       fi
     '';
   };
