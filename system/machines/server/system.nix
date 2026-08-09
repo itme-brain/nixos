@@ -26,16 +26,6 @@
     owner = "nginx";
   };
 
-  # MCP endpoint auth — validates X-API-Key header
-  sops.templates."nginx-mcp-auth.conf" = {
-    content = ''
-      if ($http_x_api_key != "${config.sops.placeholder."LLAMA_API_KEY"}") {
-        return 401 '{"error": "Unauthorized"}';
-      }
-    '';
-    owner = "nginx";
-  };
-
   modules.system = {
     nginx = {
       enable = true;

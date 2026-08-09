@@ -142,8 +142,7 @@ in
         locations."= /mcp/web-search" = {
           proxyPass = "http://192.168.0.23:8002/mcp";
           proxyWebsockets = true;
-          extraConfig = ''
-            include ${config.sops.templates."nginx-mcp-auth.conf".path};
+          extraConfig = apiKeyAuth + ''
             proxy_read_timeout 300s;
             proxy_send_timeout 300s;
           '';
