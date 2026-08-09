@@ -32,7 +32,7 @@
     };
     sandpack.enable = false;
     forgejo.enable = true;
-    frigate.enable = true;
+    frigate.enable = false;
     immich.enable = true;
     webdav.enable = false;
     wstunnel.enable = true;
