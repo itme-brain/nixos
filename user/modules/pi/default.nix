@@ -14,15 +14,10 @@ in
     home.packages = with pkgs; [ nodejs ];
 
     home.sessionVariables = {
-      LLAMACPP_BASE_URL = "https://ai.ramos.codes/v1";
       NPM_CONFIG_PREFIX = npmGlobal;
     };
 
     home.sessionPath = [ "${npmGlobal}/bin" ];
-
-    programs.bash.initExtra = ''
-      export LLAMACPP_API_KEY=$(cat /run/secrets/LLAMA_API_KEY)
-    '';
 
     home.activation.installPiCodingAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       PATH="${pkgs.nodejs}/bin:$PATH"
