@@ -32,7 +32,10 @@ in
       run mkdir -p "$agentDir"
       if [ -e "$agentDir" ]; then
         run chmod -R u+w "$agentDir"
-        run find "$agentDir" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+        # Keep locally persisted provider credentials across declarative agent
+        # refreshes. auth.json is not part of the repository; llama.cpp's API
+        # key continues to resolve from LLAMA_API_KEY at runtime.
+        run find "$agentDir" -mindepth 1 -maxdepth 1 ! -name auth.json -exec rm -rf {} +
       fi
       run cp -R ${./agent}/. "$agentDir"/
       run chmod -R u+w "$agentDir"

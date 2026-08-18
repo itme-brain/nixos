@@ -120,21 +120,32 @@ in
         useACMEHost = domain;
         forceSSL = true;
 
-        # Web UI + llama.cpp API (browser, /v1/* calls from the UI)
-        # Auth handled by llama.cpp itself (--api-key flag)
+        # Web UI + llama.cpp API (browser, /v1/* calls from the UI).
+        # Auth is handled by llama.cpp itself (--api-key flag).
         locations."/" = {
-          proxyPass = "http://192.168.0.23:8000";
+          proxyPass = "http://192.168.0.23:9331";
           proxyWebsockets = true;
         };
 
-        # Llama Stack API (opencode, programmatic clients)
-        # Clients use baseURL: https://ai.ramos.codes/stack/v1
-        locations."/stack/v1/" = {
-          proxyPass = "http://192.168.0.23:8321/v1/";
+        # Router model-management API. Keep the Web UI and /v1 API under
+        # llama.cpp auth, but add nginx auth to every /models operation.
+        locations."= /models" = {
+          proxyPass = "http://192.168.0.23:9331";
           proxyWebsockets = true;
           extraConfig = apiKeyAuth + ''
-            proxy_read_timeout 300s;
-            proxy_send_timeout 300s;
+            proxy_read_timeout 3600s;
+            proxy_send_timeout 3600s;
+            proxy_buffering off;
+          '';
+        };
+
+        locations."^~ /models/" = {
+          proxyPass = "http://192.168.0.23:9331";
+          proxyWebsockets = true;
+          extraConfig = apiKeyAuth + ''
+            proxy_read_timeout 3600s;
+            proxy_send_timeout 3600s;
+            proxy_buffering off;
           '';
         };
 
