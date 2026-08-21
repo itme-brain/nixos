@@ -7,6 +7,18 @@ let
   domain = "ramos.codes";
   socketPath = "/run/forgejo/forgejo.sock";
   sshPort = 2222;
+  sshKeyExchanges = concatStringsSep "," [
+    "mlkem768x25519-sha256"
+    "curve25519-sha256"
+    "ecdh-sha2-nistp256"
+    "ecdh-sha2-nistp384"
+    "ecdh-sha2-nistp521"
+    "diffie-hellman-group14-sha256"
+  ];
+  sshMacs = concatStringsSep "," [
+    "hmac-sha2-256-etm@openssh.com"
+    "hmac-sha2-256"
+  ];
 
 in
 {
@@ -66,6 +78,10 @@ in
           SSH_LISTEN_HOST = "0.0.0.0";
           SSH_LISTEN_PORT = sshPort;
           START_SSH_SERVER = true;
+          SSH_SERVER_KEY_EXCHANGES = sshKeyExchanges;
+          SSH_SERVER_MACS = sshMacs;
+          MINIMUM_KEY_SIZE_CHECK = true;
+          SSH_ALLOW_UNEXPECTED_AUTHORIZED_KEYS = false;
           LANDING_PAGE = "explore";
           LFS_MAX_FILE_SIZE = 0;
         };
@@ -102,7 +118,11 @@ in
     services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
       forceSSL = true;
-      extraConfig = "client_max_body_size 0;";
+      extraConfig = ''
+        client_max_body_size 0;
+        add_header Strict-Transport-Security "max-age=31536000" always;
+        add_header X-Content-Type-Options "nosniff" always;
+      '';
       locations."/" = {
         proxyPass = "http://unix:${socketPath}";
       };

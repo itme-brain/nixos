@@ -64,7 +64,8 @@
       paths = [ "/root/.config/rclone" ];
       destination = "gdrive:backups/server";
       schedule = "daily";
-      keepLast = 2;
+      keepLast = 1;
+      permanentlyDeletePruned = true;
     };
   };
 
@@ -239,6 +240,12 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
+      AllowUsers = [
+        "${config.user.name}@192.168.0.0/24"
+        "${config.user.name}@10.8.0.0/24"
+        "git@192.168.0.0/24"
+        "git@10.8.0.0/24"
+      ];
     };
   };
 }

@@ -28,12 +28,14 @@ let
 
     ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf copy "$TEMP_DIR/$BACKUP_NAME" "${cfg.destination}"
 
-    # Prune old backups
-    ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf lsf "${cfg.destination}" | \
+    # Prune only backup archives managed by this service.
+    ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf lsf \
+      --files-only --include 'backup-*.tar.gz.age' "${cfg.destination}" | \
       sort -r | \
       tail -n +$((${toString cfg.keepLast} + 1)) | \
       while read -r old; do
-        ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf delete "${cfg.destination}/$old"
+        ${pkgs.rclone}/bin/rclone --config /root/.config/rclone/rclone.conf deletefile \
+          ${optionalString cfg.permanentlyDeletePruned "--drive-use-trash=false"} "${cfg.destination}/$old"
       done
 
     echo "Backup complete"
@@ -78,6 +80,12 @@ in
       type = types.int;
       default = 3;
       description = "Number of backups to keep";
+    };
+
+    permanentlyDeletePruned = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Permanently delete pruned Google Drive backups instead of moving them to trash";
     };
   };
 
