@@ -6,6 +6,7 @@ let
   nginx = config.modules.system.nginx;
   domain = "ramos.codes";
   socketPath = "/run/forgejo/forgejo.sock";
+  sshPort = 2222;
 
 in
 {
@@ -14,6 +15,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ sshPort ];
+
     users.groups.git = {};
     users.users.git = {
       isSystemUser = true;
@@ -59,8 +62,10 @@ in
           PROTOCOL = "http+unix";
           HTTP_ADDR = socketPath;
           SSH_DOMAIN = "git.${domain}";
-          SSH_PORT = 22;
-          START_SSH_SERVER = false;
+          SSH_PORT = sshPort;
+          SSH_LISTEN_HOST = "0.0.0.0";
+          SSH_LISTEN_PORT = sshPort;
+          START_SSH_SERVER = true;
           LANDING_PAGE = "explore";
           LFS_MAX_FILE_SIZE = 0;
         };
