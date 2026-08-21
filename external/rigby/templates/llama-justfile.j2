@@ -1,0 +1,88 @@
+# Recreate and operate the Ansible-managed llama.cpp deployment.
+[private]
+default:
+    @just --list
+
+# Download the exact Qwen artifacts validated on rigby.
+qwen:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # The live host originally renamed the XL artifact to Q4_K_M. Preserve the
+    # bytes while correcting the filename to match its pinned upstream source.
+    legacy="{{ llama_models }}/Qwen/Qwen3.8-27B-UD-Q4_K_M.gguf"
+    primary="{{ llama_models }}/Qwen/{{ qwen_file }}"
+    if [ ! -f "$primary" ] && [ -f "$legacy" ]; then
+        echo "{{ qwen_sha256 }}  ${legacy}" | sha256sum --check --status || {
+            echo "Legacy Qwen artifact has an unexpected checksum: ${legacy}" >&2
+            exit 1
+        }
+        mv "$legacy" "$primary"
+        echo "Migrated ${legacy} to ${primary}"
+    fi
+
+    download_one() {
+        local repo="$1" revision="$2" filename="$3" destination="$4" expected="$5"
+        local target="${destination}/${filename}"
+
+        if [ -f "$target" ]; then
+            echo "${expected}  ${target}" | sha256sum --check --status || {
+                echo "Checksum mismatch: ${target}" >&2
+                echo "Move the bad file aside and rerun this recipe." >&2
+                exit 1
+            }
+            echo "Verified ${target}"
+            return
+        fi
+
+        mkdir -p "$destination"
+        {{ llama_home }}/.local/bin/hf download "$repo" "$filename" \
+            --revision "$revision" \
+            --local-dir "$destination"
+        echo "${expected}  ${target}" | sha256sum --check --status
+        echo "Downloaded ${target}"
+    }
+
+    download_one \
+        "{{ qwen_repo }}" \
+        "{{ qwen_revision }}" \
+        "{{ qwen_file }}" \
+        "{{ llama_models }}/Qwen" \
+        "{{ qwen_sha256 }}"
+
+    download_one \
+        "{{ qwen_draft_repo }}" \
+        "{{ qwen_draft_revision }}" \
+        "{{ qwen_draft_file }}" \
+        "{{ llama_models }}/Qwen/etc" \
+        "{{ qwen_draft_sha256 }}"
+
+# Verify the model, draft model, and custom chat template.
+verify-qwen:
+    @echo "{{ qwen_sha256 }}  {{ llama_models }}/Qwen/{{ qwen_file }}" | sha256sum --check
+    @echo "{{ qwen_draft_sha256 }}  {{ llama_models }}/Qwen/etc/{{ qwen_draft_file }}" | sha256sum --check
+    @echo "43400ba8faf935b1a9f656f0ccf488f8d398802f61689314afd3846849b76da7  {{ llama_models }}/Qwen/etc/chat_template.jinja" | sha256sum --check
+
+# Show router and loaded-model status.
+status:
+    @systemctl --no-pager --full status llama-server.service
+
+# Tail the llama.cpp router log.
+logs:
+    @tail -f {{ llama_home }}/llama.log
+
+# Restart the systemd-managed router (operator sudo required).
+restart:
+    sudo systemctl restart llama-server.service
+
+# Show the web-search Compose stack.
+web-status:
+    cd {{ web_search_root }} && docker compose --profile lfm ps
+
+# Reconcile the web-search stack, including its self-downloading LFM sidecar.
+web-up:
+    cd {{ web_search_root }} && just up-lfm
+
+# Tail web-search stack logs.
+web-logs:
+    cd {{ web_search_root }} && docker compose --profile lfm logs -f

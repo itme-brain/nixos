@@ -1,0 +1,64 @@
+version = 1
+
+[*]
+flash-attn = on
+jinja = true
+threads = 24
+threads-batch = 12
+cache-type-k = f16
+cache-type-v = f16
+parallel = 1
+n-gpu-layers = 999
+temp = 1.0
+top-p = 0.95
+top-k = 20
+min-p = 0.0
+presence-penalty = 0.0
+repeat-penalty = 1.0
+reasoning = auto
+reasoning-preserve = true
+
+[Qwen3.8-27B]
+model = {{ llama_models }}/Qwen/{{ qwen_file }}
+chat-template-file = {{ llama_models }}/Qwen/etc/chat_template.jinja
+load-on-startup = true
+ctx-size = 131072
+n-gpu-layers-draft = 999
+no-cache-idle-slots = true
+ctx-checkpoints = 64
+checkpoint-min-step = 256
+cache-ram = 32768
+reasoning-format = deepseek
+no-mmproj = true
+spec-type = draft-mtp
+spec-draft-n-max = 2
+spec-draft-n-min = 1
+spec-draft-type-k = f16
+spec-draft-type-v = f16
+
+# These live presets are documented but disabled because their weights are not
+# recovered. Uncomment them after restoring the corresponding files.
+# [LFM2.5-2.6B]
+# model = {{ llama_models }}/LiquidAI/LFM2.5-2.6B-F16.gguf
+# ctx-size = 128000
+# temp = 0.6
+
+# [Muse-Glimmer-30B]
+# model = {{ llama_models }}/Meta/Muse/muse-glimmer-30B-kquant-dynamic.gguf
+# spec-draft-model = {{ llama_models }}/Meta/Muse/dflash-kquant.gguf
+# mmproj = {{ llama_models }}/Meta/Muse/mmproj-kquant.gguf
+# ctx-size = 131072
+# n-gpu-layers-draft = 999
+# top-k = 64
+# spec-type = draft-dflash
+# spec-draft-n-max = 7
+# spec-draft-n-min = 1
+# spec-draft-type-k = f16
+# spec-draft-type-v = f16
+
+# Maple Preview requires DeepGrove's llama.cpp fork; the pinned upstream
+# router reports the model's `maple` architecture as unknown.
+# [Maple-Preview]
+# model = {{ llama_models }}/DeepGrove/maple-preview-TQ2_0-head-F16.gguf
+# ctx-size = 131072
+# n-gpu-layers = 999

@@ -1,0 +1,24 @@
+[Unit]
+Description=llama.cpp model router
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ llama_user }}
+Group={{ llama_group }}
+EnvironmentFile=/etc/llama/apiKey.env
+Environment=LLAMA_ARG_UI_MCP_PROXY=true
+ExecStart={{ llama_build }}/bin/llama-server \
+    --models-preset {{ llama_models }}/models.ini \
+    --models-max 1 \
+    --models-autoload \
+    --host 0.0.0.0 \
+    --port {{ llama_port }}
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:{{ llama_home }}/llama.log
+StandardError=append:{{ llama_home }}/llama.log
+
+[Install]
+WantedBy=multi-user.target

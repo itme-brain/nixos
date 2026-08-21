@@ -12,7 +12,8 @@ WorkingDirectory={{ comfy_root }}
 Environment=HOME={{ comfy_home }}
 Environment=COMFYUI_PATH={{ comfy_root }}
 Environment=PATH={{ comfy_home }}/.local/bin:{{ comfy_venv }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ExecStart={{ comfy_venv }}/bin/python {{ comfy_root }}/main.py --highvram --enable-manager --listen 0.0.0.0 --port {{ comfy_port }} --disable-auto-launch
+Environment=PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+ExecStart={{ comfy_venv }}/bin/python {{ comfy_root }}/main.py --enable-manager --listen 0.0.0.0 --port {{ comfy_port }} --disable-auto-launch --disable-dynamic-vram
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true

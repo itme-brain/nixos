@@ -1,11 +1,15 @@
 ---
 - name: Recover rigby AI rig
-  hosts: ai_rig
+  hosts: all
   become: true
   vars:
+    # Ubuntu 24.04's Ansible dependencies target the system Python 3.12.
+    # Python 3.13 is installed for ComfyUI, but must not be auto-selected for
+    # host-management modules.
+    ansible_python_interpreter: /usr/bin/python3.12
     rigby_user: bryan
     rigby_recovery_ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl4895aB9P5p/lp8Hq5rHun4clvhyTSHFi3U2d6OOBoW5Fm+VcQnW/xbjmCBsXk5BdiowsBxQhwnzdfz/KJL7J5RobomUEaVRwb9UwT88eJveLp14BG8j2J3SjfyhrCX+4jkPx0bPQk1HGcuYY+tPEXf1q/ps88Dhu0CARBIzYQOTYY6b1qWzxpDoFZGHjKG8g5iY6FIu65yKKvvVy1f8IgZ3l3IpwBWVamxgkTcYY0QYSrmzo1n7TXxwrWbvenAqBsQ0cBPs+gVa3uIr+1TJl0Az5SElBVGu3LvUdlk58trtPUj6TQR3YUkg7Vjll7WHOdqhux5ZQNhjkOsHerf0Tw86e6cEzgeTuIbQHIb0LcsUunwKcuh2+au7RO599cvHn0+xZE5MZBxloDDaJ3JsiliM8kyPP/U3ERj03cWLW7BqbT+sfjAOl21RCzk0iQxk1wt/8VmtCr9Adv7IyrtaYvf/bwRP+g+9ldmzKGt8Mdb605uVzZ70H/LLm17f40Te+QHaex5by/6p6cuwEEZtgIg53Wpglu0rA6UxrBfQEHKl/Jt3FLeE0mnEyYkkR2MnHNtyWRIXtuqYZMAm2Ub1pFHH7jQV1gGiDVTw6a2eIwK21a/hXtRjFUpFd1nB1n+KNfJBE4zT3wm3Ud7mKw/6rWnoRyhYZvGXkFdp+iEs49Q== itme-brain@github/78120816
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDl4895aB9P5p/lp8Hq5rHun4clvhyTSHFi3U2d6OOBoW5Fm+VcQnW/xbjmCBsXk5BdiowsBxQhwnzdfz/KJL7J5RobomUEaVRwb9UwT88eJveLp14BG8j2J3SjfyhrCX+4jkPx0bPQk1HGcuYY+tPEXf1q/ps88Dhu0CARBIzYQOTYY6b1qWzxpDoFZGHjKG8g5iY6FIu65yKKvvVy1f8IgZ3l3IpwBWVamxgkTcYY0QYSrmzo1n7TXxwrWbvenAqBsQ0cBPs+gVa3uIr+1TJl0Az5SElBVGu3LvUdlk58trtPUj6TQR3YUkg7Vjll7WHOdqhux5ZQNhjkOsHerf0Tw86e6cEzgeTuIbQHIb0LcsUunwKcuh2+au7RO599cvHn0+xZE5MZBxloDDaJ3JsiliM8kyPP/U3ERj03cWLW7BqbT+sfjAOl21RCzk0iQxk1wt/8VmtCr9Adv7IyrtaYvf/bwRP+g+9ldmzKGt8Mdb605uVzZ70H/LLm17f40Te+QHaex5by/6p6cuwEEZtgIg53Wpglu0rA6UxrBfQEHKl/Jt3FLeE0mnEyYkkR2MnHNtyWRIXtuqYZMAm2Ub1pFHH7jQV1gGiDVTw6a2eIwK21a/hXtRjFUpFd1nB1n+KNfJBE4zT3wm3Ud7mKw/6rWnoRyhYZvGXkFdp+iEs49Q==
     rigby_static_network_enabled: true
     rigby_interface: eno1
     rigby_static_ip: 192.168.0.23/24
@@ -22,12 +26,12 @@
     comfy_port: 8188
     comfy_output_dir: /home/comfy/ComfyUI/output
     comfy_repo_url: https://github.com/comfy-org/ComfyUI
-    comfy_repo_version: a1344238901efc5ea199d8094cb16fca36ceb28b
-    comfy_manager_version: "4.1"
+    comfy_repo_version: fe4195f7f4275f2626cbafc703acc3ddde1e5490
+    comfy_manager_version: "4.2.2"
     comfy_torch_index_url: https://download.pytorch.org/whl/rocm7.2
-    grub_cmdline_linux_default: "amdgpu.cwsr_enable=0"
-    amd_driver_deb: amdgpu-install_7.2.1.70201-1_all.deb
-    amd_driver_url: https://repo.radeon.com/amdgpu-install/7.2.1/ubuntu/noble/amdgpu-install_7.2.1.70201-1_all.deb
+    grub_cmdline_linux_default: "amdgpu.cwsr_enable=0 pcie_aspm.policy=performance"
+    amd_driver_deb: amdgpu-install_7.2.4.70204-1_all.deb
+    amd_driver_url: https://repo.radeon.com/amdgpu-install/7.2.4/ubuntu/noble/amdgpu-install_7.2.4.70204-1_all.deb
     rigby_packages:
       - curl
       - git
@@ -38,37 +42,78 @@
       - python3.13-venv
       - python3.13-dev
       - build-essential
-      - linux-headers-{{ ansible_kernel }}
-      - linux-modules-extra-{{ ansible_kernel }}
-      - samba
+      - linux-headers-{{ ansible_facts.kernel }}
+      - linux-modules-extra-{{ ansible_facts.kernel }}
       - just
       - python3.12
       - python3.12-venv
-      - docker.io
-    vllm_user: vllm
-    vllm_home: /home/vllm
-    vllm_venv: /home/vllm/vllm-venv
-    vllm_models: /home/vllm/models
-    vllm_port: 8000
-    vllm_gpu_memory_utilization: "0.95"
-    vllm_rocm_wheels_url: https://wheels.vllm.ai/rocm/0.19.0/rocm721
-    vllm_models_list:
-      - name: Qwen2.5-Coder-14B
-        recipe: coder
-        dir: Qwen2.5-Coder-14B-Instruct
-        max_model_len: 4096
-      - name: Qwen2.5-7B-Instruct
-        recipe: qwen7b
-        dir: Qwen2.5-7B-Instruct
-        max_model_len: 8192
-        tool_call_parser: hermes
-    librechat_root: /home/bryan/LibreChat
-    librechat_repo_url: https://github.com/danny-avila/LibreChat
+      - cmake
+      - ccache
+      - libcurl4-openssl-dev
+      - openssl
+      - ca-certificates
+      - gnupg
+    docker_key_url: https://download.docker.com/linux/ubuntu/gpg
+    docker_key_path: /etc/apt/keyrings/docker.asc
+    docker_packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    llama_user: llama
+    llama_group: llama
+    llama_home: /home/llama
+    llama_repo: /home/llama/servers/llama.cpp
+    llama_repo_url: https://github.com/ggml-org/llama.cpp.git
+    llama_repo_version: ef800768a54cc46339ec40bb9218616501ecdadb
+    llama_build: /home/llama/servers/llama.cpp/build
+    llama_models: /home/llama/models
+    llama_port: 9331
+    llama_gpu_arch: gfx1201
+    llama_huggingface_hub_version: "1.24.0"
+    llama_hf_xet_version: "1.5.2"
+    qwen_repo: unsloth/Qwen3.8-27B-GGUF
+    qwen_revision: 1cff334a4a228324d4ee1f76d55d372588f0d556
+    qwen_file: Qwen3.8-27B-UD-Q4_K_XL.gguf
+    qwen_sha256: bee238bbeb3dc0a34bde4d0dedbaee1f98c009e8bb4226f03070054c12fb1372
+    qwen_draft_repo: incoai/Qwen3.8-27B-DFlash2-GGUF
+    qwen_draft_revision: 6cb5872e2cee6b4e780a8414922350be8e42d65c
+    qwen_draft_file: Qwen3.8-27B-DFlash2-Q4_K_M.gguf
+    qwen_draft_sha256: 18a380efc9b7ed8d88677fc895f5c11ae170653434ee378f7348f715c14d0594
+    web_search_root: /home/llama/web-search-mcp
+    web_search_repo_url: https://github.com/itme-brain/web-search-mcp
+    web_search_repo_version: 51e0379fe1562589b5c5d349e14fa9da78fa5e92
+    web_search_port: 8002
+    rigby_sops_file: "{{ playbook_dir }}/../../../secrets/system/llama.yaml"
+    deadsnakes_key_path: /etc/apt/keyrings/deadsnakes.asc
   tasks:
-    - name: Ensure deadsnakes PPA is configured
-      ansible.builtin.apt_repository:
-        repo: ppa:deadsnakes/ppa
-        state: present
+    - name: Ensure apt keyring directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Install deadsnakes repository signing key
+      ansible.builtin.copy:
+        src: ../files/deadsnakes.asc
+        dest: "{{ deadsnakes_key_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Configure deadsnakes PPA
+      ansible.builtin.template:
+        src: ../templates/deadsnakes.sources.j2
+        dest: /etc/apt/sources.list.d/deadsnakes.sources
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Refresh apt cache after configuring deadsnakes
+      ansible.builtin.apt:
         update_cache: true
 
     - name: Install required Ubuntu packages
@@ -87,6 +132,7 @@
       ansible.builtin.apt:
         deb: "/tmp/{{ amd_driver_deb }}"
         state: present
+      when: not ansible_check_mode
 
     - name: Install AMD GPU DKMS driver
       ansible.builtin.apt:
@@ -133,6 +179,7 @@
         user: "{{ rigby_user }}"
         state: present
         key: "{{ item }}"
+        comment: "itme-brain@github/78120816 # ssh-import-id gh:itme-brain"
       loop: "{{ rigby_recovery_ssh_keys }}"
 
     - name: Configure GRUB default kernel args
@@ -148,7 +195,7 @@
         line: "{{ item.key }}={{ item.value }}"
       loop:
         - { key: GRUB_TIMEOUT_STYLE, value: "menu" }
-        - { key: GRUB_TIMEOUT, value: "5" }
+        - { key: GRUB_TIMEOUT, value: "10" }
 
     - name: Regenerate grub config
       ansible.builtin.command: update-grub
@@ -162,7 +209,7 @@
         group: "{{ comfy_group }}"
         mode: "{{ item.mode }}"
       loop:
-        - { path: "{{ comfy_home }}", mode: "0775" }
+        - { path: "{{ comfy_home }}", mode: "0755" }
         - { path: "{{ comfy_root }}", mode: "0775" }
         - { path: "{{ comfy_output_dir }}", mode: "2775" }
         - { path: "{{ comfy_home }}/.local/bin", mode: "0775" }
@@ -176,6 +223,20 @@
         creates: "{{ comfy_home }}/.local/bin/uv"
       become_user: "{{ comfy_user }}"
 
+    - name: Read current ComfyUI revision
+      ansible.builtin.command:
+        argv:
+          - git
+          - -C
+          - "{{ comfy_root }}"
+          - rev-parse
+          - HEAD
+      become_user: "{{ comfy_user }}"
+      register: comfy_current_revision
+      check_mode: false
+      changed_when: false
+      failed_when: false
+
     - name: Ensure ComfyUI repo is present at pinned revision
       ansible.builtin.git:
         repo: "{{ comfy_repo_url }}"
@@ -183,6 +244,7 @@
         version: "{{ comfy_repo_version }}"
         update: true
       become_user: "{{ comfy_user }}"
+      when: comfy_current_revision.stdout | default('') != comfy_repo_version
 
     - name: Ensure ComfyUI venv exists
       ansible.builtin.command:
@@ -276,29 +338,6 @@
         group: root
         mode: "0644"
 
-    - name: Ensure Samba include directory exists
-      ansible.builtin.file:
-        path: /etc/samba/smb.conf.d
-        state: directory
-        owner: root
-        group: root
-        mode: "0755"
-
-    - name: Install Samba share config for Comfy outputs
-      ansible.builtin.template:
-        src: ../templates/comfy-output.conf.j2
-        dest: /etc/samba/smb.conf.d/comfy-output.conf
-        owner: root
-        group: root
-        mode: "0644"
-
-    - name: Ensure Samba includes conf.d snippets
-      ansible.builtin.blockinfile:
-        path: /etc/samba/smb.conf
-        marker: "; {mark} ANSIBLE MANAGED COMFY OUTPUT INCLUDE"
-        block: |
-          include = /etc/samba/smb.conf.d/comfy-output.conf
-
     - name: Reload systemd
       ansible.builtin.systemd_service:
         daemon_reload: true
@@ -308,11 +347,312 @@
         name: comfyui.service
         enabled: false
 
-    - name: Ensure Samba service is enabled and running
+    - name: Collect service state for retired deployment cleanup
+      ansible.builtin.service_facts:
+
+    - name: Stop and disable retired LibreChat service
       ansible.builtin.systemd_service:
-        name: smbd.service
+        name: librechat.service
+        enabled: false
+        state: stopped
+      when: "'librechat.service' in ansible_facts.services"
+
+    - name: Remove retired LibreChat service unit
+      ansible.builtin.file:
+        path: /etc/systemd/system/librechat.service
+        state: absent
+      register: retired_librechat_unit
+
+    - name: Reload systemd after retired service cleanup
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      when: retired_librechat_unit.changed
+
+    # --- Docker ---
+
+    - name: Install Docker repository signing key
+      ansible.builtin.get_url:
+        url: "{{ docker_key_url }}"
+        dest: "{{ docker_key_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Configure Docker CE repository
+      ansible.builtin.template:
+        src: ../templates/docker.sources.j2
+        dest: /etc/apt/sources.list.d/docker.sources
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Refresh apt cache after configuring Docker CE
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install Docker CE and Compose
+      ansible.builtin.apt:
+        name: "{{ docker_packages }}"
+        state: present
+
+    - name: Ensure Docker service is enabled and running
+      ansible.builtin.systemd_service:
+        name: docker.service
         enabled: true
         state: started
+
+    - name: Ensure bryan is in the docker group
+      ansible.builtin.user:
+        name: "{{ rigby_user }}"
+        groups:
+          - docker
+        append: true
+
+    # --- llama.cpp model router ---
+
+    - name: Ensure llama group exists
+      ansible.builtin.group:
+        name: "{{ llama_group }}"
+        state: present
+
+    - name: Ensure llama user exists
+      ansible.builtin.user:
+        name: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+        groups:
+          - render
+          - video
+          - docker
+        append: true
+        create_home: true
+        shell: /bin/bash
+
+    - name: Ensure llama directories exist
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: "{{ llama_home }}", mode: "0750" }
+        - { path: "{{ llama_home }}/servers", mode: "0775" }
+        - { path: "{{ llama_models }}", mode: "0775" }
+        - { path: "{{ llama_models }}/Qwen", mode: "0775" }
+        - { path: "{{ llama_models }}/Qwen/etc", mode: "0775" }
+        - { path: "{{ llama_home }}/.local/bin", mode: "0775" }
+        - { path: "{{ llama_home }}/.hf-cli", mode: "0775" }
+
+    - name: Check out pinned llama.cpp source
+      ansible.builtin.git:
+        repo: "{{ llama_repo_url }}"
+        dest: "{{ llama_repo }}"
+        version: "{{ llama_repo_version }}"
+        update: true
+      become_user: "{{ llama_user }}"
+      register: llama_checkout
+
+    - name: Check for the llama.cpp server binary
+      ansible.builtin.stat:
+        path: "{{ llama_build }}/bin/llama-server"
+      register: llama_server_binary
+
+    - name: Configure llama.cpp ROCm build
+      ansible.builtin.command:
+        argv:
+          - cmake
+          - -S
+          - "{{ llama_repo }}"
+          - -B
+          - "{{ llama_build }}"
+          - -DGGML_HIP=ON
+          - -DGGML_CCACHE=ON
+          - -DGGML_NATIVE=ON
+          - -DCMAKE_BUILD_TYPE=Release
+          - "-DCMAKE_HIP_ARCHITECTURES={{ llama_gpu_arch }}"
+      become_user: "{{ llama_user }}"
+      when: llama_checkout.changed or not llama_server_binary.stat.exists
+
+    - name: Build llama.cpp
+      ansible.builtin.command:
+        argv:
+          - cmake
+          - --build
+          - "{{ llama_build }}"
+          - --parallel
+          - "{{ ansible_facts.processor_vcpus | default(1) | string }}"
+      become_user: "{{ llama_user }}"
+      when: llama_checkout.changed or not llama_server_binary.stat.exists
+      notify: Restart llama.cpp model router
+
+    - name: Ensure Hugging Face CLI virtualenv exists
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3.12
+          - -m
+          - venv
+          - "{{ llama_home }}/.hf-cli/venv"
+      args:
+        creates: "{{ llama_home }}/.hf-cli/venv/bin/python"
+      become_user: "{{ llama_user }}"
+
+    - name: Install pinned Hugging Face download tools
+      ansible.builtin.pip:
+        name:
+          - "huggingface-hub=={{ llama_huggingface_hub_version }}"
+          - "hf-xet=={{ llama_hf_xet_version }}"
+        virtualenv: "{{ llama_home }}/.hf-cli/venv"
+        state: present
+      become_user: "{{ llama_user }}"
+
+    - name: Link Hugging Face CLI into llama PATH
+      ansible.builtin.file:
+        src: "{{ llama_home }}/.hf-cli/venv/bin/hf"
+        dest: "{{ llama_home }}/.local/bin/hf"
+        state: link
+        owner: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+
+    - name: Install llama model-router configuration
+      ansible.builtin.template:
+        src: ../templates/llama-models.ini.j2
+        dest: "{{ llama_models }}/models.ini"
+        owner: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+        mode: "0644"
+      notify: Restart llama.cpp model router
+
+    - name: Install pinned Qwen chat template
+      ansible.builtin.copy:
+        src: ../files/qwen3.8-chat_template.jinja
+        dest: "{{ llama_models }}/Qwen/etc/chat_template.jinja"
+        owner: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+        mode: "0664"
+      notify: Restart llama.cpp model router
+
+    - name: Install llama operations justfile
+      ansible.builtin.template:
+        src: ../templates/llama-justfile.j2
+        dest: "{{ llama_home }}/justfile"
+        owner: "{{ llama_user }}"
+        group: "{{ llama_group }}"
+        mode: "0664"
+
+    - name: Download and verify pinned Qwen model artifacts
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/just
+          - --justfile
+          - "{{ llama_home }}/justfile"
+          - qwen
+      become_user: "{{ llama_user }}"
+      register: qwen_download
+      changed_when: >-
+        'Downloaded' in (qwen_download.stdout | default('')) or
+        'Migrated' in (qwen_download.stdout | default(''))
+
+    - name: Decrypt the shared llama API key on the controller
+      ansible.builtin.command:
+        argv:
+          - sudo
+          - -n
+          - sops
+          - --decrypt
+          - --output-type
+          - dotenv
+          - "{{ rigby_sops_file }}"
+      delegate_to: localhost
+      become: false
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
+      check_mode: false
+      changed_when: false
+      register: llama_api_key_env
+      no_log: true
+
+    - name: Ensure llama secret directory exists
+      ansible.builtin.file:
+        path: /etc/llama
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+
+    - name: Install llama API key environment file
+      ansible.builtin.copy:
+        content: "{{ llama_api_key_env.stdout }}\n"
+        dest: /etc/llama/apiKey.env
+        owner: root
+        group: root
+        mode: "0600"
+      no_log: true
+      notify: Restart llama.cpp model router
+
+    - name: Install llama.cpp model-router service
+      ansible.builtin.template:
+        src: ../templates/llama-server.service.j2
+        dest: /etc/systemd/system/llama-server.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart llama.cpp model router
+
+    - name: Enable and start llama.cpp model router
+      ansible.builtin.systemd_service:
+        name: llama-server.service
+        daemon_reload: true
+        enabled: true
+        state: started
+
+    - name: Apply pending llama.cpp restart before validation
+      ansible.builtin.meta: flush_handlers
+
+    - name: Verify llama.cpp health endpoint
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ llama_port }}/health"
+        status_code: 200
+        return_content: true
+      register: llama_health
+      retries: 30
+      delay: 2
+      until: llama_health.status == 200
+      when: not ansible_check_mode
+
+    # --- web-search-mcp ---
+
+    - name: Check out pinned web-search-mcp deployment
+      ansible.builtin.git:
+        repo: "{{ web_search_repo_url }}"
+        dest: "{{ web_search_root }}"
+        version: "{{ web_search_repo_version }}"
+        update: true
+      become_user: "{{ llama_user }}"
+
+    - name: Build and start web-search-mcp with automatic LFM sidecar
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/just
+          - --justfile
+          - "{{ web_search_root }}/justfile"
+          - --working-directory
+          - "{{ web_search_root }}"
+          - up-lfm
+      become_user: "{{ llama_user }}"
+      changed_when: true
+
+    - name: Verify web-search-mcp health endpoint
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ web_search_port }}/ready"
+        status_code: 200
+        return_content: true
+      register: web_search_health
+      retries: 60
+      delay: 5
+      until: web_search_health.status == 200
+      when: not ansible_check_mode
+
+    # Keep netplan last: applying a new static IP can interrupt this SSH run.
 
     - name: Install netplan static IP config for rigby
       ansible.builtin.template:
@@ -320,7 +660,7 @@
         dest: /etc/netplan/99-rigby-static.yaml
         owner: root
         group: root
-        mode: "0644"
+        mode: "0600"
       when: rigby_static_network_enabled | bool
 
     - name: Apply static netplan configuration as final step
@@ -328,115 +668,9 @@
       when: rigby_static_network_enabled | bool
       changed_when: true
 
-    # --- vLLM ---
-
-    - name: Ensure vllm user exists
-      ansible.builtin.user:
-        name: "{{ vllm_user }}"
-        groups:
-          - render
-          - video
-        append: true
-        create_home: true
-        shell: /bin/bash
-
-    - name: Ensure vllm models directory exists
-      ansible.builtin.file:
-        path: "{{ vllm_models }}"
-        state: directory
-        owner: "{{ vllm_user }}"
-        group: "{{ vllm_user }}"
-        mode: "0755"
-
-    - name: Ensure uv is installed for vllm user
-      ansible.builtin.shell: |
-        set -euo pipefail
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-      args:
-        creates: "{{ vllm_home }}/.local/bin/uv"
-      become_user: "{{ vllm_user }}"
-
-    - name: Ensure vllm venv exists
-      ansible.builtin.command:
-        argv:
-          - "{{ vllm_home }}/.local/bin/uv"
-          - venv
-          - --python
-          - "3.12"
-          - "{{ vllm_venv }}"
-      args:
-        creates: "{{ vllm_venv }}/bin/python"
-      become_user: "{{ vllm_user }}"
-
-    - name: Install vLLM in venv
-      ansible.builtin.command:
-        argv:
-          - "{{ vllm_home }}/.local/bin/uv"
-          - pip
-          - install
-          - --python
-          - "{{ vllm_venv }}/bin/python"
-          - vllm
-          - --extra-index-url
-          - "{{ vllm_rocm_wheels_url }}"
-      args:
-        creates: "{{ vllm_venv }}/bin/vllm"
-      become_user: "{{ vllm_user }}"
-
-    - name: Install vllm justfile
-      ansible.builtin.template:
-        src: ../templates/vllm-justfile.j2
-        dest: "{{ vllm_home }}/justfile"
-        owner: "{{ vllm_user }}"
-        group: "{{ vllm_user }}"
-        mode: "0644"
-
-    - name: Ensure vllm bashrc sources api key from file
-      ansible.builtin.lineinfile:
-        path: "{{ vllm_home }}/.bashrc"
-        line: "export VLLM_API_KEY=$(cat {{ vllm_home }}/.api_key)"
-        state: present
-
-    # --- LibreChat ---
-
-    - name: Ensure Docker service is enabled and running
+  handlers:
+    - name: Restart llama.cpp model router
       ansible.builtin.systemd_service:
-        name: docker
-        enabled: true
-        state: started
-
-    - name: Ensure bryan is in docker group
-      ansible.builtin.user:
-        name: "{{ rigby_user }}"
-        groups:
-          - docker
-        append: true
-
-    - name: Ensure LibreChat repo is present
-      ansible.builtin.git:
-        repo: "{{ librechat_repo_url }}"
-        dest: "{{ librechat_root }}"
-        update: false
-      become_user: "{{ rigby_user }}"
-
-    - name: Install librechat.yaml config
-      ansible.builtin.template:
-        src: ../templates/librechat.yaml.j2
-        dest: "{{ librechat_root }}/librechat.yaml"
-        owner: "{{ rigby_user }}"
-        group: "{{ rigby_user }}"
-        mode: "0644"
-
-    - name: Install librechat systemd unit
-      ansible.builtin.template:
-        src: ../templates/librechat.service.j2
-        dest: /etc/systemd/system/librechat.service
-        owner: root
-        group: root
-        mode: "0644"
-
-    - name: Reload systemd and enable librechat service
-      ansible.builtin.systemd_service:
-        name: librechat.service
+        name: llama-server.service
         daemon_reload: true
-        enabled: true
+        state: restarted
