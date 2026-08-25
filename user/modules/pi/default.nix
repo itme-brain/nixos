@@ -6,7 +6,7 @@ let
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
   piPackageScope = "@earendil-works";
   piPackageName = "pi-coding-agent";
-  piVersion = "0.84.2";
+  piVersion = "0.84.3";
 
 in
 { options.modules.user.pi = { enable = mkEnableOption "user.pi"; };
