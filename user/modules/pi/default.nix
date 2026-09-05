@@ -23,7 +23,6 @@ in
       PATH="${pkgs.nodejs}/bin:$PATH"
       agentDir="${config.home.homeDirectory}/.pi/agent"
       piPkgScope="${npmGlobal}/lib/node_modules/${piPackageScope}"
-      piPkgDir="${npmGlobal}/lib/node_modules/${piPackageScope}/${piPackageName}"
       piBin="${npmGlobal}/bin/pi"
       run mkdir -p ${npmGlobal}
       run mkdir -p "${npmGlobal}/bin"
@@ -32,33 +31,22 @@ in
       run mkdir -p "$agentDir"
       if [ -e "$agentDir" ]; then
         run chmod -R u+w "$agentDir"
-        run find "$agentDir" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
       fi
-      run cp -R ${./agent}/. "$agentDir"/
+      run ${pkgs.rsync}/bin/rsync \
+        --archive \
+        --delete \
+        --exclude-from=${./agent}/.gitignore \
+        ${./agent}/ "$agentDir"/
       run chmod -R u+w "$agentDir"
-      run rm -f "$piBin"
+      if [ -f "$agentDir/auth.json" ]; then
+        run chmod 600 "$agentDir/auth.json"
+      fi
       run rm -f "${npmGlobal}/bin"/.pi-*
-      run rm -rf "$piPkgDir"
       run rm -rf "$piPkgScope"/.${piPackageName}-*
       if ! run ${pkgs.nodejs}/bin/npm install -g --prefix ${npmGlobal} ${piPackageScope}/${piPackageName}@${piVersion}; then
         warnEcho "pi-coding-agent install failed (offline or registry error)"
-      fi
-
-      if [ ! -f "$piPkgDir/package.json" ]; then
-        for candidate in "$piPkgScope"/.${piPackageName}-*; do
-          if [ -f "$candidate/package.json" ]; then
-            run rm -rf "$piPkgDir"
-            run mv "$candidate" "$piPkgDir"
-            break
-          fi
-        done
-      fi
-
-      if [ -f "$piPkgDir/dist/cli.js" ]; then
-        run ln -sfn ../lib/node_modules/${piPackageScope}/${piPackageName}/dist/cli.js "$piBin"
-        run chmod +x "$piPkgDir/dist/cli.js"
-      else
-        warnEcho "pi-coding-agent install did not produce dist/cli.js"
+      elif [ ! -x "$piBin" ]; then
+        warnEcho "pi-coding-agent installed but npm did not create $piBin"
       fi
 
       for ext in "$agentDir"/extensions/*; do
