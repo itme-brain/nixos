@@ -169,6 +169,27 @@ in
           extraConfig = privateAccessRules;
         };
       };
+
+      # PI WEB runs on desktop loopback and reaches this loopback port through
+      # a reverse SSH tunnel. Unlike other private services, this vhost is VPN
+      # only: LAN and public clients are both denied.
+      virtualHosts."pi.${domain}" = {
+        useACMEHost = domain;
+        forceSSL = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8505";
+          proxyWebsockets = true;
+          extraConfig = ''
+            allow 10.8.0.0/24;
+            deny all;
+
+            proxy_buffering off;
+            proxy_read_timeout 3600s;
+            proxy_send_timeout 3600s;
+            client_max_body_size 64m;
+          '';
+        };
+      };
     };
   };
 }

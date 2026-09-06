@@ -51,6 +51,36 @@
       };
     };
 
+    # PI WEB stays on desktop loopback. This tunnel exposes it only on server
+    # loopback, where nginx applies the WireGuard-only access policy.
+    systemd.user.services.pi-web-reverse-tunnel = {
+      Unit = {
+        Description = "Reverse tunnel PI WEB to server loopback";
+        After = [ "network-online.target" "pi-web.service" ];
+        Wants = [ "network-online.target" "pi-web.service" ];
+        StartLimitIntervalSec = 0;
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = ''
+          ${pkgs.openssh}/bin/ssh -NT \
+            -o BatchMode=yes \
+            -o ExitOnForwardFailure=yes \
+            -o IdentitiesOnly=yes \
+            -o IdentityFile=%h/.ssh/id_ed25519 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=3 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=%h/.ssh/known_hosts \
+            -R 127.0.0.1:8505:127.0.0.1:8504 \
+            server
+        '';
+        Restart = "always";
+        RestartSec = 5;
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
+
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -81,7 +111,10 @@
         writing.enable = true;
       };
 
-      pi.enable = true;
+      pi = {
+        enable = true;
+        web.enable = true;
+      };
 
       gui = {
         wm.hyprland.enable = true;

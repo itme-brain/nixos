@@ -40,6 +40,7 @@ in
   users.users = {
     ${config.user.name} = {
       isNormalUser = true;
+      linger = true;
       extraGroups = config.user.groups
         ++ [ "video" "audio" "kvm" "libvirtd" "dialout" ];
       openssh.authorizedKeys.keys = [ "${config.user.keys.ssh.graphone}" ];
