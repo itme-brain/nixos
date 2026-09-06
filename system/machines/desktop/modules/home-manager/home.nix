@@ -113,6 +113,7 @@
 
       pi = {
         enable = true;
+        llamaBaseUrl = "https://ai.ramos.codes";
         web.enable = true;
       };
 

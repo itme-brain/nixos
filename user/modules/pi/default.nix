@@ -14,6 +14,12 @@ in
 { options.modules.user.pi = {
     enable = mkEnableOption "user.pi";
 
+    llamaBaseUrl = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Base URL of the llama.cpp router used by Pi and PI WEB";
+    };
+
     web = {
       enable = mkEnableOption "PI WEB for persistent browser-controlled Pi sessions";
 
@@ -35,6 +41,8 @@ in
 
     home.sessionVariables = {
       NPM_CONFIG_PREFIX = npmGlobal;
+    } // optionalAttrs (cfg.llamaBaseUrl != null) {
+      LLAMA_BASE_URL = cfg.llamaBaseUrl;
     };
 
     home.sessionPath = [ "${npmGlobal}/bin" ];
@@ -107,6 +115,17 @@ in
       done
     '';
 
+    # auth.json refers to the secret as `$LLAMA_API_KEY`. Import it into the
+    # per-user systemd manager so the native Pi Web units can keep their
+    # standard, doctor-compatible ExecStart definitions.
+    home.activation.importLlamaApiKey = lib.hm.dag.entryAfter [ "installPiCodingAgent" ] ''
+      if [ -r /run/secrets/LLAMA_API_KEY ]; then
+        LLAMA_API_KEY="$(< /run/secrets/LLAMA_API_KEY)"
+        export LLAMA_API_KEY
+        run /run/current-system/sw/bin/systemctl --user import-environment LLAMA_API_KEY
+      fi
+    '';
+
     systemd.user.services = mkIf cfg.web.enable {
       pi-web-sessiond = {
         Unit = {
@@ -122,6 +141,8 @@ in
           Environment = [
             ''"PI_WEB_HOST=${cfg.web.host}"''
             ''"PI_WEB_PORT=${toString cfg.web.port}"''
+          ] ++ optionals (cfg.llamaBaseUrl != null) [
+            ''"LLAMA_BASE_URL=${cfg.llamaBaseUrl}"''
           ];
         };
         Install.WantedBy = [ "default.target" ];
@@ -141,6 +162,8 @@ in
           Environment = [
             ''"PI_WEB_HOST=${cfg.web.host}"''
             ''"PI_WEB_PORT=${toString cfg.web.port}"''
+          ] ++ optionals (cfg.llamaBaseUrl != null) [
+            ''"LLAMA_BASE_URL=${cfg.llamaBaseUrl}"''
           ];
         };
         Install.WantedBy = [ "default.target" ];
