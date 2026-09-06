@@ -74,6 +74,12 @@ in
     services.nginx = {
       enable = true;
       recommendedTlsSettings = true;
+      appendHttpConfig = ''
+        geo $pi_web_vpn_client {
+          default 0;
+          10.8.0.0/24 1;
+        }
+      '';
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
@@ -180,8 +186,9 @@ in
           proxyPass = "http://127.0.0.1:8505";
           proxyWebsockets = true;
           extraConfig = ''
-            allow 10.8.0.0/24;
-            deny all;
+            if ($pi_web_vpn_client = 0) {
+              return 444;
+            }
 
             proxy_buffering off;
             proxy_read_timeout 3600s;
