@@ -26,7 +26,7 @@ in
       host = mkOption {
         type = types.str;
         default = "127.0.0.1";
-        description = "PI WEB listen address. Keep this on loopback and publish it through the VPN gateway.";
+        description = "PI WEB listen address. Keep this on loopback and publish it through the LAN/VPN gateway.";
       };
 
       port = mkOption {
@@ -115,17 +115,8 @@ in
       done
     '';
 
-    # auth.json refers to the secret as `$LLAMA_API_KEY`. Import it into the
-    # per-user systemd manager so the native Pi Web units can keep their
-    # standard, doctor-compatible ExecStart definitions.
-    home.activation.importLlamaApiKey = lib.hm.dag.entryAfter [ "installPiCodingAgent" ] ''
-      if [ -r /run/secrets/LLAMA_API_KEY ]; then
-        LLAMA_API_KEY="$(< /run/secrets/LLAMA_API_KEY)"
-        export LLAMA_API_KEY
-        run /run/current-system/sw/bin/systemctl --user import-environment LLAMA_API_KEY
-      fi
-    '';
-
+    # Read the runtime secret on every start, including after a reboot.
+    # $$ escapes systemd's expansion so Bash receives the command substitution.
     systemd.user.services = mkIf cfg.web.enable {
       pi-web-sessiond = {
         Unit = {
@@ -135,7 +126,7 @@ in
         };
         Service = {
           Type = "simple";
-          ExecStart = ''/usr/bin/env /run/current-system/sw/bin/bash -lc "exec pi-web-sessiond"'';
+          ExecStart = ''/usr/bin/env /run/current-system/sw/bin/bash -lc "set -e; LLAMA_API_KEY=$$(< /run/secrets/LLAMA_API_KEY); export LLAMA_API_KEY; exec pi-web-sessiond"'';
           Restart = "on-failure";
           RestartSec = 2;
           Environment = [
@@ -156,7 +147,7 @@ in
         };
         Service = {
           Type = "simple";
-          ExecStart = ''/usr/bin/env /run/current-system/sw/bin/bash -lc "exec pi-web-server"'';
+          ExecStart = ''/usr/bin/env /run/current-system/sw/bin/bash -lc "set -e; LLAMA_API_KEY=$$(< /run/secrets/LLAMA_API_KEY); export LLAMA_API_KEY; exec pi-web-server"'';
           Restart = "on-failure";
           RestartSec = 2;
           Environment = [

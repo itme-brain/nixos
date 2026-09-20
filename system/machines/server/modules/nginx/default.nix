@@ -75,9 +75,9 @@ in
       enable = true;
       recommendedTlsSettings = true;
       appendHttpConfig = ''
-        geo $pi_web_vpn_client {
+        geo $pi_web_private_client {
           default 0;
-          10.8.0.0/24 1;
+          ${concatMapStringsSep "\n" (cidr: "${cidr} 1;") cfg.privateAllowCidrs}
         }
       '';
       recommendedOptimisation = true;
@@ -177,8 +177,7 @@ in
       };
 
       # PI WEB runs on desktop loopback and reaches this loopback port through
-      # a reverse SSH tunnel. Unlike other private services, this vhost is VPN
-      # only: LAN and public clients are both denied.
+      # a reverse SSH tunnel. Allow LAN and WireGuard clients; drop public traffic.
       virtualHosts."pi.${domain}" = {
         useACMEHost = domain;
         forceSSL = true;
@@ -186,7 +185,7 @@ in
           proxyPass = "http://127.0.0.1:8505";
           proxyWebsockets = true;
           extraConfig = ''
-            if ($pi_web_vpn_client = 0) {
+            if ($pi_web_private_client = 0) {
               return 444;
             }
 

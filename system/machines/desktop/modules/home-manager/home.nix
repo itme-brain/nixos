@@ -52,7 +52,7 @@
     };
 
     # PI WEB stays on desktop loopback. This tunnel exposes it only on server
-    # loopback, where nginx applies the WireGuard-only access policy.
+    # loopback, where nginx applies the LAN/WireGuard access policy.
     systemd.user.services.pi-web-reverse-tunnel = {
       Unit = {
         Description = "Reverse tunnel PI WEB to server loopback";
