@@ -14,6 +14,9 @@ in
     home = {
       packages = with pkgs; [
         vim
+        universal-ctags
+        ripgrep
+        perl # fzf.vim's Tags picker
        ];
       file.".vim" = {
         source = ./vim;

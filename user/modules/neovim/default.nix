@@ -27,6 +27,7 @@ in
         fd
         ripgrep
         bat
+        universal-ctags
       ];
     };
 
