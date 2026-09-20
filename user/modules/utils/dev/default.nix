@@ -8,7 +8,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       #unstable.claude-code
-      unstable.codex
+      codex
 
       bubblewrap
 

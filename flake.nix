@@ -44,6 +44,11 @@
             config.allowUnfree = true;
           };
         })
+        # Track Codex directly from its upstream release archive. Nixpkgs
+        # often trails the fast upstream release cadence.
+        (final: prev: {
+          codex = final.callPackage ./packages/codex.nix { };
+        })
       ];
     };
 
