@@ -32,7 +32,7 @@ with lib;
         kernelModules = [ "dm-snapshot" ];
       };
       extraModulePackages = [ ];
-      kernelPackages = pkgs.linuxPackages_zen;
+      #kernelPackages = pkgs.linuxPackages_zen;
       kernelParams = [ "intel_iommu=on" ];
       kernelModules = [ "kvm-intel" "virtio" "vfio-pci" "coretemp" ];
     };
