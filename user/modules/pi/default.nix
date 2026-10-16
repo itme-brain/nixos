@@ -36,6 +36,7 @@ in
       fi
       run ${pkgs.rsync}/bin/rsync \
         --archive \
+        --checksum \
         --delete \
         --exclude-from=${./agent}/.gitignore \
         ${./agent}/ "$agentDir"/
