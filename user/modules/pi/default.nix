@@ -6,7 +6,7 @@ let
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
   piPackageScope = "@earendil-works";
   piPackageName = "pi-coding-agent";
-  piVersion = "0.85.1";
+  piVersion = "1.3.0";
   piWebPackage = "@jmfederico/pi-web";
   piWebVersion = "1.202609.0";
 
