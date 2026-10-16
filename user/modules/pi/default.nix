@@ -11,20 +11,12 @@ let
 in
 { options.modules.user.pi = {
     enable = mkEnableOption "user.pi";
-
-    llamaBaseUrl = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "Base URL of the llama.cpp router used by Pi";
-    };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ nodejs ];
 
     home.sessionVariables = {
       NPM_CONFIG_PREFIX = npmGlobal;
-    } // optionalAttrs (cfg.llamaBaseUrl != null) {
-      LLAMA_BASE_URL = cfg.llamaBaseUrl;
     };
 
     home.sessionPath = [ "${npmGlobal}/bin" ];
