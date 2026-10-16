@@ -74,12 +74,6 @@ in
     services.nginx = {
       enable = true;
       recommendedTlsSettings = true;
-      appendHttpConfig = ''
-        geo $pi_web_private_client {
-          default 0;
-          ${concatMapStringsSep "\n" (cidr: "${cidr} 1;") cfg.privateAllowCidrs}
-        }
-      '';
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       eventsConfig = "worker_connections 4096;";
@@ -173,27 +167,6 @@ in
           proxyPass = "http://192.168.0.23:8188";
           proxyWebsockets = true;
           extraConfig = privateAccessRules;
-        };
-      };
-
-      # PI WEB runs on desktop loopback and reaches this loopback port through
-      # a reverse SSH tunnel. Allow LAN and WireGuard clients; drop public traffic.
-      virtualHosts."pi.${domain}" = {
-        useACMEHost = domain;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8505";
-          proxyWebsockets = true;
-          extraConfig = ''
-            if ($pi_web_private_client = 0) {
-              return 444;
-            }
-
-            proxy_buffering off;
-            proxy_read_timeout 3600s;
-            proxy_send_timeout 3600s;
-            client_max_body_size 64m;
-          '';
         };
       };
     };

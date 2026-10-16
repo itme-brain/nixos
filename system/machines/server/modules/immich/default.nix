@@ -35,6 +35,8 @@ in
 
     services.immich = {
       enable = true;
+      # Immich 2.x in 26.05 is end-of-life; use the supported 3.x release.
+      package = pkgs.unstable.immich;
       port = port;
       host = "127.0.0.1";
       mediaLocation = "/var/lib/immich";
