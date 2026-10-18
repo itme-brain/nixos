@@ -48,13 +48,6 @@ marker was established after migration. JWT signing secrets were preserved.
 Recovery files are root-only in
 `/home/llama/backups/ai-stack/20261018-security-audit`.
 
-Open audit items: Authentik does not require MFA for all login methods. Airy
-shares its settings and saved requests between approved users; it is a trusted
-playground rather than an isolated multi-user application. Dependency audits
-also report advisories in LibreChat's production dependency tree and Airy's
-build dependencies; the authentication restrictions do not replace security
-updates for those packages.
-
 LibreChat disables email login and email registration, and its direct GitHub
 OAuth credentials are unset. `ALLOW_SOCIAL_REGISTRATION=true` is intentionally
 retained for first-login profile creation through Authentik OIDC; access is
