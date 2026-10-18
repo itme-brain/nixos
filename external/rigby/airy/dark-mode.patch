@@ -1,0 +1,348 @@
+--- a/resources/css/app.css
++++ b/resources/css/app.css
+@@ -80,0 +81,6 @@
++    --color-panel: #fff;
++    --color-on-accent: #fff;
++    --color-selected: #16181f;
++    --color-selected-ink: #fff;
++    --color-danger: #b91c1c;
++    --color-danger-soft: #fef2f2;
+@@ -84,0 +91,29 @@
++html[data-theme='light'] {
++    color-scheme: light;
++}
++
++html[data-theme='dark'] {
++    color-scheme: dark;
++    --color-shell: #11151d;
++    --color-canvas: #171d27;
++    --color-panel: #1d2532;
++    --color-field: #151c26;
++    --color-ink: #edf2fa;
++    --color-muted: #a9b5c9;
++    --color-line: #3a465b;
++    --color-accent: #8cb4ff;
++    --color-on-accent: #11151d;
++    --color-selected: #33455f;
++    --color-selected-ink: #f3f6fc;
++    --color-danger: #fca5a5;
++    --color-danger-soft: #3a1f2b;
++}
++
++.syntax-token {
++    color: var(--shiki-light);
++}
++
++html[data-theme='dark'] .syntax-token {
++    color: var(--shiki-dark);
++}
++
+@@ -155 +190 @@
+-    background-color: white;
++    background-color: var(--color-panel);
+--- a/resources/js/app.js
++++ b/resources/js/app.js
+@@ -5,0 +6,14 @@
++const themeToggle = document.querySelector('[data-theme-toggle]');
++
++function updateThemeToggle() {
++    const dark = document.documentElement.dataset.theme === 'dark';
++    themeToggle.textContent = dark ? 'Light mode' : 'Dark mode';
++    themeToggle.setAttribute('aria-pressed', String(dark));
++}
++
++if (themeToggle) {
++    themeToggle.addEventListener('click', () => window.clefTheme.toggle());
++    window.addEventListener('clef-theme-change', updateThemeToggle);
++    updateThemeToggle();
++}
++
+@@ -38 +52 @@
+-    const [{ createHighlighterCore }, { createJavaScriptRegexEngine }, { default: json }, { default: theme }] = await Promise.all([
++    const [{ createHighlighterCore }, { createJavaScriptRegexEngine }, { default: json }, { default: lightTheme }, { default: darkTheme }] = await Promise.all([
+@@ -42,0 +57 @@
++        import('shiki/themes/github-dark.mjs'),
+@@ -46 +61 @@
+-        themes: [theme],
++        themes: [lightTheme, darkTheme],
+@@ -51 +66,5 @@
+-        const tokens = highlighter.codeToTokens(source, { lang: 'json', theme: 'github-light' });
++        const tokens = highlighter.codeToTokens(source, {
++            lang: 'json',
++            themes: { light: 'github-light', dark: 'github-dark' },
++            defaultColor: false,
++        });
+@@ -62 +81,4 @@
+-                span.style.color = token.color;
++                span.className = 'syntax-token';
++                for (const [property, value] of Object.entries(token.htmlStyle ?? {})) {
++                    span.style.setProperty(property, value);
++                }
+@@ -117 +139 @@
+-                status.classList.remove('text-red-700');
++                status.classList.remove('text-danger');
+@@ -120 +142 @@
+-                status.classList.add('text-red-700');
++                status.classList.add('text-danger');
+@@ -148 +170 @@
+-        jsonStatus.classList.toggle('text-red-700', danger);
++        jsonStatus.classList.toggle('text-danger', danger);
+--- a/resources/views/layouts/app.blade.php
++++ b/resources/views/layouts/app.blade.php
+@@ -8,0 +9,25 @@
++            (() => {
++                const system = window.matchMedia('(prefers-color-scheme: dark)');
++                let preference;
++                try { preference = localStorage.getItem('clef-theme'); } catch {}
++                function apply() {
++                    document.documentElement.dataset.theme = preference === 'light' || preference === 'dark'
++                        ? preference : (system.matches ? 'dark' : 'light');
++                    window.dispatchEvent(new Event('clef-theme-change'));
++                }
++                window.clefTheme = {
++                    toggle() {
++                        preference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
++                        try { localStorage.setItem('clef-theme', preference); } catch {}
++                        apply();
++                    },
++                };
++                system.addEventListener('change', apply);
++                window.addEventListener('storage', (event) => {
++                    if (event.key === 'clef-theme' || event.key === null) {
++                        preference = event.newValue;
++                        apply();
++                    }
++                });
++                apply();
++            })();
+@@ -53 +78 @@
+-                            'border-accent bg-accent font-semibold text-white hover:bg-accent/90' => request()->routeIs('run.create'),
++                            'border-accent bg-accent font-semibold text-on-accent hover:bg-accent/90' => request()->routeIs('run.create'),
+@@ -66 +91 @@
+-                            'bg-ink font-semibold text-white' => request()->routeIs('run.example'),
++                            'bg-selected font-semibold text-selected-ink' => request()->routeIs('run.example'),
+@@ -79 +104 @@
+-                            'bg-ink font-semibold text-white' => request()->routeIs('run.example2'),
++                            'bg-selected font-semibold text-selected-ink' => request()->routeIs('run.example2'),
+@@ -92 +117 @@
+-                            'bg-ink font-semibold text-white' => request()->routeIs('run.example3'),
++                            'bg-selected font-semibold text-selected-ink' => request()->routeIs('run.example3'),
+@@ -105 +130 @@
+-                                'bg-ink text-white' => $current,
++                                'bg-selected text-selected-ink' => $current,
+@@ -114 +139 @@
+-                                        'font-semibold text-white' => $current,
++                                        'font-semibold text-selected-ink' => $current,
+@@ -127 +152 @@
+-                                        'text-white/80 hover:bg-white/15 hover:text-white' => $current,
++                                        'text-selected-ink/80 hover:bg-panel/15 hover:text-selected-ink' => $current,
+@@ -142 +167 @@
+-                            'bg-ink font-semibold text-white' => request()->routeIs('configuration.*'),
++                            'bg-selected font-semibold text-selected-ink' => request()->routeIs('configuration.*'),
+@@ -154 +179 @@
+-                        class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-white p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
++                        class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-panel p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
+@@ -160,2 +185,2 @@
+-                                <button type="button" x-on:click="$refs.removeDialog.close()" class="rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium">Cancel</button>
+-                                <button type="submit" :form="pendingForm" :disabled="pendingForm === ''" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90">Remove</button>
++                                <button type="button" x-on:click="$refs.removeDialog.close()" class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium">Cancel</button>
++                                <button type="submit" :form="pendingForm" :disabled="pendingForm === ''" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90">Remove</button>
+@@ -174 +199,4 @@
+-                    <div class="ml-auto shrink-0">@yield('actions')</div>
++                    <div class="ml-auto flex shrink-0 items-center gap-2">
++                        @yield('actions')
++                        <button type="button" data-theme-toggle aria-pressed="false" class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium text-ink hover:bg-ink/6">Dark mode</button>
++                    </div>
+--- a/resources/views/configuration/edit.blade.php
++++ b/resources/views/configuration/edit.blade.php
+@@ -13 +13 @@
+-        <p class="text-[13px] text-red-700" role="alert">Your saved password cannot be decrypted. Re-enter it, or remove it if your API does not require a password.</p>
++        <p class="text-[13px] text-danger" role="alert">Your saved password cannot be decrypted. Re-enter it, or remove it if your API does not require a password.</p>
+@@ -62 +62 @@
+-        class="grid gap-4 rounded-xl border border-line bg-white p-5"
++        class="grid gap-4 rounded-xl border border-line bg-panel p-5"
+@@ -80 +80 @@
+-                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
++                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-panel hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+@@ -87 +87 @@
+-                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
++                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-panel hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+@@ -94 +94 @@
+-                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
++                                class="inline-flex items-center gap-1 rounded-md border border-line bg-canvas px-2 py-0.5 font-medium text-ink/80 transition hover:border-ink/20 hover:bg-panel hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+@@ -112 +112 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -124 +124 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -153 +153 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -180 +180 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -187 +187 @@
+-                <button type="submit" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90">Save</button>
++                <button type="submit" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90">Save</button>
+@@ -211 +211 @@
+-                    <p x-show="apiUrl === modelsUrl" class="whitespace-pre-line text-[13px] text-red-700" role="alert">{{ $modelError }}</p>
++                    <p x-show="apiUrl === modelsUrl" class="whitespace-pre-line text-[13px] text-danger" role="alert">{{ $modelError }}</p>
+@@ -214 +214 @@
+-                    <p class="text-[13px] text-red-700">{{ $message }}</p>
++                    <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -224 +224 @@
+-                    <p class="text-[13px] text-red-700">{{ $message }}</p>
++                    <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -229 +229 @@
+-                <button type="submit" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90">Save</button>
++                <button type="submit" class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90">Save</button>
+--- a/resources/views/run/create.blade.php
++++ b/resources/views/run/create.blade.php
+@@ -9 +9 @@
+-        <button type="submit" form="run-form" data-send :disabled="sending" class="inline-flex min-w-24 items-center justify-center gap-1 rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90 disabled:cursor-progress disabled:opacity-70"><x-lucide-send class="size-4 shrink-0" aria-hidden="true" /><span x-text="sending ? 'Sending…' : 'Send'">Send</span></button>
++        <button type="submit" form="run-form" data-send :disabled="sending" class="inline-flex min-w-24 items-center justify-center gap-1 rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90 disabled:cursor-progress disabled:opacity-70"><x-lucide-send class="size-4 shrink-0" aria-hidden="true" /><span x-text="sending ? 'Sending…' : 'Send'">Send</span></button>
+@@ -24 +24 @@
+-            <div class="instrument-panel grid gap-4 rounded-xl border border-line bg-white p-5">
++            <div class="instrument-panel grid gap-4 rounded-xl border border-line bg-panel p-5">
+@@ -38 +38 @@
+-                        <p class="whitespace-pre-line text-[13px] text-red-700" role="alert">{{ $modelError }}</p>
++                        <p class="whitespace-pre-line text-[13px] text-danger" role="alert">{{ $modelError }}</p>
+@@ -41 +41 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -108 +108 @@
+-                                    <p class="text-[13px] text-red-700">{{ $message }}</p>
++                                    <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -110 +110 @@
+-                                <p class="whitespace-pre-line text-[13px] text-red-700" x-cloak x-show="methodError" x-text="methodError"></p>
++                                <p class="whitespace-pre-line text-[13px] text-danger" x-cloak x-show="methodError" x-text="methodError"></p>
+@@ -127 +127 @@
+-                                    <p class="text-[13px] text-red-700">{{ $message }}</p>
++                                    <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -129 +129 @@
+-                                <p class="whitespace-pre-line text-[13px] text-red-700" x-cloak x-show="pathError" x-text="pathError"></p>
++                                <p class="whitespace-pre-line text-[13px] text-danger" x-cloak x-show="pathError" x-text="pathError"></p>
+@@ -133 +133 @@
+-                            <button type="button" x-on:click="close()" class="rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium">Done</button>
++                            <button type="button" x-on:click="close()" class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium">Done</button>
+@@ -140 +140 @@
+-            <div class="instrument-panel grid gap-4 rounded-xl border border-line bg-white p-5">
++            <div class="instrument-panel grid gap-4 rounded-xl border border-line bg-panel p-5">
+@@ -164 +164 @@
+-                                <p class="text-[13px] text-red-700">{{ $message }}</p>
++                                <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -175 +175 @@
+-                            <p class="text-[13px] text-red-700">{{ $message }}</p>
++                            <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -179 +179 @@
+-                                <p class="text-[13px] text-red-700">{{ $message }}</p>
++                                <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -184,2 +184,2 @@
+-                            <button type="button" data-add-question class="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium disabled:opacity-40"><x-lucide-message-square-plus class="size-4 shrink-0" aria-hidden="true" />Add question</button>
+-                            <button type="button" data-duplicate-question class="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium disabled:opacity-40"><x-lucide-book-copy class="size-4 shrink-0" aria-hidden="true" />Duplicate</button>
++                            <button type="button" data-add-question class="inline-flex items-center gap-1 rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium disabled:opacity-40"><x-lucide-message-square-plus class="size-4 shrink-0" aria-hidden="true" />Add question</button>
++                            <button type="button" data-duplicate-question class="inline-flex items-center gap-1 rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium disabled:opacity-40"><x-lucide-book-copy class="size-4 shrink-0" aria-hidden="true" />Duplicate</button>
+@@ -196 +196 @@
+-                            <button type="button" data-format-json class="rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium">Format JSON</button>
++                            <button type="button" data-format-json class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium">Format JSON</button>
+@@ -200 +200 @@
+-                            <p class="text-[13px] text-red-700">{{ $message }}</p>
++                            <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -215 +215 @@
+-                                <button type="button" class="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium transition-colors hover:border-ink/20 hover:bg-canvas" x-on:click="$refs.imageFiles.click()"><x-lucide-image-up class="size-4 shrink-0" aria-hidden="true" />Choose images</button>
++                                <button type="button" class="inline-flex items-center gap-1 rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium transition-colors hover:border-ink/20 hover:bg-canvas" x-on:click="$refs.imageFiles.click()"><x-lucide-image-up class="size-4 shrink-0" aria-hidden="true" />Choose images</button>
+@@ -223,3 +223,3 @@
+-                                        <button type="button" x-show="images.length > 1" :disabled="index === 0" x-on:click="moveImage(index, -1)" class="rounded p-0.5 text-muted hover:bg-white hover:text-ink disabled:opacity-40" aria-label="Move image up"><x-lucide-chevron-up class="size-3" aria-hidden="true" /></button>
+-                                        <button type="button" x-show="images.length > 1" :disabled="index === images.length - 1" x-on:click="moveImage(index, 1)" class="rounded p-0.5 text-muted hover:bg-white hover:text-ink disabled:opacity-40" aria-label="Move image down"><x-lucide-chevron-down class="size-3" aria-hidden="true" /></button>
+-                                        <button type="button" x-on:click="removeImage(index)" class="rounded p-0.5 text-muted hover:bg-white hover:text-ink" aria-label="Remove image"><x-lucide-x class="size-3" aria-hidden="true" /></button>
++                                        <button type="button" x-show="images.length > 1" :disabled="index === 0" x-on:click="moveImage(index, -1)" class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink disabled:opacity-40" aria-label="Move image up"><x-lucide-chevron-up class="size-3" aria-hidden="true" /></button>
++                                        <button type="button" x-show="images.length > 1" :disabled="index === images.length - 1" x-on:click="moveImage(index, 1)" class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink disabled:opacity-40" aria-label="Move image down"><x-lucide-chevron-down class="size-3" aria-hidden="true" /></button>
++                                        <button type="button" x-on:click="removeImage(index)" class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink" aria-label="Remove image"><x-lucide-x class="size-3" aria-hidden="true" /></button>
+@@ -230 +230 @@
+-                        <p x-show="imageError" x-text="imageError" x-cloak role="alert" class="text-[13px] text-red-700"></p>
++                        <p x-show="imageError" x-text="imageError" x-cloak role="alert" class="text-[13px] text-danger"></p>
+@@ -232 +232 @@
+-                            <p class="text-[13px] text-red-700">{{ $message }}</p>
++                            <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -248 +248 @@
+-                        <button type="button" data-remove-option class="rounded-lg px-2.5 py-2 text-muted hover:bg-white hover:text-ink" aria-label="Remove option"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
++                        <button type="button" data-remove-option class="rounded-lg px-2.5 py-2 text-muted hover:bg-panel hover:text-ink" aria-label="Remove option"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
+@@ -255 +255 @@
+-                        <button type="button" data-remove-level class="rounded-lg px-2.5 py-2 text-muted hover:bg-white hover:text-ink" aria-label="Remove level"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
++                        <button type="button" data-remove-level class="rounded-lg px-2.5 py-2 text-muted hover:bg-panel hover:text-ink" aria-label="Remove level"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
+@@ -261 +261 @@
+-                    <button type="submit" data-send class="inline-flex items-center gap-1 rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90"><x-lucide-send class="size-4 shrink-0" aria-hidden="true" /><span x-text="sending ? 'Sending…' : 'Send'">Send</span></button>
++                    <button type="submit" data-send class="inline-flex items-center gap-1 rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90"><x-lucide-send class="size-4 shrink-0" aria-hidden="true" /><span x-text="sending ? 'Sending…' : 'Send'">Send</span></button>
+@@ -267 +267 @@
+-        <div class="rounded-xl border border-line bg-white p-5">
++        <div class="rounded-xl border border-line bg-panel p-5">
+@@ -273 +273 @@
+-    <section class="instrument-panel min-w-0 self-start rounded-xl border border-line bg-white p-5 lg:sticky lg:top-0" aria-label="Response" :aria-busy="sending">
++    <section class="instrument-panel min-w-0 self-start rounded-xl border border-line bg-panel p-5 lg:sticky lg:top-0" aria-label="Response" :aria-busy="sending">
+@@ -283 +283 @@
+-            <p role="alert" class="mb-3 whitespace-pre-line text-[13px] text-red-700">{{ $message }}</p>
++            <p role="alert" class="mb-3 whitespace-pre-line text-[13px] text-danger">{{ $message }}</p>
+@@ -285 +285 @@
+-        <p x-cloak x-show="error" x-text="error" role="alert" class="mb-3 whitespace-pre-line text-[13px] text-red-700"></p>
++        <p x-cloak x-show="error" x-text="error" role="alert" class="mb-3 whitespace-pre-line text-[13px] text-danger"></p>
+@@ -305 +305 @@
+-            class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-white p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
++            class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-panel p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
+@@ -311,2 +311,2 @@
+-                    <button type="button" data-cancel-remove-question autofocus class="rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium">Cancel</button>
+-                    <button type="button" data-confirm-remove-question class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90">Remove</button>
++                    <button type="button" data-cancel-remove-question autofocus class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium">Cancel</button>
++                    <button type="button" data-confirm-remove-question class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90">Remove</button>
+@@ -321 +321 @@
+-            class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-white p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
++            class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-line bg-panel p-4 text-ink shadow-lg shadow-black/10 backdrop:bg-ink/30"
+@@ -338 +338 @@
+-                        <p class="text-[13px] text-red-700">{{ $message }}</p>
++                        <p class="text-[13px] text-danger">{{ $message }}</p>
+@@ -342 +342 @@
+-                    <button type="button" x-on:click="$refs.bookmarkDialog.close()" class="rounded-lg border border-line bg-white px-3 py-1.5 text-[13px] font-medium">Cancel</button>
++                    <button type="button" x-on:click="$refs.bookmarkDialog.close()" class="rounded-lg border border-line bg-panel px-3 py-1.5 text-[13px] font-medium">Cancel</button>
+@@ -350 +350 @@
+-                        class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-white hover:bg-accent/90"
++                        class="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-on-accent hover:bg-accent/90"
+--- a/resources/views/run/question.blade.php
++++ b/resources/views/run/question.blade.php
+@@ -46 +46 @@
+-        <span data-question-number class="grid size-5 shrink-0 place-items-center rounded-full border border-line bg-white text-[11px] font-medium leading-none tabular-nums text-ink">{{ (int) $index + 1 }}</span>
++        <span data-question-number class="grid size-5 shrink-0 place-items-center rounded-full border border-line bg-panel text-[11px] font-medium leading-none tabular-nums text-ink">{{ (int) $index + 1 }}</span>
+@@ -49 +49 @@
+-            <button type="button" data-move-question="up" class="rounded p-0.5 text-muted hover:bg-white hover:text-ink disabled:opacity-40" aria-label="Move question up">
++            <button type="button" data-move-question="up" class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink disabled:opacity-40" aria-label="Move question up">
+@@ -52 +52 @@
+-            <button type="button" data-move-question="down" class="rounded p-0.5 text-muted hover:bg-white hover:text-ink disabled:opacity-40" aria-label="Move question down">
++            <button type="button" data-move-question="down" class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink disabled:opacity-40" aria-label="Move question down">
+@@ -56 +56 @@
+-        <button type="button" data-remove-question class="rounded p-0.5 text-muted hover:bg-white hover:text-ink" aria-label="Remove question">
++        <button type="button" data-remove-question class="rounded p-0.5 text-muted hover:bg-panel hover:text-ink" aria-label="Remove question">
+@@ -102 +102 @@
+-                    <button type="button" data-remove-option class="rounded-lg px-2.5 py-2 text-muted hover:bg-white hover:text-ink" aria-label="Remove option"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
++                    <button type="button" data-remove-option class="rounded-lg px-2.5 py-2 text-muted hover:bg-panel hover:text-ink" aria-label="Remove option"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
+@@ -107 +107 @@
+-            <button type="button" data-add-option class="rounded-lg border border-line bg-white px-2.5 py-1.5 text-[13px] font-medium" aria-label="Add option">+</button>
++            <button type="button" data-add-option class="rounded-lg border border-line bg-panel px-2.5 py-1.5 text-[13px] font-medium" aria-label="Add option">+</button>
+@@ -120 +120 @@
+-                    <button type="button" data-remove-level class="rounded-lg px-2.5 py-2 text-muted hover:bg-white hover:text-ink" aria-label="Remove level"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
++                    <button type="button" data-remove-level class="rounded-lg px-2.5 py-2 text-muted hover:bg-panel hover:text-ink" aria-label="Remove level"><x-lucide-minus class="size-3" aria-hidden="true" /></button>
+@@ -125 +125 @@
+-            <button type="button" data-add-level class="rounded-lg border border-line bg-white px-2.5 py-1.5 text-[13px] font-medium" aria-label="Add level">+</button>
++            <button type="button" data-add-level class="rounded-lg border border-line bg-panel px-2.5 py-1.5 text-[13px] font-medium" aria-label="Add level">+</button>
+--- a/resources/views/run/response.blade.php
++++ b/resources/views/run/response.blade.php
+@@ -5 +5 @@
+-            'bg-red-50 text-red-700' => $result['status'] === null || $result['status'] >= 400,
++            'bg-danger-soft text-danger' => $result['status'] === null || $result['status'] >= 400,
+@@ -39 +39 @@
+-                    <article class="grid gap-2 rounded-lg bg-red-50 p-3">
++                    <article class="grid gap-2 rounded-lg bg-danger-soft p-3">
+@@ -41 +41 @@
+-                            <h3 class="text-[13px] font-medium text-red-700">API error</h3>
++                            <h3 class="text-[13px] font-medium text-danger">API error</h3>
+@@ -43 +43 @@
+-                        <p class="text-[13px] text-red-700">{{ $result['decision']['error'] }}</p>
++                        <p class="text-[13px] text-danger">{{ $result['decision']['error'] }}</p>

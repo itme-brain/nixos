@@ -1,0 +1,15 @@
+--- a/app/Services/SystemOneClient.php
++++ b/app/Services/SystemOneClient.php
+@@ -38,0 +39,4 @@
++        if (filled(config('systemone.model'))) {
++            return ['models' => [config('systemone.model')], 'vision' => config('systemone.vision') ? [config('systemone.model')] : [], 'fromApi' => false, 'error' => null];
++        }
++
+@@ -151 +155 @@
+-        if ($this->isCloudflare($baseUrl, $setting->auth_type) && filled($body) && $this->acceptsCloudflareImages($model)) {
++        if (filled($body) && (config('systemone.image_format') === 'data-url' || ($this->isCloudflare($baseUrl, $setting->auth_type) && $this->acceptsCloudflareImages($model)))) {
+--- a/bootstrap/app.php
++++ b/bootstrap/app.php
+@@ -15 +15 @@
+-        //
++        $middleware->trustProxies(at: '*', headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_PREFIX);

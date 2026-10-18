@@ -1,0 +1,18 @@
+[Unit]
+Description=Clef Airy System One playground
+Requires=docker.service
+After=docker.service radiance-d1.service
+
+[Service]
+Type=simple
+User=llama
+Group=llama
+SupplementaryGroups=docker
+ExecStart=/usr/bin/docker run --rm --name clef-airy --network host --pull never --env-file /etc/clef-airy/app.env --env APP_ENV=production --env APP_DEBUG=false --env APP_URL=https://ai.ramos.codes/systemone --env ASSET_URL=https://ai.ramos.codes/systemone --env DB_CONNECTION=sqlite --env DB_DATABASE=/data/database.sqlite --env SESSION_DRIVER=database --env SESSION_COOKIE=airy_session --env SESSION_PATH=/systemone --env SESSION_SECURE_COOKIE=true --env CACHE_STORE=database --env LOG_CHANNEL=stderr --env SYSTEMONE_MODEL=d1-3B --env SYSTEMONE_VISION=true --env SYSTEMONE_IMAGE_FORMAT=data-url --mount type=bind,src=/home/llama/systemone/data,dst=/data --mount type=bind,src=/home/llama/systemone/storage,dst=/app/storage clef-airy:ed7cd28-web-dark
+ExecStop=/usr/bin/docker stop --time 15 clef-airy
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

@@ -14,6 +14,11 @@
     "RTSP_USER" = cameras;
     "RTSP_PASS" = cameras;
     "LLAMA_API_KEY" = llama // { owner = config.user.name; };
+    "authentik.env" = {
+      sopsFile = ../../../secrets/system/authentik.env;
+      format = "dotenv";
+      key = "";
+    };
   };
 
   # API key auth for ai.ramos.codes — nginx validates Bearer token against sops secret
@@ -27,6 +32,7 @@
   };
 
   modules.system = {
+    authentik.protectAI = true;
     nginx = {
       enable = true;
     };

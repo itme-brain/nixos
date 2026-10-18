@@ -1,0 +1,167 @@
+/* Match ramos.codes: serif text, native controls, and a quiet light/dark page. */
+:root {
+    color-scheme: light dark;
+}
+
+body:has(ak-flow-executor),
+.pf-c-background-image {
+    background: light-dark(#fff, #121212) !important;
+    background-image: none !important;
+}
+
+ak-flow-executor,
+:host(ak-flow-executor) {
+    font-family: "Times New Roman", Times, serif;
+    --ramos-ink: #111;
+    --ramos-page: #fff;
+    --ramos-line: #aaa;
+    --ramos-link: #0000ee;
+    --pf-global--FontFamily--text: "Times New Roman", Times, serif;
+    --pf-global--FontFamily--heading: "Times New Roman", Times, serif;
+    --pf-global--Color--100: var(--ramos-ink);
+    --pf-global--BackgroundColor--100: var(--ramos-page);
+}
+
+@media (prefers-color-scheme: dark) {
+    ak-flow-executor,
+    :host(ak-flow-executor) {
+        --ramos-ink: #eee;
+        --ramos-page: #121212;
+        --ramos-line: #777;
+        --ramos-link: #9eafff;
+    }
+}
+
+.pf-c-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    color: var(--ramos-ink);
+    background: var(--ramos-page);
+}
+
+.pf-c-login__header {
+    display: none;
+}
+
+.pf-c-login__main {
+    width: min(100%, 42rem) !important;
+    max-width: none !important;
+    align-self: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: transparent;
+    color: inherit;
+}
+
+.pf-c-login__main-header.pf-c-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 1rem;
+    padding: 0 0 2rem;
+}
+
+.pf-c-login__main-header.pf-c-brand::after {
+    content: "bryan ramos";
+    font: bold 2rem "Times New Roman", Times, serif;
+    color: var(--ramos-ink);
+}
+
+.branding-logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+}
+
+.pf-c-login__main-header,
+.pf-c-login__main-body,
+.pf-c-login__main-footer,
+.pf-c-login__main-footer-band {
+    padding: 0 0 1.5rem;
+    background: transparent;
+    color: inherit;
+}
+
+:host(ak-flow-card) .pf-c-title {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: inherit;
+}
+
+:host([part~="challenge"]) .pf-c-form {
+    gap: 1.25rem;
+}
+
+:host([part~="challenge"]) .pf-c-form-control {
+    border: 1px solid var(--ramos-line);
+    border-radius: 2px;
+    background: var(--ramos-page);
+    color: var(--ramos-ink);
+}
+
+:host([part~="challenge"]) .pf-c-button.pf-m-primary {
+    width: auto;
+    justify-self: start;
+    padding: .4rem 1rem;
+    border: 1px solid var(--ramos-line);
+    border-radius: 2px;
+    background: var(--ramos-page);
+    color: var(--ramos-ink);
+    box-shadow: none;
+}
+
+:host([part~="challenge"]) .pf-c-button.pf-m-primary::after {
+    border: 0;
+}
+
+:host([part~="challenge"]) .pf-c-button.pf-m-primary:hover {
+    border-color: var(--ramos-ink);
+}
+
+:host([part~="challenge"]) .pf-c-button:focus-visible,
+:host([part~="challenge"]) .pf-c-form-control:focus-visible {
+    outline: 2px solid #0670ff;
+    outline-offset: 3px;
+}
+
+.source-button {
+    padding: .25rem 0;
+    color: var(--ramos-link);
+    text-decoration: underline;
+}
+
+[part="source-list"] {
+    justify-content: flex-start !important;
+}
+
+.pf-c-login__footer {
+    width: min(100%, 42rem) !important;
+    align-self: center !important;
+    margin: 2rem 0 0 !important;
+    padding: 0;
+    text-align: left;
+}
+
+ak-brand-links[name="flow-links"],
+:host(ak-brand-links[name="flow-links"]) {
+    color: var(--ramos-ink);
+    text-shadow: none;
+    font: .875rem "Times New Roman", Times, serif;
+}
+
+.pf-c-login__footer a {
+    color: var(--ramos-link);
+    text-shadow: none;
+    text-decoration: underline;
+    font: .875rem "Times New Roman", Times, serif;
+}
+
+ak-locale-select {
+    display: none;
+}
