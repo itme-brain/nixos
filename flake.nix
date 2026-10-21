@@ -59,6 +59,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           inputs.sops-nix.nixosModules.sops
+          ./system/modules/pki
           path
         ];
       };

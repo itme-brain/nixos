@@ -1,0 +1,27 @@
+- name: Install the corrected Ubuntu CA package and trust-management dependencies
+  ansible.builtin.apt:
+    name: [ca-certificates, python3-cryptography, python3-yaml]
+    state: latest
+    update_cache: true
+    cache_valid_time: 600
+
+- name: Create the CA policy directory
+  ansible.builtin.file:
+    path: /usr/local/lib/infra-pki
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install application CA policy management
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../pki/configure.py"
+    dest: /usr/local/lib/infra-pki/configure.py
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Apply host and container CA distrust policy
+  ansible.builtin.command: /usr/bin/python3 /usr/local/lib/infra-pki/configure.py
+  changed_when: true
+  when: not ansible_check_mode

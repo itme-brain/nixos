@@ -629,6 +629,9 @@
         update: true
       become_user: "{{ llama_user }}"
 
+    - name: Apply CA policy before starting recovered applications
+      ansible.builtin.include_tasks: tasks/pki.yml
+
     - name: Build and start web-search-mcp with automatic LFM sidecar
       ansible.builtin.command:
         argv:

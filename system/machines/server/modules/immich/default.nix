@@ -43,6 +43,12 @@ in
       machine-learning.enable = false;
     };
 
+    # Use the corrected host store instead of Node's embedded root bundle.
+    systemd.services.immich-server.environment = {
+      NODE_OPTIONS = "--use-openssl-ca";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+    };
+
     modules.system.backup.paths = [
       "/var/lib/immich"
       "/var/lib/postgresql"

@@ -15,8 +15,17 @@ let
       AUTHENTIK_LISTEN__HTTPS = "127.0.0.1:9443";
       AUTHENTIK_ERROR_REPORTING__ENABLED = "false";
       AUTHENTIK_DISABLE_UPDATE_CHECK = "true";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+      REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
+      AWS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
     };
-    volumes = [ "/var/lib/authentik/data:/data" ];
+    volumes = [
+      "/var/lib/authentik/data:/data"
+      "${config.system.build.containerCA}:/etc/ssl/certs:ro"
+      "${config.system.build.containerCA}/ca-certificates.crt:/ak-root/.venv/lib/python3.14/site-packages/certifi/cacert.pem:ro"
+      "${config.system.build.containerCA}/ca-certificates.crt:/ak-root/.venv/lib/python3.14/site-packages/botocore/cacert.pem:ro"
+      "${config.system.build.containerCA}/ca-certificates.crt:/usr/local/lib/python3.14/site-packages/pip/_vendor/certifi/cacert.pem:ro"
+    ];
     extraOptions = [ "--network=host" "--shm-size=512m" ];
     dependsOn = [ "authentik-postgresql" ];
   };
@@ -58,7 +67,10 @@ in {
         image = "docker.io/library/postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea";
         environmentFiles = [ credentials ];
         environment = { POSTGRES_DB = "authentik"; POSTGRES_USER = "authentik"; };
-        volumes = [ "/var/lib/authentik/postgresql:/var/lib/postgresql/data" ];
+        volumes = [
+          "/var/lib/authentik/postgresql:/var/lib/postgresql/data"
+          "${config.system.build.containerCA}:/etc/ssl/certs:ro"
+        ];
         extraOptions = [ "--network=host" ];
         cmd = [ "postgres" "-p" "55432" "-c" "listen_addresses=127.0.0.1" ];
       };

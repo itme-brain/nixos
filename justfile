@@ -12,6 +12,11 @@ default:
 rigby-check HOST=RIGBY_HOST:
   @cd {{RIGBY_DIR}} && ansible -i "{{HOST}}," all -u bryan -m ping
 
+# Refresh host and application CA trust on the Ubuntu AI rig.
+[group('rigby')]
+rigby-pki HOST=RIGBY_HOST:
+  @cd {{RIGBY_DIR}} && ansible-playbook -i "{{HOST}}," -u bryan playbooks/pki.yml
+
 # Apply the disaster-recovery playbook for the Ubuntu AI rig.
 [group('rigby')]
 rigby-recover HOST=RIGBY_HOST:
