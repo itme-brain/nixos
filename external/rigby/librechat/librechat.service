@@ -1,0 +1,20 @@
+[Unit]
+Description=LibreChat frontend (Radiance experiment)
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=librechat
+Group=librechat
+WorkingDirectory=/home/librechat/LibreChat
+ExecStart=/usr/bin/docker compose -f compose.radiance.yaml -f /home/librechat/deployment/compose.node-runtime.yaml up --remove-orphans
+ExecStop=/usr/bin/docker compose -f compose.radiance.yaml -f /home/librechat/deployment/compose.node-runtime.yaml stop
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=300
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

@@ -73,7 +73,7 @@ first makes a consistent database dump with `authentik-dump.service`.
   `ed7cd282ae0b097eee9df2571b2d0c6ae66d7d1b`; kept unmodified.
 - Unit: `/etc/systemd/system/clef-airy.service`, installed from this directory.
   All runtime flags are in the unit; no launch wrapper.
-- Image: `clef-airy:ed7cd28-web-dark`, built on rigby from the Dockerfile here.
+- Image: `clef-airy:ed7cd28-php8.4.27-node24.22.1`, built on rigby from the Dockerfile here.
 - Private encryption key: `/etc/clef-airy/app.env`, root:llama, mode 0640.
 - SQLite database: `/home/llama/systemone/data/database.sqlite`.
 - Laravel storage: `/home/llama/systemone/storage`.
@@ -90,7 +90,7 @@ Native inference clients continue using their existing Bearer key on `/v1/*`.
 
 Create a temporary build directory containing these deployment files and an
 `app/` directory populated with `git archive` of the pinned upstream commit.
-Then run `docker build -t clef-airy:ed7cd28-web-dark BUILD_DIRECTORY` on rigby.
+Then run `docker build -t clef-airy:ed7cd28-php8.4.27-node24.22.1 BUILD_DIRECTORY` on rigby.
 Restart `clef-airy.service` after building. Keep SQLite, storage, and the
 application encryption key when replacing the image.
 

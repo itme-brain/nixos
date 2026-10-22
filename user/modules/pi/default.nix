@@ -7,16 +7,29 @@ let
   piPackageScope = "@earendil-works";
   piPackageName = "pi-coding-agent";
   piVersion = "1.3.0";
+  # Temporary runtime; return to patched upstream Node when available.
+  # Retain the private launcher and keep Node out of the global user profile.
+  nodeRuntime = pkgs.nodejsSecurity;
+  piLauncher = pkgs.writeShellScriptBin "pi" ''
+    export PATH="${nodeRuntime}/bin:$PATH"
+    exec ${nodeRuntime}/bin/node "${npmGlobal}/lib/node_modules/${piPackageScope}/${piPackageName}/dist/bundle/cli.js" "$@"
+  '';
   installPi = pkgs.writeShellScript "install-pi-coding-agent" ''
-    export PATH="${lib.makeBinPath [ pkgs.nodejs pkgs.coreutils ]}:$PATH"
+    export PATH="${lib.makeBinPath [ nodeRuntime pkgs.coreutils ]}:$PATH"
     export NPM_CONFIG_FETCH_RETRIES=0
     export NPM_CONFIG_FETCH_TIMEOUT=15000
     piPkgScope="${npmGlobal}/lib/node_modules/${piPackageScope}"
     piBin="${npmGlobal}/bin/pi"
     agentDir="${config.home.homeDirectory}/.pi/agent"
+    # npm owns this bin link while installing; restore our launcher afterward.
+    if [ -L "$piBin" ]; then
+      case "$(readlink "$piBin")" in
+        /nix/store/*-pi/bin/pi) unlink "$piBin" ;;
+      esac
+    fi
     rm -f "${npmGlobal}/bin"/.pi-*
     rm -rf "$piPkgScope"/.${piPackageName}-*
-    if ! ${pkgs.nodejs}/bin/npm install -g --prefix ${npmGlobal} ${piPackageScope}/${piPackageName}@${piVersion}; then
+    if ! ${nodeRuntime}/bin/npm install -g --prefix ${npmGlobal} ${piPackageScope}/${piPackageName}@${piVersion}; then
       echo "pi-coding-agent install failed (offline or registry error)" >&2
       exit 1
     fi
@@ -24,12 +37,13 @@ let
       echo "npm did not create $piBin" >&2
       exit 1
     fi
+    ln -sfn ${piLauncher}/bin/pi "$piBin"
     for ext in "$agentDir"/extensions/*; do
       if [ -f "$ext/package.json" ]; then
         if [ -f "$ext/package-lock.json" ]; then
-          ${pkgs.nodejs}/bin/npm ci --prefix "$ext" || exit 1
+          ${nodeRuntime}/bin/npm ci --prefix "$ext" || exit 1
         else
-          ${pkgs.nodejs}/bin/npm install --prefix "$ext" || exit 1
+          ${nodeRuntime}/bin/npm install --prefix "$ext" || exit 1
         fi
       fi
     done
@@ -40,7 +54,7 @@ in
     enable = mkEnableOption "user.pi";
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ nodejs ];
+    home.packages = [ piLauncher ];
 
     home.sessionVariables = {
       NPM_CONFIG_PREFIX = npmGlobal;
@@ -61,7 +75,6 @@ in
     };
 
     home.activation.installPiCodingAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      PATH="${pkgs.nodejs}/bin:$PATH"
       agentDir="${config.home.homeDirectory}/.pi/agent"
       piPkgScope="${npmGlobal}/lib/node_modules/${piPackageScope}"
       run mkdir -p ${npmGlobal}
@@ -69,6 +82,9 @@ in
       run mkdir -p "$piPkgScope"
       run mkdir -p "${config.home.homeDirectory}/.pi"
       run mkdir -p "$agentDir"
+      if [ -e "${npmGlobal}/lib/node_modules/${piPackageScope}/${piPackageName}/dist/bundle/cli.js" ]; then
+        run ln -sfn ${piLauncher}/bin/pi "${npmGlobal}/bin/pi"
+      fi
       if [ -e "$agentDir" ]; then
         run chmod -R u+w "$agentDir"
       fi

@@ -1,0 +1,4 @@
+services:
+  api:
+    image: librechat-local:v0.8.8-node24.22.1
+    pull_policy: never

@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5 AS assets
+FROM node:24.22.1-bookworm-slim@sha256:55fb5f5a527ea2c5c4a95f963e48ef90aa38c7b346054fdc8ee9957a2b55d205 AS assets
 WORKDIR /app
 COPY app/package*.json ./
 RUN npm ci --ignore-scripts
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends patch \
 ENV ASSET_URL=https://ai.ramos.codes/systemone
 RUN npm run build
 
-FROM php:8.4-apache@sha256:901b0dbcd2419cc9cd307ea05e57403449ce722ccd5b32335da6e8d39f2b1ee0
+FROM php:8.4.27-apache-trixie@sha256:a0b75cee7023ba2c127138dcad2ecc6ec7e09435534645e70450f29f24ea2a5a
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git unzip patch libzip-dev libicu-dev libonig-dev libsqlite3-dev \
     && docker-php-ext-install pdo_sqlite mbstring intl zip pcntl bcmath \

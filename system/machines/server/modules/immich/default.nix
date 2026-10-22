@@ -6,6 +6,22 @@ let
   nginx = config.modules.system.nginx;
   domain = "ramos.codes";
   port = 2283;
+  # Temporary runtime override: restore pkgs.unstable.immich once its shipped
+  # Node runtime and shared dependencies are verified patched; see nodejs-security.nix.
+  immichRuntime = pkgs.symlinkJoin {
+    name = "immich-${pkgs.unstable.immich.version}-node-${pkgs.nodejsSecurity.version}";
+    paths = [ pkgs.unstable.immich ];
+    postBuild = ''
+      for program in server immich-admin; do
+        cp --remove-destination "${pkgs.unstable.immich}/bin/$program" "$out/bin/$program"
+        chmod u+w "$out/bin/$program"
+        substituteInPlace "$out/bin/$program" \
+          --replace-fail '${lib.getExe pkgs.unstable.nodejs}' '${lib.getExe pkgs.nodejsSecurity}'
+      done
+    '';
+    inherit (pkgs.unstable.immich) meta;
+    passthru = pkgs.unstable.immich.passthru;
+  };
   privateAccessRules = concatMapStringsSep "\n" (cidr: "allow ${cidr};") nginx.privateAllowCidrs + "\ndeny all;";
 
 in
@@ -36,7 +52,7 @@ in
     services.immich = {
       enable = true;
       # Immich 2.x in 26.05 is end-of-life; use the supported 3.x release.
-      package = pkgs.unstable.immich;
+      package = immichRuntime;
       port = port;
       host = "127.0.0.1";
       mediaLocation = "/var/lib/immich";

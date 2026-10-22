@@ -48,6 +48,7 @@
         # often trails the fast upstream release cadence.
         (final: prev: {
           codex = final.callPackage ./packages/codex.nix { };
+          nodejsSecurity = final.unstable.callPackage ./packages/nodejs-security.nix { };
         })
       ];
     };
