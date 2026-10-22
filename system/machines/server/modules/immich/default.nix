@@ -71,10 +71,34 @@ in
       SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
     };
 
-    modules.system.backup.paths = [
-      "/var/lib/immich"
-      "/var/lib/postgresql"
-    ];
+    systemd.services.immich-dump = {
+      description = "Consistent Immich database snapshot for encrypted backups";
+      requires = [ "postgresql.service" ];
+      after = [ "postgresql.service" ];
+      serviceConfig = { Type = "oneshot"; UMask = "0077"; };
+      script = ''
+        set -euo pipefail
+        temp=$(mktemp /var/lib/backup/immich.dump.XXXXXX)
+        globals=$(mktemp /var/lib/backup/postgresql-globals.sql.XXXXXX)
+        trap 'rm -f "$temp" "$globals"' EXIT
+        ${pkgs.util-linux}/bin/runuser -u postgres -- \
+          ${config.services.postgresql.package}/bin/pg_dump --format=custom immich > "$temp"
+        ${config.services.postgresql.package}/bin/pg_restore --file=/dev/null "$temp"
+        ${pkgs.util-linux}/bin/runuser -u postgres -- \
+          ${config.services.postgresql.package}/bin/pg_dumpall --globals-only > "$globals"
+        mv "$temp" /var/lib/backup/immich.dump
+        mv "$globals" /var/lib/backup/postgresql-globals.sql
+      '';
+    };
+    systemd.services.backup = {
+      requires = [ "immich-dump.service" ];
+      after = [ "immich-dump.service" ];
+    };
+    modules.system.backup = {
+      paths = [ "/var/lib/immich" ];
+      # Use the fresh logical dump, not Immich's accumulated internal dumps.
+      exclude = [ "var/lib/immich/backups" ];
+    };
 
     services.nginx.virtualHosts."photos.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;

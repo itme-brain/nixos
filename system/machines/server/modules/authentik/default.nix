@@ -93,11 +93,19 @@ in {
     description = "Consistent Authentik database snapshot for encrypted backups";
     requires = [ "podman-authentik-postgresql.service" ];
     after = [ "podman-authentik-postgresql.service" ];
+    script = ''
+      set -euo pipefail
+      temp=$(mktemp /var/lib/authentik/backups/authentik.dump.XXXXXX)
+      trap 'rm -f "$temp"' EXIT
+      ${pkgs.podman}/bin/podman exec authentik-postgresql \
+        pg_dump --port 55432 --username authentik --format custom authentik > "$temp"
+      ${pkgs.podman}/bin/podman exec -i authentik-postgresql \
+        pg_restore --file=/dev/null < "$temp"
+      mv "$temp" /var/lib/authentik/backups/authentik.dump
+    '';
     serviceConfig = {
       Type = "oneshot";
       UMask = "0077";
-      ExecStart = "${pkgs.podman}/bin/podman exec authentik-postgresql pg_dump --port 55432 --username authentik --format custom authentik";
-      StandardOutput = "truncate:/var/lib/authentik/backups/authentik.dump";
     };
   };
   systemd.services.backup = {
@@ -107,7 +115,6 @@ in {
   modules.system.backup.paths = [
     "/var/lib/authentik/backups"
     "/var/lib/authentik/data"
-    "/home/${config.user.name}/nixos/secrets/system/authentik.env"
   ];
 
   services.nginx.virtualHosts."auth.ramos.codes" = {

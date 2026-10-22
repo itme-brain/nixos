@@ -64,6 +64,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    modules.system.backup.paths = [ cfg.privateKeyFile ]
+      ++ builtins.filter (p: p != null) (map (peer: peer.presharedKeyFile) cfg.peers);
     networking.firewall.allowedUDPPorts = [ cfg.listenPort ];
     networking.firewall.trustedInterfaces = [ "wg0" ];
     networking.nat.internalInterfaces = mkAfter [ "wg0" ];

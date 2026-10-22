@@ -91,18 +91,36 @@ in
         };
 
         service = {
-          REGISTER_MANUAL_CONFIRM = true;
-          DISABLE_REGISTRATION = false;
+          # Authentik approves users through its manually maintained whitelist.
+          # Its OIDC source and client secret are persisted in Forgejo's database.
+          ENABLE_INTERNAL_SIGNIN = false;
+          ENABLE_BASIC_AUTHENTICATION = false;
+          DISABLE_REGISTRATION = true;
+          ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
+          SHOW_REGISTRATION_BUTTON = false;
+          REGISTER_MANUAL_CONFIRM = false;
+          REQUIRE_EXTERNAL_REGISTRATION_PASSWORD = false;
           DEFAULT_ALLOW_CREATE_ORGANIZATION = false;
+        };
+
+        oauth2_client = {
+          # Provision accounts only after the Authentik application permits login.
+          ENABLE_AUTO_REGISTRATION = true;
+          REGISTER_EMAIL_CONFIRM = false;
+          # Existing accounts require an explicit identity link, never a name match.
+          ACCOUNT_LINKING = "disabled";
+        };
+
+        openid = {
+          # Legacy OpenID is separate from the configured OIDC source.
+          ENABLE_OPENID_SIGNIN = false;
+          ENABLE_OPENID_SIGNUP = false;
         };
 
         admin = {
           DISABLE_REGULAR_ORG_CREATION = true;
         };
 
-        auth = {
-          ENABLE_BASIC_AUTHENTICATION = true;
-        };
       };
 
       database = {
@@ -114,6 +132,30 @@ in
     modules.system.backup.paths = [
       "/var/lib/forgejo"
     ];
+    modules.system.backup.exclude = [
+      "var/lib/forgejo/data/forgejo.db*"
+      "var/lib/forgejo/log"
+    ];
+    systemd.services.forgejo-dump = {
+      description = "Consistent Forgejo SQLite snapshot for encrypted backups";
+      requires = [ "forgejo.service" ];
+      after = [ "forgejo.service" ];
+      serviceConfig = { Type = "oneshot"; UMask = "0077"; };
+      script = ''
+        set -euo pipefail
+        temp=$(mktemp /var/lib/backup/forgejo.db.XXXXXX)
+        trap 'rm -f "$temp"' EXIT
+        ${pkgs.sqlite}/bin/sqlite3 ${lib.escapeShellArg config.services.forgejo.database.path} ".backup '$temp'"
+        # Produce a self-contained snapshot without WAL/shm sidecar files.
+        ${pkgs.sqlite}/bin/sqlite3 "$temp" 'PRAGMA journal_mode=DELETE;' >/dev/null
+        test "$(${pkgs.sqlite}/bin/sqlite3 "$temp" 'PRAGMA integrity_check;')" = ok
+        mv "$temp" /var/lib/backup/forgejo.db
+      '';
+    };
+    systemd.services.backup = {
+      requires = [ "forgejo-dump.service" ];
+      after = [ "forgejo-dump.service" ];
+    };
 
     services.nginx.virtualHosts."git.${domain}" = mkIf nginx.enable {
       useACMEHost = domain;
