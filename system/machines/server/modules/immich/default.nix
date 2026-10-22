@@ -49,6 +49,12 @@ in
       options = [ "bind" ];
     };
 
+    # Authentication is managed in Immich's persistent database through its
+    # native OIDC settings: Authentik issuer /application/o/immich/, automatic
+    # OAuth login, and password login disabled. The Authentik Immich application
+    # requires membership in the manually maintained "AI users" whitelist.
+    # Keep settings unset here so existing UI-managed application settings remain
+    # editable; the client secret belongs in the databases, never the Nix store.
     services.immich = {
       enable = true;
       # Immich 2.x in 26.05 is end-of-life; use the supported 3.x release.
