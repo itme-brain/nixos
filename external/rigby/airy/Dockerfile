@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM php:8.4.27-apache-trixie@sha256:a0b75cee7023ba2c127138dcad2ecc6ec7e09435534645e70450f29f24ea2a5a
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git unzip patch libzip-dev libicu-dev libonig-dev libsqlite3-dev \
+    git unzip patch libzip-dev libicu-dev libonig-dev libsqlite3-dev libbrotli1=1.1.0-2+deb13u1 \
     && docker-php-ext-install pdo_sqlite mbstring intl zip pcntl bcmath \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*

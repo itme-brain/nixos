@@ -1,0 +1,6 @@
+# Incremental rebuild of the deployed application without touching its data.
+# The full Dockerfile enforces the same fixed Debian library for fresh builds.
+FROM clef-airy:ed7cd28-php8.4.27-node24.22.1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libbrotli1=1.1.0-2+deb13u1 \
+    && rm -rf /var/lib/apt/lists/*

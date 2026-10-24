@@ -1,0 +1,4 @@
+# Keep the deployed MongoDB version/data format; only replace its Ubuntu library.
+FROM mongo:8.0.20@sha256:e10bf1ab9165f90859aa52fbde099262d0c9d1c7cae3685a6ddf73a0bfc0c42e
+COPY libbrotli1_1.1.0-2build2+infra1_amd64.deb /tmp/libbrotli-security.deb
+RUN dpkg -i /tmp/libbrotli-security.deb && ldconfig && rm /tmp/libbrotli-security.deb

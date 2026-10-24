@@ -1,4 +1,7 @@
 services:
   crawl4ai:
-    image: crawl4ai-local:0.9.2-node24.22.1
+    image: crawl4ai-local:0.9.2-node24.22.1-brotli1.2.1
+    pull_policy: never
+  mcp-auth:
+    image: nginx@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
     pull_policy: never
