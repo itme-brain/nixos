@@ -15,8 +15,9 @@ docker build -t librechat-local:v0.8.8-node24.22.1 /home/librechat/deployment
 Install `librechat.service` in `/etc/systemd/system`, reload systemd, and
 restart LibreChat after backing up its data and configuration. The service
 combines the existing `/home/librechat/LibreChat/compose.radiance.yaml` with
-`compose.node-runtime.yaml`; only the API image and its pull policy change.
-The override requires the local image to exist before starting.
+`compose.security.yaml`; the API and MongoDB images and their pull policies change.
+The override requires both local images to exist before starting. See
+`../security/README.md` for the MongoDB Brotli backport build.
 
 Keep the existing `.env`, credential encryption keys, MongoDB data, uploads,
 and other bind mounts. The service retains the existing user, networking,

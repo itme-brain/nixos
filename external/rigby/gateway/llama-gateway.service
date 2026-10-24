@@ -1,0 +1,19 @@
+[Unit]
+Description=LibreChat and inference API gateway
+Requires=docker.service
+Wants=librechat.service
+After=docker.service librechat.service llama-server.service
+Conflicts=llama-server.service
+
+[Service]
+Type=simple
+User=llama
+Group=docker
+ExecStart=/usr/bin/docker run --rm --name llama-gateway --network host --mount type=bind,src=/etc/infra-pki/certs,dst=/etc/ssl/certs,readonly --env SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt --env SSL_CERT_DIR=/etc/ssl/certs --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt --env CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt --env AWS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt --env PIP_CERT=/etc/ssl/certs/ca-certificates.crt --env UV_NATIVE_TLS=true --pull never --mount type=bind,src=/home/llama/gateway/nginx.conf,dst=/etc/nginx/nginx.conf,readonly --mount type=bind,src=/etc/web-search-mcp/api-auth.conf,dst=/etc/nginx/api-auth.conf,readonly nginx@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
+ExecStop=/usr/bin/docker stop --time 15 llama-gateway
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

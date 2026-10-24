@@ -7,7 +7,7 @@
 
 - name: Create the CA policy directory
   ansible.builtin.file:
-    path: /usr/local/lib/infra-pki
+    path: /usr/local/lib/infra-security
     state: directory
     owner: root
     group: root
@@ -15,13 +15,13 @@
 
 - name: Install application CA policy management
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../pki/configure.py"
-    dest: /usr/local/lib/infra-pki/configure.py
+    src: "{{ playbook_dir }}/../security/configure-pki.py"
+    dest: /usr/local/lib/infra-security/configure-pki.py
     owner: root
     group: root
     mode: "0755"
 
 - name: Apply host and container CA distrust policy
-  ansible.builtin.command: /usr/bin/python3 /usr/local/lib/infra-pki/configure.py
+  ansible.builtin.command: /usr/bin/python3 /usr/local/lib/infra-security/configure-pki.py
   changed_when: true
   when: not ansible_check_mode

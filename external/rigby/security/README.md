@@ -1,78 +1,66 @@
-# October 24 security deployment
+# Rigby security maintenance
 
-These fixes address CVE-2026-111497 and the NGINX advisories fixed by 1.30.6.
-Keep the existing CA mounts and Node 24.22.1 overrides. The promoted Nixpkgs
-channels and stable LibreChat/Crawl4AI images were still behind on October 24.
+CA policy, Ubuntu backports and container security deployment share this
+location. Container image build recipes and service definitions live with
+the corresponding applications; host updates do not update container filesystems.
 
-## Ubuntu host and MongoDB
+## CA policy
+
+`configure-pki.py` is installed at
+`/usr/local/lib/infra-security/configure-pki.py` by `../playbooks/pki.yml`.
+It filters the application CA store, repairs private client bundles and configures
+container mounts. Keep `/etc/infra-pki/certs` as the persistent mount source.
+The CA update hook refreshes this directory when Ubuntu updates its trust store.
+Backups remain under `/var/backups/infra-pki`.
+
+## Ubuntu and MongoDB Brotli backport
 
 Install `backport-brotli.sh` and `brotli-CVE-2026-111497.patch` under
 `/usr/local/lib/infra-security`, then run the script as root. It downloads
 signed-index Ubuntu Noble source, applies Google's 1.1.x backport
 `da9806362874b9bd4b552a3af360b5d6347beb12`, runs the distribution package tests,
 and installs `libbrotli1` and `python3-brotli` version
-`1.1.0-2build2+infra1`. Binary/source build artifacts remain in
-`/var/cache/infra-security`. It does not change the normal APT sources.
+`1.1.0-2build2+infra1`. Artifacts remain in `/var/cache/infra-security`.
+It does not change the normal APT sources.
 
-Build MongoDB using `../librechat/Dockerfile.mongodb` and the generated
-`libbrotli1_1.1.0-2build2+infra1_amd64.deb` together in a build directory:
+Build `../librechat/Dockerfile.mongodb` with the generated
+`libbrotli1_1.1.0-2build2+infra1_amd64.deb` in its build directory, tagging
+`mongo-local:8.0.20-brotli-fixed`. The LibreChat security Compose override
+selects this image. Restart host library consumers after installing a backport,
+one inference service at a time, checking authenticated model access.
 
-```sh
-docker build -f Dockerfile.mongodb -t mongo-local:8.0.20-brotli-fixed .
-```
+Retire this backport and derived MongoDB image when Canonical's installed
+package is verified fixed. Its newer distribution version can supersede the
+local package normally.
 
-Install `../librechat/compose.node-runtime.yaml` in
-`/home/librechat/deployment`. From `/home/librechat/LibreChat`:
+## Containers and gateways
 
-```sh
-docker compose -f compose.radiance.yaml -f /home/librechat/deployment/compose.node-runtime.yaml up -d --no-deps --no-build --pull never mongodb
-```
+- `../crawl4ai/README.md`: Crawl4AI 0.9.5 certificate verification and config
+  fixes, Node 24.22.1 drivers and fixed system/Python/Pillow Brotli copies.
+  `compose.security.yaml` also selects the official NGINX 1.30.6 image.
+- `../librechat/README.md`: pinned LibreChat application with patched Node and
+  MongoDB, selected by its security Compose override.
+- `../airy/README.md`: canonical full build with PHP 8.4.27, Node 24.22.1
+  assets and Debian's corrected Brotli. No incremental security Dockerfile.
+- `../gateway/llama-gateway.service`: complete systemd definition for the
+  inference/browser gateway, including the pinned official NGINX 1.30.6 image,
+  CA mounts and existing authentication configuration. Install it directly
+  in `/etc/systemd/system` and reload systemd; no unit-rewriting script.
 
-Restart `glances`, `radiance`, and `radiance-d1` after updating the host
-library, one inference service at a time. Verify both model endpoints return
-their expected authenticated response before proceeding.
-
-## Crawl4AI and NGINX gateways
-
-Follow `../crawl4ai/README.md`. Copy its Dockerfile, vendored-library repair
-script and Compose override together. The override also pins `mcp-auth` to
-the official multi-platform NGINX 1.30.6 image. Pull this image first:
-
-```sh
-docker pull nginx@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
-```
-
-Run `update-gateway.py` as root to update the separate gateway's existing
-systemd definition without dropping its CA mounts/auth configuration. It
-backs up changed unit files under `/var/backups/infra-security-20261024`.
-Restart `llama-gateway`. Recreate `crawl4ai` and `mcp-auth` using the existing
-three Compose files and `up -d --no-deps --no-build --pull never`.
-
-## Airy
-
-The full `../airy/Dockerfile` now installs Debian's fixed
-`libbrotli1=1.1.0-2+deb13u1`. For an incremental deployment of the existing
-application, build `../airy/Dockerfile.security` in an otherwise empty
-directory, tagging it `clef-airy:ed7cd28-php8.4.27-node24.22.1-brotli-fixed`.
-Install the tracked `clef-airy.service`, reload systemd and restart it. Keep
-its original image for rollback. No database or storage migration is involved.
+Pull digest-pinned images and build local images before starting services.
+Preserve keys, databases, storage, authentication and CA mounts. Avoid restarting
+unrelated inference or database services when changing a single image.
 
 ## Verification and retirement
 
-Check native and Python decoder fixes by calling `BrotliDecoderErrorString`
-with `-17`: the result must end in `BLOCK_SWITCH`. A version number alone
-cannot distinguish a distro backport. Check both browser-driver Node binaries,
-an authenticated crawl, image/font handling, MongoDB health, LibreChat model
-access, Airy, and both NGINX gateways. Do not print tokens or environment values.
+`../crawl4ai/verify-tls.py` checks valid HTTPS and rejection of self-signed,
+expired and explicitly bypassed certificates through the authenticated API.
+Check both browser-driver Node binaries and native/Python decoders, image/font
+handling, MongoDB health, LibreChat, Airy, inference and both NGINX gateways.
+Do not print credentials. Decoder error -17 must end in `BLOCK_SWITCH`; version
+numbers alone cannot identify distro backports.
 
-Retire the Ubuntu backport and derived MongoDB image once Canonical publishes
-and installs a verified fixed package. Its normal newer Ubuntu package version
-can supersede the local backport. Remove the remaining image overrides only
-after checking every bundled decoder in the replacement image, including
-Pillow, Python and both Node drivers. Host package updates do not update
-container filesystems.
-
-The crawler's Chrome for Testing 149.0.7827.55 already contains the fixed
-`DecodeBlockTypeAndLength` implementation. This was verified against its
-exact Chromium tag's `third_party/brotli/dec/decode.c`; an absent error string
-in a stripped browser binary alone is not a reliable vulnerability test.
+Remove custom images only after verifying every bundled decoder and Node
+runtime in the replacement. Crawl4AI's Chrome for Testing 149.0.7827.55 was
+checked against its exact Chromium tag's Brotli source and already has the fix;
+absence of a string in a stripped browser binary alone is not a reliable test.

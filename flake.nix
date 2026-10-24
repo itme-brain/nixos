@@ -48,6 +48,9 @@
         # often trails the fast upstream release cadence.
         (final: prev: {
           codex = final.callPackage ./packages/codex.nix { };
+        })
+        # Temporary security overrides; see system/modules/security/README.md.
+        (final: prev: {
           nodejsSecurity = final.unstable.callPackage ./packages/nodejs-security.nix { };
           replaceDirectDependencies = final.callPackage ./packages/replace-direct-dependencies-security.nix { };
         })
@@ -61,8 +64,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           inputs.sops-nix.nixosModules.sops
-          ./system/modules/pki
-          ./system/modules/runtime-security
+          ./system/modules/security
           path
         ];
       };

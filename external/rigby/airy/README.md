@@ -90,7 +90,17 @@ Native inference clients continue using their existing Bearer key on `/v1/*`.
 
 Create a temporary build directory containing these deployment files and an
 `app/` directory populated with `git archive` of the pinned upstream commit.
-Then run `docker build -t clef-airy:ed7cd28-php8.4.27-node24.22.1 BUILD_DIRECTORY` on rigby.
+Create `BUILD_DIRECTORY/app` explicitly and extract the archive into that
+subdirectory, preserving the upstream `app/Services` directory beneath it:
+
+```sh
+mkdir -p BUILD_DIRECTORY/app
+git -C /home/llama/servers/clef-airy archive ed7cd282ae0b097eee9df2571b2d0c6ae66d7d1b | tar -x -C BUILD_DIRECTORY/app
+docker build -t clef-airy:ed7cd28-php8.4.27-node24.22.1 BUILD_DIRECTORY
+```
+
+The canonical Dockerfile includes Debian's corrected Brotli library; a separate
+incremental security image is unnecessary.
 Restart `clef-airy.service` after building. Keep SQLite, storage, and the
 application encryption key when replacing the image.
 

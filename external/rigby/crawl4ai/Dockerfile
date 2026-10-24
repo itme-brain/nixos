@@ -1,4 +1,4 @@
-# TEMPORARY: retire this image, Compose override and zz-node-runtime.conf once
+# TEMPORARY: retire this image, Compose override and zz-security.conf once
 # the official image fixes Node, Python Brotli, system Brotli and Pillow's copy.
 # Verify both browser drivers and an authenticated crawl; retain CA/auth/LFM settings.
 FROM node:24.22.1-bookworm-slim@sha256:55fb5f5a527ea2c5c4a95f963e48ef90aa38c7b346054fdc8ee9957a2b55d205 AS runtime
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && cmake --build /tmp/brotli-build --parallel 4 \
     && cmake --install /tmp/brotli-build
 
-FROM unclecode/crawl4ai:0.9.2@sha256:bd36741e7bdd35ddc1a05d9183e1d6d8cefb61dd640d944a25d026b76e917690
+FROM unclecode/crawl4ai:0.9.5@sha256:0b05666882bfb67f45d559a5b827839c54127b74aedd723f8ab338a3571b5fc9
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
       libbrotli1=1.0.9-2+deb12u1 patchelf \
