@@ -1,7 +1,7 @@
 {
   "layer": "top",
   "position": "top",
-  "output": "HDMI-A-1",
+  "output": "Samsung Electric Company C24F390 HCPRC03514",
   "modules-left": [ "custom/logo", "clock", "memory", "cpu" ],
   "modules-center": [ "hyprland/workspaces" ],
   "modules-right": [ "tray", "pulseaudio", "network" ],

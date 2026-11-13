@@ -8,6 +8,11 @@ with lib;
     type = types.listOf (types.submodule {
       options = {
         name = mkOption { type = types.str; example = "HDMI-A-1"; };
+        description = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "Physical monitor make, model and serial; preferred over the connector name.";
+        };
         width = mkOption { type = types.int; };
         height = mkOption { type = types.int; };
         x = mkOption { type = types.int; };
@@ -22,8 +27,8 @@ with lib;
 
   config = {
     monitors = [
-      { name = "HDMI-A-1"; width = 1920; height = 1080; x = 0;    y = 0; scale = 1.0; refreshRate = 60; }
-      { name = "DP-1";     width = 1920; height = 1080; x = 1920; y = 0; scale = 1.0; refreshRate = 60; }
+      { name = "HDMI-A-1"; description = "Samsung Electric Company C24F390 HCPRC03514"; width = 1920; height = 1080; x = 0;    y = 0; scale = 1.0; refreshRate = 60; }
+      { name = "DP-1"; description = "Samsung Electric Company Odyssey G40B HCJW703270"; width = 1920; height = 1080; x = 1920; y = 0; scale = 1.0; refreshRate = 60; }
     ];
 
     boot = {

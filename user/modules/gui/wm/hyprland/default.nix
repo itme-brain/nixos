@@ -13,7 +13,7 @@ let
 
   toLuaMonitor = m: ''
     hl.monitor({
-      output = ${toLua m.name},
+      output = ${toLua (if (m.description or null) != null then "desc:${m.description}" else m.name)},
       mode = ${toLua "${toString m.width}x${toString m.height}@${toString m.refreshRate}"},
       position = ${toLua "${toString m.x}x${toString m.y}"},
       scale = ${toLua m.scale},

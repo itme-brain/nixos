@@ -18,7 +18,7 @@ let
   '';
 
   toSwayOutput = m: {
-    "${m.name}" = {
+    "${if (m.description or null) != null then m.description else m.name}" = {
       resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}Hz";
       position = "${toString m.x} ${toString m.y}";
       scale = toString m.scale;
