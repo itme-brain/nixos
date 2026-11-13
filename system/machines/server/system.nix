@@ -36,7 +36,6 @@
     nginx = {
       enable = true;
     };
-    sandpack.enable = false;
     forgejo.enable = true;
     frigate.enable = false;
     immich.enable = true;
@@ -55,11 +54,6 @@
         }
       ];
     };
-    # bitcoin = {
-    #   enable = true;
-    #   electrum.enable = true;
-    #   clightning.enable = true;
-    # };
 
     backup = {
       enable = true;

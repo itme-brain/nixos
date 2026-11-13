@@ -1,0 +1,84 @@
+use_default_settings:
+  engines:
+    keep_only:
+    - google
+    - google news
+    - bing
+    - bing news
+    - yandex
+    - fynd
+    - searchmysite
+    - wiby
+    - duckduckgo
+    - duckduckgo news
+    - startpage
+    - mojeek
+    - stackoverflow
+    - wikipedia
+    - github
+    - arxiv
+engines:
+- name: duckduckgo
+  disabled: true
+  weight: 1.5
+- name: bing
+  disabled: false
+  weight: 1.5
+- name: yandex
+  disabled: false
+  weight: 1.3
+- name: fynd
+  disabled: false
+  weight: 0.9
+- name: searchmysite
+  disabled: true
+  weight: 0.7
+- name: wiby
+  disabled: false
+  weight: 0.6
+- name: startpage
+  disabled: true
+  weight: 1.3
+- name: mojeek
+  disabled: true
+  weight: 1.3
+- name: stackoverflow
+  disabled: false
+  weight: 1.2
+- name: wikipedia
+  disabled: false
+  weight: 1.3
+- name: github
+  disabled: false
+  weight: 1.2
+- name: arxiv
+  disabled: false
+  weight: 1.2
+- name: duckduckgo news
+  disabled: true
+  weight: 1.0
+- name: bing news
+  disabled: false
+  weight: 1.0
+- name: google
+  disabled: false
+  weight: 0.5
+- name: google news
+  disabled: false
+  weight: 0.5
+general:
+  instance_name: Web Search MCP
+search:
+  safe_search: 0
+  autocomplete: duckduckgo
+  formats:
+  - html
+  - json
+server:
+  secret_key: '{{ search_runtime_secrets.searxng_secret_key }}'
+  limiter: false
+  image_proxy: true
+ui:
+  static_use_hash: true
+  default_theme: simple
+  results_on_new_tab: false

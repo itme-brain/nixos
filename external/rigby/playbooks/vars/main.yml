@@ -1,0 +1,76 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+rigby_user: bryan
+rigby_static_network_enabled: true
+rigby_interface: eno1
+rigby_static_ip: 192.168.0.23/24
+rigby_gateway: 192.168.0.1
+rigby_dns: [192.168.0.1, 1.1.1.1]
+rigby_reboot_after_kernel_install: true
+rigby_llama_sops: "{{ playbook_dir }}/../../../secrets/system/llama.yaml"
+rigby_authentik_sops: "{{ playbook_dir }}/../../../secrets/system/authentik.env"
+# Optional tar archive already staged on the target. Paths inside it are relative
+# to /, e.g. home/librechat/LibreChat/data-node/. Restore only while containers stop.
+rigby_data_archive: ""
+rigby_kernel_packages:
+  - linux-generic
+  - linux-headers-generic
+  - linux-modules-extra-7.0.0-43-generic
+rigby_packages:
+  - amd64-microcode
+  - ca-certificates
+  - curl
+  - git
+  - git-lfs
+  - rsync
+  - openssh-server
+  - sudo
+  - gnupg
+  - pciutils
+  - python3
+  - python3-venv
+  - python3-yaml
+  - python3-cryptography
+  - build-essential
+  - cmake
+  - ninja-build
+  - pkg-config
+  - ccache
+  - libssl-dev
+  - libcurl4-openssl-dev
+  - libavcodec-dev
+  - libavformat-dev
+  - libavutil-dev
+  - libswscale-dev
+  - libswresample-dev
+  - just
+rigby_amd_packages:
+  - amdgpu-dkms=1:7.1.9.31600000-2407772.26.04
+  - amdgpu-dkms-firmware
+  - amdgpu-lib=1:26.14.26140000-2390957.26.04
+  - amdrocm-core-dev10.1-gfx1201=10.1.0-3
+  - amdrocm-amdsmi10.1=10.1.0-3
+rigby_docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+radiance_version: "1.17.0"
+radiance_revision: 19d4e8fe0e18071b9b6300f15fc4ccf38dc4fa3d
+radiance_repo: https://codeberg.org/StillDeadcode/radiance.git
+radiance_root: /home/llama/servers/radiance-v{{ radiance_version }}
+radiance_gpu_ids: GPU-f5d2ac9c8f8d1a57,GPU-3c962837bd073406,GPU-f383b47876cf382f
+radiance_rocm_root: /opt/rocm/core-10.1
+radiance_build_jobs: 32
+radiance_model_name: qwen3.8-next-flash-uncensored-fp8-iq4r-moe.rad
+radiance_model_revision: 9a245e2952eb0d54313bb0eb373fb5c559be00d6
+radiance_model_sha256: 19276213c4905100555508cf9d9383ae393424985f06c99b15935eaea5471f60
+radiance_model_url: https://huggingface.co/StillDeadcode/qwen3.8-next-flash-uncensored-fp8-iq4r-moe/resolve/{{ radiance_model_revision }}/{{ radiance_model_name }}
+web_search_root: /home/llama/web-search-mcp
+web_search_revision: 441f53d3af51a93d437a43e7bde68e1fd1f8d691
+web_search_repo: https://github.com/itme-brain/web-search-mcp
+librechat_root: /home/librechat/LibreChat
+librechat_revision: e8f3be08623663d4ad7f7241e693c94469b63bb0
+librechat_repo: https://github.com/danny-avila/LibreChat.git
+rigby_nginx_image: nginx@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951

@@ -1,5 +1,5 @@
 SYSTEM := "$(echo $HOSTNAME)"
-VALID_SYSTEMS := "desktop server wsl"
+VALID_SYSTEMS := "desktop server"
 RIGBY_DIR := "external/rigby"
 RIGBY_HOST := "192.168.0.23"
 
@@ -32,7 +32,7 @@ rigby-recover-dry-run HOST=RIGBY_HOST:
 _validate SYSTEM:
   #!/usr/bin/env bash
   case "{{SYSTEM}}" in
-    desktop|server|wsl) ;;
+    desktop|server) ;;
     *) echo "Error: Unknown system '{{SYSTEM}}'. Use one of: {{VALID_SYSTEMS}}"; exit 1 ;;
   esac
 

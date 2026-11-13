@@ -1,0 +1,4 @@
+map $http_authorization $mcp_authorized {
+    default 0;
+    {{ ('Bearer ' ~ rigby_llama_secrets.LLAMA_API_KEY) | to_json }} 1;
+}

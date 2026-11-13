@@ -1,0 +1,58 @@
+version: 1.3.17
+cache: true
+interface:
+  runCode: false
+  mcpServers:
+    use: true
+    create: true
+    share: false
+    public: false
+mcpSettings:
+  allowedDomains:
+    - 'http://host.docker.internal:8002'
+  allowedAddresses:
+    - 'host.docker.internal:8002'
+mcpServers:
+  web-search:
+    type: streamable-http
+    requiresOAuth: false
+    url: 'http://host.docker.internal:8002/mcp'
+    headers:
+      Authorization: 'Bearer ${LLAMA_API_KEY}'
+    chatMenu: true
+    timeout: 60000
+endpoints:
+  agents:
+    # Disable new artifact generation; preserve other default capabilities.
+    capabilities:
+      - deferred_tools
+      - execute_code
+      - file_search
+      - web_search
+      - subagents
+      - actions
+      - context
+      - skills
+      - memory
+      - ask_user_question
+      - tools
+      - chain
+      - ocr
+  custom:
+    - name: Radiance
+      apiKey: '${RADIANCE_API_KEY}'
+      baseURL: 'http://host.docker.internal:9331/v1'
+      models:
+        default: ['Qwen3.8-Flash-Next']
+        fetch: true
+      titleConvo: true
+      titleModel: Qwen3.8-Flash-Next
+      titleMethod: completion
+      modelDisplayLabel: Radiance
+
+fileConfig:
+  endpoints:
+    Radiance:
+      defaultLLMDeliveryPath:
+        overrides:
+          application/pdf: text

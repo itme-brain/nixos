@@ -105,7 +105,6 @@
         wm.hyprland.enable = true;
         browser.firefox.enable = true;
         alacritty.enable = true;
-        corn.enable = true;
         fun.enable = true;
         utils.enable = true;
       };

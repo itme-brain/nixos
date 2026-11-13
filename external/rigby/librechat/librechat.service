@@ -1,5 +1,5 @@
 [Unit]
-Description=LibreChat frontend (Radiance experiment)
+Description=LibreChat frontend
 After=network-online.target docker.service
 Wants=network-online.target
 Requires=docker.service

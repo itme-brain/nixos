@@ -1,0 +1,18 @@
+[Unit]
+Description=Tune all Radeon AI PRO R9700 GPUs
+After=systemd-udev-trigger.service
+
+[Service]
+Type=oneshot
+Environment="PATH=/opt/rocm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# Shared settings for every installed R9700 (AMD PCI ID 1002:7551).
+Environment="GPU_POWER_CAP_W=210"
+Environment="GPU_VOLTAGE_OFFSET_MV=-75"
+
+# Discover R9700s, prevent runtime suspend, set caps, apply offsets and verify.
+# Skip unchanged voltage settings; double dollars preserve shell variables.
+ExecStart=/bin/sh -ec 'gpus=""; for gpu in /sys/bus/pci/devices/*; do test -f "$$gpu/vendor" || continue; test "$$(cat "$$gpu/vendor")" = 0x1002 || continue; test "$$(cat "$$gpu/device")" = 0x7551 || continue; test -e "$$gpu/pp_od_clk_voltage"; gpus="$$gpus $$gpu"; done; test -n "$$gpus"; for gpu in $$gpus; do if test "$$(cat "$$gpu/power/control")" != on; then echo on > "$$gpu/power/control"; fi; test "$$(cat "$$gpu/power/control")" = on; done; for gpu in $$gpus; do pci=$${gpu##*/}; /usr/bin/env amd-smi set -g "$$pci" -o "$$GPU_POWER_CAP_W" ppt0; done; for gpu in $$gpus; do pci=$${gpu##*/}; if test "$$(cat "$$gpu/power_dpm_force_performance_level")" != manual; then echo manual > "$$gpu/power_dpm_force_performance_level"; fi; target="$${GPU_VOLTAGE_OFFSET_MV}mV"; current=$$(sed -n "/^OD_VDDGFX_OFFSET:/{n;p;}" "$$gpu/pp_od_clk_voltage"); if test "$$current" != "$$target"; then echo "vo $$GPU_VOLTAGE_OFFSET_MV" > "$$gpu/pp_od_clk_voltage"; echo c > "$$gpu/pp_od_clk_voltage"; fi; actual=$$(sed -n "/^OD_VDDGFX_OFFSET:/{n;p;}" "$$gpu/pp_od_clk_voltage"); test "$$actual" = "$$target"; test "$$(cat "$$gpu/power/control")" = on; test "$$(cat "$$gpu/power_dpm_force_performance_level")" = manual; expected_cap=$$((GPU_POWER_CAP_W * 1000000)); found=0; for cap in "$$gpu"/hwmon/hwmon*/power1_cap; do test -f "$$cap"; test "$$(cat "$$cap")" = "$$expected_cap"; found=1; done; test "$$found" = 1; echo "$$pci: offset=$$actual cap=$${GPU_POWER_CAP_W}W runtime-suspend=disabled"; done'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -13,10 +13,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/2411.6.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,16 +40,6 @@
             config.allowUnfree = true;
           };
         })
-        # Track Codex directly from its upstream release archive. Nixpkgs
-        # often trails the fast upstream release cadence.
-        (final: prev: {
-          codex = final.callPackage ./packages/codex.nix { };
-        })
-        # Temporary security overrides; see system/modules/security/README.md.
-        (final: prev: {
-          nodejsSecurity = final.unstable.callPackage ./packages/nodejs-security.nix { };
-          replaceDirectDependencies = final.callPackage ./packages/replace-direct-dependencies-security.nix { };
-        })
       ];
     };
 
@@ -74,7 +60,6 @@
     nixosConfigurations = {
       desktop = mkSystem { path = ./system/machines/desktop; };
       server  = mkSystem { path = ./system/machines/server; };
-      wsl     = mkSystem { path = ./system/machines/wsl; };
     };
 
     devShells.x86_64-linux.default = with mkPkgs "x86_64-linux"; mkShell {

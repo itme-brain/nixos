@@ -1,0 +1,66 @@
+name: librechat-radiance
+services:
+  api:
+    image: registry.librechat.ai/librechat-ai/librechat:v0.8.8@sha256:5b706bcee1ca154a1e2987303aaeca0eb27f97919cccee4bb604226c2f8abf61
+    user: ${UID}:${GID}
+    restart: unless-stopped
+    ports:
+    - 127.0.0.1:3080:3080
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    - auth.ramos.codes:192.168.0.154
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3080
+      MONGO_URI: mongodb://mongodb:27017/LibreChat
+      ENDPOINTS: custom
+      SEARCH: 'false'
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      SSL_CERT_DIR: /etc/ssl/certs
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      CURL_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      AWS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      PIP_CERT: /etc/ssl/certs/ca-certificates.crt
+      UV_NATIVE_TLS: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+    volumes:
+    - ./.env:/app/.env:ro
+    - ./librechat.radiance.yaml:/app/librechat.yaml:ro
+    - ./uploads:/app/uploads
+    - ./logs:/app/logs
+    - ./images:/app/client/public/images
+    - ./data:/app/data
+    - ./skill:/app/skill
+    - /etc/infra-pki/certs:/etc/ssl/certs:ro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+  mongodb:
+    image: mongo:8.0.20
+    user: ${UID}:${GID}
+    restart: unless-stopped
+    command:
+    - mongod
+    - --noauth
+    - --bind_ip_all
+    volumes:
+    - ./data-node:/data/db
+    - /etc/infra-pki/certs:/etc/ssl/certs:ro
+    healthcheck:
+      test:
+      - CMD
+      - mongosh
+      - --quiet
+      - --eval
+      - db.adminCommand({ping:1}).ok
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    environment:
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      SSL_CERT_DIR: /etc/ssl/certs
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      CURL_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      AWS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      PIP_CERT: /etc/ssl/certs/ca-certificates.crt
+      UV_NATIVE_TLS: 'true'

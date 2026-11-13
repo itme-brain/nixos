@@ -1,0 +1,170 @@
+---
+- name: Install Ubuntu build and management dependencies
+  ansible.builtin.apt:
+    name: "{{ rigby_packages }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install the current Ubuntu generic kernel and headers
+  ansible.builtin.apt:
+    name: "{{ rigby_kernel_packages }}"
+    state: latest
+  register: rigby_kernel
+
+- name: Create repository keyring directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Install AMD repository signing keys
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../files/{{ item }}"
+    dest: "/etc/apt/keyrings/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: [rocm.gpg, amdrocm.gpg]
+
+- name: Configure AMD driver repository for Ubuntu 26.04
+  ansible.builtin.copy:
+    content: "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/31.60/ubuntu resolute main\n"
+    dest: /etc/apt/sources.list.d/amdgpu.list
+    mode: "0644"
+
+- name: Configure AMD graphics repository for Ubuntu 26.04
+  ansible.builtin.copy:
+    content: "deb [arch=amd64,i386 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/graphics/26.14/ubuntu resolute main\n"
+    dest: /etc/apt/sources.list.d/rocm.list
+    mode: "0644"
+
+- name: Configure AMD ROCm 10.1 repository
+  ansible.builtin.copy:
+    content: |
+      Types: deb
+      URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2604/
+      Suites: stable
+      Components: main
+      Architectures: amd64
+      Signed-By: /etc/apt/keyrings/amdrocm.gpg
+    dest: /etc/apt/sources.list.d/amdrocm-stable.sources
+    mode: "0644"
+
+- name: Prefer AMD packages for the GPU driver stack
+  ansible.builtin.copy:
+    content: "Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600\n"
+    dest: /etc/apt/preferences.d/amdgpu-pin-600
+    mode: "0644"
+
+- name: Install AMD driver and ROCm development/runtime packages
+  ansible.builtin.apt:
+    name: "{{ rigby_amd_packages }}"
+    state: present
+    update_cache: true
+  register: rigby_amd
+
+- name: Select ROCm 10.1 runtime and compiler alternatives
+  ansible.builtin.command:
+    argv: [update-alternatives, --set, "{{ item.name }}", "{{ item.path }}"]
+  loop:
+    - {name: core, path: /opt/rocm/core-10.1}
+    - {name: rocm-bin, path: /opt/rocm/core-10.1/bin}
+    - {name: rocm-lib, path: /opt/rocm/core-10.1/lib}
+    - {name: rocm-include, path: /opt/rocm/core-10.1/include}
+    - {name: rocm-llvm, path: /opt/rocm/core-10.1/llvm}
+    - {name: amd-smi, path: /opt/rocm/core-10.1/bin/amd-smi}
+  changed_when: false
+
+- name: Install Docker repository key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+
+- name: Configure Docker repository
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../templates/docker.sources.j2"
+    dest: /etc/apt/sources.list.d/docker.sources
+    mode: "0644"
+
+- name: Install Docker CE and Compose
+  ansible.builtin.apt:
+    name: "{{ rigby_docker_packages }}"
+    state: present
+    update_cache: true
+
+- name: Enable Docker
+  ansible.builtin.systemd_service:
+    name: docker.service
+    enabled: true
+    state: started
+
+- name: Create GPU access groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: [render, video]
+
+- name: Create application groups with existing IDs
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    gid: "{{ item.id }}"
+  loop:
+    - {name: llama, id: 1003}
+    - {name: librechat, id: 1004}
+
+- name: Create application users with existing IDs
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    uid: "{{ item.id }}"
+    group: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+    append: true
+    create_home: true
+    shell: /bin/bash
+  loop:
+    - {name: llama, id: 1003, groups: 'render,video,docker'}
+    - {name: librechat, id: 1004, groups: docker}
+
+- name: Retain operator access to Docker and GPUs
+  ansible.builtin.user:
+    name: "{{ rigby_user }}"
+    groups: render,video,docker
+    append: true
+
+- name: Configure GPU kernel options
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../radiance/{{ item }}"
+    dest: "/etc/modprobe.d/{{ item }}"
+    mode: "0644"
+  loop: [amdgpu-overdrive.conf, blacklist-radeon.conf]
+  register: rigby_modprobe
+
+- name: Configure GRUB defaults
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+  loop:
+    - {key: GRUB_CMDLINE_LINUX_DEFAULT, value: '"pcie_aspm.policy=performance iommu=pt"'}
+    - {key: GRUB_TIMEOUT_STYLE, value: menu}
+    - {key: GRUB_TIMEOUT, value: '10'}
+  register: rigby_grub
+
+- name: Regenerate initramfs for changed GPU module options
+  ansible.builtin.command: update-initramfs -u -k all
+  when: rigby_modprobe.changed or rigby_amd.changed
+  changed_when: true
+
+- name: Regenerate boot menu
+  ansible.builtin.command: update-grub
+  when: rigby_grub.changed or rigby_kernel.changed or rigby_amd.changed
+  changed_when: true
+
+- name: Reboot onto the recovered kernel and GPU driver before starting inference
+  ansible.builtin.reboot:
+    reboot_timeout: 900
+  when:
+    - rigby_reboot_after_kernel_install | bool
+    - rigby_kernel.changed or rigby_amd.changed or rigby_modprobe.changed or rigby_grub.changed

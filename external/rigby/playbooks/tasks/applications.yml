@@ -1,0 +1,268 @@
+---
+- name: Create application directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode | default('0750') }}"
+  loop:
+    - {path: /home/llama, owner: llama}
+    - {path: /home/llama/servers, owner: llama}
+    - {path: /home/llama/models, owner: llama}
+    - {path: /home/llama/models/radiance, owner: llama}
+    - {path: /home/llama/gateway, owner: llama}
+    - {path: /home/llama/deployment, owner: llama}
+    - {path: /home/llama/deployment/crawl4ai, owner: llama}
+    - {path: /home/librechat, owner: librechat}
+    - {path: /home/librechat/deployment, owner: librechat}
+    - {path: /etc/radiance, owner: root}
+    - {path: /etc/web-search-mcp, owner: root}
+    - {path: /usr/local/lib/infra-security, owner: root, mode: '0755'}
+
+- name: Check out pinned application source
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    version: "{{ item.version }}"
+    update: true
+    force: false
+  become_user: "{{ item.owner }}"
+  loop:
+    - {repo: '{{ web_search_repo }}', dest: '{{ web_search_root }}', version: '{{ web_search_revision }}', owner: llama}
+    - {repo: '{{ librechat_repo }}', dest: '{{ librechat_root }}', version: '{{ librechat_revision }}', owner: librechat}
+
+- name: Create bind-mounted state and configuration directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "0750"
+  loop:
+    - {path: '{{ web_search_root }}/searxng/config', owner: llama}
+    - {path: '{{ librechat_root }}/data-node', owner: librechat}
+    - {path: '{{ librechat_root }}/uploads', owner: librechat}
+    - {path: '{{ librechat_root }}/logs', owner: librechat}
+    - {path: '{{ librechat_root }}/images', owner: librechat}
+    - {path: '{{ librechat_root }}/data', owner: librechat}
+    - {path: '{{ librechat_root }}/skill', owner: librechat}
+
+- name: Install current public application configuration
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "0644"
+    unsafe_writes: true
+  loop:
+    - {src: 'gateway/nginx.conf', dest: /home/llama/gateway/nginx.conf, owner: llama}
+    - {src: 'gateway/web-search-nginx.conf', dest: /etc/web-search-mcp/nginx.conf, owner: root}
+    - {src: 'web-search/docker-compose.override.yml', dest: '{{ web_search_root }}/docker-compose.override.yml', owner: llama}
+    - {src: 'librechat/compose.radiance.yaml', dest: '{{ librechat_root }}/compose.radiance.yaml', owner: librechat}
+    - {src: 'librechat/librechat.radiance.yaml', dest: '{{ librechat_root }}/librechat.radiance.yaml', owner: librechat}
+
+- name: Install container build contexts
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "0644"
+  loop:
+    - {src: 'librechat/Dockerfile', dest: /home/librechat/deployment/Dockerfile, owner: librechat}
+    - {src: 'librechat/Dockerfile.mongodb', dest: /home/librechat/deployment/Dockerfile.mongodb, owner: librechat}
+    - {src: 'librechat/libbrotli1_1.1.0-2build2+infra1_amd64.deb', dest: /home/librechat/deployment/libbrotli1_1.1.0-2build2+infra1_amd64.deb, owner: librechat}
+    - {src: 'librechat/compose.security.yaml', dest: /home/librechat/deployment/compose.security.yaml, owner: librechat}
+    - {src: 'crawl4ai/Dockerfile', dest: /home/llama/deployment/crawl4ai/Dockerfile, owner: llama}
+    - {src: 'crawl4ai/patch-vendored-brotli.py', dest: /home/llama/deployment/crawl4ai/patch-vendored-brotli.py, owner: llama}
+    - {src: 'crawl4ai/compose.security.yaml', dest: /home/llama/deployment/crawl4ai/compose.security.yaml, owner: llama}
+
+- name: Stop existing application containers before restoring a data archive
+  ansible.builtin.command:
+    argv: [docker, compose, -f, compose.radiance.yaml, -f, /home/librechat/deployment/compose.security.yaml, stop]
+    chdir: "{{ librechat_root }}"
+  become_user: librechat
+  when: rigby_data_archive | length > 0
+  changed_when: true
+
+- name: Restore persistent application data from a staged archive
+  ansible.builtin.unarchive:
+    src: "{{ rigby_data_archive }}"
+    dest: /
+    remote_src: true
+    extra_opts: [--no-same-owner]
+  when: rigby_data_archive | length > 0
+
+- name: Restore LibreChat data ownership after archive extraction
+  ansible.builtin.file:
+    path: "{{ librechat_root }}/{{ item }}"
+    owner: librechat
+    group: librechat
+    recurse: true
+  loop: [data-node, uploads, logs, images, data, skill]
+  when: rigby_data_archive | length > 0
+
+- name: Generate LibreChat-local keys once per installation
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - |
+        import json, os, secrets
+        path = '/home/librechat/deployment/runtime-secrets.json'
+        keys = {
+            'CREDS_KEY': secrets.token_hex(32),
+            'CREDS_IV': secrets.token_hex(16),
+            'JWT_SECRET': secrets.token_hex(64),
+            'JWT_REFRESH_SECRET': secrets.token_hex(64),
+            'OPENID_SESSION_SECRET': secrets.token_hex(64),
+        }
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, 'w') as out:
+            json.dump(keys, out)
+    creates: /home/librechat/deployment/runtime-secrets.json
+  become_user: librechat
+  no_log: true
+
+- name: Generate search-internal keys once per installation
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - |
+        import json, os, secrets
+        path = '/home/llama/deployment/runtime-secrets.json'
+        keys = {
+            'crawl4ai_api_token': secrets.token_urlsafe(48),
+            'searxng_secret_key': secrets.token_hex(32),
+        }
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, 'w') as out:
+            json.dump(keys, out)
+    creates: /home/llama/deployment/runtime-secrets.json
+  become_user: llama
+  no_log: true
+
+- name: Read LibreChat-local keys
+  ansible.builtin.slurp:
+    src: /home/librechat/deployment/runtime-secrets.json
+  register: librechat_key_file
+  no_log: true
+
+- name: Read search-internal keys
+  ansible.builtin.slurp:
+    src: /home/llama/deployment/runtime-secrets.json
+  register: search_key_file
+  no_log: true
+
+- name: Keep application-local keys in memory
+  ansible.builtin.set_fact:
+    librechat_runtime_secrets: "{{ librechat_key_file.content | b64decode | from_json }}"
+    search_runtime_secrets: "{{ search_key_file.content | b64decode | from_json }}"
+    cacheable: false
+  no_log: true
+
+- name: Render application environments and authentication
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../templates/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode | default('0600') }}"
+    unsafe_writes: true
+  loop:
+    - {src: radiance-api.env.j2, dest: /etc/radiance/api.env, owner: root}
+    - {src: api-auth.conf.j2, dest: /etc/web-search-mcp/api-auth.conf, owner: root}
+    - {src: librechat.env.j2, dest: '{{ librechat_root }}/.env', owner: librechat}
+    - {src: web-search.env.j2, dest: '{{ web_search_root }}/.env', owner: llama}
+    - {src: searxng-settings.yml.j2, dest: '{{ web_search_root }}/searxng/config/settings.yml', owner: llama, mode: '0644'}
+  no_log: true
+
+- name: Apply host and container CA trust policy
+  ansible.builtin.include_tasks: pki.yml
+
+- name: Build the pinned LibreChat and MongoDB runtime images
+  ansible.builtin.command:
+    argv: [docker, build, -t, '{{ item.tag }}', -f, '{{ item.dockerfile }}', .]
+    chdir: /home/librechat/deployment
+  become_user: librechat
+  loop:
+    - {tag: 'librechat-local:v0.8.8-node24.22.1', dockerfile: Dockerfile}
+    - {tag: 'mongo-local:8.0.20-brotli-fixed', dockerfile: Dockerfile.mongodb}
+  changed_when: true
+
+- name: Build the pinned Crawl4AI runtime image
+  ansible.builtin.command:
+    argv: [docker, build, -t, 'crawl4ai-local:0.9.5-node24.22.1-brotli1.2.1', .]
+    chdir: /home/llama/deployment/crawl4ai
+  become_user: llama
+  changed_when: true
+
+- name: Pull the gateway image used by the systemd unit
+  ansible.builtin.command:
+    argv: [docker, pull, '{{ rigby_nginx_image }}']
+  changed_when: true
+
+- name: Pull search dependencies with the live Compose overrides
+  ansible.builtin.command:
+    argv:
+      - docker
+      - compose
+      - -f
+      - docker-compose.yml
+      - -f
+      - docker-compose.override.yml
+      - -f
+      - /home/llama/deployment/crawl4ai/compose.security.yaml
+      - --profile
+      - lfm
+      - pull
+      - searxng
+      - valkey
+      - lfm
+      - mcp-auth
+    chdir: "{{ web_search_root }}"
+  become_user: llama
+  changed_when: true
+
+- name: Build the pinned web-search application
+  ansible.builtin.command:
+    argv:
+      - docker
+      - compose
+      - -f
+      - docker-compose.yml
+      - -f
+      - docker-compose.override.yml
+      - -f
+      - /home/llama/deployment/crawl4ai/compose.security.yaml
+      - --profile
+      - lfm
+      - build
+      - web-search-mcp
+    chdir: "{{ web_search_root }}"
+  become_user: llama
+  changed_when: true
+
+- name: Install application and snapshot units
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../{{ item.src }}"
+    dest: "/etc/systemd/system/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - {src: 'librechat/librechat.service', name: librechat.service}
+    - {src: 'gateway/llama-gateway.service', name: llama-gateway.service}
+    - {src: 'web-search/web-search-mcp.service', name: web-search-mcp.service}
+    - {src: 'web-search/web-search-valkey-snapshot.service', name: web-search-valkey-snapshot.service}
+    - {src: 'web-search/web-search-valkey-snapshot.timer', name: web-search-valkey-snapshot.timer}
+    - {src: 'radiance/r9700-tune.service', name: r9700-tune.service}
+
+- name: Remove superseded web-search unit overrides
+  ansible.builtin.file:
+    path: "/etc/systemd/system/web-search-mcp.service.d/{{ item }}"
+    state: absent
+  loop: [runtime.conf, zz-security.conf]

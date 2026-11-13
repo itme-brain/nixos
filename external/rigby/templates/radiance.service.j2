@@ -1,0 +1,52 @@
+[Unit]
+Description=Radiance Qwen3.8 Flash Next (three R9700 GPUs)
+Requires=r9700-tune.service
+Wants=network-online.target llama-gateway.service
+After=network-online.target r9700-tune.service llama-server.service
+Conflicts=llama-server.service
+
+[Service]
+Environment=LD_LIBRARY_PATH={{ radiance_rocm_root }}/lib
+Type=simple
+User=llama
+Group=llama
+WorkingDirectory={{ radiance_root }}
+EnvironmentFile=/etc/radiance/api.env
+Environment=RADIANCE_HOME={{ radiance_root }}/build-release/radiance_home
+Environment=ROCR_VISIBLE_DEVICES={{ radiance_gpu_ids }}
+Environment=HSA_FORCE_FINE_GRAIN_PCIE=1
+ExecStartPre=/usr/bin/test -r /home/llama/models/radiance/qwen3.8-next-flash-uncensored-fp8-iq4r-moe.rad
+ExecStart={{ radiance_root }}/build-release/bin/radiance \
+  --model /home/llama/models/radiance/qwen3.8-next-flash-uncensored-fp8-iq4r-moe.rad \
+  --host 127.0.0.1 \
+  --port 9332 \
+  --api-key-env RADIANCE_API_KEY \
+  --served-model-name Qwen3.8-Flash-Next \
+  --temp 1.0 \
+  --top-p 0.95 \
+  --top-k 20 \
+  --min-p 0.0 \
+  --presence-penalty 0.0 \
+  --repetition-penalty 1.0 \
+  --tp 3 \
+  --p2p on \
+  --tp-wire wht6 \
+  --max-num-seqs 8 \
+  --max-model-len 262144 \
+  --placement expert_tiered \
+  --host-pool-mib 12288 \
+  --gpu-headroom-mib 192 \
+  --embedding-placement ram \
+  --vision-tower-placement vram \
+  --ngram-placement ram \
+  --kv-cache-dtype fp8 \
+  --prefix-cache-mib 4096 \
+  --num-speculative-tokens 3 \
+  --max-num-batched-tokens 2048
+LimitMEMLOCK=infinity
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

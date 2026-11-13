@@ -51,14 +51,6 @@
               mountpoint = "/data";
             };
           };
-          bitcoin = {
-            size = "1T";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/var/lib/bitcoin";
-            };
-          };
           frigate = {
             size = "3T";
             content = {
@@ -67,7 +59,7 @@
               mountpoint = "/var/lib/frigate";
             };
           };
-          # ~300GB left unallocated for future growth
+          # Leave remaining space unallocated for future growth.
         };
       };
     };

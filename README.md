@@ -14,7 +14,6 @@ Modular NixOS flake configuration with home-manager integration.
 |---------------|-------------|
 | `desktop` | Primary workstation |
 | `server` | Home server |
-| `wsl` | Windows Subsystem for Linux |
 
 ## Fresh Install
 
@@ -63,8 +62,7 @@ just
 │       │   └── modules/
 │       │       ├── disko/         # Disk partitioning
 │       │       └── home-manager/  # Home-manager integration
-│       ├── server/                # Server (same structure)
-│       └── wsl/                   # WSL (same structure)
+│       └── server/                # Server (same structure)
 │
 └── user/
     ├── default.nix                # User options (name, email, keys)
@@ -99,7 +97,6 @@ just
             ├── dev/
             │   ├── pcb/           # Arduino, KiCad
             │   └── design/        # Penpot
-            ├── corn/
             ├── fun/
             └── utils/
 ```

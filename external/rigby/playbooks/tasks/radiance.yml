@@ -1,0 +1,93 @@
+---
+- name: Check out the pinned Radiance release
+  ansible.builtin.git:
+    repo: "{{ radiance_repo }}"
+    dest: "{{ radiance_root }}"
+    version: "{{ radiance_revision }}"
+    recursive: true
+    update: true
+    force: false
+  become_user: llama
+  register: radiance_source
+
+- name: Check whether Radiance is already built
+  ansible.builtin.stat:
+    path: "{{ radiance_root }}/build-release/bin/radiance"
+  register: radiance_binary
+
+- name: Configure Radiance with ROCm 10.1 and gfx1201
+  ansible.builtin.command:
+    argv:
+      - cmake
+      - -S
+      - "{{ radiance_root }}"
+      - -B
+      - "{{ radiance_root }}/build-release"
+      - -G
+      - Ninja
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_CXX_COMPILER={{ radiance_rocm_root }}/lib/llvm/bin/clang++
+      - -DCMAKE_HIP_COMPILER_ROCM_ROOT={{ radiance_rocm_root }}
+      - -DCMAKE_HIP_ARCHITECTURES=gfx1201
+      - -DRAD_GPU_TARGETS=gfx1201
+      - -DRAD_WITH_HIP=ON
+      - -DRAD_WITH_FFMPEG=ON
+      - -DCMAKE_EXE_LINKER_FLAGS=-Wl,--build-id=sha1
+      - -DCMAKE_SHARED_LINKER_FLAGS=-Wl,--build-id=sha1
+      - -DCMAKE_MODULE_LINKER_FLAGS=-Wl,--build-id=sha1
+  environment:
+    PATH: "{{ radiance_rocm_root }}/bin:/usr/local/bin:/usr/bin:/bin"
+    LD_LIBRARY_PATH: "{{ radiance_rocm_root }}/lib"
+  become_user: llama
+  when: radiance_source.changed or not radiance_binary.stat.exists
+  changed_when: true
+
+- name: Build Radiance
+  ansible.builtin.command:
+    argv: [cmake, --build, '{{ radiance_root }}/build-release', --parallel, '{{ radiance_build_jobs | string }}']
+  become_user: llama
+  when: radiance_source.changed or not radiance_binary.stat.exists
+  changed_when: true
+
+- name: Download the exact Qwen Flash Next artifact when not restored from backup
+  ansible.builtin.get_url:
+    url: "{{ radiance_model_url }}"
+    dest: "/home/llama/models/radiance/{{ radiance_model_name }}"
+    checksum: "sha256:{{ radiance_model_sha256 }}"
+    owner: llama
+    group: llama
+    mode: "0644"
+    timeout: 120
+
+- name: Install Radiance TP3 service
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../templates/radiance.service.j2"
+    dest: /etc/systemd/system/radiance.service
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Discover existing services before disabling alternate inference servers
+  ansible.builtin.service_facts:
+
+- name: Keep alternate inference servers disabled
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop: [llama-server.service, radiance-d1.service, clef-airy.service]
+  when: item in ansible_facts.services
+
+- name: Enable and restart recovered services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    daemon_reload: true
+    enabled: true
+    state: restarted
+  loop:
+    - r9700-tune.service
+    - librechat.service
+    - web-search-mcp.service
+    - web-search-valkey-snapshot.timer
+    - llama-gateway.service
+    - radiance.service

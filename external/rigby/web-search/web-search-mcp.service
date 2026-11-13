@@ -1,0 +1,19 @@
+[Unit]
+Description=Web Search MCP stack
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=llama
+Group=llama
+WorkingDirectory=/home/llama/web-search-mcp
+ExecStart=/usr/bin/docker compose -f docker-compose.yml -f docker-compose.override.yml -f /home/llama/deployment/crawl4ai/compose.security.yaml --profile lfm up -d --no-build --pull never
+ExecStop=/usr/bin/docker compose -f docker-compose.yml -f docker-compose.override.yml -f /home/llama/deployment/crawl4ai/compose.security.yaml --profile lfm stop
+TimeoutStartSec=300
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

@@ -26,7 +26,7 @@ let
     in
     [
       {
-        assertion = pinentry != pkgs.pinentry-curses || pinentry != pkgs.pinentry-tty;
+        assertion = pinentry != pkgs.pinentry-curses && pinentry != pkgs.pinentry-tty;
         message = "Firefox plugin passff requires graphical pinentry";
       }
     ];
