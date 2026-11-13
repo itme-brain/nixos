@@ -64,6 +64,7 @@ in
         --archive \
         --checksum \
         --delete \
+        --chmod=u+w \
         --exclude-from=${./agent}/.gitignore \
         ${./agent}/ "$agentDir"/
       run ${pkgs.coreutils}/bin/install -m 644 ${piSettings} "$agentDir/settings.json"
