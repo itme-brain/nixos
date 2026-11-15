@@ -29,7 +29,8 @@
       inherit system;
       config = {
         allowUnfree = true;
-        nvidia.acceptLicense = true;
+        # NVIDIA: restore when switching back to the NVIDIA GPU.
+        # nvidia.acceptLicense = true;
       };
       overlays = [
         nur.overlays.default

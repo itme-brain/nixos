@@ -53,10 +53,10 @@ with lib;
       mesa
       mesa-demos
 
-      cudaPackages.cudatoolkit
-      cudaPackages.cudnn
-
-      nvidia-vaapi-driver
+      # NVIDIA packages: restore when switching back to the NVIDIA GPU.
+      # cudaPackages.cudatoolkit
+      # cudaPackages.cudnn
+      # nvidia-vaapi-driver
     ];
 
     hardware = {
@@ -65,21 +65,24 @@ with lib;
           updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
         };
       };
-      nvidia = {
-        open = true;
-        modesetting.enable = true;
-        nvidiaSettings = true;
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
-      };
-      nvidia-container-toolkit.enable = true;
+      amdgpu.initrd.enable = true;
+      # NVIDIA configuration: restore when switching back to the NVIDIA GPU.
+      # nvidia = {
+      #   open = true;
+      #   modesetting.enable = true;
+      #   nvidiaSettings = true;
+      #   package = config.boot.kernelPackages.nvidiaPackages.stable;
+      # };
+      # nvidia-container-toolkit.enable = true;
       graphics = {
         enable = true;
         enable32Bit = true;
       };
     };
 
-    # Despite confusing name, this configures userspace nvidia libraries
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = [ "amdgpu" ];
+    # NVIDIA: restore this in place of the AMD driver when switching back.
+    # services.xserver.videoDrivers = [ "nvidia" ];
 
     virtualisation.libvirtd = {
       enable = true;

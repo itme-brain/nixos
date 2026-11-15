@@ -318,10 +318,11 @@ in
 
             "media.videocontrols.picture-in-picture.enabled" = false;
 
-            # VA-API hardware video acceleration (NVIDIA)
+            # VA-API hardware video acceleration
             "media.ffmpeg.vaapi.enabled" = true;
             "media.rdd-ffmpeg.enabled" = true;
-            "media.av1.enabled" = false; # GTX 1650 doesn't support AV1 decode
+            # NVIDIA: restore for the GTX 1650, which lacks AV1 decode.
+            # "media.av1.enabled" = false;
             "gfx.x11-egl.force-enabled" = true;
           };
         };

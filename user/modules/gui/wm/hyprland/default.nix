@@ -61,10 +61,12 @@ in
         hl.env("HYPRCURSOR_THEME", "Vanilla-DMZ")
         hl.env("HYPRCURSOR_SIZE", "24")
         hl.env("GTK_THEME", "Juno")
-        hl.env("LIBVA_DRIVER_NAME", "nvidia")
         hl.env("XDG_SESSION_TYPE", "wayland")
-        hl.env("GBM_BACKEND", "nvidia-drm")
-        hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+
+        -- NVIDIA overrides: restore when switching back to the NVIDIA GPU.
+        -- hl.env("LIBVA_DRIVER_NAME", "nvidia")
+        -- hl.env("GBM_BACKEND", "nvidia-drm")
+        -- hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 
         hl.on("hyprland.start", function()
           hl.exec_cmd("waybar")

@@ -4,8 +4,10 @@
 |-------------|------------------------------------|
 | Motherboard | MSI B760 GAMING PLUS WIFI          |
 | CPU         | Intel Core i7-12700KF (12th Gen)   |
-| GPU         | NVIDIA GeForce GTX 1650            |
+| GPU         | AMD Radeon AI PRO R9700            |
 | Storage     | 2x 2TB Crucial MX500 SSD           |
+
+<!-- Previous GPU (configuration preserved in comments): NVIDIA GeForce GTX 1650 -->
 
 ## Memory
 
