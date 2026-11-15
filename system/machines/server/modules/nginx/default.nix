@@ -120,15 +120,14 @@ in
         useACMEHost = domain;
         forceSSL = true;
 
-        # Web UI + llama.cpp API (browser, /v1/* calls from the UI).
-        # Auth is handled by llama.cpp itself (--api-key flag).
+        # LibreChat authenticates browser/API sessions through its native OIDC
+        # integration. Inference routes use the gateway's Bearer API key.
         locations."/" = {
           proxyPass = "http://192.168.0.23:9331";
           proxyWebsockets = true;
         };
 
-        # Router model-management API. Keep the Web UI and /v1 API under
-        # llama.cpp auth, but add nginx auth to every /models operation.
+        # Model management also requires the Bearer API key at nginx.
         locations."= /models" = {
           proxyPass = "http://192.168.0.23:9331";
           proxyWebsockets = true;

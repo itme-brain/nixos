@@ -2,9 +2,10 @@
 
 Public UI: https://ai.ramos.codes/systemone/run
 
-Authentication is enforced by server's Nginx and Authentik. Both LibreChat
-and Airy use the same Authentik browser session; LibreChat additionally uses
-its native OIDC integration. Both applications require membership in Authentik's
+Airy's `/systemone/` routes are protected by server's Nginx and Authentik
+forward authentication. LibreChat uses its native Authentik OIDC integration
+and manages its own session renewal; its browser and API routes do not use
+the forward-auth gate. Both applications require membership in Authentik's
 `AI users` group. GitHub self-enrollment is disabled, and all enrollment flows
 are denied by the `Self-enrollment disabled` policy. Existing linked GitHub
 accounts can still sign in; new accounts must be created by an administrator.
@@ -16,9 +17,9 @@ GitHub from their Authentik user settings after signing in to their manually
 created account; identifier matching prevents automatic email-based linking.
 The owner `itme-brain` is an internal user in both groups.
 
-The dashboard shows separate `LibreChat` and `Clef Airy` launchers. The shared
+The dashboard shows separate `LibreChat` and `Clef Airy` launchers. The Airy
 proxy application (`ai-browser`, named `AI website authentication`) is hidden
-from the dashboard using `meta_hide`; it still protects both browser apps.
+from the dashboard using `meta_hide`; it protects the `/systemone/` routes.
 The `clef-airy` application is a providerless launcher to
 `https://ai.ramos.codes/systemone/run` and also requires `AI users` membership.
 
@@ -30,16 +31,19 @@ the CSS in `branding_custom_css`, with absolute HTTPS logo/favicon URLs so
 Authentik does not treat them as uploaded-media paths. Authentication flow
 titles are `sign in`. These database settings are included in the normal dump.
 
-The shared gateway's newly issued access tokens expire after five minutes;
-already-issued tokens retain their original expiry. Revoke user sessions as
-well as removing `AI users` membership when withdrawing access. The temporary
+The Airy gateway's newly issued access tokens expire after five minutes;
+already-issued tokens retain their original expiry. LibreChat uses its own
+sessions (currently 15-minute access tokens and a seven-day refresh lifetime).
+Removing `AI users` membership prevents new OIDC logins but does not immediately
+invalidate existing LibreChat sessions; revoke those separately when withdrawing
+access, along with the user's Authentik sessions. The temporary
 Authentik bootstrap administrator API token was revoked after provisioning;
 new automation must use a separately created temporary administrator token.
 
 The rigby gateway configuration is tracked in `external/rigby/gateway/nginx.conf`
 and deployed to `/home/llama/gateway/nginx.conf`. Frontend routes accept only
-server's LAN address, so reaching rigby's LAN port directly cannot bypass
-Authentik. Inference and MCP still use the separately managed Bearer API key.
+server's LAN address. Direct access to rigby's LAN port cannot bypass this
+restriction. Inference and MCP still use the separately managed Bearer API key.
 
 The security audit replaced LibreChat's published credential-encryption
 defaults after backing up MongoDB and its environment. Its existing encrypted

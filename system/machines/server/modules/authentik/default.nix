@@ -35,7 +35,7 @@ let
     add_header Referrer-Policy "same-origin" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
   '';
-  browserAuth = ''
+  browserProxyHeaders = ''
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-Host $host;
     proxy_set_header X-Forwarded-Port 443;
@@ -43,6 +43,8 @@ let
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Real-IP $remote_addr;
+  '';
+  browserAuth = browserProxyHeaders + ''
     auth_request /_ai_auth;
     error_page 401 = @ai_signin;
     auth_request_set $auth_cookie $upstream_http_set_cookie;
@@ -144,7 +146,12 @@ in {
 
   services.nginx.virtualHosts."ai.ramos.codes".extraConfig = lib.mkIf config.modules.system.authentik.protectAI securityHeaders;
   services.nginx.virtualHosts."ai.ramos.codes".locations = lib.mkIf config.modules.system.authentik.protectAI {
-    "/".extraConfig = browserAuth;
+    # LibreChat owns its OIDC login and session renewal. A second browser
+    # session here redirects chat API calls when the proxy token expires.
+    "/".extraConfig = browserProxyHeaders + ''
+      proxy_read_timeout 3600s;
+      proxy_buffering off;
+    '';
     "= /_ai_auth" = {
       proxyPass = "http://127.0.0.1:9000/outpost.goauthentik.io/auth/nginx";
       extraConfig = ''

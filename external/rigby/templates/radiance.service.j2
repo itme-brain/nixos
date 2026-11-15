@@ -18,6 +18,7 @@ Environment=HSA_FORCE_FINE_GRAIN_PCIE=1
 ExecStartPre=/usr/bin/test -r /home/llama/models/radiance/qwen3.8-next-flash-uncensored-fp8-iq4r-moe.rad
 ExecStart={{ radiance_root }}/build-release/bin/radiance \
   --model /home/llama/models/radiance/qwen3.8-next-flash-uncensored-fp8-iq4r-moe.rad \
+  --override-chat-template /home/llama/models/Qwen/shared/chat_template.jinja \
   --host 127.0.0.1 \
   --port 9332 \
   --api-key-env RADIANCE_API_KEY \
