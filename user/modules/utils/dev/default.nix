@@ -7,10 +7,8 @@ in
 { options.modules.user.utils.dev = { enable = mkEnableOption "user.utils.dev"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      #unstable.claude-code
+      unstable.claude-code
       unstable.codex
-
-      bubblewrap
 
       nix-init
       nix-prefetch-git
