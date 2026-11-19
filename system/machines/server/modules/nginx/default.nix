@@ -24,6 +24,13 @@ in
 
   };
 
+  # Remove after deploying an NGINX version that fixes CVE-2026-123007 and CVE-2026-123633.
+  options.services.nginx.virtualHosts = mkOption {
+    type = types.attrsOf (types.submodule {
+      config.http2 = mkForce false;
+    });
+  };
+
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
